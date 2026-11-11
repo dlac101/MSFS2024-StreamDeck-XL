@@ -44,3 +44,8 @@ The output goes to `_Releases/`.
 - Read actual sim state; never assume a toggle worked.
 - Nothing depends on which flight controls are connected (Xbox Elite or T.16000M/TWCS).
 - Record every aircraft variable/event in `docs/aircraft-mappings.md` with its verification status.
+
+## License
+
+[MIT](LICENSE). PilotsDeck itself is MIT-licensed by its author; this project only ships configuration,
+Lua scripts and images for it.
