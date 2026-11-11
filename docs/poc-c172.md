@@ -24,25 +24,34 @@ been tested in the 2024 C172 yet; the "Verified" column in
 3. Start MSFS 2024, load a free flight in the **Cessna 172 Skyhawk G1000**, cold and dark or parked.
    Wait for the PilotsDeck keys to stop showing the hourglass ("Waiting" state).
 
+**Saving fields:** the Stream Deck settings panel saves a text field when you leave it. After typing a
+value, press **Tab** (or click elsewhere in the panel) before selecting another key, or the value is lost.
+A key that always shows its Off image usually has an empty On Value / Off Value on the **States** tab.
+
+**K-events are command-only:** with Command Type "MSFS: K-Var (SimEvent)", leave the Commands tab's
+On/Off Value empty and **Toggle Switch** unchecked (that option is for push/pull controls that need two commands).
+
 ## Key 1: Battery (top-left)
 
 Action: **PilotsDeck > Dynamic Button**
 
-| Field | Value |
-|---|---|
-| Command type | KVAR |
-| Command address | `K:TOGGLE_MASTER_BATTERY` |
-| Variable (address) | `(A:ELECTRICAL MASTER BATTERY:1, Bool)` |
-| On Value / On Image | `1` / any bundled "on" image |
-| Off Value / Off Image | `0` / matching "off" image |
-| Title (Stream Deck) | `BAT` |
+| Tab | Field | Value |
+|---|---|---|
+| Commands | Command Type | MSFS: B-Var (InputEvent) |
+| | Command Address | `B:electrical_battery_1` |
+| | Run as Command | **unchecked** (so the B-Var is read and written as a variable) |
+| | On Value / Off Value | `1` / `0` |
+| Variable | Address | `B:electrical_battery_1` |
+| States | On Value / On Image | `1` / any bundled "on" image |
+| | Off Value / Off Image | `0` / matching "off" image |
+| (Stream Deck) | Title | `BAT` |
 
-**If it doesn't work:** the 2024 C172 may wire its master switch differently.
-- If the key's image doesn't follow the cockpit switch, try the variable without the index:
-  `(A:ELECTRICAL MASTER BATTERY, Bool)`.
-- If pressing the key does nothing, look in **InputEvents.txt** (Developer UI > QRH) for a
-  battery input event (B-Var) and use that as the command instead. Write down what worked
-  in aircraft-mappings.md.
+**Why not the standard battery SimVar and K-event:** in the 2024 C172 the cockpit BAT switch drives
+battery index 2 and the input event, while `K:TOGGLE_MASTER_BATTERY` and
+`(A:ELECTRICAL MASTER BATTERY:1, Bool)` act on index 1. A key built on those moves the switch but
+doesn't follow the mouse (tested 2026-11-11, see aircraft-mappings.md).
+
+**"Run as Command" checked** sends the B-Var with no value, and the key does nothing.
 
 ## Key 2: Parking brake
 
@@ -50,7 +59,7 @@ Action: **Dynamic Button**
 
 | Field | Value |
 |---|---|
-| Command type | KVAR |
+| Command Type | MSFS: K-Var (SimEvent) |
 | Command address | `K:PARKING_BRAKES` (toggles) |
 | Variable | `(A:BRAKE PARKING POSITION, Bool)` |
 | On / Off Value | `1` / `0` |
@@ -76,7 +85,7 @@ Action: **Dynamic Button**
 
 | Field | Value |
 |---|---|
-| Command type | KVAR |
+| Command Type | MSFS: K-Var (SimEvent) |
 | Command address | `K:AP_MASTER` (toggles) |
 | Variable | `(A:AUTOPILOT MASTER, Bool)` |
 | On / Off Value | `1` / `0` |

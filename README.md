@@ -8,7 +8,12 @@ The original brief is in [docs/original-plan.md](docs/original-plan.md).
 
 ## Status
 
-**Phase 1: four-key proof of concept, not yet tested.** See [docs/poc-c172.md](docs/poc-c172.md).
+**Phase 1: four-key proof of concept, core test passed 2026-11-11** (C172 G1000, MSFS 1.9.24.0):
+all four keys work in both directions. Restart, controller and disconnected-sim checks are still to run.
+See [docs/poc-c172.md](docs/poc-c172.md) and [tests/manual-checklist.md](tests/manual-checklist.md).
+PilotsDeck runs on this PC with a locally patched build until
+[Fragtality/PilotsDeck#176](https://github.com/Fragtality/PilotsDeck/issues/176) is fixed
+([details](docs/installation.md#known-issue-on-this-pc-pilotsdeck-exits-at-startup-worked-around-with-a-patched-build)).
 
 ## Layout
 
