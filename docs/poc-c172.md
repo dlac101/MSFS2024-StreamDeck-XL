@@ -26,7 +26,7 @@ been tested in the 2024 C172 yet; the "Verified" column in
 
 **Saving fields:** the Stream Deck settings panel saves a text field when you leave it. After typing a
 value, press **Tab** (or click elsewhere in the panel) before selecting another key, or the value is lost.
-A key that always shows its Off image usually has an empty On Value / Off Value on the **States** tab.
+A key that always shows its Off image usually has an empty On Value / Off Value on the **On/Off States** tab.
 
 **K-events are command-only:** with Command Type "MSFS: K-Var (SimEvent)", leave the Commands tab's
 On/Off Value empty and **Toggle Switch** unchecked (that option is for push/pull controls that need two commands).
@@ -41,8 +41,8 @@ Action: **PilotsDeck > Dynamic Button**
 | | Command Address | `B:electrical_battery_1` |
 | | Run as Command | **unchecked** (so the B-Var is read and written as a variable) |
 | | On Value / Off Value | `1` / `0` |
-| Variable | Address | `B:electrical_battery_1` |
-| States | On Value / On Image | `1` / any bundled "on" image |
+| Value | Address | `B:electrical_battery_1` |
+| On/Off States | On Value / On Image | `1` / any bundled "on" image |
 | | Off Value / Off Image | `0` / matching "off" image |
 | (Stream Deck) | Title | `BAT` |
 
