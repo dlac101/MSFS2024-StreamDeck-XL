@@ -29,8 +29,13 @@ and `CHANGELOG.md`.
 - Who does what: Claude researches variable/event names, writes Lua, docs and checklists;
   the user sets up keys in the Stream Deck app and runs the sim tests. (A session in Admin may
   also read logs and files directly to check setups.)
-- The user's **bigly** skill (session chain) is for later: set it up **only after the Phase 1
-  four-key test passes**, after a first commit, with chain sessions started in this folder.
+- The user's **bigly** skill (session chain): its preconditions are met (Phase 1 four-key test
+  passed and committed 2026-11-11). Chain sessions start in this folder.
+- PilotsDeck in the Admin account is a **locally patched 0.9.7 build** (startup crash,
+  Fragtality/PilotsDeck#176). Don't re-run the PilotsDeck installer or "update" the plugin until
+  #176 is fixed, or the crash comes back. Details: `docs/installation.md`.
+- Battery in the 2024 C172 uses the input event `B:electrical_battery_1`, not the standard
+  SimVar/K-event (the cockpit switch drives battery index 2). See `docs/aircraft-mappings.md`.
 
 ## Working rules
 
@@ -46,3 +51,19 @@ and `CHANGELOG.md`.
 - Example packages the user downloaded (Fenix A320, GSX Pro, a generic profile) are in
   `A:\FS2024 Stuff\PilotsDeck` and show real package and Lua formats.
 - Commit only when the user asks.
+
+## Checking sim state (Admin account)
+
+- **Which variable does a cockpit control really drive?** Don't guess. Run `tools/scmon` (read-only
+  SimConnect monitor, see its README) while the user works the control with the mouse. Also check
+  the aircraft's input events (`docs/reference/InputEvents-*.txt`): in MSFS 2024 aircraft the
+  cockpit control may drive a B-Var and a different SimVar index than the standard K-event.
+- **PilotsDeck's local API** (`http://localhost:42042/v1/get|register|unregister|list`) doesn't
+  URL-decode addresses: A-Vars with spaces read `0`. Use it only for B-Vars and L-Vars, and
+  unregister anything you register. Don't use its `set/` or `send/` calls without the user's OK.
+- **What a key is configured to do:** read its saved settings from the profile's `manifest.json`
+  under `%APPDATA%\Elgato\StreamDeck\ProfilesV3\`, and what it sent from the plugin log
+  (`log\PilotsDeck<date>.log`, "Running Command" lines). Read only; change keys in the Stream Deck app.
+- The Stream Deck settings panel saves a text field only when focus leaves it. A key that ignores
+  its On/Off values usually has them empty in the saved settings.
+- The .NET 10 SDK is installed per user at `%LOCALAPPDATA%\Microsoft\dotnet` (not on PATH).

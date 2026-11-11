@@ -27,6 +27,8 @@ docs/
   reference/            files copied out of the sim (InputEvents.txt etc.)
 tests/
   manual-checklist.md
+tools/
+  scmon/                read-only SimConnect monitor for checking which variable a control drives
 pilotsdeck/
   MSFS2024-XL/          a PilotsDeck Profile Manager "work folder"
     _Package/           package contents: same layout as the plugin folder

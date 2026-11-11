@@ -1,3 +1,5 @@
 pilotsdeck/*/_Releases/
 *.log
 Thumbs.db
+tools/**/bin/
+tools/**/obj/
