@@ -1,0 +1,6 @@
+* text=auto
+*.lua text eol=crlf
+*.streamDeckProfile binary
+*.ppp binary
+*.zip binary
+*.png binary
