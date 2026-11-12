@@ -18,3 +18,4 @@
   - Not yet run: restart survival, controller independence, disconnected sim, profile round trip.
 - Added docs/reference/InputEvents-C172-G1000.txt (233 input events).
 - Phase 2 main page spec written (untested): docs/phase2-main-page.md (C172 G1000, 26 keys, 6 reserved).
+- Phase 2 profile generated (untested, not yet imported): tools/profilegen builds `MSFS2024 C172 G1000.streamDeckProfile` (26 keys, 4 folder keys to empty Trim/Views/Checklist/More pages, back key at 1,1); setup is now "import the file"; navigation plan in docs/navigation.md.

@@ -1,0 +1,341 @@
+{
+  "_about": "Pages and keys of the generated profile. Positions are the docs' row,column (1-based, row 1 at the top). Each key copies a real saved template (p1:<col,row> = that key of the Phase 1 export; other names = templates.json) and changes only the settingsModel fields under 'set', the action fields under 'shell' and the title. The key tables in docs/phase2-main-page.md are the reference; check.py compares the two.",
+  "profile_name": "MSFS2024 C172 G1000",
+  "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile",
+  "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
+  "spec": "docs/phase2-main-page.md",
+  "grid": {
+    "rows": 4,
+    "columns": 8
+  },
+  "back_key_pos": "1,1",
+  "pages": [
+    {
+      "id": "main",
+      "keys": [
+        {
+          "pos": "1,1",
+          "title": "BAT",
+          "template": "p1:0,0",
+          "set": {
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,2",
+          "title": "RPM",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG RPM:1, rpm)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "FUEL PMP",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fuel_pump_1",
+            "AddressAction": "B:fuel_pump_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "PARK",
+          "template": "p1:1,0",
+          "set": {}
+        },
+        {
+          "pos": "1,5",
+          "title": "GEAR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:IS GEAR RETRACTABLE, Bool)",
+            "Format": "",
+            "ValueMappings": "0=FIXED:1=RETR"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS HANDLE INDEX, number)",
+            "Format": "",
+            "ValueMappings": "0=UP:1=10:2=20:3=30",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "TRIM",
+          "folder": "trim"
+        },
+        {
+          "pos": "1,8",
+          "title": "VIEWS",
+          "folder": "views"
+        },
+        {
+          "pos": "2,1",
+          "title": "AP",
+          "template": "p1:3,0",
+          "set": {}
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_HDG_HOLD",
+            "Address": "(A:AUTOPILOT HEADING LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ALT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_ALT_HOLD",
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "VS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_VS_HOLD",
+            "Address": "(A:AUTOPILOT VERTICAL HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "NAV",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_NAV1_HOLD",
+            "Address": "(A:AUTOPILOT NAV1 LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "APR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_APR_HOLD",
+            "Address": "(A:AUTOPILOT APPROACH HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "FLC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FLIGHT_LEVEL_CHANGE",
+            "Address": "(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_FLIGHT_DIRECTOR",
+            "Address": "(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "COM1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:1, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM_STBY_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "XPDR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER CODE:1, Bco16)",
+            "DecodeBCD": true,
+            "Format": "4.0"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "ATC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIMUI_WINDOW_HIDESHOW",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "MAP",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:FLIGHT_MAP",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "CDI",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GPS DRIVES NAV1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=VLOC:1=GPS",
+            "ActionType": 16,
+            "AddressAction": "K:TOGGLE_GPS_DRIVES_NAV1"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
+            "Format": "2.2",
+            "ActionType": 16,
+            "AddressAction": "K:BAROMETRIC"
+          }
+        },
+        {
+          "pos": "3,7",
+          "empty": "Timer (reserved)"
+        },
+        {
+          "pos": "3,8",
+          "title": "CHECKLIST",
+          "folder": "checklist"
+        },
+        {
+          "pos": "4,1",
+          "title": "NAV LT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_nav_0",
+            "AddressAction": "B:lighting_nav_0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "BCN",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_beacon_1",
+            "AddressAction": "B:lighting_beacon_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "STRB",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_strobe_0",
+            "AddressAction": "B:lighting_strobe_0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "LDG",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_landing_1",
+            "AddressAction": "B:lighting_landing_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "TAXI",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_taxi_1",
+            "AddressAction": "B:lighting_taxi_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "PITOT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:deice_pitot_1",
+            "AddressAction": "B:deice_pitot_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,7",
+          "empty": "Anti-ice (reserved)"
+        },
+        {
+          "pos": "4,8",
+          "title": "MORE",
+          "folder": "more"
+        }
+      ]
+    },
+    {
+      "id": "trim",
+      "parent": "main",
+      "note": "Trim page (later unit)",
+      "keys": []
+    },
+    {
+      "id": "views",
+      "parent": "main",
+      "note": "Views (later unit)",
+      "keys": []
+    },
+    {
+      "id": "checklist",
+      "parent": "main",
+      "note": "Checklists (Phase 5)",
+      "keys": []
+    },
+    {
+      "id": "more",
+      "parent": "main",
+      "note": "More: radios, autopilot values and other pages (later units)",
+      "keys": []
+    }
+  ]
+}

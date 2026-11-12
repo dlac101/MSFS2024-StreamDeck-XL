@@ -1,0 +1,278 @@
+{
+  "_about": "Real saved actions copied verbatim (read only) from the files named in 'source'. generate.py copies them and changes only the fields a key's entry names. check.py --sources re-reads each source and confirms the copy is unchanged.",
+  "simple_button": {
+    "source": {
+      "kind": "ProfilesV3",
+      "file": "%APPDATA%/Elgato/StreamDeck/ProfilesV3/FE3A1952-E04C-4247-BBEC-DBA01EB37809.sdProfile/Profiles/2244C820-07F5-4C68-9678-425D25E293E2/manifest.json",
+      "pos": "0,0",
+      "note": "Simple Button saved by PilotsDeck 0.9.7 (BUILD_VERSION 11) in the user's installed MSFS-Fenix320-XL profile (a vJoy view key)."
+    },
+    "action": {
+      "ActionID": "439d16d4-4003-4f82-8d94-dd160f4822b5",
+      "LinkedTitle": false,
+      "Name": "Simple Button",
+      "Plugin": {
+        "Name": "PilotsDeck",
+        "UUID": "com.extension.pilotsdeck",
+        "Version": "0.9.7.0"
+      },
+      "Resources": null,
+      "Settings": {
+        "settingsModel": {
+          "ActionType": 7,
+          "ActionTypeGuard": 3,
+          "ActionTypeLeft": 3,
+          "ActionTypeLeftPressed": 3,
+          "ActionTypeLong": 3,
+          "ActionTypeRight": 3,
+          "ActionTypeRightPressed": 3,
+          "ActionTypeTouch": 3,
+          "Address": "",
+          "Address2": "",
+          "AddressAction": "1:1",
+          "AddressActionGuard": "",
+          "AddressActionGuardOff": "",
+          "AddressActionLeft": "",
+          "AddressActionLeftPressed": "",
+          "AddressActionLong": "",
+          "AddressActionOff": "",
+          "AddressActionRight": "",
+          "AddressActionRightPressed": "",
+          "AddressActionTouch": "",
+          "AddressBot": "",
+          "AddressColorOff": "",
+          "AddressGuardActive": "",
+          "AddressMonitor": "",
+          "AddressRadioActiv": "",
+          "AddressRadioStandby": "",
+          "AddressTop": "",
+          "BUILD_VERSION": 11,
+          "BarOrientation": 0,
+          "BotImage": "Images/korry/A-ON-Blue.png",
+          "BotRect": "9; 45; 54; 20",
+          "BotState": "",
+          "BoxColor": "#ffffff",
+          "BoxRect": "9; 21; 54; 44",
+          "BoxSize": "2",
+          "CenterLine": false,
+          "CenterLineColor": "#ffffff",
+          "CenterLineThickness": "2",
+          "CriticalColor": "#8b0000",
+          "CriticalRange": "0; 10",
+          "DecodeBCD": false,
+          "DecodeBCDStby": false,
+          "DefaultImage": "Images/View.png",
+          "DefaultRect": "72; 72",
+          "DoNotRequestBvar": true,
+          "DrawArc": false,
+          "DrawBox": true,
+          "DrawWarnRange": false,
+          "FontColor": "#ffffff",
+          "FontColorStby": "#e0e0e0",
+          "FontInherit": true,
+          "FontName": "Arial",
+          "FontSize": "12",
+          "FontStyle": 0,
+          "Format": "",
+          "FormatStby": "",
+          "GaugeColor": "#006400",
+          "GaugeColorOff": "#636363",
+          "GaugeSize": "58; 10",
+          "GuardActiveValue": "",
+          "GuardRect": "0; 0; 72; 72",
+          "HasAction": true,
+          "HasIndication": false,
+          "HasLongPress": false,
+          "HoldSwitch": false,
+          "ImageGuard": "Images/GuardCross.png",
+          "ImageGuardMap": "",
+          "ImageMap": "",
+          "ImageMapBot": "",
+          "IndicationColor": "#ffcc00",
+          "IndicationHideValue": false,
+          "IndicationImage": "",
+          "IndicationTime": "1500",
+          "IndicationUseColor": false,
+          "IndicationValue": "0",
+          "IndicationValueAny": false,
+          "IndicatorColor": "#c7c7c7",
+          "IndicatorFlip": false,
+          "IndicatorSize": "10",
+          "IsEncoder": false,
+          "IsGuarded": false,
+          "IsNewModel": false,
+          "MaximumValue": "100",
+          "MinimumValue": "0",
+          "OffImage": "Images/KorryOffWhiteBottom.png",
+          "OffState": "",
+          "Offset": "0; 0",
+          "OnImage": "Images/KorryOnBlueTop.png",
+          "OnState": "",
+          "RectCoord": "-1; 0; 0; 0",
+          "RectCoord2": "6; 6; 60; 21",
+          "RectCoordStby": "3; 42; 64; 31",
+          "Scalar": "1",
+          "ScalarStby": "1",
+          "ShowBotImage": true,
+          "ShowBotNonZero": false,
+          "ShowText": true,
+          "ShowTopImage": true,
+          "ShowTopNonZero": false,
+          "StartAngle": "135",
+          "StateColorOff": "",
+          "StbyHasDiffFormat": false,
+          "SweepAngle": "180",
+          "SwitchOffState": "",
+          "SwitchOffStateGuard": "",
+          "SwitchOffStateLeft": "",
+          "SwitchOffStateLeftPressed": "",
+          "SwitchOffStateLong": "",
+          "SwitchOffStateRight": "",
+          "SwitchOffStateRightPressed": "",
+          "SwitchOffStateTouch": "",
+          "SwitchOnCurrentValue": false,
+          "SwitchOnState": "",
+          "SwitchOnStateGuard": "",
+          "SwitchOnStateLeft": "",
+          "SwitchOnStateLeftPressed": "",
+          "SwitchOnStateLong": "",
+          "SwitchOnStateRight": "",
+          "SwitchOnStateRightPressed": "",
+          "SwitchOnStateTouch": "",
+          "SymmRange": false,
+          "ToggleSwitch": false,
+          "TopImage": "Images/korry/A-FAULT.png",
+          "TopRect": "9; 21; 54; 20",
+          "TopState": "",
+          "UseColorSwitching": false,
+          "UseControlDelay": false,
+          "UseImageGuardMapping": false,
+          "UseImageMapping": false,
+          "UseLvarReset": false,
+          "UseOnlyTopAddr": false,
+          "UseWarnColors": true,
+          "UseXpCommandOnce": true,
+          "ValueMappings": "",
+          "WarnColor": "#ff8c00",
+          "WarnRange": "10; 20"
+        }
+      },
+      "State": 0,
+      "States": [
+        {
+          "FontFamily": "Arial",
+          "FontSize": 13,
+          "FontStyle": "",
+          "FontUnderline": false,
+          "Image": "Images/TH4E8VR3L517R9GA11HGBL6WW4Z.png",
+          "OutlineThickness": 2,
+          "ShowTitle": true,
+          "Title": "Captain",
+          "TitleAlignment": "middle",
+          "TitleColor": "#ffffff"
+        }
+      ],
+      "UUID": "com.extension.pilotsdeck.action.switch"
+    }
+  },
+  "folder": {
+    "source": {
+      "kind": "ProfilesV3",
+      "file": "%APPDATA%/Elgato/StreamDeck/ProfilesV3/649D9D61-43CB-4BDA-8431-3F93102A9A8D.sdProfile/Profiles/9DB6B277-CAC8-4C50-AEE4-A0D5DA7994AD/manifest.json",
+      "pos": "3,1",
+      "note": "Folder key (Create Folder) as the Stream Deck app 7.x makes it, from the user's 'Default Profile' (Apps folder)."
+    },
+    "action": {
+      "ActionID": "5fb7893f-7854-442d-a4e9-2602b6a8350a",
+      "LinkedTitle": true,
+      "Name": "Create Folder",
+      "Plugin": {
+        "Name": "Create Folder",
+        "UUID": "com.elgato.streamdeck.profile.openchild",
+        "Version": "1.0"
+      },
+      "Resources": null,
+      "Settings": {
+        "ProfileUUID": "7f817782-db4a-4815-a446-6337ba236b9b"
+      },
+      "State": 0,
+      "States": [
+        {
+          "FontFamily": "",
+          "FontSize": 12,
+          "FontStyle": "",
+          "FontUnderline": false,
+          "Image": "Images/8ROEP1V24T7TNC38DVP7RLQ2SGZ.png",
+          "OutlineThickness": 2,
+          "ShowTitle": true,
+          "Title": "Apps",
+          "TitleAlignment": "bottom",
+          "TitleColor": "#ffffff"
+        }
+      ],
+      "UUID": "com.elgato.streamdeck.profile.openchild"
+    }
+  },
+  "back": {
+    "source": {
+      "kind": "zip",
+      "file": "A:/FS2024 Stuff/PilotsDeck/Fenix A320 v1.6_Vj1pU/Profiles/MSFS-Fenix320-XL.streamDeckProfile",
+      "entry": "Profiles/02099218-EEBF-472E-B4FB-9BD3014EA1AB.sdProfile/Profiles/0562F54F-9BCD-479D-A019-D3F6013E9FCD/manifest.json",
+      "pos": "0,0",
+      "note": "Back key (Parent Folder) in the form used on 42 of the 43 child pages of the exported MSFS-Fenix320-XL profile (also the GSX-XL profile)."
+    },
+    "action": {
+      "ActionID": "0c60943d-6ef3-4e20-a059-e7804d2f17b5",
+      "LinkedTitle": false,
+      "Name": "Open Folder",
+      "Resources": null,
+      "Settings": null,
+      "State": 0,
+      "States": [
+        {
+          "FontFamily": "",
+          "FontSize": 12,
+          "FontStyle": "",
+          "FontUnderline": false,
+          "OutlineThickness": 2,
+          "ShowTitle": true,
+          "TitleAlignment": "bottom",
+          "TitleColor": "#ffffff"
+        }
+      ],
+      "UUID": "com.elgato.streamdeck.profile.backtoparent"
+    }
+  },
+  "com_radio": {
+    "source": {
+      "kind": "derived",
+      "note": "No saved COM Radio key exists in any file on this PC (Phase 1 export, ProfilesV3, example packages). Built from the Phase 1 HDG key (a Display Value: every PilotsDeck 0.9.7 simple action saves the same settings class, SettingsModelSimple) with the action identity from the plugin's manifest.json and the defaults that ActionDisplayRadio.CheckSettings() writes for a new COM Radio.",
+      "refs": [
+        "%APPDATA%/Elgato/StreamDeck/Plugins/com.extension.pilotsdeck.sdPlugin/manifest.json (action UUID com.extension.pilotsdeck.action.display.radio, Name 'COM Radio', default state TitleAlignment middle)",
+        "https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/ActionDisplayRadio.cs (CheckSettings defaults)",
+        "https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/SettingsModelSimple.cs (one settings class for all simple actions)"
+      ]
+    },
+    "derived_from": "p1:2,0",
+    "shell": {
+      "Name": "COM Radio",
+      "UUID": "com.extension.pilotsdeck.action.display.radio"
+    },
+    "set": {
+      "Address": "",
+      "Format": "",
+      "HasAction": true,
+      "HasIndication": false,
+      "SwitchOnCurrentValue": false,
+      "DefaultImage": "Images/Arrow.png",
+      "IndicationImage": "Images/ArrowBright.png",
+      "RectCoord": "3; 1; 64; 32",
+      "RectCoordStby": "3; 42; 64; 31",
+      "DefaultRect": "0; 0"
+    },
+    "states_set": {
+      "TitleAlignment": "middle"
+    },
+    "states_from": "p1:3,0"
+  }
+}

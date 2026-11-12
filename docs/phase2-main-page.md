@@ -7,28 +7,32 @@ passes.
 Goal: one 32-key main page for the Stream Deck XL (8 columns x 4 rows) for the default MSFS 2024
 **Cessna 172 Skyhawk G1000**, based on the concept layout in [original-plan.md](original-plan.md)
 (Phase 2). Every indicator reads actual sim state; no key guesses its state from its last press.
-26 keys are configured, 6 are reserved (left empty so the grid stays stable for later units).
+26 keys are configured, 4 are folder keys that open the Trim, Views, Checklist and More pages (each
+holds only its back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
 
-You build it by hand in the Stream Deck app (7.6.1) with PilotsDeck 0.9.7 (the locally patched build,
-see [installation.md](installation.md)): one key of each kind in full, then copies of it with a few
-fields changed.
+You don't build it by hand: the profile is generated in the repo, and you import one file into the
+Stream Deck app (7.6.1) with PilotsDeck 0.9.7 (the locally patched build, see
+[installation.md](installation.md)). See "Import the profile". The tables below stay the reference
+for what each key holds; the generator's check compares the profile with them.
+How the pages connect, now and later: [navigation.md](navigation.md).
 
 ## Layout
 
-Positions are **row,column**, 1-based, row 1 at the top. Reserved keys are in brackets.
+Positions are **row,column**, 1-based, row 1 at the top. Folder keys end in `>`. Reserved keys are in brackets.
 
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
-| **Row 1** | BAT | RPM | FUEL PMP | PARK | GEAR | FLAPS | [Trim] | [Views] |
+| **Row 1** | BAT | RPM | FUEL PMP | PARK | GEAR | FLAPS | TRIM > | VIEWS > |
 | **Row 2** | AP | HDG | ALT | VS | NAV | APR | FLC | FD |
-| **Row 3** | COM1 | XPDR | ATC | MAP | CDI | BARO | [Timer] | [Checklist] |
-| **Row 4** | NAV LT | BCN | STRB | LDG | TAXI | PITOT | [Anti-ice] | [More] |
+| **Row 3** | COM1 | XPDR | ATC | MAP | CDI | BARO | [Timer] | CHECKLIST > |
+| **Row 4** | NAV LT | BCN | STRB | LDG | TAXI | PITOT | [Anti-ice] | MORE > |
 
 ## Key table
 
 Action names are the PilotsDeck README's: **Dynamic Button**, **Display Value**, **COM Radio**,
-**Simple Button**. "Empty" = no action on that key. Templates T1 to T5 are explained under
-"Building the page". Source tags are listed under "Sources".
+**Simple Button**. **Folder** = the Stream Deck app's own folder action ("Create Folder"), which opens
+a child page. "Empty" = no action on that key. Templates T1 to T5 are explained under
+"What each key holds". Source tags are listed under "Sources".
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
@@ -38,8 +42,8 @@ Action names are the PilotsDeck README's: **Dynamic Button**, **Display Value**,
 | 1,4 | `PARK` | Dynamic Button | T2 (copy of Phase 1 key) | `K:PARKING_BRAKES` [AM] | `(A:BRAKE PARKING POSITION, Bool)` [AM, SDK-GEARV] | On/Off image |
 | 1,5 | `GEAR` | Display Value | T3 | none | `(A:IS GEAR RETRACTABLE, Bool)` [SDK-GEARV] | Mappings `0=FIXED:1=RETR` |
 | 1,6 | `FLAPS` | Display Value | T3 | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` [SDK-FCE, README 2.1] | `(A:FLAPS HANDLE INDEX, number)` [SDK-CTLV] | Mappings `0=UP:1=10:2=20:3=30` |
-| 1,7 | | Empty | | | | Reserved: Trim page |
-| 1,8 | | Empty | | | | Reserved: Views |
+| 1,7 | `TRIM` | Folder | (Stream Deck) | Opens the child page **trim** | none | Folder; the page holds only the back key (1,1) |
+| 1,8 | `VIEWS` | Folder | (Stream Deck) | Opens the child page **views** | none | Folder; the page holds only the back key (1,1) |
 | 2,1 | `AP` | Dynamic Button | T2 (template) | `K:AP_MASTER` [AM] | `(A:AUTOPILOT MASTER, Bool)` [AM] | On/Off image |
 | 2,2 | `HDG` | Dynamic Button | T2 | `K:AP_HDG_HOLD` [SDK-APE] | `(A:AUTOPILOT HEADING LOCK, Bool)` [SDK-APV] | On/Off image |
 | 2,3 | `ALT` | Dynamic Button | T2 | `K:AP_ALT_HOLD` [SDK-APE] | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` [SDK-APV] | On/Off image |
@@ -55,7 +59,7 @@ Action names are the PilotsDeck README's: **Dynamic Button**, **Display Value**,
 | 3,5 | `CDI` | Display Value | T3 | `K:TOGGLE_GPS_DRIVES_NAV1` [SDK-RADE] | `(A:GPS DRIVES NAV1, Bool)` [SDK-RADV] | Mappings `0=VLOC:1=GPS` |
 | 3,6 | `BARO` | Display Value | T3 | `K:BAROMETRIC` [SDK-INSTE] | `(A:KOHLSMAN SETTING HG:1, inHg)` [SDK-SYSV] | Format `2.2` |
 | 3,7 | | Empty | | | | Reserved: Timer |
-| 3,8 | | Empty | | | | Reserved: Checklist |
+| 3,8 | `CHECKLIST` | Folder | (Stream Deck) | Opens the child page **checklist** | none | Folder; the page holds only the back key (1,1) |
 | 4,1 | `NAV LT` | Dynamic Button | T1 | `B:lighting_nav_0`, On `1` / Off `0` [IE 197] | `B:lighting_nav_0` [IE 197] | On/Off image, Special State |
 | 4,2 | `BCN` | Dynamic Button | T1 | `B:lighting_beacon_1`, On `1` / Off `0` [IE 193] | `B:lighting_beacon_1` [IE 193] | On/Off image, Special State |
 | 4,3 | `STRB` | Dynamic Button | T1 | `B:lighting_strobe_0`, On `1` / Off `0` [IE 202] | `B:lighting_strobe_0` [IE 202] | On/Off image, Special State |
@@ -63,7 +67,7 @@ Action names are the PilotsDeck README's: **Dynamic Button**, **Display Value**,
 | 4,5 | `TAXI` | Dynamic Button | T1 | `B:lighting_taxi_1`, On `1` / Off `0` [IE 203] | `B:lighting_taxi_1` [IE 203] | On/Off image, Special State |
 | 4,6 | `PITOT` | Dynamic Button | T1 | `B:deice_pitot_1`, On `1` / Off `0` [IE 139] | `B:deice_pitot_1` [IE 139] | On/Off image, Special State |
 | 4,7 | | Empty | | | | Reserved: Anti-ice (the C172 has none beyond pitot heat) |
-| 4,8 | | Empty | | | | Reserved: More |
+| 4,8 | `MORE` | Folder | (Stream Deck) | Opens the child page **more** | none | Folder; the page holds only the back key (1,1) |
 
 What each key means on a C172:
 - **Engine** is the RPM display (read only). Starter and magnetos stay in the cockpit: no
@@ -106,16 +110,64 @@ What each key means on a C172:
 Address syntax is the README's section 2.1.1: A: plus name, index and unit in brackets for SimVars,
 K: plus the event name for SimConnect events, B: plus the name for the aircraft's input events (B-Vars).
 
-## Before you start
+## Import the profile
+
+The profile is the file
+`pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile`, generated in the repo
+(see "Regenerating the profile"). Signed in as Admin:
 
 1. Back up your existing Stream Deck profiles (see [installation.md](installation.md#back-up-existing-profiles)).
-2. In the Stream Deck app, create a **new** profile for the XL called **`MSFS2024 C172 G1000`**. Keep this
-   exact name: the Profile Manager uses it to update profiles and keep their aircraft mappings. Build the
-   main page on the profile's **first page** (the one the profile opens on).
-3. Leave the Phase 1 profile **`MSFS2024 C172 POC`** as it is. You copy its four verified keys into the
-   new profile; you don't move or change them.
-4. Start MSFS 2024, load a free flight in the **Cessna 172 Skyhawk G1000**, cold and dark or parked.
+2. **A profile already named `MSFS2024 C172 G1000`** (for example one you started by hand, or an older
+   generated version): export it to the backup folder, then delete it in the Stream Deck app **before**
+   you import. Don't keep two profiles with this name: the Profile Manager finds profiles by name. After
+   replacing a profile, check its aircraft mapping in the Profile Manager. (On 2026-11-11 no profile of
+   this name was installed.)
+3. Leave the Phase 1 profile **`MSFS2024 C172 POC`** as it is. The new profile has its own copies of the
+   four verified keys.
+4. With the Stream Deck app running, **double-click the file** in Explorer (or in the Stream Deck app:
+   Preferences > Profiles > Import). If the app asks which device, pick the **Stream Deck XL**. If the app
+   asks to confirm, choose **Install**. Importing
+   doesn't switch the device to the profile: select **`MSFS2024 C172 G1000`** in the profile list.
+5. Run the import and round-trip steps of the checklist (the keys against the tables below; each folder
+   opens and its back key returns to the main page).
+6. Start MSFS 2024, load a free flight in the **Cessna 172 Skyhawk G1000**, cold and dark or parked.
    Wait for the PilotsDeck keys to stop showing the hourglass ("Waiting" state).
+
+On import the Stream Deck app gives the profile, its pages and its keys new IDs and relinks the folder
+keys (the installed MSFS-Fenix320-XL profile has other IDs than its export file). What a key does doesn't
+change. The folder keys should show the Stream Deck app's own folder look (not yet seen: they carry no image
+of their own, and the checklist records how they look); the project has no images of its own yet.
+
+### Regenerating the profile
+
+From the repo root (Python 3, standard library only):
+
+```powershell
+python tools/profilegen/generate.py
+python tools/profilegen/check.py
+```
+
+`generate.py` reads `tools/profilegen/c172-g1000.json` (the pages and keys), `tools/profilegen/templates.json`
+(real saved keys it copies) and the Phase 1 export, and writes the profile. The same inputs always give the
+same file, byte for byte, with the same Python build (the committed profile was built with Python 3.14.10,
+zlib 1.3.1.zlib-ng; another zlib may compress differently, the content stays the same). `check.py` reads
+only files in the repo: it compares the profile with this doc's Key table, the Phase 1 export, the
+templates and a fresh build (entry names, order and uncompressed content, so a profile not regenerated after
+a data change fails). A change to a key goes into the data file and this doc together; then regenerate, run
+the check and import the new file (step 2 above).
+
+`python tools/profilegen/check.py --sources` is a provenance check on top: it re-reads the files the
+templates came from (the Admin account's installed Stream Deck profiles, which must be unchanged, and
+`A:\FS2024 Stuff\PilotsDeck`) and compares the folder and back keys with the Fenix XL export. It needs the
+Admin account; a source it can't read is reported as SKIP with its path, not as a failure.
+
+If the Stream Deck app ever refuses the generated file, the first thing to try in `generate.py` is the zip
+entry header the app itself writes (`create_system = 10` and flag `0x800`).
+
+## Changing a key by hand
+
+Only to try a fallback or a value during a test. Record what you changed, so it goes into the data file and
+this doc and the profile is regenerated; a hand change is lost at the next import.
 
 **Saving fields:** the Stream Deck settings panel saves a text field when you leave it. After typing a
 value, press **Tab** (or click elsewhere in the panel) before selecting another key, or the value is lost.
@@ -152,10 +204,13 @@ stores it as `HasLongPress`), so look for the option next to the Second Command.
 
 Either way, check the Title afterwards and set it as the table says.
 
-## Building the page
+## What each key holds
 
-The page is built from five templates. Build each template key in full, then make its copies and change
-only the fields listed for each copy.
+The page is built from five templates: a template key in full, then copies of it with only the fields
+listed for each copy changed. The generator does exactly this ("copy" below = it copies that saved key;
+"drop a new" = it starts from a saved key of that action type, see `tools/profilegen/templates.json`).
+The steps under T1 to T5 describe what the generator did; follow them by hand only when you change a key
+by hand (see "Changing a key by hand").
 
 | Template | Built from | Copies |
 |---|---|---|
@@ -352,7 +407,7 @@ Drop a new **PilotsDeck > COM Radio** action on position 3,1:
 | | Decode BCD | unchecked |
 | Commands | Command Type / Command Address | MSFS: K-Var (SimEvent) / `K:COM_STBY_RADIO_SWAP` [SDK-RADE] |
 | | On Value / Off Value, Toggle Switch | empty, unchecked |
-| | Swap Image, Swap Active | leave the defaults |
+| | Swap Image, Swap Active | leave the defaults (`Images/ArrowBright.png`, `1500`) |
 | (Stream Deck) | Title | `COM1` |
 
 `K:COM_STBY_RADIO_SWAP` "swaps COM 1 frequency with standby" (SDK-RADE). The SDK gives the unit of both
@@ -367,7 +422,7 @@ Drop a new **PilotsDeck > Simple Button** on position 3,3:
 |---|---|---|
 | Commands | Command Type / Command Address | MSFS: K-Var (SimEvent) / `K:SIMUI_WINDOW_HIDESHOW` [SDK-MISCE] |
 | | On Value / Off Value, Toggle Switch | empty, unchecked |
-| | Background image | leave the default |
+| | Background image | leave the default (`Images/Switch.png`) |
 | (Stream Deck) | Title | `ATC` |
 
 Copy it to position 3,4 and change: Command Address `K:FLIGHT_MAP` [SDK-MISCE], Title `MAP`.
@@ -376,18 +431,26 @@ These two keys show the same image all the time: a sim window has no state to re
 shows either one does nothing in MSFS 2024, that key becomes Empty** (delete the action) and its row in
 aircraft-mappings.md is marked "does not work". The row stays.
 
-### Reserved keys (Empty)
+### Folder keys and reserved keys
 
-Leave these positions empty. They are kept free so the grid doesn't move when later units fill them:
+Four keys are Stream Deck folders (the app's "Create Folder" action). Each opens a child page; every child
+page has its back key at **1,1** (top left), the same on every page, as in the MSFS-Fenix320-XL profile.
+For now each child page holds only that back key; their content comes in later units (see
+[navigation.md](navigation.md)).
+
+| Pos | Title | Opens | The child page holds now |
+|---|---|---|---|
+| 1,7 | `TRIM` | Trim page (later unit) | the back key (1,1) only |
+| 1,8 | `VIEWS` | Views (later unit) | the back key (1,1) only |
+| 3,8 | `CHECKLIST` | Checklists (Phase 5) | the back key (1,1) only |
+| 4,8 | `MORE` | More: further pages (later units) | the back key (1,1) only |
+
+Two positions stay empty, so the grid doesn't move when later units fill them:
 
 | Pos | Reserved for |
 |---|---|
-| 1,7 | Trim page (a sub-page, later unit) |
-| 1,8 | Views (a later unit) |
 | 3,7 | Timer (no SimVar for the G1000 timer was found in the SDK) |
-| 3,8 | Checklist (Phase 5) |
 | 4,7 | Anti-ice: the C172 has no anti-ice system beyond pitot heat (4,6) |
-| 4,8 | More (a sub-page, later unit) |
 
 ## Fallbacks
 
@@ -439,9 +502,9 @@ mouse in the cockpit and check that the key follows without being pressed.**
 
 ## When it passes
 
-1. Export the profile from the Stream Deck app (profile dropdown > Export) to
-   `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile`. Adding it to
-   `package.json` is a separate follow-up step.
+1. Any fallback, On/Off value or index that changed in the test goes into the data file
+   `tools/profilegen/c172-g1000.json` and this doc; then the profile is regenerated (not exported from the
+   app). The Profile Manager packs every profile in `_Package/Profiles/`; `package.json` doesn't list them.
 2. Fill in the "Verified" column of the Phase 2 rows in aircraft-mappings.md with the date and sim
    version, for each key that passed. Mark ATC or MAP "does not work" if they did nothing.
 3. Record any fallback you used, and any On/Off value or index that changed, in aircraft-mappings.md.

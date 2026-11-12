@@ -40,13 +40,39 @@ Setup: cold and dark or parked, profile `MSFS2024 C172 POC` active.
 
 ## Phase 2: main page (C172 G1000)
 
-Setup: profile `MSFS2024 C172 G1000` active, main page (its first page) built as in
-[docs/phase2-main-page.md](../docs/phase2-main-page.md). C172 G1000 loaded cold and dark. Wait until the
-keys no longer show the Wait image (hourglass) before judging any key: B-Var keys can show Off or the
-Fault image while the flight loads.
+Setup: profile `MSFS2024 C172 G1000` imported from the generated file and active (see
+[docs/phase2-main-page.md](../docs/phase2-main-page.md), "Import the profile"). C172 G1000 loaded cold and
+dark. Wait until the keys no longer show the Wait image (hourglass) before judging any key: B-Var keys can
+show Off or the Fault image while the flight loads.
 
 Record: date, MSFS 2024 version, PilotsDeck version, aircraft, and for each fallback or changed value
 below, which one you used.
+
+**Import (no sim needed)**
+- [ ] A profile already named `MSFS2024 C172 G1000` (hand-made or older): exported to the backup folder and
+  deleted before the import. None existed: tick and note "none".
+- [ ] Double-click `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile` (or
+  Preferences > Profiles > Import): the Stream Deck app imports it for the XL without an error, and the
+  profile list shows `MSFS2024 C172 G1000` once. Select it. Record any message the app showed.
+- [ ] The Phase 1 profile `MSFS2024 C172 POC` is still there, unchanged.
+- [ ] The main page shows 26 PilotsDeck keys, 4 folder keys (`TRIM` 1,7, `VIEWS` 1,8, `CHECKLIST` 3,8,
+  `MORE` 4,8) and 2 empty keys (3,7 and 4,7), as in the doc's Layout.
+
+**Round trip: the keys against the doc (no sim needed)**
+- [ ] Select each of the 26 keys in the Stream Deck app and compare its settings panel with the doc's Key
+  table and template tables: action, title, command type and address, On/Off values, value address, format,
+  mappings, Decode BCD, Special State, long press. Record every key that differs, with the field.
+- [ ] COM1 (3,1) in particular (built from the plugin's source, no saved example existed): the panel opens,
+  shows Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)`, Format `3`,
+  command `K:COM_STBY_RADIO_SWAP`. Record anything odd.
+
+**Folders and back keys (no sim needed)**
+- [ ] The four folder keys show a folder image and their titles (`TRIM`, `VIEWS`, `CHECKLIST`, `MORE`).
+  Record it if a key is blank (title only, or nothing).
+- [ ] `TRIM` opens a page that holds only a back key at top left (1,1); the back key returns to the main page.
+- [ ] `VIEWS`: same.
+- [ ] `CHECKLIST`: same.
+- [ ] `MORE`: same.
 
 **Diagnostic first (before the tests below)**
 - [ ] For each B-Var switch key (FUEL PMP, NAV LT, BCN, STRB, LDG, TAXI, PITOT): flip the cockpit switch
@@ -129,7 +155,7 @@ below, which one you used.
 **Restart survival**
 - [ ] Quit to main menu and reload the flight: keys recover by themselves.
 - [ ] Restart MSFS: keys recover.
-- [ ] Quit and restart the Stream Deck app: the profile and all 26 keys are intact.
+- [ ] Quit and restart the Stream Deck app: the profile, all 26 keys and the 4 folder keys are intact.
 
 **Controller independence**
 - [ ] All of the above works flying with the Xbox Elite controller.
