@@ -3,3 +3,4 @@ pilotsdeck/*/_Releases/
 Thumbs.db
 tools/**/bin/
 tools/**/obj/
+/.local/

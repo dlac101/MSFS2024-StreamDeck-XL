@@ -398,3 +398,58 @@ the two empty positions 3,7 and 4,7. Nothing is imported for it.
 **Result for the worker**
 - [ ] Record HT-1's results (if run), each key's result in both directions, what the keys show while paused,
   the 8x / 0.5x observations, any 512/1024 result, the sim version, and every fallback or value change.
+
+## P2-5: local icon build (C172 G1000)
+
+Reference: [docs/icons.md](../docs/icons.md). A second profile, `MSFS2024 C172 G1000 Icons`, with key images
+from the Guenseli icon pack. **Personal and private use only:** never commit, upload or share `.local/`, the
+icon profile, or an export of it. The committed `MSFS2024 C172 G1000` profile is not changed and stays
+installed. Record: date, Stream Deck app version, PilotsDeck version, MSFS 2024 version (sim check only).
+
+**Build and install (no sim needed)**
+- [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.json`.
+  It prints the profile path and the image folder (`.local\icons\Images\Guenseli-C172`, 23 files).
+- [ ] Copy the folder `.local\icons\Images\Guenseli-C172` (File Explorer) into
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\` (result:
+  `...\Images\Guenseli-C172\*.png`, 23 files). This is your own hand step, the plugin's documented way to add
+  images (PilotsDeck README 3.3); it is a file copy, not a settings edit, and touches none of the patched
+  plugin's program files. **Never re-run the PilotsDeck installer to "fix" icons** (it would undo the
+  patched build: #176, docs/installation.md).
+- [ ] Quit and restart the Stream Deck app (not as administrator). Do this BEFORE importing or opening any
+  key's settings: a key whose image is missing gets its image field reset when its settings panel opens.
+- [ ] Import `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile` (double-click, pick the XL if asked).
+  It appears as `MSFS2024 C172 G1000 Icons` beside `MSFS2024 C172 G1000`. Switch the XL to it.
+
+**Look test, page by page (no sim needed)** (do it with MSFS closed, or after the flight has fully loaded,
+not while the sim loads. The plugin's Wait image (a dark square with three dots, the same image keys show
+while the sim loads) then means that key's file is not in the plugin's Images folder; note the key)
+- [ ] Main: BAT red rocker; FUEL PMP, NAV LT, BCN, STRB, LDG, TAXI, PITOT white rockers; PARK the
+  parking-brake handle; AP, HDG, ALT, VS, NAV, APR, FLC, FD dark G1000 buttons; RPM, GEAR, FLAPS, XPDR, CDI,
+  BARO dark display face; ATC dark button; MAP map icon; COM1 unchanged; folders TRIM (grey Garmin), VIEWS
+  (green, aircraft), SIM RATE (Flight Simulator logo), CHECKLIST (brown Garmin), MORE (green folder), each
+  with its title and each still opening its page.
+- [ ] Each child page: the back key (1,1) shows the green "out" folder icon and still goes back. If it shows
+  the plain default arrow instead (A-3), note it; nothing else is affected.
+- [ ] Trim: TRIM UP / TRIM DN arrows; TRIM and TRIM DEG readouts. Views: COCKPIT / EXTERNAL buttons, CAMERA /
+  VIEW / VIEW NO readouts. More: PFD (yellow Garmin, corner left), MFD (yellow Garmin, corner right),
+  V-SPEEDS (green Garmin). PFD and MFD: DIRECT with the D-arrow; MENU, FPL, PROC, CLR, CLR HOLD, ENT blank
+  G1000 keys; FMS knobs with turn arrows; RANGE joystick with - / +; RNG PUSH knob; SK 1 to SK 12 dark
+  softkeys. V-speeds: seven readouts. Sim rate: 1X / 2X / 4X buttons, RATE readout.
+- [ ] A-5: DIRECT and FMS OUT- (PFD page) and the PFD folder (More page) look sharp and whole, not cropped.
+- [ ] A-8: every title is readable on its icon, and every readout's value is readable on its background.
+  Note each key that is hard to read.
+- [ ] A-6 (taste): note any icon you would rather change (PARK, ATC, MAP, trim arrows, RNG PUSH, folder
+  colours, the buttons on COCKPIT/EXTERNAL and 1X/2X/4X, the white rockers). Changes are mapping rows only.
+
+**One short sim check (C172 G1000, flight loaded, icon profile on the XL)**
+- [ ] RPM and BARO change as on the committed profile (start the engine, turn the baro knob).
+- [ ] AP on: the AP key shows the green bar; AP off: it clears. BAT follows the battery switch (red rocker
+  on / off).
+
+**Remove (when you no longer want it)**
+- [ ] Delete `MSFS2024 C172 G1000 Icons` in Stream Deck Preferences > Profiles, and delete
+  `...\Images\Guenseli-C172` from the plugin's Images folder. The committed profile is untouched throughout.
+
+**Result for the worker**
+- [ ] Record each page's look (the keys with a "wait" image, A-3 back keys, A-5 sharpness, A-8 readability,
+  A-6 changes you want) and the sim check results.

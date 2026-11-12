@@ -5,6 +5,9 @@ Usage, from the repo root (Python 3, standard library only):
     python tools/profilegen/generate.py                      # uses tools/profilegen/c172-g1000.json
     python tools/profilegen/generate.py <data.json>
 
+    # LOCAL icon build (docs/icons.md): personal use only, written to a git-ignored folder, never committed
+    python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.json [--pack <pack root>] [--out <folder>] [<data.json>]
+
 What it does:
 - Every key copies a real saved action and changes only the fields its entry in the data file names:
   "p1:<col,row>" = that key of the Phase 1 export (read from the repo at run time), any other template
@@ -19,10 +22,27 @@ What it does:
   (sorted keys, no spaces, UTF-8).
 
 Check the result with tools/profilegen/check.py.
+
+--icons <mapping.json> (the local icon build; the default run above is unchanged byte for byte):
+- Checks the mapping first with check_icons.py's own function (every pack file present with its recorded
+  sha256, every key row resolving), and writes nothing if it fails (exit 2).
+- Builds the same profile with the mapped image fields set: DefaultImage / OnImage / OffImage of PilotsDeck
+  keys = "Images/<plugin_subfolder>/<file>" (files the user copies into the plugin's Images folder), and a
+  state "Image" on mapped folder and back keys, its PNG embedded in that page's Images/ folder in the zip.
+  Profile Name = the mapping's profile_name; page and action UUIDs stay those of the data file.
+- Writes "<out>/<profile_name>.streamDeckProfile" and byte copies of the PilotsDeck-key images to
+  "<out>/Images/<plugin_subfolder>/". --out (default <repo>/<mapping "out">) must be inside the repo and
+  git-ignored: every file is checked with "git check-ignore" before anything is written (exit 2 if not).
+- --pack (default the mapping's pack_root): the icon pack folder, read only.
+Check the result with tools/profilegen/check_icons.py.
 """
+import argparse
+import base64
 import copy
+import hashlib
 import io
 import json
+import subprocess
 import sys
 import uuid
 import zipfile
@@ -122,7 +142,17 @@ def set_title(action, title, label):
         state["Title"] = title
 
 
-def build(data_path):
+def state_image_name(page_id, pos):
+    """Name of an embedded folder/back key image: 27 upper-case letters and digits ending in Z, the shape the
+    Stream Deck app saves (base32 here): base32 of sha256("<data page id>/<row,column>"), so it is the same on
+    every run."""
+    digest = hashlib.sha256(f"{page_id}/{pos}".encode("utf-8")).digest()
+    return base64.b32encode(digest).decode("ascii")[:26] + "Z.png"
+
+
+def build(data_path, icons=None):
+    """icons=None: the normal build. Otherwise a dict from icon_plan(): "profile_name" and "keys" =
+    {(page id, "row,column"): {"settings": {field: value}, "image": (zip file name, PNG bytes) or None}}."""
     spec = json.loads(Path(data_path).read_text(encoding="utf-8"))
     grid = spec["grid"]
     name = spec["profile_name"]
@@ -147,12 +177,19 @@ def build(data_path):
     back_key = doc_pos_to_key(spec["back_key_pos"], grid)
 
     manifests = {}
+    page_images = {}  # page uuid -> [(zip file name, PNG bytes)] (icon build only)
     folder_used = False
     for page in pages:
         actions = {}
+        images = []
         if "parent" in page:
             back = copy.deepcopy(templates["back"]["action"])
             back["ActionID"] = uid(name, page["id"], "back")
+            icon = icons["keys"].get((page["id"], spec["back_key_pos"])) if icons else None
+            if icon and icon["image"]:
+                # the only field the icon build adds (ASSUMPTION A-3, docs/icons.md): as on folder keys
+                back["States"][0]["Image"] = "Images/" + icon["image"][0]
+                images.append((spec["back_key_pos"], icon["image"]))
             actions[back_key] = back
         for key in page["keys"]:
             label = f"{page['id']} {key['pos']}"
@@ -161,6 +198,7 @@ def build(data_path):
                 raise ValueError(f"{label}: position used twice")
             if "empty" in key:
                 continue
+            icon = icons["keys"].get((page["id"], key["pos"])) if icons else None
             if "folder" in key:
                 child = key["folder"]
                 if child not in page_uuid or next(p for p in pages if p["id"] == child).get("parent") != page["id"]:
@@ -168,7 +206,12 @@ def build(data_path):
                 action = copy.deepcopy(templates["folder"]["action"])
                 action["Settings"] = {"ProfileUUID": page_uuid[child]}
                 for state in action["States"]:
-                    state.pop("Image", None)  # no own image: the Stream Deck app's folder default (C-4)
+                    if icon and icon["image"]:
+                        state["Image"] = "Images/" + icon["image"][0]  # icon build: the template's own field
+                    else:
+                        state.pop("Image", None)  # no own image: the Stream Deck app's folder default (C-4)
+                if icon and icon["image"]:
+                    images.append((key["pos"], icon["image"]))
                 folder_used = True
             else:
                 action = resolve(key["template"])
@@ -176,12 +219,17 @@ def build(data_path):
                     action["States"] = copy.deepcopy(resolve(key["states_from"])["States"])
                 apply_settings(action, key.get("set", {}), label)
                 apply_shell(action, key.get("shell", {}), label)
+                if icon and icon["settings"]:
+                    apply_settings(action, icon["settings"], label + " (icons)")  # existing fields only
             set_title(action, key["title"], label)
             action["ActionID"] = uid(name, page["id"], key["pos"])
             actions[pos] = action
         manifest = copy.deepcopy(phase1.page)
         manifest["Controllers"][0]["Actions"] = actions or None
         manifests[page_uuid[page["id"]]] = manifest
+        if images:
+            images.sort(key=lambda item: tuple(int(x) for x in item[0].split(",")))  # position order (row, column)
+            page_images[page_uuid[page["id"]]] = [img for _, img in images]
     manifests[default_uuid] = copy.deepcopy(phase1.default_page)
 
     # every child page needs a parent and a folder key that opens it
@@ -192,7 +240,7 @@ def build(data_path):
             raise ValueError(f"page {page['id']}: no folder key opens it")
 
     profile = copy.deepcopy(phase1.profile)
-    profile["Name"] = name
+    profile["Name"] = icons["profile_name"] if icons else name
     profile["Pages"] = {
         "Current": "00000000-0000-0000-0000-000000000000",
         "Default": default_uuid,
@@ -209,6 +257,8 @@ def build(data_path):
     for pid in sorted(manifests, key=str.upper):
         d = f"{top}Profiles/{pid.upper()}/"
         entries += [(d, None), (d + "Images/", None), (d + "manifest.json", dumps(manifests[pid]))]
+        # icon build: embedded folder/back key images right after the page's manifest (as the app exports them)
+        entries += [(d + "Images/" + img_name, img_bytes) for img_name, img_bytes in page_images.get(pid, [])]
 
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as z:
@@ -226,8 +276,75 @@ def build(data_path):
     return ROOT / spec["output"], buf.getvalue()
 
 
+def is_ignored(path):
+    """True if git says the file is ignored in this repo (the icon build writes only there)."""
+    try:
+        r = subprocess.run(["git", "-C", str(ROOT), "check-ignore", "-q", str(path)], capture_output=True)
+    except OSError:
+        return False
+    if r.returncode not in (0, 1):  # 1 = not ignored; anything else is a git error: report it, still refuse
+        err = r.stderr.decode("utf-8", "replace").strip()
+        if err:
+            print(err)
+        print(f"git check-ignore failed (exit {r.returncode}) for {path}")
+        return False
+    return r.returncode == 0
+
+
+def main_icons(args):
+    sys.dont_write_bytecode = True  # importing check_icons.py must not leave a __pycache__ folder in the repo
+    import check_icons  # the mapping check (one implementation, shared with check_icons.py)
+
+    mapping_path = Path(args.icons)
+    errors, plan = check_icons.load_plan(mapping_path, pack=args.pack, data=args.data)
+    if errors:
+        for e in errors:
+            print(f"FAIL: {e}")
+        print("icon build: mapping check failed, nothing written")
+        return 2
+    out = Path(args.out).resolve() if args.out else (ROOT / plan["out"]).resolve()
+    if out != ROOT and ROOT not in out.parents:
+        print(f"refused: --out {out} is not inside the repo {ROOT}; nothing written")
+        return 2
+    profile_path = out / (plan["profile_name"] + ".streamDeckProfile")
+    img_dir = out / "Images" / plan["plugin_subfolder"]
+    targets = [profile_path] + [img_dir / n for n in sorted(plan["copies"])]
+    not_ignored = [t for t in targets if not is_ignored(t)]
+    if not_ignored:
+        for t in not_ignored:
+            print(f"refused: {t} is not git-ignored (git check-ignore); the icon build writes only to an ignored folder")
+        print("nothing written (personal-use icons must never be committed: docs/icons.md)")
+        return 2
+    if img_dir.is_dir():
+        extra = sorted(p.name for p in img_dir.iterdir() if p.name not in plan["copies"])
+        if extra:
+            print(f"stopped: {img_dir} holds file(s) the mapping does not name: {extra}; nothing written, nothing deleted. "
+                  f"Delete {out} and rebuild (see docs/icons.md)")
+            return 2
+    _, blob = build(plan["data"], icons=plan)
+    img_dir.mkdir(parents=True, exist_ok=True)
+    profile_path.write_bytes(blob)
+    for local_name in sorted(plan["copies"]):
+        (img_dir / local_name).write_bytes(plan["copies"][local_name])  # the pack bytes, sha256-checked, unchanged
+    print(f"wrote {profile_path} ({len(blob)} bytes)")
+    print(f"wrote {len(plan['copies'])} images to {img_dir}")
+    print("Next (docs/icons.md): copy that folder into the PilotsDeck plugin's Images folder and restart the "
+          "Stream Deck app BEFORE you import the profile. Personal use only: never commit or upload these files.")
+    return 0
+
+
 def main():
-    data = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "c172-g1000.json"
+    ap = argparse.ArgumentParser(description="Generate a PilotsDeck Stream Deck XL profile from a page data file.")
+    ap.add_argument("data", nargs="?", help="page data file (default tools/profilegen/c172-g1000.json)")
+    ap.add_argument("--icons", help="LOCAL icon build from this key-to-icon mapping (docs/icons.md)")
+    ap.add_argument("--pack", help="with --icons: the icon pack folder (default: the mapping's pack_root)")
+    ap.add_argument("--out", help="with --icons: output folder inside the repo, git-ignored (default: the mapping's out)")
+    args = ap.parse_args()
+    if args.icons:
+        sys.exit(main_icons(args))
+    if args.pack or args.out:
+        ap.error("--pack and --out need --icons")
+    data = Path(args.data) if args.data else HERE / "c172-g1000.json"
     out, blob = build(data)
     out.write_bytes(blob)
     print(f"wrote {out.relative_to(ROOT).as_posix()} ({len(blob)} bytes)")
