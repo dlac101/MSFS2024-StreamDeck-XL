@@ -17,3 +17,4 @@
     index 2, so the standard index-1 SimVar and `K:TOGGLE_MASTER_BATTERY` don't stay in sync.
   - Not yet run: restart survival, controller independence, disconnected sim, profile round trip.
 - Added docs/reference/InputEvents-C172-G1000.txt (233 input events).
+- Phase 2 main page spec written (untested): docs/phase2-main-page.md (C172 G1000, 26 keys, 6 reserved).

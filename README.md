@@ -15,6 +15,7 @@ PilotsDeck runs on this PC with a locally patched build until
 [Fragtality/PilotsDeck#176](https://github.com/Fragtality/PilotsDeck/issues/176) is fixed
 ([details](docs/installation.md#known-issue-on-this-pc-pilotsdeck-exits-at-startup-worked-around-with-a-patched-build)).
 
+**Phase 2: main page (C172 G1000), spec written, untested.** See [docs/phase2-main-page.md](docs/phase2-main-page.md).
 ## Layout
 
 ```text
@@ -23,6 +24,7 @@ docs/
   original-plan.md      the project brief
   installation.md       this PC's setup, versions, backups, git across accounts
   poc-c172.md           Phase 1 key-by-key setup
+  phase2-main-page.md   Phase 2 main page key-by-key setup (C172 G1000)
   aircraft-mappings.md  every variable/event used, with verification status
   reference/            files copied out of the sim (InputEvents.txt etc.)
 tests/
