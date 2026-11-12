@@ -184,6 +184,28 @@ Sources as above, plus:
   were never pressed on this PC. Command type 8 itself: the installed `pi-Common.js` line 215 and the source
   `SimCommand.cs` (`HVAR = 8`), on the 0.9.7 template `simple_button` (see the page doc; ruling LR144-C4)
 
+### Phase 2 sim rate page
+
+For [phase2-sim-rate.md](phase2-sim-rate.md) (the child page behind main page key 3,7 `SIM RATE`; positions
+below are on that page). All rows are **Unverified** until HT-1 and the Phase 2 sim rate checks pass (not
+yet sim-tested). The sim rate is not tied to the C172: the events and the variable act on the sim; they are
+listed here because every event the project uses goes in this file. If an event does nothing in the sim
+test, its row is marked "does not work" and stays.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Sim rate readout (simrate 1,5, `RATE`; also the read of 1,2 to 1,4) | `(A:SIMULATION RATE, number)` (the environment variable `SIMULATION RATE`; PilotsDeck reads `A:` and `E:` alike), Format `1.2` | Number: 0.0625 to 128, powers of two, 1 = real time | (read only here; the SDK marks it get/set, but no A-Var or E-Var write for the sim rate, LR153-C4) | `(E:SIMULATION RATE, number)` (the same request) | SDK-ENVV; PD-SRC (TypeMatching.cs, SubManager.cs); README 2.1.1 | Unverified |
+| Set sim rate 1x, 2x, 4x (simrate 1,2 `1X`, 1,3 `2X`, 1,4 `4X`) | `(A:SIMULATION RATE, number)`: 1X On `1` / Off `2`, 2X On `2` / Off `1`, 4X On `4` / Off `1` | | `K:SIM_RATE_SET:1`, `K:SIM_RATE_SET:2`, `K:SIM_RATE_SET:4` (K-event with one parameter, command type 16); the SDK doesn't define the parameter: parameter = the rate is the working value (LR161-C4); HT-1, a user hand test, is still to run | the x256 scale (`:512` for 2x, `:1024` for 4x; a lead from the FSUIPC offset 0x0C1A, tried in HT-1 only); stepping with `K:SIM_RATE_INCR` / `_DECR` (not built) | SDK-MISCE; README 2.1.1; PD-SRC (ToolsMSFS.cs); PD-PI line 195; LR161-C4 | Unverified |
+| Sim rate one step up (simrate 1,5 `RATE`, press) | readout as above | | `K:SIM_RATE_INCR` | none | SDK-MISCE | Unverified |
+| Sim rate one step down (simrate 1,5 `RATE`, long press) | readout as above | | `K:SIM_RATE_DECR` | none | SDK-MISCE | Unverified |
+
+Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Set the simulation rate."), plus:
+- SDK-ENVV: environment-variables/ (`SIMULATION RATE`)
+- PD-SRC: PilotsDeck source at commit 11bdf1f7daf4828f822c18919952fe5b66153e58, `Plugin/Tools/TypeMatching.cs`,
+  `Plugin/Simulator/MSFS/SubManager.cs`, `Plugin/Simulator/MSFS/ToolsMSFS.cs`
+- PD-PI: the installed plugin's `Plugin/PI/js/pi-Common.js` line 195 (`rxKvarCmd`)
+- LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12)
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).

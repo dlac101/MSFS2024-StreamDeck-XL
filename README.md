@@ -18,6 +18,7 @@ PilotsDeck runs on this PC with a locally patched build until
 **Phase 2: main page (C172 G1000), profile generated, untested.** Import one file; see [docs/phase2-main-page.md](docs/phase2-main-page.md).
 Its Trim and Views pages are filled (untested): [docs/phase2-trim-views.md](docs/phase2-trim-views.md).
 Under More: G1000 PFD and MFD bezel pages and a V-speeds page (untested): [docs/phase2-g1000-vspeeds.md](docs/phase2-g1000-vspeeds.md).
+Sim rate page (1x, 2x, 4x and a rate readout, behind main page 3,7; untested): [docs/phase2-sim-rate.md](docs/phase2-sim-rate.md).
 ## Layout
 
 ```text
@@ -29,6 +30,7 @@ docs/
   phase2-main-page.md   Phase 2 main page: import, regenerate, key-by-key reference (C172 G1000)
   phase2-trim-views.md  Phase 2 Trim and Views child pages: key-by-key reference (C172 G1000)
   phase2-g1000-vspeeds.md  Phase 2 More, G1000 PFD/MFD bezel and V-speeds pages (C172 G1000)
+  phase2-sim-rate.md    Phase 2 Sim rate child page: 1X/2X/4X and RATE, key-by-key reference (C172 G1000)
   navigation.md         how pages connect (folders, back key) and the planned pages
   aircraft-mappings.md  every variable/event used, with verification status
   reference/            files copied out of the sim (InputEvents.txt etc.)

@@ -1,7 +1,7 @@
 # Page navigation
 
-How the pages of a profile connect. Built so far: the C172 G1000 main page, two filled child pages (Trim,
-Views: [phase2-trim-views.md](phase2-trim-views.md)), the More page with three second-level pages (PFD, MFD,
+How the pages of a profile connect. Built so far: the C172 G1000 main page, three filled child pages (Trim,
+Views: [phase2-trim-views.md](phase2-trim-views.md); Sim rate: [phase2-sim-rate.md](phase2-sim-rate.md)), the More page with three second-level pages (PFD, MFD,
 V-speeds: [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)) and one empty child page, Checklist (see [phase2-main-page.md](phase2-main-page.md)). Everything marked **plan** is not built yet; the
 page ideas come from [original-plan.md](original-plan.md).
 
@@ -28,10 +28,12 @@ page ideas come from [original-plan.md](original-plan.md).
 |---|---|---|---|---|
 | 1,7 `TRIM` | trim | back key, elevator trim up/down, two trim readouts ([phase2-trim-views.md](phase2-trim-views.md), untested) | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
 | 1,8 `VIEWS` | views | back key, 2 view keys (COCKPIT, EXTERNAL: A-Var writes to CAMERA STATE), 3 camera readouts ([phase2-trim-views.md](phase2-trim-views.md), EXTERNAL hand-tested, rest untested) | Camera views. Must work without vJoy or controller bindings (to be researched) | original-plan.md, Phase 2 concept layout and "Universal" level ("views") |
+| 3,7 `SIM RATE` | simrate | back key, 1X, 2X, 4X (K:SIM_RATE_SET, lit at their rate) and the RATE readout (press one step up, long press one step down) ([phase2-sim-rate.md](phase2-sim-rate.md), untested) | Sim rate 1x, 2x, 4x (asked for by the user) | the user's request (P2-6); position 3,7 was the Timer reservation |
 | 3,8 `CHECKLIST` | checklist | back key only | Optional checklists and startup aids | original-plan.md, Phase 5 |
 | 4,8 `MORE` | more | back key and three folder keys (second level, [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), untested): 1,2 `PFD` > pfd (G1000 PFD bezel: 12 softkeys, MENU, PROC, ENT, CLR, FPL, Direct-To, FMS and range knobs by H-event), 1,3 `MFD` > mfd (the same for the MFD), 1,4 `V-SPEEDS` > vspeeds (7 V-speed readouts) | Further folders (second level), for example: autopilot values (selected heading, altitude, VS, speed), radios (COM/NAV tuning, transponder code and IDENT) | original-plan.md, Phase 3 and "aircraft-class" level (Garmin avionics); phase2-main-page.md (XPDR code entry, radio page, Phase 3 selected values) |
 
-Main page positions 3,7 (Timer) and 4,7 (Anti-ice) stay reserved keys, not folders.
+Main page position 4,7 (Anti-ice) stays a reserved key, not a folder. (3,7 was reserved for a timer; it
+is the `SIM RATE` folder now, and a later timer unit takes a free position.)
 
 Other aircraft (plan, Phase 4): each gets its own profile with its own permanent name, the same main-page
 grid and the same folder positions where the function applies.

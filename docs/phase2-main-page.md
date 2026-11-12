@@ -7,8 +7,8 @@ passes.
 Goal: one 32-key main page for the Stream Deck XL (8 columns x 4 rows) for the default MSFS 2024
 **Cessna 172 Skyhawk G1000**, based on the concept layout in [original-plan.md](original-plan.md)
 (Phase 2). Every indicator reads actual sim state; no key guesses its state from its last press.
-26 keys are configured, 4 are folder keys that open the Trim, Views, Checklist and More pages (Trim and
-Views: [phase2-trim-views.md](phase2-trim-views.md); More: folder keys to the PFD, MFD and V-speeds pages, [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md); Checklist holds only its back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
+26 keys are configured, 5 are folder keys that open the Trim, Views, Sim rate, Checklist and More pages (Trim and
+Views: [phase2-trim-views.md](phase2-trim-views.md); Sim rate: [phase2-sim-rate.md](phase2-sim-rate.md); More: folder keys to the PFD, MFD and V-speeds pages, [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md); Checklist holds only its back key for now), and 1 is reserved (left empty so the grid stays stable for later units).
 
 You don't build it by hand: the profile is generated in the repo, and you import one file into the
 Stream Deck app (7.6.1) with PilotsDeck 0.9.7 (the locally patched build, see
@@ -24,7 +24,7 @@ Positions are **row,column**, 1-based, row 1 at the top. Folder keys end in `>`.
 |---|---|---|---|---|---|---|---|---|
 | **Row 1** | BAT | RPM | FUEL PMP | PARK | GEAR | FLAPS | TRIM > | VIEWS > |
 | **Row 2** | AP | HDG | ALT | VS | NAV | APR | FLC | FD |
-| **Row 3** | COM1 | XPDR | ATC | MAP | CDI | BARO | [Timer] | CHECKLIST > |
+| **Row 3** | COM1 | XPDR | ATC | MAP | CDI | BARO | SIM RATE > | CHECKLIST > |
 | **Row 4** | NAV LT | BCN | STRB | LDG | TAXI | PITOT | [Anti-ice] | MORE > |
 
 ## Key table
@@ -58,7 +58,7 @@ a child page. "Empty" = no action on that key. Templates T1 to T5 are explained 
 | 3,4 | `MAP` | Simple Button | T5 | `K:FLIGHT_MAP` [SDK-MISCE] | none (a sim window has no state) | fixed image |
 | 3,5 | `CDI` | Display Value | T3 | `K:TOGGLE_GPS_DRIVES_NAV1` [SDK-RADE] | `(A:GPS DRIVES NAV1, Bool)` [SDK-RADV] | Mappings `0=VLOC:1=GPS` |
 | 3,6 | `BARO` | Display Value | T3 | `K:BAROMETRIC` [SDK-INSTE] | `(A:KOHLSMAN SETTING HG:1, inHg)` [SDK-SYSV] | Format `2.2` |
-| 3,7 | | Empty | | | | Reserved: Timer |
+| 3,7 | `SIM RATE` | Folder | (Stream Deck) | Opens the child page **simrate** | none | Folder; the page's keys: [phase2-sim-rate.md](phase2-sim-rate.md) |
 | 3,8 | `CHECKLIST` | Folder | (Stream Deck) | Opens the child page **checklist** | none | Folder; the page holds only the back key (1,1) |
 | 4,1 | `NAV LT` | Dynamic Button | T1 | `B:lighting_nav_0`, On `1` / Off `0` [IE 197] | `B:lighting_nav_0` [IE 197] | On/Off image, Special State |
 | 4,2 | `BCN` | Dynamic Button | T1 | `B:lighting_beacon_1`, On `1` / Off `0` [IE 193] | `B:lighting_beacon_1` [IE 193] | On/Off image, Special State |
@@ -433,23 +433,23 @@ aircraft-mappings.md is marked "does not work". The row stays.
 
 ### Folder keys and reserved keys
 
-Four keys are Stream Deck folders (the app's "Create Folder" action). Each opens a child page; every child
+Five keys are Stream Deck folders (the app's "Create Folder" action). Each opens a child page; every child
 page has its back key at **1,1** (top left), the same on every page, as in the MSFS-Fenix320-XL profile.
-The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-views.md)); More holds folder keys to the PFD, MFD and V-speeds pages ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)); Checklist holds only that back key; its content comes in a later unit (see
+The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-views.md)); Sim rate holds its keys ([phase2-sim-rate.md](phase2-sim-rate.md)); More holds folder keys to the PFD, MFD and V-speeds pages ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)); Checklist holds only that back key; its content comes in a later unit (see
 [navigation.md](navigation.md)).
 
 | Pos | Title | Opens | The child page holds now |
 |---|---|---|---|
 | 1,7 | `TRIM` | Trim page | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
 | 1,8 | `VIEWS` | Views | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
+| 3,7 | `SIM RATE` | Sim rate page | its keys: [phase2-sim-rate.md](phase2-sim-rate.md) |
 | 3,8 | `CHECKLIST` | Checklists (Phase 5) | the back key (1,1) only |
 | 4,8 | `MORE` | More: further pages (later units) | folder keys to the PFD, MFD and V-speeds pages: [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md) |
 
-Two positions stay empty, so the grid doesn't move when later units fill them:
+One position stays empty, so the grid doesn't move when a later unit fills it:
 
 | Pos | Reserved for |
 |---|---|
-| 3,7 | Timer (no SimVar for the G1000 timer was found in the SDK) |
 | 4,7 | Anti-ice: the C172 has no anti-ice system beyond pitot heat (4,6) |
 
 ## Fallbacks
