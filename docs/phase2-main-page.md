@@ -7,8 +7,8 @@ passes.
 Goal: one 32-key main page for the Stream Deck XL (8 columns x 4 rows) for the default MSFS 2024
 **Cessna 172 Skyhawk G1000**, based on the concept layout in [original-plan.md](original-plan.md)
 (Phase 2). Every indicator reads actual sim state; no key guesses its state from its last press.
-26 keys are configured, 4 are folder keys that open the Trim, Views, Checklist and More pages (each
-holds only its back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
+26 keys are configured, 4 are folder keys that open the Trim, Views, Checklist and More pages (Trim and
+Views: [phase2-trim-views.md](phase2-trim-views.md); Checklist and More hold only their back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
 
 You don't build it by hand: the profile is generated in the repo, and you import one file into the
 Stream Deck app (7.6.1) with PilotsDeck 0.9.7 (the locally patched build, see
@@ -42,8 +42,8 @@ a child page. "Empty" = no action on that key. Templates T1 to T5 are explained 
 | 1,4 | `PARK` | Dynamic Button | T2 (copy of Phase 1 key) | `K:PARKING_BRAKES` [AM] | `(A:BRAKE PARKING POSITION, Bool)` [AM, SDK-GEARV] | On/Off image |
 | 1,5 | `GEAR` | Display Value | T3 | none | `(A:IS GEAR RETRACTABLE, Bool)` [SDK-GEARV] | Mappings `0=FIXED:1=RETR` |
 | 1,6 | `FLAPS` | Display Value | T3 | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` [SDK-FCE, README 2.1] | `(A:FLAPS HANDLE INDEX, number)` [SDK-CTLV] | Mappings `0=UP:1=10:2=20:3=30` |
-| 1,7 | `TRIM` | Folder | (Stream Deck) | Opens the child page **trim** | none | Folder; the page holds only the back key (1,1) |
-| 1,8 | `VIEWS` | Folder | (Stream Deck) | Opens the child page **views** | none | Folder; the page holds only the back key (1,1) |
+| 1,7 | `TRIM` | Folder | (Stream Deck) | Opens the child page **trim** | none | Folder; the page's keys: [phase2-trim-views.md](phase2-trim-views.md) |
+| 1,8 | `VIEWS` | Folder | (Stream Deck) | Opens the child page **views** | none | Folder; the page's keys: [phase2-trim-views.md](phase2-trim-views.md) |
 | 2,1 | `AP` | Dynamic Button | T2 (template) | `K:AP_MASTER` [AM] | `(A:AUTOPILOT MASTER, Bool)` [AM] | On/Off image |
 | 2,2 | `HDG` | Dynamic Button | T2 | `K:AP_HDG_HOLD` [SDK-APE] | `(A:AUTOPILOT HEADING LOCK, Bool)` [SDK-APV] | On/Off image |
 | 2,3 | `ALT` | Dynamic Button | T2 | `K:AP_ALT_HOLD` [SDK-APE] | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` [SDK-APV] | On/Off image |
@@ -435,13 +435,13 @@ aircraft-mappings.md is marked "does not work". The row stays.
 
 Four keys are Stream Deck folders (the app's "Create Folder" action). Each opens a child page; every child
 page has its back key at **1,1** (top left), the same on every page, as in the MSFS-Fenix320-XL profile.
-For now each child page holds only that back key; their content comes in later units (see
+The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-views.md)); Checklist and More hold only that back key; their content comes in later units (see
 [navigation.md](navigation.md)).
 
 | Pos | Title | Opens | The child page holds now |
 |---|---|---|---|
-| 1,7 | `TRIM` | Trim page (later unit) | the back key (1,1) only |
-| 1,8 | `VIEWS` | Views (later unit) | the back key (1,1) only |
+| 1,7 | `TRIM` | Trim page | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
+| 1,8 | `VIEWS` | Views | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
 | 3,8 | `CHECKLIST` | Checklists (Phase 5) | the back key (1,1) only |
 | 4,8 | `MORE` | More: further pages (later units) | the back key (1,1) only |
 

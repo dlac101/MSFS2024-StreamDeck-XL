@@ -164,3 +164,71 @@ below, which one you used.
 **Result for the worker**
 - [ ] Record which keys passed Sim -> Stream Deck, which passed Stream Deck -> sim, every fallback used,
   every On/Off value or index that changed, and the altimeter index seen.
+
+## Phase 2: Trim and Views pages (C172 G1000)
+
+Reference: [docs/phase2-trim-views.md](../docs/phase2-trim-views.md). These pages are in the same profile
+file as the main page. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed
+value you used.
+
+**Reimport (no sim needed)**
+- [ ] If you changed any key by hand during the main-page test, write down which key and field first.
+- [ ] In the Stream Deck app, export the installed `MSFS2024 C172 G1000` to the backup folder, then delete
+  it (the Profile Manager finds profiles by name: never keep two with this name).
+- [ ] Double-click `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile` (pick the
+  XL if asked), select `MSFS2024 C172 G1000`. Check its aircraft mapping in the Profile Manager.
+- [ ] The main page looks as before (26 keys, 4 folder keys, 3,7 and 4,7 empty). `CHECKLIST` and `MORE`
+  still open back-key-only pages.
+
+**Layout and round trip (no sim needed)**
+- [ ] `TRIM` opens the trim page: back key at 1,1, `TRIM UP` 2,2, `TRIM` 3,2, `TRIM DEG` 3,3, `TRIM DN` 4,2,
+  everything else empty. The back key returns to the main page.
+- [ ] `VIEWS` opens the views page: back key at 1,1; row 1 `COCKPIT`, `EXTERNAL`, `CAMERA`, `VIEW`,
+  `VIEW NO`; everything else empty (rows 2 to 4 too). The back key returns to the main page.
+- [ ] Select each key on both pages and compare its settings panel with the doc's Key tables (action,
+  title, command type and address, value address, format, mappings, On/Off values). Record every key that
+  differs, with the field.
+
+**Diagnostic first**
+- [ ] Flight loaded, sitting in the cockpit: record what `CAMERA`, `VIEW` and `VIEW NO` show (expected
+  `COCKPIT`, `PILOT`, a number). Switch to the external view (with the sim's own key or menu, not the deck)
+  and record the three again (expected `CHASE` for `CAMERA`: 2 = cockpit, 3 = external, seen in the sim
+  2026-11-11 (LR95-C2)). If the cockpit or external camera shows another number than `2` / `3`, record it:
+  the On Value and On/Off values of `COCKPIT` and `EXTERNAL` change to it.
+- [ ] Trim neutral (if you don't know, leave it as loaded): record what `TRIM` and `TRIM DEG` show. If
+  `TRIM` shows nothing or stays `0.0` while `TRIM DEG` moves in the steps below, use the TRIM fallback in the
+  doc and record it.
+
+**Sim -> Stream Deck (change it in the sim, don't press the key)**
+- [ ] Turn the trim wheel with the mouse, nose up and nose down: `TRIM` and `TRIM DEG` follow. Record which
+  sign nose-up trim gives on each (expected: positive on `TRIM`).
+- [ ] If the cockpit has an electric trim switch on the yoke: work it with the mouse; the readouts follow.
+  Record whether there is one.
+- [ ] Switch cockpit -> external -> cockpit with the sim's own controls: `COCKPIT` shows On in the cockpit
+  and Off outside; `EXTERNAL` the other way round; `CAMERA` follows.
+- [ ] Change to an instrument view and between pilot views (Close, Pilot, Landing, Copilot) with the sim's
+  own controls: `VIEW` and `VIEW NO` follow. Record what they show for each.
+- [ ] In the drone or showcase camera: `COCKPIT` and `EXTERNAL` show neither their On nor their Off image
+  (background only), `CAMERA` shows `DRONE`, `SHOWCASE` or a number. Record what you see.
+
+**Stream Deck -> sim (press the key)**
+- [ ] `TRIM UP`: count the presses until `TRIM` changes by about 1 (or until you see the wheel move), and
+  record the number. Does the cockpit trim wheel turn, and which way (nose up expected)? Do the readouts go
+  up?
+- [ ] `TRIM DN`: the same, the other way. If the readouts move but the cockpit wheel doesn't, or a step is
+  too small to use, record it (the doc's "Command choice" says what happens next).
+- [ ] `COCKPIT` (from the external view): the sim camera changes to the cockpit; `COCKPIT` shows On,
+  `EXTERNAL` Off, `CAMERA` shows `COCKPIT`. Press it again in the cockpit: nothing changes (it always writes 2).
+- [ ] `EXTERNAL` (from the cockpit): the sim camera changes to the external view; `EXTERNAL` shows On,
+  `COCKPIT` Off, `CAMERA` shows `CHASE`. Press again: the camera goes back to the cockpit and the key states
+  follow (hand-tested 2026-11-11, LR101-C2; check it again on the generated key).
+- [ ] If `COCKPIT` or `EXTERNAL` does nothing: record it. It becomes Empty and its row in
+  aircraft-mappings.md is marked "does not work" (the row stays).
+
+**Controller independence**
+- [ ] The trim and view keys work the same with the Xbox Elite controller and with the T.16000M + TWCS
+  connected (no key needs a binding on either).
+
+**Result for the worker**
+- [ ] Record which trim and view keys passed each direction, the presses per trim step, the trim wheel
+  direction, the camera numbers seen, what `COCKPIT` and `EXTERNAL` did, and every fallback or value change.

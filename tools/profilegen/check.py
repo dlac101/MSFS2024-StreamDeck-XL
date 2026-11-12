@@ -11,15 +11,20 @@ Checks:
   zip      the profile opens and every JSON entry parses
   current  the profile on disk is what generate.py builds now from the data file: same entry names, same
            order, same uncompressed content (the compressed bytes may differ with another zlib)
-  layout   the main page holds the doc's configured keys, folder keys and empty positions
-           (no position twice is generate.py's guard: a page's actions are keyed by position)
-  nav      every folder key opens a child page in the zip; every child page holds exactly one key, the back
-           key, at the fixed position; no page is unreachable; (with --sources or --fenix) the same form as
-           the exported MSFS-Fenix320-XL profile, SKIP when that file can't be read
+  layout   the main page holds the doc's configured keys, folder keys and empty positions; the doc's
+           Key table lists no position twice (in the profile, no position twice is generate.py's guard:
+           a page's actions are keyed by position)
+  nav      every folder key opens a child page in the zip; every child page has exactly one back key, at the
+           fixed position; a child page with no doc ("spec" missing on its data file entry) holds only that
+           back key; no page is unreachable; (with --sources or --fenix) the same form as the exported
+           MSFS-Fenix320-XL profile, SKIP when that file can't be read
   doc      key by key against the "Key table" of the spec doc: action, title, command and read addresses,
            On/Off values, long press, format, mappings, Decode BCD, Special State, folder keys; plus the
            template tables' values the Key table doesn't list (Toggle Switch unchecked on K-event commands,
            On/Off images, Special Image)
+  child    every child page whose data file entry names a doc ("spec") against that doc's table under the
+           heading "## Key table: <page id>": all 32 positions listed, the back key row at back_key_pos,
+           the page's keys and Empty positions as the table says, then key by key as "doc" above
   template every PilotsDeck key differs from its template only in the fields its data file entry names
   phase1   BAT, PARK and AP settings equal the Phase 1 export's apart from the fields the data file names
   fields   every field name in the generated JSON occurs in a real saved example
@@ -51,8 +56,8 @@ ACTION_UUIDS = {
     "Folder": "com.elgato.streamdeck.profile.openchild",
 }
 BACK = "com.elgato.streamdeck.profile.backtoparent"
-# SimCommandType (PilotsDeck Plugin/Simulator/SimCommand.cs): LVAR 3 (also "no command"), BVAR 13, KVAR 16
-TYPE_BY_PREFIX = {"B:": 13, "K:": 16}
+# SimCommandType (PilotsDeck Plugin/Simulator/SimCommand.cs): LVAR 3 (also "no command"), AVAR 12, BVAR 13, KVAR 16
+TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12}
 KVAR = TYPE_BY_PREFIX["K:"]
 # Values from the doc's template tables (T1, T2 and "K-events are command-only") that the Key table doesn't list
 ON_OFF_IMAGES = {"OnImage": "Images/KorryOnBlueTop.png", "OffImage": "Images/KorryOffWhiteBottom.png"}
@@ -76,10 +81,10 @@ def skip(msg):
 
 def ctype(addr):
     """Command type of a command address; an unknown prefix is a ValueError (reported as a FAIL line)."""
-    t = TYPE_BY_PREFIX.get(addr[:2])
-    if t is None:
-        raise ValueError(f"command {addr!r} has an unknown prefix ({' or '.join(TYPE_BY_PREFIX)} expected)")
-    return t
+    for prefix, t in TYPE_BY_PREFIX.items():
+        if addr.startswith(prefix):
+            return t
+    raise ValueError(f"command {addr!r} has an unknown prefix ({' or '.join(TYPE_BY_PREFIX)} expected)")
 
 
 def key_of(pos):
@@ -111,24 +116,30 @@ def ticks(text):
     return re.findall(r"`([^`]*)`", text)
 
 
-def parse_key_table(md):
+def parse_key_table(md, heading="## Key table"):
+    """The table rows under the heading, by position (the first row of a position), and the positions
+    listed more than once (a second row for a position is never read: the checks fail on it)."""
     lines = md.splitlines()
-    i = lines.index("## Key table")
+    i = lines.index(heading)
     rows = {}
+    dups = []
     for line in lines[i + 1:]:
         if line.startswith("## "):
             break
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         if len(cells) == 7 and re.fullmatch(r"\d,\d", cells[0]):
+            if cells[0] in rows:
+                dups.append(cells[0])
+                continue
             rows[cells[0]] = dict(zip(["pos", "title", "action", "template", "command", "read", "display"], cells))
-    return rows
+    return rows, dups
 
 
 def expected_from_row(r):
     """What the doc's Key table row says the saved settings must hold."""
     e = {}
     cmd, read, disp = r["command"], r["read"], r["display"]
-    if r["action"] in ("Empty", "Folder"):
+    if r["action"] in ("Empty", "Folder", "Back"):
         return e
     if cmd.startswith("none"):
         e.update(ActionType=3, AddressAction="")
@@ -162,8 +173,41 @@ def expected_from_row(r):
     if special:
         e.update(IndicationValueAny=True, IndicationImage=SPECIAL_IMAGE)  # T1: Special Image
     if "On/Off image" in disp:
-        e.update(OnState="1", OffState="0", **ON_OFF_IMAGES)  # T1, T2: On Image / Off Image
+        # T1, T2: On Image / Off Image; the On/Off States values are 1 / 0 unless the cell names others
+        m = re.search(r"On/Off image: On `([^`]*)`, Off `([^`]*)`", disp)
+        e.update(OnState=m.group(1) if m else "1", OffState=m.group(2) if m else "0", **ON_OFF_IMAGES)
     return e
+
+
+def check_keys(label, acts, rows, keys_by_pos):
+    """Key by key: the actions of one page against its doc Key table rows."""
+    for pos, r in rows.items():
+        k = key_of(pos)
+        a = acts.get(k)
+        title = (ticks(r["title"]) or [""])[0]
+        if r["action"] == "Empty":
+            check(a is None, f"{label}{pos} Empty")
+            continue
+        if a is None:
+            check(False, f"{label}{pos} {title}: no action at {k}")
+            continue
+        if r["action"] == "Back":
+            check(a["UUID"] == BACK, f"{label}{pos} Back: back key ({a['UUID']})")
+            continue
+        check(a["UUID"] == ACTION_UUIDS[r["action"]], f"{label}{pos} {title}: {r['action']} ({a['UUID']})")
+        check(a["States"][0].get("Title") == title, f"{label}{pos} {title}: title")
+        if r["action"] == "Folder":
+            child = keys_by_pos[pos]["folder"]
+            check(child.lower() in r["command"].lower(), f"{label}{pos} {title}: doc names the child page '{child}'")
+            continue
+        sm = a["Settings"]["settingsModel"]
+        try:
+            exp = expected_from_row(r)
+        except (ValueError, IndexError) as ex:
+            check(False, f"{label}{pos} {title}: the Key table row can't be read: {ex}")
+            continue
+        bad = {f: (sm.get(f), v) for f, v in exp.items() if sm.get(f) != v}
+        check(not bad, f"{label}{pos} {title}: " + ", ".join(f"{f}={v!r}" for f, v in exp.items()) + (f"  MISMATCH {bad}" if bad else ""))
 
 
 def main():
@@ -208,8 +252,9 @@ def main():
     p1main = actions(p1pages[p1j[p1prof]["Pages"]["Pages"][0].upper()])
 
     print("== layout: main page against the doc's Key table")
-    rows = parse_key_table((ROOT / data["spec"]).read_text(encoding="utf-8"))
+    rows, dups = parse_key_table((ROOT / data["spec"]).read_text(encoding="utf-8"))
     check(len(rows) == 32, f"doc Key table has {len(rows)} rows (32 expected)")
+    check(not dups, "doc Key table lists no position twice" + (f"  TWICE: {dups}" if dups else ""))
     configured = [p for p, r in rows.items() if r["action"] not in ("Empty", "Folder")]
     folders = [p for p, r in rows.items() if r["action"] == "Folder"]
     empties = [p for p, r in rows.items() if r["action"] == "Empty"]
@@ -231,14 +276,21 @@ def main():
             children[target.upper()] = k
             check(target == target.lower() and target.upper() in pages, f"folder key {k} -> child page {target} exists in the zip")
     listed = {p.upper() for p in profile["Pages"]["Pages"]} | {profile["Pages"]["Default"].upper()}
+    data_page = {generate.uid(data["profile_name"], "page", p["id"]).upper(): p for p in data["pages"]}
     for pid, page in pages.items():
         if pid in listed:
             continue
         a = actions(page)
-        check(pid in children, f"child page {pid} is opened by folder key {children.get(pid)}")
-        check(list(a) == [back_key] and a[back_key]["UUID"] == BACK,
-              f"child page {pid} holds exactly one key, the back key at {back_key} (doc {data['back_key_pos']})")
-        check(f"{base}{pid}/Images/" in z.namelist(), f"child page {pid} has its Images/ folder entry")
+        dp = data_page.get(pid, {})
+        name = f"child page {dp.get('id', '?')} ({pid})"
+        check(pid in children, f"{name} is opened by folder key {children.get(pid)}")
+        backs = [k for k, x in a.items() if x["UUID"] == BACK]
+        check(backs == [back_key], f"{name} has exactly one back key, at {back_key} (doc {data['back_key_pos']})")
+        if "spec" in dp:
+            print(f"  {name}: its keys are checked against {dp['spec']} under 'child' below")
+        else:
+            check(list(a) == [back_key], f"{name} has no doc ('spec') and holds only the back key")
+        check(f"{base}{pid}/Images/" in z.namelist(), f"{name} has its Images/ folder entry")
     check(actions(pages[profile["Pages"]["Default"].upper()]) == {}, "the profile's Default page is empty (Actions null), as in Phase 1")
     check(len(pages) == len(listed) + len(children), f"{len(pages)} pages: {len(listed)} listed + {len(children)} reachable child pages, none unreachable")
     if fenix is None:
@@ -277,30 +329,38 @@ def main():
     for page in data["pages"]:
         if page["id"] == data["pages"][0]["id"]:
             keys_by_pos = {k["pos"]: k for k in page["keys"]}
-    for pos, r in rows.items():
-        k = key_of(pos)
-        a = acts.get(k)
-        title = (ticks(r["title"]) or [""])[0]
-        if r["action"] == "Empty":
-            check(a is None, f"{pos} Empty")
-            continue
-        if a is None:
-            check(False, f"{pos} {title}: no action at {k}")
-            continue
-        check(a["UUID"] == ACTION_UUIDS[r["action"]], f"{pos} {title}: {r['action']} ({a['UUID']})")
-        check(a["States"][0].get("Title") == title, f"{pos} {title}: title")
-        if r["action"] == "Folder":
-            child = keys_by_pos[pos]["folder"]
-            check(child.lower() in r["command"].lower(), f"{pos} {title}: doc names the child page '{child}'")
-            continue
-        sm = a["Settings"]["settingsModel"]
+    check_keys("", acts, rows, keys_by_pos)
+
+    print("== child: child pages with a doc, key by key against their own Key table")
+    with_doc = [p for p in data["pages"][1:] if "spec" in p]
+    if not with_doc:
+        print("  (no child page names a doc yet: every child page holds only its back key, checked under 'nav')")
+    for dp in with_doc:
+        heading = f"## Key table: {dp['id']}"
+        label = f"{dp['id']} "
         try:
-            exp = expected_from_row(r)
-        except (ValueError, IndexError) as ex:
-            check(False, f"{pos} {title}: the Key table row can't be read: {ex}")
+            crows, cdups = parse_key_table((ROOT / dp["spec"]).read_text(encoding="utf-8"), heading)
+        except (OSError, ValueError) as ex:
+            check(False, f"{dp['id']}: cannot read the table '{heading}' in {dp['spec']}: {type(ex).__name__}: {ex}")
             continue
-        bad = {f: (sm.get(f), v) for f, v in exp.items() if sm.get(f) != v}
-        check(not bad, f"{pos} {title}: " + ", ".join(f"{f}={v!r}" for f, v in exp.items()) + (f"  MISMATCH {bad}" if bad else ""))
+        cacts = actions(pages[generate.uid(data["profile_name"], "page", dp["id"]).upper()])
+        grid_pos = [f"{r},{c}" for r in range(1, data["grid"]["rows"] + 1) for c in range(1, data["grid"]["columns"] + 1)]
+        check(sorted(crows) == sorted(grid_pos) and not cdups,
+              f"{dp['id']}: {dp['spec']} '{heading}' lists all {len(grid_pos)} positions once ({len(crows) + len(cdups)} rows)" +
+              (f"  TWICE: {cdups}" if cdups else ""))
+        bp = data["back_key_pos"]
+        check(crows.get(bp, {}).get("action") == "Back", f"{dp['id']}: the doc's row {bp} is the back key")
+        backs = [p for p, r in crows.items() if r["action"] == "Back"]
+        check(backs == [bp], f"{dp['id']}: the doc lists one back key, at {bp}")
+        cconf = [p for p, r in crows.items() if r["action"] not in ("Empty", "Back")]
+        cempty = [p for p, r in crows.items() if r["action"] == "Empty"]
+        print(f"  {dp['id']}: doc: {len(cconf)} keys {cconf}, {len(cempty)} empty")
+        check(sorted(cacts) == sorted(key_of(p) for p in cconf + backs),
+              f"{dp['id']}: the page holds exactly the doc's keys and back key ({len(cacts)} actions)")
+        check(sorted(k["pos"] for k in dp["keys"] if "empty" not in k) == sorted(cconf),
+              f"{dp['id']}: the data file's keys are at the doc's key positions")
+        check(all(r["action"] != "Folder" for r in crows.values()), f"{dp['id']}: no folder key (no second folder level)")
+        check_keys(label, cacts, crows, {k["pos"]: k for k in dp["keys"]})
 
     print("== template: every PilotsDeck key differs from its template only in the fields the data file names")
     resolve = generate.load_templates(generate.Phase1(ROOT / data["phase1_export"]))

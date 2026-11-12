@@ -19,3 +19,4 @@
 - Added docs/reference/InputEvents-C172-G1000.txt (233 input events).
 - Phase 2 main page spec written (untested): docs/phase2-main-page.md (C172 G1000, 26 keys, 6 reserved).
 - Phase 2 profile generated (untested, not yet imported): tools/profilegen builds `MSFS2024 C172 G1000.streamDeckProfile` (26 keys, 4 folder keys to empty Trim/Views/Checklist/More pages, back key at 1,1); setup is now "import the file"; navigation plan in docs/navigation.md.
+- Phase 2 Trim and Views pages generated (untested): docs/phase2-trim-views.md; trim page = elevator trim up/down (K-events) and two trim readouts; views page = COCKPIT and EXTERNAL by A-Var write to CAMERA STATE (no vJoy, no key bindings; the 20 view K-event keys of the first build were ignored by MSFS 2024 in the sim test and are gone) and 3 camera-state readouts; check.py now checks child pages against their doc and fails on a Key table position listed twice.

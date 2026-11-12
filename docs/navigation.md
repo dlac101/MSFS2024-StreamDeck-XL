@@ -1,7 +1,7 @@
 # Page navigation
 
-How the pages of a profile connect. Built so far: the C172 G1000 main page and four empty child pages
-(see [phase2-main-page.md](phase2-main-page.md)). Everything marked **plan** is not built yet; the
+How the pages of a profile connect. Built so far: the C172 G1000 main page, two filled child pages (Trim,
+Views: [phase2-trim-views.md](phase2-trim-views.md)) and two empty ones (see [phase2-main-page.md](phase2-main-page.md)). Everything marked **plan** is not built yet; the
 page ideas come from [original-plan.md](original-plan.md).
 
 ## Rules
@@ -25,8 +25,8 @@ page ideas come from [original-plan.md](original-plan.md).
 
 | Main page key | Child page | Holds now | Plan (not built) | Source |
 |---|---|---|---|---|
-| 1,7 `TRIM` | trim | back key only | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
-| 1,8 `VIEWS` | views | back key only | Camera views. Must work without vJoy or controller bindings (to be researched) | original-plan.md, Phase 2 concept layout and "Universal" level ("views") |
+| 1,7 `TRIM` | trim | back key, elevator trim up/down, two trim readouts ([phase2-trim-views.md](phase2-trim-views.md), untested) | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
+| 1,8 `VIEWS` | views | back key, 2 view keys (COCKPIT, EXTERNAL: A-Var writes to CAMERA STATE), 3 camera readouts ([phase2-trim-views.md](phase2-trim-views.md), EXTERNAL hand-tested, rest untested) | Camera views. Must work without vJoy or controller bindings (to be researched) | original-plan.md, Phase 2 concept layout and "Universal" level ("views") |
 | 3,8 `CHECKLIST` | checklist | back key only | Optional checklists and startup aids | original-plan.md, Phase 5 |
 | 4,8 `MORE` | more | back key only | A menu of further folders (second level), for example: autopilot values (selected heading, altitude, VS, speed), radios (COM/NAV tuning, transponder code and IDENT) | original-plan.md, Phase 3; phase2-main-page.md (XPDR code entry, radio page, Phase 3 selected values) |
 
@@ -48,6 +48,9 @@ grid and the same folder positions where the function applies.
    automatically at `back_key_pos`.
 2. Add the page's keys and document them in the page's own doc, in the form of phase2-main-page.md.
 3. Regenerate and check (`python tools/profilegen/generate.py`, then `python tools/profilegen/check.py`),
-   then import the new file as phase2-main-page.md describes. `check.py` checks child pages that hold only
-   the back key, and folder keys on the main page only: the first unit that fills a child page (or adds a
-   second folder level) extends it first, so it checks that page's keys against the page's doc.
+   then import the new file as phase2-main-page.md describes. `check.py` checks a child page against its
+   doc when the page's entry in the data file names the doc (`"spec": "docs/<page doc>.md"`) and the doc has
+   a table under the heading `## Key table: <page id>` in the main page's Key table form, listing all 32
+   positions (`Back` at 1,1, `Empty` rows included); it then checks the page's keys key by key against
+   that table. A child page with no `spec` must hold only its back key. Folder keys are checked on the main
+   page only: a unit that adds a second folder level extends `check.py` first.

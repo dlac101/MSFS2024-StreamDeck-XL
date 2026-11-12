@@ -85,6 +85,41 @@ under https://docs.flightsimulator.com/msfs2024/retail/programming-apis/):
 - SDK-AMISCE: key-events/aircraft-miscellaneous-events/
 - SDK-ENGE: key-events/aircraft-engine-events/
 
+### Phase 2 Trim and Views pages
+
+For [phase2-trim-views.md](phase2-trim-views.md) (the child pages behind main page keys 1,7 `TRIM` and
+1,8 `VIEWS`; positions below are on those pages). Rows are **Unverified** until the Phase 2 trim and
+views checks pass, unless the Verified column says otherwise. The view K-events were tested in the sim on
+2026-11-11 (LR95-C2): the plugin sent them and MSFS 2024 ignored them, so their keys are Empty; the rows
+stay as a record ("does not work" for the five that were pressed, "not tested" for the rest).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Elevator trim up (trim 2,2) | none (readouts trim 3,2 and 3,3) | | `K:ELEV_TRIM_UP` | input event `B:handling_elevatortrim_wheel` (values unknown, not used) | SDK-FCE; IE 182 | Unverified |
+| Elevator trim down (trim 4,2) | none (readouts trim 3,2 and 3,3) | | `K:ELEV_TRIM_DN` | as trim up | SDK-FCE; IE 182 | Unverified |
+| Elevator trim position, percent (trim 3,2) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent, -100 (down limit) to 100 (up limit), 0 = 0° | (read only here; the SimVar is settable, SDK-CTLV) | `(A:ELEVATOR TRIM PCT, percent)` (legacy SimVar) | SDK-CTLV; SDK-UNITS | Unverified |
+| Elevator trim deflection (trim 3,3) | `(A:ELEVATOR TRIM POSITION, degrees)` | degrees | (read only here; the SimVar is settable, SDK-CTLV) | none | SDK-CTLV; SDK-UNITS | Unverified |
+| Yoke trim switch (not on a key) | `B:handling_elevatortrim_yoke` exists | unknown | not used | | IE 183 | Unverified (not used) |
+| Trim disconnect (not on a key) | `B:handling_trim_disconnect` exists | unknown | not used | | IE 185 | Unverified (not used) |
+| Cockpit view (views 1,2) | `(A:CAMERA STATE, Enum)`, On `2` (cockpit) / Off `3` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$=2` (always writes 2), Off Value empty | EXTERNAL (views 1,3) also returns to the cockpit from the external view | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Unverified |
+| External (chase) view (views 1,3) | `(A:CAMERA STATE, Enum)`, On `3` / Off `2` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$2,=3<` (2 -> 3, 3 -> 2, other -> 3), Off Value empty | none | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Verified 2026-11-11 (LR101-C2: the user's hand test of this key; plugin log wrote 3, 2, 3, camera state followed); sim version with the follow-up |
+| Cockpit view by K-event (was views 1,2; not on the page) | none | | `K:VIEW_VIRTUAL_COCKPIT_FORWARD` | `K:VIEW_COCKPIT_FORWARD`: not tested, left out with the K-event view family (LR95-C2) | SDK-VCE | does not work (2026-11-11, LR95-C2) |
+| External view by K-event (was views 1,3; not on the page) | none | | `K:CHASE_VIEW_TOGGLE` | `K:VIEW_MODE` (see below) | SDK-VCE | does not work (2026-11-11, LR95-C2) |
+| Camera state readout (views 1,4) | `(A:CAMERA STATE, Enum)` | Enum (2 Cockpit, 3 Chase Plane Drone, 4 Fixed On Plane, 5 Environment 6DOF, 7 Showcase, 8 Drone Plane); 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2) | A-Var write, values 2 and 3, by views 1,2 and 1,3 (rows above); SDK-CAMV marks it settable | none | SDK-CAMV; SDK-UNITS | Unverified |
+| View type readout (views 1,5) | `(A:CAMERA VIEW TYPE AND INDEX:0, Enum)` | Enum (0 default, 1 Pilot View, 2 Instruments, 3 Quickview, 4 Quickview External, 5 View) | (read only here; the SimVar is settable) | none | SDK-CAMV; SDK-UNITS | Unverified |
+| View option readout (views 1,6) | `(A:CAMERA VIEW TYPE AND INDEX:1, number)` | number | (read only here; the SimVar is settable) | none | SDK-CAMV; SDK-UNITS | Unverified |
+| Previous / next view category (was views 2,1 / 2,2; now Empty) | none | | `K:VIEW_MODE_REV` / `K:VIEW_MODE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
+| Previous / next view in the category (was views 2,3 / 2,4; now Empty) | none | | `K:PREV_SUB_VIEW` / `K:NEXT_SUB_VIEW` | none | SDK-VCE | does not work (2026-11-11, LR95-C2) |
+| View reset (was views 2,5; now Empty) | none | | `K:VIEW_RESET` | none | SDK-VCE | does not work (2026-11-11, LR95-C2) |
+| Zoom out / in (was views 2,6 / 2,7; now Empty) | none | | `K:ZOOM_MINUS` / `K:ZOOM_PLUS` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
+| Previous view toggle (was views 2,8; now Empty) | none | | `K:VIEW_PREVIOUS_TOGGLE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
+| Camera select 1 to 9, 0 (was views 3,1 to 3,8, 4,1, 4,2; now Empty) | none | | `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9`, `K:VIEW_CAMERA_SELECT_0` (which view each selects is not documented) | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
+
+The view events are aircraft-independent (they act on the sim's camera, not the C172); they are listed
+here because every event the project uses goes in this file. Sources as above, plus:
+- SDK-VCE: key-events/view-and-camera-events/
+- SDK-CAMV: simvars/camera-variables/
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).
