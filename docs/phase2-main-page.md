@@ -8,7 +8,7 @@ Goal: one 32-key main page for the Stream Deck XL (8 columns x 4 rows) for the d
 **Cessna 172 Skyhawk G1000**, based on the concept layout in [original-plan.md](original-plan.md)
 (Phase 2). Every indicator reads actual sim state; no key guesses its state from its last press.
 26 keys are configured, 4 are folder keys that open the Trim, Views, Checklist and More pages (Trim and
-Views: [phase2-trim-views.md](phase2-trim-views.md); Checklist and More hold only their back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
+Views: [phase2-trim-views.md](phase2-trim-views.md); More: folder keys to the PFD, MFD and V-speeds pages, [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md); Checklist holds only its back key for now), and 2 are reserved (left empty so the grid stays stable for later units).
 
 You don't build it by hand: the profile is generated in the repo, and you import one file into the
 Stream Deck app (7.6.1) with PilotsDeck 0.9.7 (the locally patched build, see
@@ -67,7 +67,7 @@ a child page. "Empty" = no action on that key. Templates T1 to T5 are explained 
 | 4,5 | `TAXI` | Dynamic Button | T1 | `B:lighting_taxi_1`, On `1` / Off `0` [IE 203] | `B:lighting_taxi_1` [IE 203] | On/Off image, Special State |
 | 4,6 | `PITOT` | Dynamic Button | T1 | `B:deice_pitot_1`, On `1` / Off `0` [IE 139] | `B:deice_pitot_1` [IE 139] | On/Off image, Special State |
 | 4,7 | | Empty | | | | Reserved: Anti-ice (the C172 has none beyond pitot heat) |
-| 4,8 | `MORE` | Folder | (Stream Deck) | Opens the child page **more** | none | Folder; the page holds only the back key (1,1) |
+| 4,8 | `MORE` | Folder | (Stream Deck) | Opens the child page **more** | none | Folder; the page's keys: [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md) |
 
 What each key means on a C172:
 - **Engine** is the RPM display (read only). Starter and magnetos stay in the cockpit: no
@@ -435,7 +435,7 @@ aircraft-mappings.md is marked "does not work". The row stays.
 
 Four keys are Stream Deck folders (the app's "Create Folder" action). Each opens a child page; every child
 page has its back key at **1,1** (top left), the same on every page, as in the MSFS-Fenix320-XL profile.
-The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-views.md)); Checklist and More hold only that back key; their content comes in later units (see
+The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-views.md)); More holds folder keys to the PFD, MFD and V-speeds pages ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)); Checklist holds only that back key; its content comes in a later unit (see
 [navigation.md](navigation.md)).
 
 | Pos | Title | Opens | The child page holds now |
@@ -443,7 +443,7 @@ The Trim and Views pages hold their keys ([phase2-trim-views.md](phase2-trim-vie
 | 1,7 | `TRIM` | Trim page | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
 | 1,8 | `VIEWS` | Views | its keys: [phase2-trim-views.md](phase2-trim-views.md) |
 | 3,8 | `CHECKLIST` | Checklists (Phase 5) | the back key (1,1) only |
-| 4,8 | `MORE` | More: further pages (later units) | the back key (1,1) only |
+| 4,8 | `MORE` | More: further pages (later units) | folder keys to the PFD, MFD and V-speeds pages: [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md) |
 
 Two positions stay empty, so the grid doesn't move when later units fill them:
 

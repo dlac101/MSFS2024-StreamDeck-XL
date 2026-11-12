@@ -1,7 +1,8 @@
 # Page navigation
 
 How the pages of a profile connect. Built so far: the C172 G1000 main page, two filled child pages (Trim,
-Views: [phase2-trim-views.md](phase2-trim-views.md)) and two empty ones (see [phase2-main-page.md](phase2-main-page.md)). Everything marked **plan** is not built yet; the
+Views: [phase2-trim-views.md](phase2-trim-views.md)), the More page with three second-level pages (PFD, MFD,
+V-speeds: [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)) and one empty child page, Checklist (see [phase2-main-page.md](phase2-main-page.md)). Everything marked **plan** is not built yet; the
 page ideas come from [original-plan.md](original-plan.md).
 
 ## Rules
@@ -28,7 +29,7 @@ page ideas come from [original-plan.md](original-plan.md).
 | 1,7 `TRIM` | trim | back key, elevator trim up/down, two trim readouts ([phase2-trim-views.md](phase2-trim-views.md), untested) | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
 | 1,8 `VIEWS` | views | back key, 2 view keys (COCKPIT, EXTERNAL: A-Var writes to CAMERA STATE), 3 camera readouts ([phase2-trim-views.md](phase2-trim-views.md), EXTERNAL hand-tested, rest untested) | Camera views. Must work without vJoy or controller bindings (to be researched) | original-plan.md, Phase 2 concept layout and "Universal" level ("views") |
 | 3,8 `CHECKLIST` | checklist | back key only | Optional checklists and startup aids | original-plan.md, Phase 5 |
-| 4,8 `MORE` | more | back key only | A menu of further folders (second level), for example: autopilot values (selected heading, altitude, VS, speed), radios (COM/NAV tuning, transponder code and IDENT) | original-plan.md, Phase 3; phase2-main-page.md (XPDR code entry, radio page, Phase 3 selected values) |
+| 4,8 `MORE` | more | back key and three folder keys (second level, [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), untested): 1,2 `PFD` > pfd (G1000 PFD bezel: 12 softkeys, MENU, PROC, ENT, CLR, FPL, Direct-To, FMS and range knobs by H-event), 1,3 `MFD` > mfd (the same for the MFD), 1,4 `V-SPEEDS` > vspeeds (7 V-speed readouts) | Further folders (second level), for example: autopilot values (selected heading, altitude, VS, speed), radios (COM/NAV tuning, transponder code and IDENT) | original-plan.md, Phase 3 and "aircraft-class" level (Garmin avionics); phase2-main-page.md (XPDR code entry, radio page, Phase 3 selected values) |
 
 Main page positions 3,7 (Timer) and 4,7 (Anti-ice) stay reserved keys, not folders.
 
@@ -52,5 +53,9 @@ grid and the same folder positions where the function applies.
    doc when the page's entry in the data file names the doc (`"spec": "docs/<page doc>.md"`) and the doc has
    a table under the heading `## Key table: <page id>` in the main page's Key table form, listing all 32
    positions (`Back` at 1,1, `Empty` rows included); it then checks the page's keys key by key against
-   that table. A child page with no `spec` must hold only its back key. Folder keys are checked on the main
-   page only: a unit that adds a second folder level extends `check.py` first.
+   that table. A child page with no `spec` must hold only its back key.
+4. A second-level page (a folder key on a child page, as MORE's): give the first-level page a `spec` and a
+   `## Key table: <page id>` with `Folder` rows, and give the new page `"parent": "<first-level page id>"`.
+   `check.py` checks folder keys on every page (each opens the child page the data file and the doc's row
+   name, and no page is opened twice), the back key at 1,1 on every child page, and at most two folder
+   levels below the main page: a folder key on a second-level page fails the check.

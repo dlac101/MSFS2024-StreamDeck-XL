@@ -232,3 +232,80 @@ value you used.
 **Result for the worker**
 - [ ] Record which trim and view keys passed each direction, the presses per trim step, the trim wheel
   direction, the camera numbers seen, what `COCKPIT` and `EXTERNAL` did, and every fallback or value change.
+
+## Phase 2: G1000 and V-speeds pages (C172 G1000)
+
+Reference: [docs/phase2-g1000-vspeeds.md](../docs/phase2-g1000-vspeeds.md). These pages are in the same
+profile file as the main page, behind `MORE` (main page 4,8). Record: date, MSFS 2024 version, PilotsDeck
+version, and every fallback or changed value you used.
+
+**Reimport (no sim needed)**
+- [ ] If you changed any key by hand during the earlier tests, write down which key and field first.
+- [ ] In the Stream Deck app, export the installed `MSFS2024 C172 G1000` to the backup folder. Then delete
+  **every** installed profile of that name, including the app's copies (`MSFS2024 C172 G1000 copy`,
+  `MSFS2024 C172 G1000 copy 1`, ...): the Profile Manager finds profiles by name, never keep two.
+- [ ] Double-click `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile` (pick the
+  XL if asked), select `MSFS2024 C172 G1000`. Check its aircraft mapping in the Profile Manager.
+- [ ] The main page, the trim page and the views page look as before. `CHECKLIST` still opens a
+  back-key-only page.
+
+**Layout and round trip (no sim needed)**
+- [ ] `MORE` opens the More page: back key at 1,1, folder keys `PFD` 1,2, `MFD` 1,3, `V-SPEEDS` 1,4,
+  everything else empty. Its back key returns to the main page.
+- [ ] `PFD` opens the PFD page: back key at 1,1; row 1 `DIRECT`, `MENU`, `FPL`, `PROC`, `CLR`, `CLR HOLD`,
+  `ENT`; row 2 `FMS PUSH`, `FMS OUT-`, `FMS OUT+`, `FMS IN-`, `FMS IN+`, `RANGE-`, `RANGE+`, `RNG PUSH`;
+  row 3 `SK 1` to `SK 6`; row 4 `SK 7` to `SK 12`; 3,7, 3,8, 4,7, 4,8 empty. Its back key returns to the
+  More page (not the main page).
+- [ ] `MFD` opens the MFD page with the same layout; its back key returns to the More page.
+- [ ] `V-SPEEDS` opens the V-speeds page: back key at 1,1; row 1 `VS0`, `VS1`, `VR`, (1,5 empty), `CLIMB`;
+  row 2 (2,1 empty) `CRUISE`, (2,3 empty), `VNE`, `VFE`; everything else empty. Its back key returns to the
+  More page.
+- [ ] Select a few keys on each page and compare the settings panel with the doc's Key tables (bezel keys:
+  Command Type H-Var, the address; readouts: the address, Format `1.0`). Record every key that differs,
+  with the field. Record how the folder keys look.
+
+**Diagnostic first**
+- [ ] Flight loaded, PFD and MFD on: look at the plugin log (`log\PilotsDeck<date>.log`) for the line
+  "MobiFlight WASM Client Connection opened" after the flight loaded. H-events need it. Record whether it is
+  there.
+- [ ] On the ground, flaps up: record what each V-speeds key shows (`VS0`, `VS1`, `VR`, `CLIMB`, `CRUISE`,
+  `VNE`, `VFE`). Expected: whole numbers of knots, `VS0` < `VS1` < `VR` < `CLIMB`, `VNE` the highest;
+  `CLIMB` and `CRUISE` are the sim's climb and cruise speeds, not the POH Vy and Vc, and `CRUISE` is a true
+  airspeed (ktas), so it need not fit the order. A key that shows nothing, `0`, `-1` or another negative
+  number (the SDK default when the aircraft's flight_model.cfg does not set it) or about 1.7 times a
+  sensible number: record it (the doc's "Fallbacks").
+
+**Sim -> Stream Deck (change it in the sim, don't press the key)**
+- [ ] Move the flap handle with the mouse through every position: `VFE` changes with it. Record the number
+  at each position, UP included.
+- [ ] Take off (or use slew to climb): the design constants (`VS0`, `VS1`, `VR`, `CLIMB`, `CRUISE`, `VNE`) don't
+  change in flight.
+- [ ] The bezel keys show no state (fixed image), so there is nothing to follow: click a few bezel buttons
+  with the mouse and check that the deck keys don't change (they shouldn't).
+
+**Stream Deck -> sim (press the key, watch the G1000)**
+- [ ] PFD page, softkeys: press `SK 1` to `SK 12` in turn with the PFD's softkey bar showing. Each press does
+  what a mouse click on that softkey does (the label above it on the PFD). Record the keys that do nothing.
+- [ ] PFD page, buttons: `MENU`, `FPL`, `PROC`, `DIRECT`, `CLR`, `ENT` each do what a mouse click on that
+  bezel button does (try each once with the mouse first, then with the deck); `CLR HOLD` does what holding
+  CLR with the mouse for 2 s does.
+- [ ] PFD page, knobs: compare each with the mouse on the bezel knob: `FMS OUT-` / `FMS OUT+` (outer ring)
+  and `FMS IN-` / `FMS IN+` (inner knob) one step per press, `FMS PUSH` (inner knob push), `RANGE-` /
+  `RANGE+` one range step, `RNG PUSH` (range knob push). Record each direction (which of `-` / `+` is
+  clockwise on the bezel).
+- [ ] MFD page: the same for the MFD (map range, MENU, FPL, PROC, DIRECT, CLR, CLR HOLD, ENT, softkeys, FMS
+  knobs, RNG PUSH).
+- [ ] For each press that did nothing: check the plugin log for "Running Command (Type: HVAR" with the key's
+  address. Record the key, whether the line is there, and any error. The key becomes Empty and its row in
+  aircraft-mappings.md is marked "does not work" (the row stays), unless the doc's hand test gives it the
+  input-event fallback.
+- [ ] Press a V-speeds key: nothing happens (the log shows a warning, as for the views readouts).
+
+**Controller independence**
+- [ ] The G1000 and V-speeds keys work the same with the Xbox Elite controller and with the T.16000M + TWCS
+  connected (no key needs a binding on either).
+
+**Result for the worker**
+- [ ] Record which bezel keys worked (PFD and MFD separately), the knob directions, what `CLR HOLD` and
+  `RNG PUSH` did, every V-speeds number (and `VFE` at each flap position), whether the MobiFlight WASM line
+  was in the log, and every fallback or value change.

@@ -443,8 +443,962 @@
     {
       "id": "more",
       "parent": "main",
-      "note": "More: radios, autopilot values and other pages (later units)",
-      "keys": []
+      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4); later: autopilot values, radios",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "PFD",
+          "folder": "pfd"
+        },
+        {
+          "pos": "1,3",
+          "title": "MFD",
+          "folder": "mfd"
+        },
+        {
+          "pos": "1,4",
+          "title": "V-SPEEDS",
+          "folder": "vspeeds"
+        }
+      ],
+      "spec": "docs/phase2-g1000-vspeeds.md"
+    },
+    {
+      "id": "pfd",
+      "parent": "more",
+      "note": "G1000 PFD bezel: softkeys, buttons, FMS and range knobs by H-event (P2-4)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "DIRECT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_DIRECTTO",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "MENU",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_MENU_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "FPL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FPL_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "PROC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_PROC_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_CLR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "CLR HOLD",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_CLR_Long",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "ENT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_ENT_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "FMS PUSH",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FMS_Upper_PUSH",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "FMS OUT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FMS_Lower_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "FMS OUT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FMS_Lower_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "FMS IN-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FMS_Upper_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "FMS IN+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_FMS_Upper_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "RANGE-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_RANGE_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "RANGE+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_RANGE_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "RNG PUSH",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_JOYSTICK_PUSH",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "SK 1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_1",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "SK 2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_2",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "SK 3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_3",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "SK 4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_4",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "SK 5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_5",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "SK 6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_6",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "SK 7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_7",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "SK 8",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_8",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "SK 9",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_9",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "SK 10",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_10",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "SK 11",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_11",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "SK 12",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_SOFTKEYS_12",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "3,8",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "4,7",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "4,8",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        }
+      ],
+      "spec": "docs/phase2-g1000-vspeeds.md"
+    },
+    {
+      "id": "mfd",
+      "parent": "more",
+      "note": "G1000 MFD bezel: softkeys, buttons, FMS and range knobs by H-event (P2-4)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "DIRECT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_DIRECTTO",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "MENU",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_MENU_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "FPL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FPL_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "PROC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_PROC_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_CLR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "CLR HOLD",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_CLR_Long",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "ENT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_ENT_Push",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "FMS PUSH",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FMS_Upper_PUSH",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "FMS OUT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FMS_Lower_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "FMS OUT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FMS_Lower_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "FMS IN-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FMS_Upper_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "FMS IN+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_FMS_Upper_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "RANGE-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_RANGE_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "RANGE+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_RANGE_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "RNG PUSH",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_JOYSTICK_PUSH",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "SK 1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_1",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "SK 2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_2",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "SK 3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_3",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "SK 4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_4",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "SK 5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_5",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "SK 6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_6",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "SK 7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_7",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "SK 8",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_8",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "SK 9",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_9",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "SK 10",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_10",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "SK 11",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_11",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "SK 12",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_MFD_SOFTKEYS_12",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "3,8",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "4,7",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        },
+        {
+          "pos": "4,8",
+          "empty": "Range joystick pan: SDK-AS1000 _JOYSTICK_UP/DOWN/LEFT/RIGHT; the 2024 input event as1000_range_* may be that control; left Empty in this unit (doc)"
+        }
+      ],
+      "spec": "docs/phase2-g1000-vspeeds.md"
+    },
+    {
+      "id": "vspeeds",
+      "parent": "more",
+      "note": "V-speeds readouts from the SDK's design and reference speed SimVars (P2-4)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "VS0",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VS0, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "VS1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VS1, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "VR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED MIN ROTATION, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,5",
+          "empty": "Vx: no SimVar in the MSFS 2024 SDK"
+        },
+        {
+          "pos": "1,6",
+          "title": "CLIMB",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED CLIMB, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "CRUISE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VC, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,3",
+          "empty": "Vno: no SimVar in the MSFS 2024 SDK"
+        },
+        {
+          "pos": "2,4",
+          "title": "VNE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:REFERENCE SPEED MAX IAS, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "VFE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS CURRENT SPEED LIMITATION, knots)",
+            "Format": "1.0"
+          }
+        }
+      ],
+      "spec": "docs/phase2-g1000-vspeeds.md"
     }
   ]
 }
