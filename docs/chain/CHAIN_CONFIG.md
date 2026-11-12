@@ -67,3 +67,4 @@ One line per order: the row id and the user's exact words.
 
 - LR2-C0: "Phase 2 spec now" (answering "What should the chain work on first?")
 - LR3-C0: "Commit go includes push" (answering "Should a commit go also push to origin/main?")
+- LR17-C1: "Also, no need to ask to start new coord or worker sessions, just do it.  same limits as skill (no more than 3 workers, no more than 2 coords...with the intent the old coord will be archived when appropriate, same with old workers." (unprompted). So: a coordinator starts the successor coordinator and the next worker without asking, at the points in "Context caps"; at most 3 worker sessions and 2 coordinator sessions live at once; a closed-out session is archived without asking once its marker exists and no turn or agent of it runs. Each start and archive is a row.
