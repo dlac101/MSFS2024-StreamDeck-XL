@@ -206,6 +206,25 @@ Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Se
 - PD-PI: the installed plugin's `Plugin/PI/js/pi-Common.js` line 195 (`rxKvarCmd`)
 - LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12)
 
+### Planned: COM1 pad (design only)
+
+For [design-com1-pad.md](design-com1-pad.md) (a planned page MORE > `COM PAD`; positions below are on that
+page). **Not built.** All rows are Unverified until the page is built and its checks pass. The trim gauge
+([design-trim-gauge.md](design-trim-gauge.md)) adds no row: it reads `ELEVATOR TRIM PCT EX2`, already
+listed under the trim page.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Set COM1 standby frequency (compad 4,8 `ENT`, by the script `XL24-COMPAD.lua`) | `(A:COM STANDBY FREQUENCY:1, MHz)` (compad 1,2, as main 3,1) | Hz parameter, 118000000 to 136990000 | `K:COM_STBY_RADIO_SET_HZ:<Hz>` sent by `SimCommand` | `K:COM_STBY_RADIO_SET` (BCD16; two decimals only) | SDK-RADE; README 2.1.1, 3.5.1 | Unverified |
+| Set COM1 and make it active (compad 4,8 `ENT`, long press) | `(A:COM ACTIVE FREQUENCY:1, MHz)` | | `K:COM_STBY_RADIO_SET_HZ:<Hz>`, then `K:COM_STBY_RADIO_SWAP` after 100 ms | none | SDK-RADE | Unverified |
+| COM1 channel spacing (read by the script for the 25 kHz shorthand) | `(A:COM SPACING MODE:1, Enum)` | Enum: 0 = 25 kHz, 1 = 8.33 kHz | (read only here) | none (without it, no shorthand) | SDK-RADV | Unverified |
+| COM1 standby station ident (compad 2,2 `STBY ID`, optional) | `(A:COM STANDBY FREQ IDENT:1, String)` | String | (read only) | none (drop the key) | SDK-RADV | Unverified |
+| Typed entry (compad 1,3 `ENTRY`) | `X:XL24_COMPAD_ENTRY` (PilotsDeck internal variable, written by the script) | String, e.g. `118.5__` | the script's `DIGIT(n)`, `BACK`, `CLEAR`, `ENTER`, `ENTER_SWAP` (`lua:XL24-COMPAD:...`, command type 14) | the script function as the key's Address instead of the `X:` variable | README 2.1.1 (INTERNAL, LUAFUNC); REF-GSX | Unverified |
+
+Sources: SDK-RADE and SDK-RADV as above (read again 2026-11-12 for `COM_STBY_RADIO_SET_HZ`,
+`COM SPACING MODE`, `COM STANDBY FREQ IDENT`); README = PilotsDeck README; REF-GSX = the GSX Pro reference
+profile in ProfilesV3 (an `X:` string shown on a key, Lua commands of type 14), a lead only.
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).

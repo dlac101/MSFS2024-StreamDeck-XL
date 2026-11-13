@@ -20,6 +20,7 @@ Its Trim and Views pages are filled (untested): [docs/phase2-trim-views.md](docs
 Under More: G1000 PFD and MFD bezel pages and a V-speeds page (untested): [docs/phase2-g1000-vspeeds.md](docs/phase2-g1000-vspeeds.md).
 Sim rate page (1x, 2x, 4x and a rate readout, behind main page 3,7; untested): [docs/phase2-sim-rate.md](docs/phase2-sim-rate.md).
 Optional local icon build of the same profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md).
+Designed, not built: a COM1 frequency number pad under More ([docs/design-com1-pad.md](docs/design-com1-pad.md)) and an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
 ## Layout
 
 ```text
@@ -32,6 +33,8 @@ docs/
   phase2-trim-views.md  Phase 2 Trim and Views child pages: key-by-key reference (C172 G1000)
   phase2-g1000-vspeeds.md  Phase 2 More, G1000 PFD/MFD bezel and V-speeds pages (C172 G1000)
   phase2-sim-rate.md    Phase 2 Sim rate child page: 1X/2X/4X and RATE, key-by-key reference (C172 G1000)
+  design-com1-pad.md    design (not built): COM1 frequency number pad page with a Lua script (C172 G1000)
+  design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   navigation.md         how pages connect (folders, back key) and the planned pages
   icons.md              optional local icon build (Guenseli pack, personal use only, never committed)
   aircraft-mappings.md  every variable/event used, with verification status
