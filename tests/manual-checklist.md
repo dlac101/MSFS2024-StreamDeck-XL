@@ -486,3 +486,64 @@ its title alignment. No sim needed. Record: date, Stream Deck app version.
 - [ ] (Optional) The committed `MSFS2024 C172 G1000` profile has the same new sizes and the same middle titles
   on VIEWS, CHECKLIST and MORE when you next import it (reimport as in the Reimport steps above).
 - [ ] Report any title cut off or still too small, by page and title (a different size is one data-file line).
+
+## Phase 2: COM1 pad (C172 G1000)
+
+Reference: [docs/phase2-com1-pad.md](../docs/phase2-com1-pad.md). The page is in the same profile file as the
+main page, behind MORE 1,5 `COM PAD`, and needs the script `XL24-COMPAD.lua`. Not yet tested in the app or
+the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+
+**Install the script (no sim needed)**
+- [ ] Copy `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua` into
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\` (or install the built
+  package with the Profile Manager). Copy it again after any change to it in the repo.
+
+**Reimport (no sim needed)**
+- [ ] As in the Sim rate section's Reimport steps: export the installed `MSFS2024 C172 G1000` to the backup
+  folder, delete every installed profile of that name (and its `copy` versions; leave the profile named
+  `G1000`), double-click the generated profile, select it, check its aircraft mapping.
+- [ ] The main page and the other pages look as before; the More page now has a fourth folder key,
+  `COM PAD` at 1,5.
+
+**Layout and round trip (no sim needed)**
+- [ ] `COM PAD` opens the pad: back key 1,1; `COM1` 1,2; `ENTRY` 1,3; `STBY ID` 2,2; digits `7 8 9` at
+  1,6-1,8, `4 5 6` at 2,6-2,8, `1 2 3` at 3,6-3,8; `CLR` 4,6, `0` 4,7, `ENT` 4,8; everything else empty.
+  Its back key returns to MORE.
+- [ ] Select `7` and compare its settings panel with the doc: Command Type "All Sims: Lua Function", Command
+  Address `lua:XL24-COMPAD:DIGIT(7)`. Select `ENT`: Main Command `lua:XL24-COMPAD:ENTER`, long press on,
+  Second Command `lua:XL24-COMPAD:ENTER_SWAP`. Select `ENTRY`: Value Address `X:XL24_COMPAD_ENTRY`.
+  Record every field that differs or looks different in the panel.
+
+**Typing (flight loaded; the script only runs while the sim is connected)**
+- [ ] On opening the pad, `ENTRY` shows `___.___`. If it shows nothing or `0` until the first key, record it.
+- [ ] Type `1 1 8 5`: `ENTRY` shows `1__.___`, `11_.___`, `118.___`, `118.5__`.
+- [ ] Type `4` as the second digit (`1 4`): ignored, `ENTRY` stays `1__.___`. `CLR` deletes one digit;
+  long `CLR` (>= 0.5 s) clears all.
+- [ ] Leave the pad (back key) and open it again: `ENTRY` is empty again.
+- [ ] If `ENTRY` never changes while you type: plugin log `log\PilotsDeck<date>.log` ("Running Command" for
+  `lua:XL24-COMPAD:DIGIT(...)`, any "not registered" warning) and `log\lua.log`. "Not registered" = the
+  script is not in the Scripts folder. If the commands run but `ENTRY` doesn't change, use the ENTRY
+  fallback in the doc and record it.
+
+**Stream Deck -> sim (press ENT)**
+- [ ] Type `1 1 8 5`, press `ENT`: COM1 standby on the PFD and on the pad's `COM1` key becomes 118.500;
+  `ENTRY` clears; `lua.log` says "XL24-COMPAD: COM1 standby set to 118500000 Hz".
+- [ ] Type `1 2 1 5 2`, press `ENT`: standby 121.525 (25 kHz mode). Record the radio's spacing mode if you
+  can see it (8.33 / 25 kHz); in 8.33 mode it should be 121.520.
+- [ ] Type `1 2 4 3 5`, **long press** `ENT`: 124.350 becomes **active**, the old active goes to standby.
+- [ ] Type `1 3 7`: the 7 is ignored (after 13 only 0 to 6 are allowed), `ENTRY` shows `13_.___`. Clear it,
+  type `1 1 8`, press `ENT`: standby becomes 118.000 (missing decimals are zeros).
+- [ ] `STBY ID` shows a station ident for a frequency that has one (for example the local ATIS), or record
+  that it shows nothing (then it becomes Empty).
+- [ ] (If the G1000 offers 8.33 kHz mode) set it, enter `1 1 8 0 0 5`, press `ENT`, record what the radio shows.
+
+**Sim -> Stream Deck (change it in the sim, don't press a key)**
+- [ ] Turn the G1000 COM knob: the pad's `COM1` key standby follows; press the G1000 swap button: the
+  key follows. Press `COM1` on the pad: active and standby swap in the sim.
+
+**Controller independence**
+- [ ] The pad works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the spacing mode, the 8.33 result
+  if tried, what `STBY ID` showed, the sim version, and every fallback or change.

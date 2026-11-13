@@ -449,7 +449,7 @@
     {
       "id": "more",
       "parent": "main",
-      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4); later: autopilot values, radios",
+      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad; later: autopilot values, radios",
       "keys": [
         {
           "pos": "1,2",
@@ -465,6 +465,11 @@
           "pos": "1,4",
           "title": "V-SPEEDS",
           "folder": "vspeeds"
+        },
+        {
+          "pos": "1,5",
+          "title": "COM PAD",
+          "folder": "compad"
         }
       ],
       "spec": "docs/phase2-g1000-vspeeds.md"
@@ -1462,6 +1467,230 @@
         }
       ],
       "spec": "docs/phase2-sim-rate.md"
+    },
+    {
+      "id": "compad",
+      "parent": "more",
+      "note": "COM1 pad: type a COM1 frequency, ENT sets standby, long ENT also swaps (Lua script XL24-COMPAD.lua)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "COM1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:1, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM_STBY_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "ENTRY",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "X:XL24_COMPAD_ENTRY",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(7)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "8",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(8)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "9",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(9)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "STBY ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM STANDBY FREQ IDENT:1, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(4)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(5)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(6)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(1)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(2)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(3)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:BACK",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-COMPAD:CLEAR"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "0",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(0)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "ENT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:ENTER",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-COMPAD:ENTER_SWAP"
+          }
+        }
+      ],
+      "spec": "docs/phase2-com1-pad.md"
     }
   ]
 }

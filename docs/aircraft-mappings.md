@@ -206,10 +206,12 @@ Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Se
 - PD-PI: the installed plugin's `Plugin/PI/js/pi-Common.js` line 195 (`rxKvarCmd`)
 - LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12)
 
-### Planned: COM1 pad (design only)
+### Phase 2 COM1 pad
 
-For [design-com1-pad.md](design-com1-pad.md) (a planned page MORE > `COM PAD`; positions below are on that
-page). **Not built.** All rows are Unverified until the page is built and its checks pass. The trim gauge
+For [phase2-com1-pad.md](phase2-com1-pad.md) (the second-level page behind MORE 1,5 `COM PAD`; positions
+below are on that page). Generated, not yet sim-tested: all rows are Unverified until the checklist section
+"Phase 2: COM1 pad (C172 G1000)" passes. The COM1 key on the page (1,2) is the main page's 3,1 key (row
+above, reused). The trim gauge
 ([design-trim-gauge.md](design-trim-gauge.md)) adds no row: it reads `ELEVATOR TRIM PCT EX2`, already
 listed under the trim page.
 
@@ -223,7 +225,9 @@ listed under the trim page.
 
 Sources: SDK-RADE and SDK-RADV as above (read again 2026-11-12 for `COM_STBY_RADIO_SET_HZ`,
 `COM SPACING MODE`, `COM STANDBY FREQ IDENT`); README = PilotsDeck README; REF-GSX = the GSX Pro reference
-profile in ProfilesV3 (an `X:` string shown on a key, Lua commands of type 14), a lead only.
+profile in ProfilesV3 (an `X:` string shown on a key, Lua commands of type 14), a lead only; PD-SRC =
+PilotsDeck source (`SimCommand.cs` LUAFUNC = 14; an A-Var with unit `String` is read as text), see
+phase2-com1-pad.md.
 
 ## FlyByWire A32NX (Phase 4 airliner)
 

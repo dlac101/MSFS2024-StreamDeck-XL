@@ -73,8 +73,10 @@ ACTION_UUIDS = {
 }
 BACK = "com.elgato.streamdeck.profile.backtoparent"
 # SimCommandType (PilotsDeck Plugin/Simulator/SimCommand.cs): LVAR 3 (also "no command"), HVAR 8, AVAR 12, BVAR 13,
-# KVAR 16 (HVAR 8: the installed plugin's settings panel, Plugin/PI/js/pi-Common.js "type == 8 //HVar")
-TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12, "H:": 8}
+# KVAR 16 (HVAR 8: the installed plugin's settings panel, Plugin/PI/js/pi-Common.js "type == 8 //HVar"), LUAFUNC 14
+# (SimCommand.cs "LUAFUNC = 14"; pi-Common.js line 227 "type == 14 //LuaFunc"; the address form `lua:File:Function(...)`
+# of the README 2.1.1 LUAFUNC section; the saved GSX Pro and Fenix reference keys hold type 14 with such addresses)
+TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12, "H:": 8, "lua:": 14}
 MAX_LEVEL = 2  # docs/navigation.md "Rules": at most two folder levels below the main page
 KVAR = TYPE_BY_PREFIX["K:"]
 # Values from the doc's template tables (T1, T2 and "K-events are command-only") that the Key table doesn't list
