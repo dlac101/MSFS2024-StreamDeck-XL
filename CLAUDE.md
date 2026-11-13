@@ -48,8 +48,17 @@ and `CHANGELOG.md`.
 - Package layout follows PilotsDeck's Profile Manager work folder: `pilotsdeck/MSFS2024-XL/_Package/`.
   Keep each profile's name the same between versions, since the Profile Manager uses it to
   update profiles and keep their aircraft mappings.
-- Example packages the user downloaded (Fenix A320, GSX Pro, a generic profile) are in
-  `A:\FS2024 Stuff\PilotsDeck` and show real package and Lua formats.
+- Example packages the user downloaded are in `A:\FS2024 Stuff\PilotsDeck` and show real package
+  and Lua formats. The user keeps adding PilotsDeck profiles there for reference and reuse (so far
+  Fenix A320, GSX Pro, a generic profile, Jiblet's C172 G1000 for the Stream Deck + XL). Check that
+  folder for real saved examples and leads before building something new. Their addresses are
+  leads only: confirm each one for MSFS 2024 as above. Don't copy their files into this public repo.
+- Icon pack: `A:\FS2024 Stuff\PilotsDeck\Icon Pack Guenseli_1_7_iUdcY` (per-aircraft folders,
+  `Folder Icons`, `Standard Avionics Suite`, `StandardProp` and more). The user rates it highly; use
+  it for key and folder images. Its `ReadMe.txt` allows personal and private use only, with no
+  public uploads without the author's permission. So never commit its icons, or a profile with them
+  embedded, to this public repo. Use them only in a local build that stays out of git, unless the
+  user gets the author's permission.
 - Commit only when the user asks.
 
 ## Checking sim state (Admin account)
