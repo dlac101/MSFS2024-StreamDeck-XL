@@ -453,3 +453,36 @@ while the sim loads) then means that key's file is not in the plugin's Images fo
 **Result for the worker**
 - [ ] Record each page's look (the keys with a "wait" image, A-3 back keys, A-5 sharpness, A-8 readability,
   A-6 changes you want) and the sim check results.
+
+## P2-7: title sizes (C172 G1000)
+
+Key titles of Simple and Dynamic Buttons that were saved at 10 are now generated at 14 (`generate.py`; the
+same sizes in the committed profile and in the icon build). Readout keys (COM Radio, Display Value) keep their
+size, because they draw their values with the title font: COM1 stays 10. Where a title does not fit at 14, a
+`title_size` line in `tools/profilegen/c172-g1000.json` sets another size: RNG PUSH (PFD and MFD) and
+EXTERNAL 13, FUEL PMP 14 (was 15). Keys at 15 (readouts, BAT, PARK and the switches like them) and folder and
+back keys at 12 are unchanged. The main page folder keys VIEWS, CHECKLIST and MORE now have their titles in
+the middle of the key (`"title_align": "middle"` in the data file, as your own edit); every other key keeps
+its title alignment. No sim needed. Record: date, Stream Deck app version.
+
+- [ ] In the Stream Deck app, Preferences > Profiles: delete the old `MSFS2024 C172 G1000 Icons` profile
+  ([docs/icons.md](../docs/icons.md) section 3). This drops your hand size edits; the new build has its own
+  sizes, and now has the middle titles on VIEWS, CHECKLIST and MORE that you had set by hand.
+- [ ] Delete `.local\icons`, then rebuild: `python tools/profilegen/generate.py --icons
+  tools/profilegen/icons-c172-g1000.json` (docs/icons.md section 1). The 23 images are unchanged: the plugin's
+  `Images\Guenseli-C172` folder stays as it is. (Or import the early profile whose path the worker gives you.)
+- [ ] Import `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile`, switch the XL to it, then check each
+  page: main, Trim, Views, More, PFD, MFD, V-speeds, Sim rate.
+  - [ ] Titles at 14 are readable.
+  - [ ] RNG PUSH and EXTERNAL (13), FUEL PMP (14), CLR HOLD, FMS PUSH and TRIM DEG sit fully inside the key.
+  - [ ] Readouts look as before: COM1 frequencies (10), and the Display Value keys at 15 (main RPM, XPDR,
+    GEAR, CDI, FLAPS, BARO; Trim TRIM, TRIM DEG; Views CAMERA, VIEW, VIEW NO; Sim rate RATE; V-speeds VS0,
+    VS1, VR, VFE, VNE, CRUISE, CLIMB).
+  - [ ] VIEWS, CHECKLIST and MORE on the main page show their titles in the middle of the key; TRIM, SIM RATE,
+    the More page's PFD, MFD, V-SPEEDS and the back keys keep theirs at the bottom. Say if you want other
+    folder titles in the middle too.
+  - [ ] No key changed function (titles, images and folders as before).
+- [ ] FUEL PMP is 14 (you had set it to 11 by hand) and COM1 stays 10: say if you want either changed.
+- [ ] (Optional) The committed `MSFS2024 C172 G1000` profile has the same new sizes and the same middle titles
+  on VIEWS, CHECKLIST and MORE when you next import it (reimport as in the Reimport steps above).
+- [ ] Report any title cut off or still too small, by page and title (a different size is one data-file line).

@@ -29,7 +29,20 @@ Checks:
            the page's keys and Empty positions as the table says, then key by key as "doc" above (folder
            keys too: only on a first-level page, each opening the child page its row names)
   template every PilotsDeck key differs from its template only in the fields its data file entry names
-  phase1   BAT, PARK and AP settings equal the Phase 1 export's apart from the fields the data file names
+           (States: Title, FontSize and TitleAlignment aside), and its FontSize is the expected title size
+           (see size; TitleAlignment: see align)
+  phase1   BAT, PARK and AP settings equal the Phase 1 export's apart from the fields the data file names;
+           States equal apart from FontSize, which is the expected title size (see size), and apart from
+           TitleAlignment only on keys with a "title_align" (see align)
+  size     title sizes: generate.py's rule constants are the ruled 10 -> 14 (LR210-C4); every key entry field
+           is in generate.KEY_FIELDS; every "title_size" sits on a PilotsDeck key, is an int in
+           generate.TITLE_SIZES and not redundant; every PilotsDeck key's FontSize is its title_size, else 14
+           where its template says 10 on a Simple or Dynamic Button, else the template's size (readout keys,
+           COM Radio and Display Value, keep theirs); folder and back keys 12; prints the size counts and the
+           overrides
+  align    title alignment: every "title_align" is "top", "middle" or "bottom", sits on a key of the profile
+           (not an empty entry) and is not redundant; on every key of every page (back keys too) every state's
+           TitleAlignment is the key's title_align, else its template's; prints the alignment counts
   fields   every field name in the generated JSON occurs in a real saved example
   sources  (--sources) every template in templates.json still equals the real file it was copied from;
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
@@ -67,6 +80,20 @@ KVAR = TYPE_BY_PREFIX["K:"]
 # Values from the doc's template tables (T1, T2 and "K-events are command-only") that the Key table doesn't list
 ON_OFF_IMAGES = {"OnImage": "Images/KorryOnBlueTop.png", "OffImage": "Images/KorryOffWhiteBottom.png"}
 SPECIAL_IMAGE = "Images/Fault.png"
+FOLDER_TITLE_SIZE = 12  # folder and back keys keep their templates' FontSize (templates.json "folder", "back")
+# The ruled title size change (P2-7, LR210-C4: the user reads titles at 14, not 10); generate.py's constants must
+# equal these (R-1, LR231-C5)
+RULED_TITLE_SIZE_FROM = 10
+RULED_TITLE_SIZE_TO = 14
+# The key kinds that get 10 -> 14 (LR231-C5 R-2 (a)), stated here on its own and not read from generate.py:
+# Simple Button and Dynamic Button draw no text (PilotsDeck 11bdf1f7 Plugin/Actions/Simple/ActionSwitch.cs and
+# ActionSwitchDisplay.cs: no DrawText or GetFont); Display Value (ActionDisplayText.cs) and COM Radio
+# (ActionDisplayRadio.cs) draw their values with GetFont(), the title font when FontInherit is set
+# (ActionBaseSimple.cs), so they keep their template size.
+RULED_TITLE_SIZE_KINDS = {ACTION_UUIDS["Simple Button"], ACTION_UUIDS["Dynamic Button"]}
+# Allowed "title_align" values (P2-7 A-8, LR232-C5): the Elgato Stream Deck SDK manifest reference, State
+# "TitleAlignment": "bottom" | "middle" | "top" (https://docs.elgato.com/streamdeck/sdk/references/manifest)
+TITLE_ALIGNS = ("top", "middle", "bottom")
 
 failures = []
 skips = []
@@ -115,6 +142,32 @@ def profile_parts(names, j):
 
 def actions(page):
     return page["Controllers"][0]["Actions"] or {}
+
+
+def expected_title_size(key, states, kind):
+    """(expected FontSize, problem or None) of a PilotsDeck key of action UUID `kind` whose template states are
+    `states`: the key's title_size, else 14 where the template says 10 on a Simple or Dynamic Button, else the
+    template's own size (the ruled constants and kinds above)."""
+    bases = {s.get("FontSize") for s in states}
+    if len(bases) != 1:
+        return None, f"template states hold FontSize {sorted(map(repr, bases))}"
+    base = bases.pop()
+    auto = RULED_TITLE_SIZE_TO if base == RULED_TITLE_SIZE_FROM and kind in RULED_TITLE_SIZE_KINDS else base
+    if "title_size" not in key:
+        return auto, None
+    v = key["title_size"]
+    if type(v) is not int or v not in generate.TITLE_SIZES:
+        return auto, f"title_size {v!r} is not an int in {list(generate.TITLE_SIZES)}"
+    if v == auto:
+        return auto, f"title_size {v} is redundant (the rule gives {auto})"
+    return v, None
+
+
+def template_align(states):
+    """The one TitleAlignment of a template's states (a list of them if the states disagree: never equal to a
+    key's alignment, so the key FAILs)."""
+    aligns = {s.get("TitleAlignment") for s in states}
+    return aligns.pop() if len(aligns) == 1 else sorted(map(repr, aligns))
 
 
 def ticks(text):
@@ -428,10 +481,16 @@ def main():
                   (f"  NOT AS NAMED {wrong}" if wrong else ""))
             rest = {f for f in set(t) | set(a)
                     if f not in ("ActionID", "Settings", "States") and shell.get(f, t.get(f)) != a.get(f)}
-            no_title = lambda states: [{k: v for k, v in s.items() if k != "Title"} for s in states]  # noqa: E731
+            no_title = lambda states: [{k: v for k, v in s.items() if k not in ("Title", "FontSize", "TitleAlignment")} for s in states]  # noqa: E731
             check(not rest and no_title(t["States"]) == no_title(a["States"]),
-                  f"{label}: other action fields and States (title aside) as the template" +
+                  f"{label}: other action fields and States (title, FontSize and TitleAlignment aside) as the template" +
                   (f", with {shell}" if shell else "") + (f"  DIFFERENT {sorted(rest)}" if rest else ""))
+            want, problem = expected_title_size(key, t["States"], shell.get("UUID", t["UUID"]))
+            got = [s.get("FontSize") for s in a["States"]]
+            check(problem is None and all(g == want for g in got),
+                  f"{label}: FontSize {got} = {want} (template {sorted({s.get('FontSize') for s in t['States']})}" +
+                  (f", title_size {key['title_size']!r}" if "title_size" in key else "") + ")" +
+                  (f"  {problem}" if problem else ""))
 
     print("== phase1: BAT, PARK, AP against the Phase 1 export")
     for pos in ("1,1", "1,4", "2,1"):
@@ -442,8 +501,104 @@ def main():
         diff = {f for f in set(src["Settings"]["settingsModel"]) | set(a["Settings"]["settingsModel"])
                 if src["Settings"]["settingsModel"].get(f) != a["Settings"]["settingsModel"].get(f)}
         check(diff == named, f"{pos} {key['title']}: settings differ only in the named fields {sorted(named) or 'none'} (found {sorted(diff) or 'none'})")
-        same_rest = all(src[f] == a[f] for f in src if f not in ("ActionID", "Settings"))
-        check(same_rest, f"{pos} {key['title']}: Name, Plugin, UUID, States, LinkedTitle equal the Phase 1 key")
+        no_size = lambda states: [{k: v for k, v in s.items()  # noqa: E731
+                                   if k != "FontSize" and not (k == "TitleAlignment" and "title_align" in key)} for s in states]
+        same_rest = all(src[f] == a[f] for f in src if f not in ("ActionID", "Settings", "States")) and \
+            no_size(src["States"]) == no_size(a["States"])
+        check(same_rest, f"{pos} {key['title']}: Name, Plugin, UUID, States (FontSize aside, see size" +
+              ("; TitleAlignment aside, see align" if "title_align" in key else "; TitleAlignment included") +
+              "), LinkedTitle equal the Phase 1 key")
+        want, problem = expected_title_size(key, src["States"], key.get("shell", {}).get("UUID", src["UUID"]))
+        got = [s.get("FontSize") for s in a["States"]]
+        check(problem is None and all(g == want for g in got),
+              f"{pos} {key['title']}: FontSize {got} = {want} (Phase 1 {[s.get('FontSize') for s in src['States']]})" +
+              (f"  {problem}" if problem else ""))
+
+    print("== size: title sizes (States FontSize)")
+    check(generate.TITLE_SIZE_FROM == RULED_TITLE_SIZE_FROM and generate.TITLE_SIZE_TO == RULED_TITLE_SIZE_TO,
+          f"generate.py's title size rule is the ruled {RULED_TITLE_SIZE_FROM} -> {RULED_TITLE_SIZE_TO} (LR210-C4)" +
+          (f"  FOUND TITLE_SIZE_FROM {generate.TITLE_SIZE_FROM!r} -> TITLE_SIZE_TO {generate.TITLE_SIZE_TO!r}"
+           if (generate.TITLE_SIZE_FROM, generate.TITLE_SIZE_TO) != (RULED_TITLE_SIZE_FROM, RULED_TITLE_SIZE_TO) else ""))
+    sizes = {}  # FontSize -> number of keys, over every page of the profile
+    for page in data["pages"]:
+        page_acts = actions(pages[generate.uid(data["profile_name"], "page", page["id"]).upper()])
+        bad = []
+        for key in page["keys"]:
+            label = f"{page['id']} {key.get('pos')} {key.get('title', '')}".rstrip()
+            unknown = sorted(set(key) - generate.KEY_FIELDS)
+            check(not unknown, f"{label}: key entry fields all in KEY_FIELDS" + (f"  UNKNOWN {unknown}" if unknown else ""))
+            if "title_size" in key and "template" not in key:
+                check(False, f"{label}: title_size {key['title_size']!r} on {'a folder' if 'folder' in key else 'an empty' if 'empty' in key else 'a non-PilotsDeck'} entry")
+            if "empty" in key:
+                continue
+            a = page_acts.get(key_of(key["pos"]))
+            if a is None:
+                bad.append(f"{key['pos']} no action")
+                continue
+            got = [s.get("FontSize") for s in a["States"]]
+            if "folder" in key:
+                want = FOLDER_TITLE_SIZE
+            else:
+                t = resolve(key["states_from"] if key.get("states_from") else key["template"])
+                kind = key.get("shell", {}).get("UUID", resolve(key["template"])["UUID"])
+                want, problem = expected_title_size(key, t["States"], kind)
+                if "title_size" in key:
+                    check(problem is None, f"{label}: title_size {key['title_size']!r} is an int in {list(generate.TITLE_SIZES)}, not redundant" +
+                          (f"  {problem}" if problem else ""))
+            if any(g != want for g in got):
+                bad.append(f"{key['pos']} {key.get('title')} {got} (expected {want})")
+        if "parent" in page:
+            back = page_acts.get(key_of(data["back_key_pos"]))
+            if back is None or any(s.get("FontSize") != FOLDER_TITLE_SIZE for s in back["States"]):
+                bad.append(f"{data['back_key_pos']} back key {back and [s.get('FontSize') for s in back['States']]} (expected {FOLDER_TITLE_SIZE})")
+        for a in page_acts.values():
+            sizes[a["States"][0].get("FontSize")] = sizes.get(a["States"][0].get("FontSize"), 0) + 1
+        check(not bad, f"{page['id']}: every key's FontSize as expected ({len(page_acts)} keys; folder and back keys {FOLDER_TITLE_SIZE})" +
+              (f"  WRONG {bad}" if bad else ""))
+    overrides = [f"{p['id']} {k['pos']} {k.get('title')}={k['title_size']!r}" for p in data["pages"] for k in p["keys"] if "title_size" in k]
+    print(f"  size counts ({sum(sizes.values())} keys): " + " ".join(f"{s}:{n}" for s, n in sorted(sizes.items(), key=lambda x: -x[1])))
+    print(f"  {len(overrides)} title_size overrides: {overrides}")
+
+    print("== align: title alignment (States TitleAlignment)")
+    aligns = {}  # TitleAlignment -> number of keys, over every page of the profile
+    for page in data["pages"]:
+        page_acts = actions(pages[generate.uid(data["profile_name"], "page", page["id"]).upper()])
+        expected = {}  # position in the manifest -> (label, expected TitleAlignment)
+        if "parent" in page:
+            expected[key_of(data["back_key_pos"])] = (f"{page['id']} {data['back_key_pos']} back key",
+                                                     template_align(templates["back"]["action"]["States"]))
+        for key in page["keys"]:
+            label = f"{page['id']} {key.get('pos')} {key.get('title', '')}".rstrip()
+            if "empty" in key:
+                if "title_align" in key:
+                    check(False, f"{label}: title_align {key['title_align']!r} on an empty entry")
+                continue
+            if "folder" in key:
+                states = templates["folder"]["action"]["States"]
+            else:
+                states = resolve(key["states_from"] if key.get("states_from") else key["template"])["States"]
+            base = template_align(states)
+            want = base
+            if "title_align" in key:
+                v = key["title_align"]
+                ok = type(v) is str and v in TITLE_ALIGNS
+                check(ok, f"{label}: title_align {v!r} is one of {list(TITLE_ALIGNS)}")
+                check(v != base, f"{label}: title_align {v!r} is not redundant (template {base!r})")
+                check(key_of(key["pos"]) in page_acts, f"{label}: title_align sits on a key of the profile")
+                want = v
+            expected[key_of(key["pos"])] = (label, want)
+        bad = []
+        for k, a in sorted(page_acts.items()):
+            label, want = expected.get(k, (f"{page['id']} {k} (no data file entry)", None))
+            got = [s.get("TitleAlignment") for s in a["States"]]
+            aligns[got[0]] = aligns.get(got[0], 0) + 1
+            if want is None or any(g != want for g in got):
+                bad.append(f"{label} {got} (expected {want!r})")
+        check(not bad, f"{page['id']}: every key's TitleAlignment as expected ({len(page_acts)} keys)" +
+              (f"  WRONG {bad}" if bad else ""))
+    set_aligns = [f"{p['id']} {k['pos']} {k.get('title')}={k['title_align']!r}" for p in data["pages"] for k in p["keys"] if "title_align" in k]
+    print(f"  alignment counts ({sum(aligns.values())} keys): " + " ".join(f"{s}:{n}" for s, n in sorted(aligns.items(), key=lambda x: -x[1])))
+    print(f"  {len(set_aligns)} title_align settings: {set_aligns}")
 
     print("== fields: every field name occurs in a real saved example")
     p1_model = set(next(iter(p1main.values()))["Settings"]["settingsModel"])

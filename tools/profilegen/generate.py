@@ -17,6 +17,16 @@ What it does:
   already has, with the same type.
 - Pages: the first page in the data file is the profile's page; every other page is a Stream Deck
   folder (child page) opened by a folder key on its parent and holding a back key at "back_key_pos".
+- Title size (States FontSize, drawn by the Stream Deck app): a Simple Button or Dynamic Button whose template
+  state says 10 gets 14; other sizes (15, and 12 on folder and back keys) stay, and readout keys (COM Radio,
+  Display Value) keep their template size, since they draw their values with the title font (FontInherit).
+  A key's optional "title_size" (10 to 15) is for a title that does not fit at 14; it is refused on folder
+  and empty entries and where it equals the size the rule gives. Any other key entry field than those in
+  KEY_FIELDS is refused.
+- Title alignment (States TitleAlignment): every key keeps its template's alignment. A key's optional
+  "title_align" ("top", "middle" or "bottom") sets it on every state of a folder key or an ordinary key (main
+  VIEWS, CHECKLIST, MORE: "middle", P2-7 A-8, LR232-C5); it is refused on empty entries, when it is not one of
+  those three strings, and where it equals the template's alignment.
 - The output is byte-identical for the same inputs: fixed entry order and timestamps, UUIDs derived
   from the profile name and page/key ids (uuid5), JSON written the way the Stream Deck app writes it
   (sorted keys, no spaces, UTF-8).
@@ -53,6 +63,23 @@ ROOT = HERE.parents[1]
 NAMESPACE = uuid.uuid5(uuid.NAMESPACE_URL, "msfs2024-streamdeck-xl/tools/profilegen")
 ZIP_DATE = (2026, 11, 11, 0, 0, 0)  # fixed timestamp for every zip entry
 OPENCHILD = "com.elgato.streamdeck.profile.openchild"
+# Title size (States FontSize; P2-7, LR210-C4): a template state at 10 becomes 14 on the kinds in
+# TITLE_SIZE_KINDS, any other size or kind keeps its size; a key's "title_size" overrides it with one of TITLE_SIZES
+TITLE_SIZE_FROM = 10
+TITLE_SIZE_TO = 14
+TITLE_SIZES = (10, 11, 12, 13, 14, 15)
+# Only Simple Buttons and Dynamic Buttons get the 10 -> 14 rule (LR231-C5 R-2 (a)): they draw no text of their
+# own (PilotsDeck 11bdf1f7 Plugin/Actions/Simple/ActionSwitch.cs and ActionSwitchDisplay.cs: no DrawText or
+# GetFont), so only the Stream Deck app's title uses the size. COM Radio (ActionDisplayRadio.cs) and Display
+# Value (ActionDisplayText.cs) draw their values with GetFont(), which returns the title font when FontInherit
+# is set (ActionBaseSimple.cs), so they keep their template size.
+TITLE_SIZE_KINDS = ("com.extension.pilotsdeck.action.switch", "com.extension.pilotsdeck.action.switch.display")
+# Title alignment (States TitleAlignment; P2-7 A-8, LR232-C5): the values of the Elgato Stream Deck SDK manifest
+# reference, State "TitleAlignment": "bottom" | "middle" | "top" (https://docs.elgato.com/streamdeck/sdk/references/manifest),
+# and the field and value of the user's own saved edit (ProfilesV3 B83EB496-78B3-46DF-896E-8B9F656B713E.sdProfile,
+# main 1,8 / 3,8 / 4,8 folder keys: States[0].TitleAlignment "bottom" -> "middle")
+TITLE_ALIGNS = ("top", "middle", "bottom")
+KEY_FIELDS = {"pos", "title", "template", "set", "shell", "states_from", "folder", "empty", "title_size", "title_align"}
 
 
 def dumps(obj):
@@ -142,6 +169,47 @@ def set_title(action, title, label):
         state["Title"] = title
 
 
+def set_title_size(action, key, label):
+    """Every state's FontSize: the key's "title_size" if it has one, else 14 where the template says 10 on a
+    Simple or Dynamic Button (TITLE_SIZE_KINDS), else the template's own size. All states must hold one int
+    FontSize; a redundant override is refused."""
+    sizes = {state.get("FontSize") for state in action["States"]}
+    if len(sizes) != 1 or type(next(iter(sizes))) is not int:
+        raise ValueError(f"{label}: template states need one int FontSize, found {sorted(map(repr, sizes))}")
+    base = sizes.pop()
+    auto = TITLE_SIZE_TO if base == TITLE_SIZE_FROM and action["UUID"] in TITLE_SIZE_KINDS else base
+    size = auto
+    if "title_size" in key:
+        size = key["title_size"]
+        if type(size) is not int:
+            raise ValueError(f"{label}: title_size must be an int, got {size!r}")
+        if size not in TITLE_SIZES:
+            raise ValueError(f"{label}: title_size {size} is not one of {TITLE_SIZES}")
+        if size == auto:
+            raise ValueError(f"{label}: title_size {size} is redundant (the rule already gives {auto}); remove it")
+    for state in action["States"]:
+        state["FontSize"] = size
+
+
+def set_title_align(action, key, label):
+    """Every state's TitleAlignment = the key's "title_align", if it has one (else the template's stays). The
+    value must be one of TITLE_ALIGNS, the template states must hold one string TitleAlignment, and a value
+    equal to it (redundant) is refused."""
+    if "title_align" not in key:
+        return
+    align = key["title_align"]
+    if type(align) is not str or align not in TITLE_ALIGNS:
+        raise ValueError(f"{label}: title_align must be one of {list(TITLE_ALIGNS)}, got {align!r}")
+    bases = {state.get("TitleAlignment") for state in action["States"]}
+    if len(bases) != 1 or type(next(iter(bases))) is not str:
+        raise ValueError(f"{label}: template states need one TitleAlignment, found {sorted(map(repr, bases))}")
+    base = bases.pop()
+    if align == base:
+        raise ValueError(f"{label}: title_align {align!r} is redundant (the template already gives {base!r}); remove it")
+    for state in action["States"]:
+        state["TitleAlignment"] = align
+
+
 def state_image_name(page_id, pos):
     """Name of an embedded folder/back key image: 27 upper-case letters and digits ending in Z, the shape the
     Stream Deck app saves (base32 here): base32 of sha256("<data page id>/<row,column>"), so it is the same on
@@ -196,6 +264,14 @@ def build(data_path, icons=None):
             pos = doc_pos_to_key(key["pos"], grid)
             if pos in actions:
                 raise ValueError(f"{label}: position used twice")
+            named = f"{label} {key['title']}" if "title" in key else label
+            unknown = sorted(set(key) - KEY_FIELDS)
+            if unknown:
+                raise ValueError(f"{named}: unknown key field(s) {unknown} (allowed: {sorted(KEY_FIELDS)})")
+            if "title_size" in key and ("empty" in key or "folder" in key):
+                raise ValueError(f"{named}: title_size is not allowed on {'a folder' if 'folder' in key else 'an empty'} entry")
+            if "title_align" in key and "empty" in key:
+                raise ValueError(f"{named}: title_align is not allowed on an empty entry")
             if "empty" in key:
                 continue
             icon = icons["keys"].get((page["id"], key["pos"])) if icons else None
@@ -221,6 +297,8 @@ def build(data_path, icons=None):
                 apply_shell(action, key.get("shell", {}), label)
                 if icon and icon["settings"]:
                     apply_settings(action, icon["settings"], label + " (icons)")  # existing fields only
+                set_title_size(action, key, named)
+            set_title_align(action, key, named)
             set_title(action, key["title"], label)
             action["ActionID"] = uid(name, page["id"], key["pos"])
             actions[pos] = action

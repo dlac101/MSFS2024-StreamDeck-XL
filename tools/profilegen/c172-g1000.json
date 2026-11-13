@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated profile. Positions are the docs' row,column (1-based, row 1 at the top). Each key copies a real saved template (p1:<col,row> = that key of the Phase 1 export; other names = templates.json) and changes only the settingsModel fields under 'set', the action fields under 'shell' and the title. The key tables in docs/phase2-main-page.md (main page) and in each child page's 'spec' doc are the reference; check.py compares them.",
+  "_about": "Pages and keys of the generated profile. Positions are the docs' row,column (1-based, row 1 at the top). Each key copies a real saved template (p1:<col,row> = that key of the Phase 1 export; other names = templates.json) and changes only the settingsModel fields under 'set', the action fields under 'shell' and the title. Titles of Simple and Dynamic Buttons are drawn at size 14 where the template's state says 10 (other sizes stay); readout keys (COM Radio, Display Value) keep their template size; an optional 'title_size' (10 to 15) on a key is for a title that does not fit at 14 (generate.py, docs/navigation.md). Every key keeps its template's title alignment; an optional 'title_align' ('top', 'middle' or 'bottom', the Elgato manifest State TitleAlignment values) sets another one: 'middle' on the main page folder keys VIEWS, CHECKLIST and MORE, as the user's own saved edit. The key tables in docs/phase2-main-page.md (main page) and in each child page's 'spec' doc are the reference; check.py compares them.",
   "profile_name": "MSFS2024 C172 G1000",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile",
   "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
@@ -34,6 +34,7 @@
         {
           "pos": "1,3",
           "title": "FUEL PMP",
+          "title_size": 14,
           "template": "p1:0,0",
           "set": {
             "Address": "B:fuel_pump_1",
@@ -81,6 +82,7 @@
         {
           "pos": "1,8",
           "title": "VIEWS",
+          "title_align": "middle",
           "folder": "views"
         },
         {
@@ -235,6 +237,7 @@
         {
           "pos": "3,8",
           "title": "CHECKLIST",
+          "title_align": "middle",
           "folder": "checklist"
         },
         {
@@ -310,6 +313,7 @@
         {
           "pos": "4,8",
           "title": "MORE",
+          "title_align": "middle",
           "folder": "more"
         }
       ]
@@ -392,6 +396,7 @@
         {
           "pos": "1,3",
           "title": "EXTERNAL",
+          "title_size": 13,
           "template": "avar_dynamic_button",
           "set": {
             "ActionType": 12,
@@ -682,6 +687,7 @@
         {
           "pos": "2,8",
           "title": "RNG PUSH",
+          "title_size": 13,
           "template": "simple_button",
           "states_from": "p1:3,0",
           "shell": {
@@ -1111,6 +1117,7 @@
         {
           "pos": "2,8",
           "title": "RNG PUSH",
+          "title_size": 13,
           "template": "simple_button",
           "states_from": "p1:3,0",
           "shell": {

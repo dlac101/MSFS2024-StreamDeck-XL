@@ -21,6 +21,14 @@ page ideas come from [original-plan.md](original-plan.md).
 - **Folder keys keep their positions** on the main page across versions and aircraft, so the grid stays
   familiar. A function that doesn't exist on an aircraft leaves its key empty instead of moving others.
 - Nothing on any page depends on the connected flight controls (Xbox Elite or T.16000M/TWCS).
+- **Key titles at 14 by default** (`tools/profilegen/generate.py`: on Simple and Dynamic Buttons a template
+  title size of 10 becomes 14; keys at 15 and folder and back keys at 12 stay). Readout keys (COM Radio,
+  Display Value) keep their template size, because they draw their values with the title font: COM1 stays 10.
+  Where a title does not fit at 14, the key's `title_size` in the data file sets another size (10 to 15).
+  Every key keeps its template's title alignment (folder and back keys at the bottom), except the main page
+  folder keys VIEWS, CHECKLIST and MORE: their `title_align` in the data file is `"middle"` (the user's own
+  saved edit; `title_align` takes the Elgato manifest State `TitleAlignment` values `"top"`, `"middle"`,
+  `"bottom"`).
 
 ## Pages
 
