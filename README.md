@@ -25,7 +25,6 @@ Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-t
 ## Layout
 
 ```text
-CLAUDE.md               project facts and rules for Claude sessions (any Windows account)
 docs/
   original-plan.md      the project brief
   installation.md       this PC's setup, versions, backups, git across accounts
