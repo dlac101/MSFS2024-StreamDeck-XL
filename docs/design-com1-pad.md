@@ -20,9 +20,8 @@ Why not a long press on the main page `COM1` key, as in FT-SD: FT-SD switches to
 the plugin itself ships. A PilotsDeck key can't open a Stream Deck folder; only a folder key can. So the pad
 is reached the normal way: `MORE`, then `COM PAD`.
 
-Alternative, if two presses are too many: put the folder key on the main page at **4,7** (now reserved for
-Anti-ice; the C172 has only pitot heat, which is already at 4,6). That makes compad a first-level page.
-The user decides; the layout below is the same either way.
+**Decided by the user (2026-11-12): MORE 1,5.** The other option, main page 4,7 (reserved for Anti-ice),
+was not chosen; 4,7 stays reserved.
 
 ## Layout: compad
 
