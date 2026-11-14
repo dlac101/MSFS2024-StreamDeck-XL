@@ -59,11 +59,12 @@ pilotsdeck/
     _Releases/          built .ppp/.zip packages (not committed)
 ```
 
-## Building the package
+## Building and installing the package
 
-In PilotsDeck's Profile Manager, open **Create Package**, load the work folder
-`A:\FS2024 Stuff\msfs2024-streamdeck-xl\pilotsdeck\MSFS2024-XL`, then **Create Package**.
-The output goes to `_Releases/`.
+In the repository folder, run `python tools/package/build_package.py`. It builds
+`pilotsdeck/MSFS2024-XL/_Releases/MSFS2024-XL v<version>.ppp` (not committed) from the committed work
+folder `pilotsdeck/MSFS2024-XL/_Package/`; you install it with PilotsDeck's Profile Manager. Build, install,
+aircraft mapping and update steps: [docs/package.md](docs/package.md) (not yet tested with the Profile Manager).
 
 ## Ground rules (from the plan)
 

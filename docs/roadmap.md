@@ -93,14 +93,16 @@ events) and [../tests/manual-checklist.md](../tests/manual-checklist.md).
 - `pilotsdeck/MSFS2024-XL/_Package/` is a PilotsDeck Profile Manager work folder: `package.json`,
   `Profiles/` (the two profiles above), `Scripts/` (two scripts, empty `global/` and `image/`), an empty
   `Images/`.
-- `package.json` says version `0.1`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000 (MSFS 2024)", and
-  its notes still describe only the Phase 1 proof of concept.
-- No package has been built or released. The README describes building one with the Profile Manager's
-  Create Package into `_Releases/` (not committed).
+- `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000 and FlyByWire A32NX
+  (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the C172 G1000 mapping.
+- `tools/package/build_package.py` builds the package `MSFS2024-XL v0.2.ppp` from the committed work folder
+  into the git-ignored `_Releases/` (reproducible; committed files only; no icons). Build and install steps:
+  [package.md](package.md). No package has been installed with the Profile Manager or released yet.
 - Today a user imports the `.streamDeckProfile` file by double-click ([phase2-main-page.md](phase2-main-page.md),
   "Import the profile") and copies the Lua scripts into the plugin's Scripts folder by hand
   ([phase2-sim-rate.md](phase2-sim-rate.md) and [phase2-com1-pad.md](phase2-com1-pad.md), "Install the script").
-- No aircraft mapping (automatic profile switching) is set up or documented yet.
+- The aircraft mapping (automatic profile switching) for `MSFS2024 C172 G1000` is documented in
+  [package.md](package.md) (search string `asobo_c172sp_g1000`); it is not yet tested.
 
 ### A.7 Sim-tested versus not yet sim-tested
 

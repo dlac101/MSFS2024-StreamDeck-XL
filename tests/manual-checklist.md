@@ -716,3 +716,52 @@ with the mouse and check that the key follows without a key being pressed.
 **Result for the worker**
 - [ ] Record each step's result, the log lines for any step that failed, the aircraft string, the input
   events found, the MSFS and A32NX versions, and every fallback or change.
+
+## P5-PKG: package install (C172 G1000)
+
+Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds three profiles
+(`MSFS2024 C172 G1000`, `MSFS2024 C172 POC`, `MSFS2024 A32NX`) and three Lua scripts (`XL24-SIMRATE.lua`,
+`XL24-COMPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
+Record: date, Stream Deck app version, PilotsDeck version (0.9.7, patched build), MSFS 2024 version. Never
+re-run the PilotsDeck installer or update the plugin for this (docs/installation.md).
+
+**Build (no sim needed)**
+- [ ] In the repository folder: `python tools/package/build_package.py`. It ends with `package ...`,
+  `sha256 ...` and `size ...`; record the sha256.
+
+**HT-PKG-1 Install (no sim needed)**
+- [ ] Open the Profile Manager (PilotsDeck tray icon, or `ProfileManager.exe` in
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`) and drop
+  `pilotsdeck\MSFS2024-XL\_Releases\MSFS2024-XL v0.2.ppp` on the arrow. Check that the notes and version 0.2
+  are shown.
+- [ ] If it lists `MSFS2024 C172 G1000`, `MSFS2024 C172 POC` or `MSFS2024 A32NX` as already installed, keep
+  **Remove old Profiles** checked. Click **Install**, click each profile link and pick the XL, wait until it
+  finishes.
+- [ ] The Stream Deck app lists each profile once (no "Copy" profile).
+- [ ] `Get-FileHash` of the plugin's `Scripts\XL24-COMPAD.lua`, `Scripts\XL24-SIMRATE.lua` and
+  `Scripts\XL24-A32NX.lua` equals the sha256 the build printed for the same `Scripts/` entry.
+- [ ] The plugin's `Profiles\` folder holds the three `.streamDeckProfile` files and `DeviceInfo.json`, and no
+  `_work` folder.
+
+**HT-PKG-2 Mapping (flight needed)**
+- [ ] Profile Mapping view: map `MSFS2024 C172 G1000` with the search string `asobo_c172sp_g1000`, Save
+  (docs/package.md, "Map the C172 G1000 profile").
+- [ ] Put another profile on the XL and load a C172 G1000 flight: the XL switches to `MSFS2024 C172 G1000`.
+  The plugin log's `ProfileSwitcherManager` line now searches 1 valid profile.
+- [ ] Load another aircraft: the XL does not switch to `MSFS2024 C172 G1000`.
+
+**HT-PKG-3 Scripts (flight loaded)**
+- [ ] SIM RATE page `1X` (XL24-SIMRATE) and MORE > COM PAD `ENT` (XL24-COMPAD) each do what their docs say
+  (docs/phase2-sim-rate.md, docs/phase2-com1-pad.md), read on the sim's own state. `XL24-A32NX.lua` is
+  tested by the section "Phase 4: A32NX profile (P4-1)" once the A32NX is installed.
+
+**HT-PKG-4 Same version again**
+- [ ] Install v0.2 again with Remove old Profiles checked: one profile of each name, the mapping still in the
+  Profile Mapping view, and the HT-PKG-2 switch still works.
+
+**HT-PKG-5 Bumped version (at the first real version bump, 0.3)**
+- [ ] Same steps and results as HT-PKG-4 (the Profile Manager compares no versions).
+
+**Results to record**
+- [ ] Record the build sha256, each step's result, the versions, and anything the Profile Manager showed that
+  differs from these steps.
