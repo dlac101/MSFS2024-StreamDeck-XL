@@ -313,91 +313,112 @@ version, and every fallback or changed value you used.
 ## Phase 2: Sim rate page (C172 G1000)
 
 Reference: [docs/phase2-sim-rate.md](../docs/phase2-sim-rate.md). The page is in the same profile file as
-the main page, behind `SIM RATE` (main page 3,7). Not yet sim-tested: the SDK doesn't say what
-`K:SIM_RATE_SET`'s value means, so HT-1 checks the route first. Record: date, MSFS 2024 version, PilotsDeck
-version, and every fallback or changed value you used.
+the main page, behind `SIM RATE` (main page 3,7), and its `1X` key needs the script `XL24-SIMRATE.lua`.
+Repaired after the first sim test (P2-6R, not yet sim-tested): on 2026-11-12 `1X`/`2X`/`4X`
+(`K:SIM_RATE_SET`) did nothing and `RATE` never stepped down (no press was held 0.5 s). The page now has
+the user's layout (LR298-C5): `1X` 1,2, `SLOWER` 1,3, `RATE` 1,4, `FASTER` 1,5; the 2X and 4X keys are
+gone. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
 
-**HT-1: hand test of the route (optional, before the import)**
+**Safety first.** If the rate ever runs away (very high or very low), set it back to 1x with the sim's own
+sim rate controls (your bindings, Controls > Miscellaneous > "Sim rate"), then record what happened.
 
-Only if you want to check the route before importing the new profile. Otherwise skip it: the imported
-`1X`, `2X`, `4X` and `RATE` keys test the same thing in the blocks below. On the ground, parked, engine off
-or idle, in the **installed** `MSFS2024 C172 G1000` profile (the one before this import), main page, on
-the two empty positions 3,7 and 4,7. Nothing is imported for it.
+**The hand test HT-C (in the profile you have now, before the import below)**
 
-| Step | Key | Settings (Tab out of each field) | Press | The sim should show | The deck should show | The plugin log should show |
-|---|---|---|---|---|---|---|
-| 1 | 3,7: drop **PilotsDeck > Display Value** | Value tab Address `(A:SIMULATION RATE, number)`, Format `1.2` | none | rate 1x | `1.00` | (no command) |
-| 2 | 3,7 | none | change the rate with the sim's own control (your keybinding or the toolbar), then back to 1x | the rate changes | 3,7 follows (`2.00`, back to `1.00`) | nothing |
-| 3 | 4,7: drop **PilotsDeck > Simple Button** | Command Type MSFS: K-Var (SimEvent), Command Address `K:SIM_RATE_SET:2`, On/Off Value empty, Toggle Switch unchecked | once, at 1x | rate 2x (any on-screen rate notice; the aircraft and clock run faster) | 3,7 `2.00` | "Running Command (Type: KVAR \| Address: K:SIM_RATE_SET..." with the 2 in some form, no error line |
-| 4 | 4,7 | Command Address `K:SIM_RATE_SET:4` | once | 4x | `4.00` | as step 3 with 4 |
-| 5 | 4,7 | Command Address `K:SIM_RATE_SET:1` | once | 1x | `1.00` | as step 3 with 1 |
-| 6 | 4,7 | Command Address `K:SIM_RATE_INCR`, then press; then `K:SIM_RATE_DECR`, press | once each | 2x, then 1x | `2.00`, `1.00` | "Running Command (Type: KVAR \| Address: K:SIM_RATE_INCR" / "_DECR" |
-| 7 | 4,7 | set it back to `K:SIM_RATE_SET:2` and leave both keys saved | none | | | |
+HT-A (the step size) is answered by the user's report: the sim steps by x2 up to 128x (LR298-C5). Nothing
+to run for it. HT-C needs no new profile: run it on the sim rate page of the profile you use now (your
+local `MSFS2024 C172 G1000 Icons` build). On the ground, parked. Write down what `RATE` shows after every
+step.
 
-- [ ] Stop and set the rate back with the sim's own control if anything other than the expected rate appears
-  (for example a very high or very low rate on step 3): record it. Try no other values than the step below.
-- [ ] **If 2X gives no change or a wrong rate** (step 3 here, or the `2X` key after the import): in the
-  settings panel of that one key change the Command Address to `K:SIM_RATE_SET:512` (Tab out) and press it.
-  (512 is 2 x 256: the FSUIPC offset 0x0C1A stores the rate x256; a lead only.) If that gives 2x, also try
-  `K:SIM_RATE_SET:1024` on the 4X key (or on 4,7): 4x expected. If the sim jumps to a very high rate (up to
-  128x), set it back at once with the sim's own control. Write down each result, then set the rate back to
-  1x with the sim's own control. Afterwards set each key you changed back to its built address
-  (`K:SIM_RATE_SET:2` on `2X`, `K:SIM_RATE_SET:4` on `4X`; Tab out) before the per-key tests below, and
-  record what you changed.
-- [ ] What the results mean: steps 3 to 5 give 2x, 4x, 1x: the built keys are right. Step 1 shows nothing,
-  `0` or a stuck value while the rate visibly changes: try `(E:SIMULATION RATE, number)` in the same key
-  and record it. Steps 3 to 5 fail but step 6 works: the keys need another route (stepping). Steps 3 to 6
-  all do nothing while the log shows the sends: the sim ignores these events.
-- [ ] Send the results (each step, the 512/1024 results if tried, the log lines) to the coordinator. A repair
-  rules the scale from them. HT-1's two hand-made keys go away with the import below.
+HT-C, the long press on `RATE` (a way down first):
+- [ ] At 1x press `RATE` once: expect `2.00`.
+- [ ] Now press and **hold `RATE` a full second**, then let go: expect one step down (`1.00`).
+- [ ] The plugin log (`log\PilotsDeck<date>.log`) should show "Key TimeDiff: 00:00:01..." then "Build Long
+  Command" and "K:SIM_RATE_DECR".
+- [ ] What the results mean: works = `RATE` stays as built. Held at least 0.5 s but no "Build Long Command"
+  in the log = the long press is broken in this build (report it; the new `SLOWER` key is the way down). The
+  log shows `K:SIM_RATE_DECR` but the rate stays = the sim ignores DECR: stop here and report it (the
+  stepping script has no way down then).
+- [ ] Send the results of HT-C (each `RATE` value, the log lines) to the coordinator.
+
+**Install the script (no sim needed)**
+- [ ] Copy `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SIMRATE.lua` into
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\` (or install the built
+  package with the Profile Manager). Copy it again after any change to it in the repo (P2-6R changed its
+  header comment for the new layout, so copy it again now). Without it, `1X` does nothing (the plugin log
+  says the script is not registered); `SLOWER`, `RATE` and `FASTER` still work.
+  (If the sim rate page was open while you copied it, go back and open the page again.)
 
 **Reimport (no sim needed)**
-- [ ] If you changed any key by hand during the earlier tests (HT-1's keys at 3,7 and 4,7 too), write down
-  which key and field first.
+- [ ] If you changed any key by hand during the earlier tests, write down which key and field first.
 - [ ] In the Stream Deck app, export the installed `MSFS2024 C172 G1000` to the backup folder. Then delete
   **every** installed profile of that name, including the app's copies (`MSFS2024 C172 G1000 copy`,
   `MSFS2024 C172 G1000 copy 1`, ...). **Leave the profile named `G1000`**: that is a downloaded generic
   profile, not this project's.
 - [ ] Double-click `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile` (pick the
   XL if asked), select `MSFS2024 C172 G1000`. Check its aircraft mapping in the Profile Manager.
-- [ ] The main page looks as before except 3,7, which is now the folder `SIM RATE`; 4,7 is still empty.
-  The other pages look as before. From this import on, the main page has 5 folder keys (`SIM RATE` 3,7
-  added) and 1 empty key (4,7); the main page and Trim/Views sections above give the counts of their own
-  imports.
+- [ ] **If you test with the local icon build** (`MSFS2024 C172 G1000 Icons`, as on 2026-11-12): it must be
+  rebuilt from the new data first, or it still holds the old keys (and no `FASTER`). Delete
+  the `.local\icons` folder, rebuild, and import it as in the section "P2-5: local icon build" and
+  [docs/icons.md](../docs/icons.md) (delete the old `MSFS2024 C172 G1000 Icons` profiles and their copies
+  first). The checks below apply to it the same way.
+- [ ] The main page looks as before (3,7 is the folder `SIM RATE`; 4,7 is empty). The other pages look as
+  before.
 
 **Layout and round trip (no sim needed)**
-- [ ] `SIM RATE` opens the sim rate page: back key at 1,1; row 1 `1X` 1,2, `2X` 1,3, `4X` 1,4, `RATE` 1,5;
-  everything else empty. Its back key returns to the main page.
-- [ ] Select `2X` and compare its settings panel with the doc: Command Type K-Var, Command Address
-  `K:SIM_RATE_SET:2`, Value Address `(A:SIMULATION RATE, number)`, On/Off States `2` / `1`. Select `RATE`:
-  Value Address as `2X`, Format `1.2`, Main Command `K:SIM_RATE_INCR`, long press on, Second Command
-  `K:SIM_RATE_DECR`. Record every field that differs or looks different in the panel.
+- [ ] `SIM RATE` opens the sim rate page: back key at 1,1; row 1 `1X` 1,2, `SLOWER` 1,3, `RATE` 1,4,
+  `FASTER` 1,5; everything else empty (1,6 too). Its back key returns to the main page.
+- [ ] Select `1X` and compare its settings panel with the doc: Command Type "All Sims: Lua Function", Command
+  Address `lua:XL24-SIMRATE:SET(1)`, Value Address `(A:SIMULATION RATE, number)`, On/Off States `1` / `2`.
+  Select `RATE`: Value Address as `1X`, Format `1.2`, Main Command `K:SIM_RATE_INCR`, long press on, Second
+  Command `K:SIM_RATE_DECR`. Select `SLOWER`: Command Type MSFS: K-Var (SimEvent), Command Address
+  `K:SIM_RATE_DECR`, no long press. Select `FASTER`: the same as `SLOWER` but Command Address
+  `K:SIM_RATE_INCR`. Record every field that differs or looks different in the panel.
 
 **Diagnostic first**
-- [ ] Flight loaded at 1x: `RATE` shows `1.00`, `1X` On, `2X` and `4X` Off. If `RATE` shows nothing or `0`,
-  use the `(E:SIMULATION RATE, number)` fallback on `RATE` and record it.
-- [ ] Record what the four keys show while the sim is paused (Esc menu, and active pause if you use it).
+- [ ] Flight loaded at 1x: `RATE` shows `1.00`, `1X` On. If `RATE` shows nothing or `0`, use the
+  `(E:SIMULATION RATE, number)` fallback on `RATE` and record it.
+- [ ] Record what the rate keys show while the sim is paused (Esc menu, and active pause if you use it), and
+  whether your own sim rate binding changes the rate while paused.
 
 **Sim -> Stream Deck (change it in the sim, don't press a key)**
-- [ ] Change the rate with the sim's own control to 2x, 4x, then back to 1x: `RATE` follows and the lit key
-  follows (`2X` at 2x, `4X` at 4x, `1X` at 1x).
-- [ ] Step to 8x and to 0.5x if the sim allows: no rate key On (background only), `RATE` `8.00` / `0.50`.
-  Record anything the sim refuses (for example above 4x on the ground) and which control you used.
+- [ ] Change the rate with the sim's own control to 2x, 4x, then back to 1x: `RATE` follows (`2.00`,
+  `4.00`, `1.00`); `1X` shows its Off image at 2x, **no image** at 4x (only its background and title: the
+  expected look, not a fault, see the doc "What the keys show"), and On at 1x.
+- [ ] Step to 8x and to 0.5x if the sim allows: `1X` no image (background and title only), `RATE` `8.00` /
+  `0.50`. Record anything the sim refuses (for example high rates on the ground) and which control you used.
 
 **Stream Deck -> sim (press the key)**
-- [ ] At 1x press `2X`: the sim goes to 2x (its own rate notice, if any), `2X` On, `RATE` `2.00`. Press `4X`:
-  4x, `4X` On. Press `1X`: 1x, `1X` On. Press `2X` twice in a row: it stays 2x.
-- [ ] Press `RATE`: one step up; long press (>= 0.5 s): one step down. `RATE` shows each new rate.
-- [ ] For a press that did nothing or gave a wrong rate: the plugin log line "Running Command (Type: KVAR |
-  Address: K:SIM_RATE_..." for that key, and any error. For `2X` / `4X`, the 512/1024 step in HT-1 above.
+- [ ] `SLOWER` first: at 2x (or higher) press `SLOWER`: one step down per press, `RATE` follows. At the
+  lowest rate it does nothing more (`RATE` `0.06`).
+- [ ] `FASTER`: at 1x press `FASTER`: one step up per press (`2.00`, `4.00`, ...), `RATE` follows. Then press
+  `SLOWER` back to 1x.
+- [ ] `RATE`: a short press is one step up; **hold a full second** for one step down. `RATE` shows each
+  new rate.
+- [ ] From 16x or higher (step up with `FASTER`) press `1X`: the rate steps down to 1x one step at a time,
+  `1X` On. Record roughly how long it took.
+- [ ] From 0.25x (step down with `SLOWER`) press `1X`: the rate steps up to 1x, `1X` On.
+- [ ] At 1x press `1X`: nothing happens (already 1x). From 8x press `1X` twice quickly: the second press is
+  ignored while the first run is still stepping; the rate ends at 1x. Record what happens.
+
+**The script's stop cases (check `log\lua.log` after each)**
+- [ ] At 4x pause the sim, then press `1X`: record what happens. If the rate can't change while paused, the
+  script stops after 2 s and `lua.log` has a line "XL24-SIMRATE: rate stayed 4, stopped" (the number as
+  Lua prints it); nothing else happens.
+- [ ] For a press that did nothing or gave a wrong rate: the plugin log line "Running Command" for that key
+  (`lua:XL24-SIMRATE:SET(1)`, or `K:SIM_RATE_...` for `RATE` / `SLOWER` / `FASTER`), any "not registered"
+  warning, and every `XL24-SIMRATE:` line in `lua.log`. "Not registered" = the script is not in the Scripts
+  folder.
+- [ ] A press at the moment the page opens (`RATE` still blank) may log `XL24-SIMRATE: no rate read, stopped`:
+  press again.
 
 **Controller independence**
 - [ ] The sim rate keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected
   (no key needs a binding on either).
 
 **Result for the worker**
-- [ ] Record HT-1's results (if run), each key's result in both directions, what the keys show while paused,
-  the 8x / 0.5x observations, any 512/1024 result, the sim version, and every fallback or value change.
+- [ ] Record HT-C's results, each key's result in both directions, the script stop cases and their
+  `lua.log` lines, what the keys show while paused, the 8x / 0.5x observations, the sim version, and every
+  fallback or value change.
 
 ## P2-5: local icon build (C172 G1000)
 
@@ -434,12 +455,13 @@ while the sim loads) then means that key's file is not in the plugin's Images fo
   VIEW / VIEW NO readouts. More: PFD (yellow Garmin, corner left), MFD (yellow Garmin, corner right),
   V-SPEEDS (green Garmin). PFD and MFD: DIRECT with the D-arrow; MENU, FPL, PROC, CLR, CLR HOLD, ENT blank
   G1000 keys; FMS knobs with turn arrows; RANGE joystick with - / +; RNG PUSH knob; SK 1 to SK 12 dark
-  softkeys. V-speeds: seven readouts. Sim rate: 1X / 2X / 4X buttons, RATE readout.
+  softkeys. V-speeds: seven readouts. Sim rate: SLOWER and FASTER blank G1000 keys, RATE readout; 1X shows its
+  button with the flight loaded at 1x, and only its title with MSFS closed (expected, as at 4x).
 - [ ] A-5: DIRECT and FMS OUT- (PFD page) and the PFD folder (More page) look sharp and whole, not cropped.
 - [ ] A-8: every title is readable on its icon, and every readout's value is readable on its background.
   Note each key that is hard to read.
 - [ ] A-6 (taste): note any icon you would rather change (PARK, ATC, MAP, trim arrows, RNG PUSH, folder
-  colours, the buttons on COCKPIT/EXTERNAL and 1X/2X/4X, the white rockers). Changes are mapping rows only.
+  colours, the buttons on COCKPIT/EXTERNAL and 1X, the white rockers). Changes are mapping rows only.
 
 **One short sim check (C172 G1000, flight loaded, icon profile on the XL)**
 - [ ] RPM and BARO change as on the committed profile (start the engine, turn the baro knob).

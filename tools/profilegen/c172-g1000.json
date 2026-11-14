@@ -1416,14 +1416,15 @@
     {
       "id": "simrate",
       "parent": "main",
-      "note": "Sim rate: 1X/2X/4X by K:SIM_RATE_SET and the RATE readout (P2-6)",
+      "note": "Sim rate: 1X (back to 1x by a Lua script, XL24-SIMRATE.lua), SLOWER, RATE readout, FASTER (P2-6, P2-6R)",
       "keys": [
         {
           "pos": "1,2",
           "title": "1X",
           "template": "p1:3,0",
           "set": {
-            "AddressAction": "K:SIM_RATE_SET:1",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SIMRATE:SET(1)",
             "Address": "(A:SIMULATION RATE, number)",
             "OnState": "1",
             "OffState": "2"
@@ -1431,28 +1432,21 @@
         },
         {
           "pos": "1,3",
-          "title": "2X",
-          "template": "p1:3,0",
+          "title": "SLOWER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
           "set": {
-            "AddressAction": "K:SIM_RATE_SET:2",
-            "Address": "(A:SIMULATION RATE, number)",
-            "OnState": "2",
-            "OffState": "1"
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_DECR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
           }
         },
         {
           "pos": "1,4",
-          "title": "4X",
-          "template": "p1:3,0",
-          "set": {
-            "AddressAction": "K:SIM_RATE_SET:4",
-            "Address": "(A:SIMULATION RATE, number)",
-            "OnState": "4",
-            "OffState": "1"
-          }
-        },
-        {
-          "pos": "1,5",
           "title": "RATE",
           "template": "p1:2,0",
           "set": {
@@ -1463,6 +1457,21 @@
             "HasLongPress": true,
             "ActionTypeLong": 16,
             "AddressActionLong": "K:SIM_RATE_DECR"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "FASTER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_INCR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
           }
         }
       ],

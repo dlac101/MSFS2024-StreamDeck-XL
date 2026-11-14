@@ -81,9 +81,9 @@ About this step:
 
 | Keys | Field the icon build sets | Where the image lives |
 |---|---|---|
-| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X/2X/4X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` |
+| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` |
 | PilotsDeck Display Value readouts | `DefaultImage` (background; the live value is drawn over it) | same |
-| PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, PFD/MFD bezel keys) | `DefaultImage` | same |
+| PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, PFD/MFD bezel keys, SLOWER/FASTER) | `DefaultImage` | same |
 | Folder keys and the back keys | the state's `Image` | embedded in the profile (that page's `Images/` folder in the file) |
 | COM1 (COM Radio) | none: left as it is | |
 
@@ -120,6 +120,6 @@ a reason). To change an icon:
   cropped or blurred, the mapping switches those keys to 144x144 alternatives.
 - **A-6, taste.** PARK (parking-brake handle), ATC (blank button), MAP (map icon with a "Map" label), the
   trim arrows, RNG PUSH (knob push), the folder colours, the AP-style buttons on COCKPIT/EXTERNAL and
-  1X/2X/4X, and the white rockers are working choices. Any change is a mapping row.
+  1X, and the white rockers are working choices. Any change is a mapping row.
 - **A-7, A-8.** The image paths resolve in the plugin folder (no "wait" images), and titles and readout
   values stay readable on the chosen images.

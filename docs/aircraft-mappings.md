@@ -187,24 +187,43 @@ Sources as above, plus:
 ### Phase 2 sim rate page
 
 For [phase2-sim-rate.md](phase2-sim-rate.md) (the child page behind main page key 3,7 `SIM RATE`; positions
-below are on that page). All rows are **Unverified** until HT-1 and the Phase 2 sim rate checks pass (not
-yet sim-tested). The sim rate is not tied to the C172: the events and the variable act on the sim; they are
-listed here because every event the project uses goes in this file. If an event does nothing in the sim
-test, its row is marked "does not work" and stays.
+below are on that page). First sim test 2026-11-12 (LR259-C5, LR263-C5; sim version not recorded); repaired
+in P2-6R, not yet sim-tested again; new layout on the user's word (LR298-C5): 1,2 `1X`, 1,3 `SLOWER`, 1,4 `RATE`,
+1,5 `FASTER`. All rows are **Unverified** until the hand test HT-C and the Phase 2 sim rate checks pass.
+The sim rate is not tied to the C172: the events and the variable act on the sim; they are listed here
+because every event the project uses goes in this file. If an event does nothing in the sim test, its row is
+marked "does not work" and stays.
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
-| Sim rate readout (simrate 1,5, `RATE`; also the read of 1,2 to 1,4) | `(A:SIMULATION RATE, number)` (the environment variable `SIMULATION RATE`; PilotsDeck reads `A:` and `E:` alike), Format `1.2` | Number: 0.0625 to 128, powers of two, 1 = real time | (read only here; the SDK marks it get/set, but no A-Var or E-Var write for the sim rate, LR153-C4) | `(E:SIMULATION RATE, number)` (the same request) | SDK-ENVV; PD-SRC (TypeMatching.cs, SubManager.cs); README 2.1.1 | Unverified |
-| Set sim rate 1x, 2x, 4x (simrate 1,2 `1X`, 1,3 `2X`, 1,4 `4X`) | `(A:SIMULATION RATE, number)`: 1X On `1` / Off `2`, 2X On `2` / Off `1`, 4X On `4` / Off `1` | | `K:SIM_RATE_SET:1`, `K:SIM_RATE_SET:2`, `K:SIM_RATE_SET:4` (K-event with one parameter, command type 16); the SDK doesn't define the parameter: parameter = the rate is the working value (LR161-C4); HT-1, a user hand test, is still to run | the x256 scale (`:512` for 2x, `:1024` for 4x; a lead from the FSUIPC offset 0x0C1A, tried in HT-1 only); stepping with `K:SIM_RATE_INCR` / `_DECR` (not built) | SDK-MISCE; README 2.1.1; PD-SRC (ToolsMSFS.cs); PD-PI line 195; LR161-C4 | Unverified |
-| Sim rate one step up (simrate 1,5 `RATE`, press) | readout as above | | `K:SIM_RATE_INCR` | none | SDK-MISCE | Unverified |
-| Sim rate one step down (simrate 1,5 `RATE`, long press) | readout as above | | `K:SIM_RATE_DECR` | none | SDK-MISCE | Unverified |
+| Sim rate readout (simrate 1,4, `RATE`; also the read of 1,2 `1X` and of the script `XL24-SIMRATE.lua`) | `(A:SIMULATION RATE, number)` (the environment variable `SIMULATION RATE`; PilotsDeck reads `A:` and `E:` alike), Format `1.2` | Number: 0.0625 to 128, powers of two, 1 = real time | (read only here; the SDK marks it get/set, but no A-Var or E-Var write for the sim rate, LR153-C4) | `(E:SIMULATION RATE, number)` (the same request) | SDK-ENVV; PD-SRC (TypeMatching.cs, SubManager.cs); README 2.1.1 | Unverified |
+| Set sim rate 1x (simrate 1,2 `1X`) | `(A:SIMULATION RATE, number)`: On `1` / Off `2` (no image at any other rate, PD-SRC ActionSwitchDisplay.cs) | | `lua:XL24-SIMRATE:SET(1)` (command type 14, Lua Function): the script steps the rate with `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`, one event at a time against the read rate, until it is 1x (at most 8 steps per press; stops when the rate stays or passes 1x) | SLOWER, FASTER and RATE | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; PD-SRC (ConnectorNone.cs, ManagedScript.cs, ScriptManager.cs); PD-PI line 196; LR153-C4, LR277-C5, LR298-C5 | Unverified |
+| Set sim rate 2x, 4x (the P2-6R build's simrate 1,3 `2X`, 1,4 `4X`) | `(A:SIMULATION RATE, number)`: 2X On `2` / Off `1`, 4X On `4` / Off `1` | | `lua:XL24-SIMRATE:SET(2)`, `lua:XL24-SIMRATE:SET(4)` (command type 14) | | README 2.1.1 LUAFUNC; LR277-C5 | removed in P2-6R (LR298-C5): the user's layout has no 2X or 4X key; never sim-tested |
+| Set sim rate by `K:SIM_RATE_SET` (the first build of 1X/2X/4X, replaced in P2-6R) | as above | | `K:SIM_RATE_SET:1`, `K:SIM_RATE_SET:2`, `K:SIM_RATE_SET:4` (K-event with one parameter, command type 16; the SDK doesn't define the parameter) | the x256 scale (`K:SIM_RATE_SET:256` = 1x; a lead from the FSUIPC offset 0x0C1A, never tried: its hand test went with the 2X key, LR298-C5) | SDK-MISCE; README 2.1.1; PD-SRC (ToolsMSFS.cs); PD-PI line 195; LR161-C4 | does not work (2026-11-12, LR259-C5, LR263-C5; sim version not recorded): sent with no error (plugin log), the rate did not change |
+| Sim rate one step up (simrate 1,4 `RATE`, press; also sent by the script) | readout as above | | `K:SIM_RATE_INCR` | FASTER (1,5) | SDK-MISCE | Unverified; worked in the sim 2026-11-12 (LR263-C5); sim version not recorded |
+| Sim rate one step up (simrate 1,5 `FASTER`, press) | none (RATE shows the result) | | `K:SIM_RATE_INCR` | RATE press | SDK-MISCE; LR298-C5 | Unverified |
+| Sim rate one step down (simrate 1,4 `RATE`, long press: hold at least 0.5 s; also sent by the script) | readout as above | | `K:SIM_RATE_DECR` (Second command, `HasLongPress`) | SLOWER (1,3) | SDK-MISCE; README 2.1; PD-SRC (ActionBaseSimple.cs, ActionCommand.cs, AppConfiguration.cs) | Unverified; not fired 2026-11-12: holds 0.06-0.25 s < 500 ms (plugin log, no "Build Long Command") |
+| Sim rate one step down (simrate 1,3 `SLOWER`, press) | none (RATE shows the result) | | `K:SIM_RATE_DECR` | RATE long press | SDK-MISCE | Unverified |
 
-Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Set the simulation rate."), plus:
+Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Set the simulation rate.";
+`SIM_RATE_INCR`, `SIM_RATE_DECR` without a parameter), plus:
 - SDK-ENVV: environment-variables/ (`SIMULATION RATE`)
 - PD-SRC: PilotsDeck source at commit 11bdf1f7daf4828f822c18919952fe5b66153e58, `Plugin/Tools/TypeMatching.cs`,
-  `Plugin/Simulator/MSFS/SubManager.cs`, `Plugin/Simulator/MSFS/ToolsMSFS.cs`
-- PD-PI: the installed plugin's `Plugin/PI/js/pi-Common.js` line 195 (`rxKvarCmd`)
-- LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12)
+  `Plugin/Simulator/MSFS/SubManager.cs`, `Plugin/Simulator/MSFS/ToolsMSFS.cs`,
+  `Plugin/Actions/Simple/ActionBaseSimple.cs`, `Plugin/Actions/Simple/ActionCommand.cs`, `Plugin/AppConfiguration.cs`
+  (long press only when held >= LongPressTime, default 500 ms), `Plugin/Simulator/ConnectorNone.cs` (a Lua Function
+  command runs on its own task), `Plugin/Resources/Scripts/ManagedScript.cs` (`SimVar`, `SimRead`, `SimCommand`,
+  `Sleep`, `Log`), `Plugin/Resources/ScriptManager.cs` (`RunFunction`), `Plugin/Simulator/MSFS/SubMapping.cs`
+  (OnReceived: updates the variable `SimRead` returns each time the sim sends a new value)
+- PD-PI: the installed plugin's `Plugin/PI/js/pi-Common.js` lines 195 (`rxKvarCmd`) and 196 (`regLuaFunc`)
+- README 2.1 (Second command ">= 500ms"), 2.1.1 LUAFUNC, 3.5.1 (the script functions)
+- The plugin log `PilotsDeck20261112.log` (read only, searched): the K:SIM_RATE_SET sends with no error; RATE
+  "Key TimeDiff" 0.06 to 0.25 s; no "Build Long Command"
+- LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12); LR259-C5, LR263-C5: the user's
+  sim test reports (2026-11-12); LR277-C5: the P2-6R rulings (Lua stepping, SLOWER, `K:SIM_RATE_INCR` stays
+  Unverified without a sim version); LR298-C5: the user's layout (1X, SLOWER, RATE, FASTER; 2X and 4X removed)
+- PD-SRC `Plugin/Actions/Simple/ActionSwitchDisplay.cs` (`Refresh()`: no On/Off image when the value matches neither
+  On nor Off and Special State is off)
 
 ### Phase 2 COM1 pad
 
