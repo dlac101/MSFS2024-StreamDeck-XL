@@ -47,7 +47,8 @@ Checks:
   lua      every `lua:<Script>:<Function>(...)` command (data file "set" fields, profile settings fields) names a
            script file in pilotsdeck/MSFS2024-XL/_Package/Scripts (name case aside, as PilotsDeck) and a function
            defined at top level in it (a line `function <Function>(`, not indented, not `local`), with no ':' after
-           `lua:<Script>:` (PilotsDeck splits the address at every ':'); prints the count
+           `lua:<Script>:` (PilotsDeck splits the address at every ':'), and whose whole address PilotsDeck's rxLuaFunc
+           accepts (e.g. names of 2+ characters, ".lua" lower case, "(...)" not empty and last); prints the count
   sources  (--sources) every template in templates.json still equals the real file it was copied from;
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
            profiles unchanged and A:\\FS2024 Stuff\\PilotsDeck)
@@ -643,14 +644,18 @@ def main():
     for where, field, cmd in calls:
         script, _, lua_call = cmd[len("lua:"):].partition(":")
         func = lua_call.split("(")[0].strip()
+        # rxLuaFunc (PilotsDeck 11bdf1f7 Plugin/Tools/TypeMatching.cs line 39, validName line 16): RegexOptions.Compiled only
+        # (case counts), anchored ^...$ (Python's '$' as .NET's), applied to the whole address with IsMatch (SimCommand.cs 131)
+        lua_rx = re.match(r"^(Lua|lua|LUA):[^:\s][a-zA-Z0-9\x2D\x5F]+(\.lua)?:[^:\s][a-zA-Z0-9\x2D\x5F]+(\([^)]+\))?$", cmd)
         if ":" in lua_call:  # PilotsDeck runs no Lua function for it. rxLuaFunc (Plugin/Tools/TypeMatching.cs line 39)
             lua_run = lua_call.split(":")[0]  # takes a ':' only inside a final "(...)"; PilotsDeck then keeps only the
             # third ':'-part (ManagedAddress.cs 420, 425), "<Function>(" with no ')', which fails rxLuaFunc in its command
             # check (SimCommand.cs 52, SimController.cs 282), so the "()" rule (ScriptManager.cs 385-386) is never reached
-            lua_rx = re.fullmatch(r"(Lua|lua|LUA):[^:\s][a-zA-Z0-9\x2D\x5F]+(\.lua)?:[^:\s][a-zA-Z0-9\x2D\x5F]+(\([^)]+\))?", cmd)
             check(False, f"{where}: {field} {cmd}: a ':' after the function name: " + (
                 f"PilotsDeck cuts the call there and keeps {lua_run}, which fails its command check, so it runs no Lua function"
                 if lua_rx else "PilotsDeck's rxLuaFunc does not accept the address, so it runs no Lua function"))
+        elif not lua_rx:  # "Command is not valid!" (SimCommand.cs 52, SimController.cs 282-284): no Lua function runs
+            check(False, f"{where}: {field} {cmd}: PilotsDeck's rxLuaFunc does not accept the address, so it runs no Lua function")
         lua_file = script.lower().replace(".lua", "") + ".lua"  # the name PilotsDeck looks for (ManagedAddress.cs 421, 475)
         path = scripts.get(lua_file)
         if not check(path is not None, f"{where}: {field} {cmd}: script file {SCRIPTS_DIR}/{path.name if path else lua_file} " +
