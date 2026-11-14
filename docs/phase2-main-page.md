@@ -155,6 +155,7 @@ only files in the repo: it compares the profile with this doc's Key table, the P
 templates and a fresh build (entry names, order and uncompressed content, so a profile not regenerated after
 a data change fails). A change to a key goes into the data file and this doc together; then regenerate, run
 the check and import the new file (step 2 above).
+`check.py` also checks that every `lua:` command names a script in `_Package/Scripts/` and a top-level function in it.
 
 `python tools/profilegen/check.py --sources` is a provenance check on top: it re-reads the files the
 templates came from (the Admin account's installed Stream Deck profiles, which must be unchanged, and

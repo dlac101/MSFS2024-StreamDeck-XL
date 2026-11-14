@@ -44,6 +44,9 @@ Checks:
            (not an empty entry) and is not redundant; on every key of every page (back keys too) every state's
            TitleAlignment is the key's title_align, else its template's; prints the alignment counts
   fields   every field name in the generated JSON occurs in a real saved example
+  lua      every `lua:<Script>:<Function>(...)` command (data file "set" fields, profile settings fields) names a
+           script file in pilotsdeck/MSFS2024-XL/_Package/Scripts (name case aside, as PilotsDeck) and a function
+           defined at top level in it (a line `function <Function>(`, not indented, not `local`); prints the count
   sources  (--sources) every template in templates.json still equals the real file it was copied from;
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
            profiles unchanged and A:\\FS2024 Stuff\\PilotsDeck)
@@ -77,6 +80,12 @@ BACK = "com.elgato.streamdeck.profile.backtoparent"
 # (SimCommand.cs "LUAFUNC = 14"; pi-Common.js line 227 "type == 14 //LuaFunc"; the address form `lua:File:Function(...)`
 # of the README 2.1.1 LUAFUNC section; the saved GSX Pro and Fenix reference keys hold type 14 with such addresses)
 TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12, "H:": 8, "lua:": 14}
+# PilotsDeck 11bdf1f7 runs `lua:<Script>:<Function>(...)` as the Lua code `<Function>(...)` in Scripts/<script>.lua,
+# the name lowercased, ".lua" dropped and added back (Plugin/Resources/Variables/ManagedAddress.cs lines 421, 475;
+# Plugin/Resources/ScriptManager.cs lines 216, 383-402; Plugin/AppConfiguration.cs line 76): found by File.Exists,
+# which ignores case on Windows. check.py looks in the package's copy (the user copies it into the plugin's Scripts);
+# PilotsDeck also takes a running script from Scripts/global/ (ScriptManager.cs line 217): the package has none.
+SCRIPTS_DIR = "pilotsdeck/MSFS2024-XL/_Package/Scripts"
 MAX_LEVEL = 2  # docs/navigation.md "Rules": at most two folder levels below the main page
 KVAR = TYPE_BY_PREFIX["K:"]
 # Values from the doc's template tables (T1, T2 and "K-events are command-only") that the Key table doesn't list
@@ -622,6 +631,26 @@ def main():
                 check(ok, f"{pid[:8]} {k} {a['Name']}: fields all in templates.json '{'folder' if a['UUID'] == ACTION_UUIDS['Folder'] else 'back'}' ({templates['folder' if a['UUID'] == ACTION_UUIDS['Folder'] else 'back']['source']['file']})")
     check(set(profile) <= set(p1j[p1prof]) and set(profile["Pages"]) <= set(p1j[p1prof]["Pages"]), "profile manifest fields as in the Phase 1 export")
     check(set(j["package.json"]) <= set(p1j["package.json"]), "package.json fields as in the Phase 1 export")
+
+    print(f"== lua: every lua: command names a script file in {SCRIPTS_DIR} and a top-level function in it")
+    scripts = {p.name.lower(): p for p in (ROOT / SCRIPTS_DIR).glob("*.lua")}
+    calls = [(f"data file {p['id']} {k['pos']} {k.get('title', '')}", f, v) for p in data["pages"] for k in p["keys"]
+             for f, v in k.get("set", {}).items() if isinstance(v, str) and v.startswith("lua:")]
+    calls += [(f"profile {page_id(pid)} {int(k.split(',')[1]) + 1},{int(k.split(',')[0]) + 1} {a['States'][0].get('Title', '')}", f, v)
+              for pid, page in sorted(pages.items()) for k, a in sorted(actions(page).items())
+              for f, v in ((a.get("Settings") or {}).get("settingsModel") or {}).items() if isinstance(v, str) and v.startswith("lua:")]
+    for where, field, cmd in calls:
+        script, _, func = cmd[len("lua:"):].partition(":")
+        func = func.split("(")[0].strip()
+        path = scripts.get(script.lower().replace(".lua", "") + ".lua")
+        if not check(path is not None, f"{where}: {field} {cmd}: script file {SCRIPTS_DIR}/{script}.lua " +
+                     ("found" if path else "not found")):
+            continue
+        defs = re.findall(r"^function\s+([A-Za-z_]\w*)\s*\(", path.read_text(encoding="utf-8"), re.M)
+        check(func in defs, f"{where}: {field} {cmd}: function {func!r} " +
+              (f"defined at top level in {path.name}" if func in defs else f"not defined at top level in {path.name} (top level: {defs})"))
+    print(f"  {len(calls)} lua: calls checked ({sum(w.startswith('data') for w, _, _ in calls)} in the data file, "
+          f"{sum(w.startswith('profile') for w, _, _ in calls)} in the profile), scripts in {SCRIPTS_DIR}: {sorted(p.name for p in scripts.values())}")
 
     if sources:
         print("== sources: templates.json against the real files")
