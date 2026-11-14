@@ -36,6 +36,7 @@ docs/
   phase2-com1-pad.md    Phase 2 COM1 pad (MORE > COM PAD): number pad, Lua script, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   navigation.md         how pages connect (folders, back key) and the planned pages
+  roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon build (Guenseli pack, personal use only, never committed)
   aircraft-mappings.md  every variable/event used, with verification status
   reference/            files copied out of the sim (InputEvents.txt etc.)
