@@ -390,3 +390,37 @@ page), SDK-ELECE (MSFS 2024 SDK Aircraft Electrical Events), README and PD-PI (P
 hand test decides: the `A32NX.*` events sent as K-Vars (inferred from FlyByWire's SimConnect interface and
 PilotsDeck's source), WARN/CAUT cleared by writing 0, the `LIGHTING_*` L-Vars in the MSFS 2024 build, the NAV
 LOGO B-Var form, RWY TURN by circuit toggles, baro push = QNH / pull = STD, the Mach and FPA display scale.
+
+### FlyByWire A32NX EFIS page (P4-2)
+
+For [phase4-a32nx-efis.md](phase4-a32nx-efis.md): the EFIS page `efis` of the profile `MSFS2024 A32NX` (opened by
+main 4,8 `EFIS`; positions are page and row,column) and the four functions P4-2 added to `XL24-A32NX.lua`
+(`NAV1`, `NAV2`, `MWARN`, `MCAUT`). The A32NX is not installed on this PC yet (2026-11-14). Generated, not yet
+sim-tested: every row is **Unverified** until the checklist section "Phase 4: A32NX EFIS page (P4-2)" passes
+(then the date, MSFS version and A32NX version). FD, LS, BARO+, BARO, BARO-, hPa/inHg, ND MODE and ND RNG on
+this page (efis 1,3, 2,3, 1,2, 2,2, 3,2, 3,3, 2,4, 2,5) are the P4-1 keys of the rows above, same addresses.
+**Main 3,1 / 3,2 changed in P4-2:** the press is now the script's `MWARN` / `MCAUT` (rows below), not the P4-1
+write of 0 to the lamp L-Var that the "MASTER WARNING (main 3,1)" and "MASTER CAUTION (main 3,2)" rows above
+describe (kept as P4-1's record; that write is now the fallback).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| ND option CSTR, Captain (efis 1,4) | `L:A32NX_FCU_EFIS_L_CSTR_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_CSTR_PUSH` | Lua `SimCalculator` with the same event | FBW-SIMVARS, FBW-EVENTS, FBW-API, FBW-EFIS-XML | Unverified |
+| ND option WPT, Captain (efis 1,5) | `L:A32NX_FCU_EFIS_L_WPT_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_WPT_PUSH` | as CSTR | FBW-SIMVARS, FBW-EVENTS, FBW-API, FBW-EFIS-XML | Unverified |
+| ND option VOR.D, Captain (efis 1,6) | `L:A32NX_FCU_EFIS_L_VORD_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_VORD_PUSH` | as CSTR | FBW-SIMVARS, FBW-EVENTS, FBW-API, FBW-EFIS-XML | Unverified |
+| ND option NDB, Captain (efis 1,7) | `L:A32NX_FCU_EFIS_L_NDB_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_NDB_PUSH` | as CSTR | FBW-SIMVARS, FBW-EVENTS, FBW-API, FBW-EFIS-XML | Unverified |
+| ND option ARPT, Captain (efis 1,8) | `L:A32NX_FCU_EFIS_L_ARPT_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_ARPT_PUSH` | as CSTR | FBW-SIMVARS, FBW-EVENTS, FBW-API, FBW-EFIS-XML | Unverified |
+| Baro mode QNH / STD, Captain (efis 2,1 QNH lit at 1; efis 3,1 STD lit at 0) | `L:A32NX_FCU_EFIS_L_DISPLAY_BARO_MODE` | 0 STD, 1 QNH, 2 QFE | QNH: knob push `K:A32NX.FCU_EFIS_L_BARO_PUSH`; STD: knob pull `K:A32NX.FCU_EFIS_L_BARO_PULL` | as CSTR | FBW-SIMVARS, FBW-API, FBW-EVENTS, FBW-EFIS-PILOT | Unverified |
+| ADF/VOR switch 1, Captain (efis 2,6) | `L:A32NX_FCU_EFIS_L_NAVAID_1_MODE` | 0 OFF, 1 ADF, 2 VOR (FBW-API, FBW-EFIS-XML; FBW-SIMVARS says 1 VOR, 2 ADF) | `lua:XL24-A32NX:NAV1(1)` (one position toward VOR), long press `lua:XL24-A32NX:NAV1(-1)` (toward ADF); the script writes the L-Var (L-Var write, A-5) | values swapped (1 VOR, 2 ADF) in the mappings and the script; else readout only | FBW-API, FBW-EFIS-XML, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| ADF/VOR switch 2, Captain (efis 2,7) | `L:A32NX_FCU_EFIS_L_NAVAID_2_MODE` | as switch 1 | `lua:XL24-A32NX:NAV2(1)`, long press `lua:XL24-A32NX:NAV2(-1)` (the script writes the L-Var) | as switch 1 | FBW-API, FBW-EFIS-XML, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| CHRONO, Captain ND (efis 2,8) | (none: the ND shows the time) | - | `K:A32NX.EFIS_L_CHRONO_PUSHED` | `H:A32NX_EFIS_L_CHRONO_PUSHED` (Simple Button, H-Var, `ActionType` 8) | FBW-EVENTS, FBW-API | Unverified |
+| AUTOLAND lamp (efis 3,8) | `L:A32NX_AUTOPILOT_AUTOLAND_WARNING` | 0/1 | (read only) | the key becomes Empty | FBW-API, FBW-FCU-XML; listed as deprecated in FBW-SIMVARS | Unverified |
+| MASTER WARN press, Captain (efis 4,1; main 3,1 since P4-2) | `L:A32NX_MASTER_WARNING` | 0/1 | `lua:XL24-A32NX:MWARN`: the script writes `L:PUSH_AUTOPILOT_MASTERAWARN_L` 1, waits 200 ms, writes 0 (the cockpit button's own press; L-Var write, A-5) | a longer `Sleep`; then P4-1's write of 0 to `L:A32NX_MASTER_WARNING`; then readout only | FBW-INTERIOR, FBW-FWC, FBW-API; README 3.5.1 | Unverified |
+| MASTER CAUT press, Captain (efis 4,2; main 3,2 since P4-2) | `L:A32NX_MASTER_CAUTION` | 0/1 | `lua:XL24-A32NX:MCAUT`: the script writes `L:PUSH_AUTOPILOT_MASTERCAUT_L` 1, waits 200 ms, writes 0 | as MASTER WARN, with `L:A32NX_MASTER_CAUTION` | FBW-INTERIOR, FBW-FWC, FBW-API; README 3.5.1 | Unverified |
+
+Sources: the tags of [phase4-a32nx-efis.md](phase4-a32nx-efis.md), "Sources": FBW-SIMVARS, FBW-EVENTS, FBW-API
+and README as above; FBW-EFIS-XML (FlyByWire `A32NX_Interior_EFIS.xml`), FBW-INTERIOR (`A320_NEO_INTERIOR.xml`),
+FBW-FCU-XML (`A32NX_Interior_FCU.xml`), FBW-FWC (`PseudoFWC.ts`), FBW-EFIS-PILOT (FlyByWire's EFIS control
+panel page). Weak points the hand test decides: the ADF/VOR values (1 ADF, 2 VOR against `a320-simvars.md`),
+CHRONO as a K-Var custom event, the deprecated AUTOLAND L-Var, the 200 ms press length, and the `A32NX.*`
+events sent as K-Vars (as P4-1).

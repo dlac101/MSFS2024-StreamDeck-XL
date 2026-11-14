@@ -82,7 +82,9 @@ key at 1,1 on every child page, one folder level so far.
 |---|---|---|
 | 1,8 `FCU` | fcu | back key; the FCU knobs as columns (`+` above the readout above `-`, PULL at the bottom: SPD, HDG, ALT, V/S, baro), SPD/MACH, TRK/FPA, ALT STEP, hPa/inHg, AP1, AP2, A/THR, LOC, APPR, EXPED, FD, LS; no empty position |
 | 2,8 `OVHD` | ovhd | back key; exterior lights (STROBE, BEACON, WING, NAV LOGO, RWY TURN, LAND L/R, NOSE), SEAT BELT, NO SMOKE, BAT 1/2, EXT PWR, APU MSTR, APU START, APU AVAIL; 15 empty positions reserved for a later unit |
+| 4,8 `EFIS` | efis | back key; the Captain's EFIS control panel and glareshield lamps ([phase4-a32nx-efis.md](phase4-a32nx-efis.md)): baro column (BARO+, BARO, BARO-), QNH, STD, hPa/inHg, FD, LS, CSTR, WPT, VOR.D, NDB, ARPT, ND MODE, ND RNG, ADF/VOR1, ADF/VOR2, CHRONO, AUTOLAND, WARN, CAUT; 10 empty positions (3,4 to 3,7 for a later unit, 4,3 to 4,8 for the F/O side EFIS) |
 
-Main page position 4,8 is reserved for CHECKLIST (Phase 5), not a folder yet. The A32NX main page has its own
+Main page position 4,8 is the EFIS folder (P4-2); CHECKLIST (Phase 5) has no position on the A32NX main page
+yet. The A32NX main page has its own
 grid (FCU buttons, readouts, flight controls, lights): the C172 profile's VIEWS, SIM RATE and MORE folders are
-not on it, and its CHECKLIST reservation is at 4,8 (the C172 has CHECKLIST at 3,8).
+not on it (the C172 has CHECKLIST at 3,8).

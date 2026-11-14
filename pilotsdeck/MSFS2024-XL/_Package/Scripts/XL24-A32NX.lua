@@ -1,5 +1,6 @@
 -- XL24-A32NX.lua: FCU readouts and ND steps for the MSFS2024 A32NX profile (PilotsDeck standard script).
 -- Page and keys: docs/phase4-a32nx.md. Not yet sim-tested.
+-- EFIS page keys (ADF/VOR steps, MASTER WARN/CAUT press): docs/phase4-a32nx-efis.md.
 --
 -- Readout keys (Display Value) use SPD, HDG, ALT, VS and BARO as their Value Address
 -- ("lua:XL24-A32NX:SPD"); PilotsDeck runs them on every process cycle and shows the text they
@@ -10,6 +11,12 @@
 -- The ND keys call NDMODE(step) and NDRANGE(step) (command type Lua Function,
 -- "lua:XL24-A32NX:NDMODE(1)", long press "(-1)"): they read the L-Var, add the step, keep it in
 -- range and write it. The ND keys show the L-Var they read, never a value from this script.
+-- The ADF/VOR keys (EFIS page) call NAV1(step) and NAV2(step): the switch positions left to right are ADF
+-- (value 1), OFF (0), VOR (2) (FlyByWire Flight Deck API, A32NX_Interior_EFIS.xml); step 1 moves one
+-- position toward VOR, -1 toward ADF, and stops at the ends; nothing when the FCU is not healthy.
+-- The WARN and CAUT keys call MWARN() and MCAUT(): they press the Captain's MASTER WARN / MASTER CAUT
+-- button as the cockpit does (A320_NEO_INTERIOR.xml: the push L-Var 1 on press, 0 on release), here 1,
+-- 200 ms, 0; the FWC cancels on the 0 -> 1 edge (PseudoFWC.ts). The keys show the lamp L-Var they read.
 -- PilotsDeck loads this script when a key that uses it appears and unloads it when none is left.
 
 local HEALTHY    = "L:A32NX_FCU_HEALTHY"
@@ -128,4 +135,64 @@ end
 
 function NDRANGE(step)
     step_lvar(ND_RANGE, step, 0, 5)
+end
+
+-- EFIS page (P4-2): ADF/VOR switches and the master warning / caution press
+local NAVAID_1   = "L:A32NX_FCU_EFIS_L_NAVAID_1_MODE"         -- 0 OFF, 1 ADF, 2 VOR
+local NAVAID_2   = "L:A32NX_FCU_EFIS_L_NAVAID_2_MODE"         -- 0 OFF, 1 ADF, 2 VOR
+local WARN_PUSH  = "L:PUSH_AUTOPILOT_MASTERAWARN_L"           -- Captain MASTER WARN button, 1 while pressed
+local CAUT_PUSH  = "L:PUSH_AUTOPILOT_MASTERCAUT_L"            -- Captain MASTER CAUT button, 1 while pressed
+SimVar(NAVAID_1)
+SimVar(NAVAID_2)
+SimVar(WARN_PUSH)
+SimVar(CAUT_PUSH)
+
+-- switch position (0 = left, 1 = middle, 2 = right) of a value, and the value at a position:
+-- ADF (value 1) left, OFF (0) middle, VOR (2) right; an unknown value counts as OFF.
+-- Compared with ==, not used as table keys, so a value read as 1.0 works the same as 1.
+local function navaid_pos(value)
+    if value == 1 then return 0 end
+    if value == 2 then return 2 end
+    return 1
+end
+
+local function navaid_value(pos)
+    if pos == 0 then return 1 end
+    if pos == 2 then return 2 end
+    return 0
+end
+
+-- read the switch, move it step positions (1 = toward VOR, -1 = toward ADF), keep it on the switch, write it;
+-- nothing when the FCU is not healthy
+local function step_navaid(address, step)
+    if not healthy() then return end
+    step = tonumber(step)
+    if step == nil then return end
+    local p = navaid_pos(round(num(address))) + step
+    if p < 0 then p = 0 end
+    if p > 2 then p = 2 end
+    SimWrite(address, navaid_value(p))
+end
+
+function NAV1(step)
+    step_navaid(NAVAID_1, step)
+end
+
+function NAV2(step)
+    step_navaid(NAVAID_2, step)
+end
+
+-- press and release a glareshield push button: 1, 200 ms, 0
+local function press_button(address)
+    SimWrite(address, 1)
+    Sleep(200)
+    SimWrite(address, 0)
+end
+
+function MWARN()
+    press_button(WARN_PUSH)
+end
+
+function MCAUT()
+    press_button(CAUT_PUSH)
 end

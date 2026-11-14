@@ -826,3 +826,66 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
 **Results to record**
 - [ ] Record the build sha256, each step's result, the versions, and anything the Profile Manager showed that
   differs from these steps.
+
+## Phase 4: A32NX EFIS page (P4-2)
+
+Reference: [docs/phase4-a32nx-efis.md](../docs/phase4-a32nx-efis.md). The new page `efis` (main 4,8 `EFIS`) of
+the profile `MSFS2024 A32NX`, main 3,1 `WARN` and 3,2 `CAUT` (their press changed in P4-2), and the four new
+functions of `XL24-A32NX.lua`. Not yet tested in the app or the sim. This section replaces the P4-1 section's
+items on main 4,8 (now the EFIS folder, not empty) and on WARN/CAUT (the press is now the cockpit button's
+press, not a write of 0). Record: date, MSFS 2024 version, A32NX version, PilotsDeck version, and every
+fallback or changed value you used.
+
+**Before you start**
+- [ ] The P4-1 section's "Before you start" and "Import" steps, with the regenerated
+  `MSFS2024 A32NX.streamDeckProfile` and the new `XL24-A32NX.lua` copied into the plugin's Scripts folder
+  (the old copy lacks `NAV1`, `NAV2`, `MWARN`, `MCAUT`). Skip that section's items on main 4,8 ("empty") and
+  on WARN/CAUT: the items below replace them.
+
+**Import (no sim needed)**
+- [ ] Main 4,8 `EFIS` opens the EFIS page; its back key (1,1) returns to the main page. The page matches the
+  layout in the doc; 3,4 to 3,7 and 4,3 to 4,8 are empty.
+- [ ] Select `CSTR`, `QNH`, `STD`, `ADF/VOR1`, `CHRONO`, `AUTOLAND` and `WARN` (EFIS page) and main `WARN`, and
+  compare their settings panels with the doc's Key table (command type, addresses, On/Off values, long
+  press). Record every field that differs.
+
+**Each key, both directions (A32NX powered: batteries, external power or APU)**
+For every key: press it and check the cockpit control and the key; then move the control in the cockpit
+with the mouse and check that the key follows without a key being pressed.
+- [ ] CSTR, WPT, VOR.D, NDB, ARPT: each lights with its ND option button, one at a time, and the ND shows the
+  option. FD and LS as on the main page.
+- [ ] BARO+ / BARO- step the Captain's baro; BARO shows it. QNH pushes the knob and is lit in QNH; STD pulls it
+  and is lit in STD. Press QNH while it is lit and record whether the baro goes to QFE (FlyByWire: off STD a
+  push changes between QNH and QFE). Set QFE in the cockpit and record what QNH and STD show then.
+- [ ] hPa/inHg toggles the unit and reads back; ND MODE and ND RNG as on the main page.
+- [ ] ADF/VOR1 and ADF/VOR2: a press moves the switch one position toward VOR, a long press (at least 0.5 s)
+  one position toward ADF; the key shows `ADF`, `OFF` or `VOR` matching the cockpit switch and the ND
+  pointers. **Record the value the cockpit switch writes for ADF and for VOR** (if the key shows `ADF` with
+  the switch on VOR, the values are swapped: docs/phase4-a32nx-efis.md "Fallbacks").
+- [ ] CHRONO starts the chrono on the Captain's ND; record what a second and a third press do. If nothing
+  happens: the plugin log "Running Command" line, then try the H-event fallback.
+- [ ] AUTOLAND shows `ON` only while the cockpit's AUTOLAND lamp is lit (record if you see it lit, for example
+  in an autoland approach).
+- [ ] WARN and CAUT, on the EFIS page and main 3,1 / 3,2: with a master caution or warning lit (for example a
+  caution from a system switch left off; for a warning, in flight with AP1 engaged, press main AP1 to
+  disconnect it: MASTER WARN flashes with the cavalry charge), a press puts the lamp out and stops the chime
+  or the cavalry charge, as the cockpit button does; the key follows the lamp. The cockpit button cannot
+  cancel every warning either (the flight warning computer ignores it while a non-cancellable warning is on):
+  if the lamp stays on, press the cockpit's MASTER WARN with the mouse and compare. Record if the 200 ms
+  press is too short (the lamp stays on while the cockpit button puts it out).
+
+**P4-1 regression**
+- [ ] Run the P4-1 section's "Each key" steps for every other main, FCU and OVHD key: unchanged.
+
+**Unpowered and other aircraft**
+- [ ] Batteries off: BARO blank, ND MODE / ND RNG / ADF/VOR presses do nothing, the keys show the read state.
+- [ ] Load the C172 G1000 and select `MSFS2024 A32NX` by hand, EFIS page: BARO blank, ND and ADF/VOR steps do
+  nothing, QNH off and STD lit (the 0 of missing L-Vars). Press CSTR, CHRONO and WARN and record whether
+  anything in the C172 moves; then switch back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the ADF/VOR values, the CHRONO and
+  AUTOLAND results, the MSFS and A32NX versions, and every fallback or change.

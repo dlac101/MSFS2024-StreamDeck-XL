@@ -178,27 +178,21 @@
         {
           "pos": "3,1",
           "title": "WARN",
-          "template": "p1:0,0",
+          "template": "p1:3,0",
           "set": {
-            "ActionType": 3,
-            "Address": "L:A32NX_MASTER_WARNING",
-            "AddressAction": "L:A32NX_MASTER_WARNING",
-            "SwitchOnState": "0",
-            "HasIndication": true,
-            "IndicationValueAny": true
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:MWARN",
+            "Address": "L:A32NX_MASTER_WARNING"
           }
         },
         {
           "pos": "3,2",
           "title": "CAUT",
-          "template": "p1:0,0",
+          "template": "p1:3,0",
           "set": {
-            "ActionType": 3,
-            "Address": "L:A32NX_MASTER_CAUTION",
-            "AddressAction": "L:A32NX_MASTER_CAUTION",
-            "SwitchOnState": "0",
-            "HasIndication": true,
-            "IndicationValueAny": true
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:MCAUT",
+            "Address": "L:A32NX_MASTER_CAUTION"
           }
         },
         {
@@ -355,7 +349,8 @@
         },
         {
           "pos": "4,8",
-          "empty": "Reserved: CHECKLIST (Phase 5)"
+          "title": "EFIS",
+          "folder": "efis"
         }
       ]
     },
@@ -1016,6 +1011,299 @@
         {
           "pos": "4,8",
           "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        }
+      ]
+    },
+    {
+      "id": "efis",
+      "parent": "main",
+      "note": "EFIS control panel and glareshield, Captain side (P4-2)",
+      "spec": "docs/phase4-a32nx-efis.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "BARO+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_FD_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_FD_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "CSTR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_CSTR_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_CSTR_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "WPT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_WPT_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_WPT_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "VOR.D",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_VORD_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_VORD_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "NDB",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_NDB_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_NDB_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "ARPT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_ARPT_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_ARPT_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "QNH",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_DISPLAY_BARO_MODE"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:BARO",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_PUSH",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:A32NX.FCU_EFIS_L_BARO_PULL"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "LS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_LS_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_LS_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ND MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_EFIS_MODE",
+            "Format": "",
+            "ValueMappings": "0=ILS:1=VOR:2=NAV:3=ARC:4=PLAN",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NDMODE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NDMODE(-1)"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "ND RNG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_EFIS_RANGE",
+            "Format": "",
+            "ValueMappings": "0=10:1=20:2=40:3=80:4=160:5=320",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NDRANGE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NDRANGE(-1)"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "ADF/VOR1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_NAVAID_1_MODE",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ADF:2=VOR",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NAV1(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NAV1(-1)"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "ADF/VOR2",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_NAVAID_2_MODE",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ADF:2=VOR",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NAV2(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NAV2(-1)"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "CHRONO",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.EFIS_L_CHRONO_PUSHED",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "STD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_PULL",
+            "Address": "L:A32NX_FCU_EFIS_L_DISPLAY_BARO_MODE",
+            "OnState": "0",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "BARO-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "hPa/inHg",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_BARO_IS_INHG",
+            "Format": "",
+            "ValueMappings": "0=hPa:1=inHg",
+            "AddressAction": "L:A32NX_FCU_EFIS_L_BARO_IS_INHG",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0"
+          }
+        },
+        {
+          "pos": "3,4",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,6",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,7",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,8",
+          "title": "AUTOLAND",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_AUTOPILOT_AUTOLAND_WARNING",
+            "Format": "",
+            "ValueMappings": "0=---:1=ON"
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "WARN",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:MWARN",
+            "Address": "L:A32NX_MASTER_WARNING"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "CAUT",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:MCAUT",
+            "Address": "L:A32NX_MASTER_CAUTION"
+          }
+        },
+        {
+          "pos": "4,3",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
+        },
+        {
+          "pos": "4,4",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
+        },
+        {
+          "pos": "4,5",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
+        },
+        {
+          "pos": "4,6",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
+        },
+        {
+          "pos": "4,7",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
+        },
+        {
+          "pos": "4,8",
+          "empty": "Reserved: F/O side EFIS (a later unit)"
         }
       ]
     }

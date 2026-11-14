@@ -46,15 +46,18 @@ Positions are **row,column**, 1-based, row 1 at the top. Folder keys end in `>`.
 | **Row 1** | AP1 | AP2 | A/THR | LOC | APPR | FD | LS | FCU > |
 | **Row 2** | SPD | HDG | ALT | V/S | BARO | ND MODE | ND RNG | OVHD > |
 | **Row 3** | WARN | CAUT | PARK | FLAPS | GND SPLR | BRK LO | BRK MED | BRK MAX |
-| **Row 4** | STROBE | BEACON | NAV LOGO | LAND L | LAND R | NOSE | SEAT BELT | [CHECKLIST] |
+| **Row 4** | STROBE | BEACON | NAV LOGO | LAND L | LAND R | NOSE | SEAT BELT | EFIS > |
 
-29 keys, 2 folder keys (FCU, OVHD), 1 reserved. The main page has no back key.
+29 keys, 3 folder keys (FCU, OVHD, EFIS), no reserved key. The main page has no back key.
+
+The EFIS page (main 4,8: the Captain's EFIS control panel and the glareshield lamps) has its own doc:
+[phase4-a32nx-efis.md](phase4-a32nx-efis.md).
 
 ## Key table
 
 Action names are the PilotsDeck README's: **Dynamic Button**, **Display Value**, **Simple Button**.
 **Folder** = the Stream Deck app's own folder action, which opens a child page. "Empty" = no action on that
-key. The kinds K1 to K9 are explained under "What each key holds"; source tags under "Sources". Command
+key. The kinds K1 to K10 are explained under "What each key holds"; source tags under "Sources". Command
 types: `K:` = K-Var (saved as 16), `L:` = L-Var (3; the key writes its On or Off value), `B:` = B-Var (13),
 `lua:` = Lua Function (14).
 
@@ -76,8 +79,8 @@ types: `K:` = K-Var (saved as 16), `L:` = L-Var (3; the key writes its On or Off
 | 2,6 | `ND MODE` | Display Value | K7 | Main `lua:XL24-A32NX:NDMODE(1)`, Second (long press) `lua:XL24-A32NX:NDMODE(-1)` (the script writes the L-Var) [README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_FCU_EFIS_L_EFIS_MODE` [FBW-API, FBW-SIMVARS] | Mappings `0=ILS:1=VOR:2=NAV:3=ARC:4=PLAN` |
 | 2,7 | `ND RNG` | Display Value | K7 | Main `lua:XL24-A32NX:NDRANGE(1)`, Second (long press) `lua:XL24-A32NX:NDRANGE(-1)` (the script writes the L-Var) [README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_FCU_EFIS_L_EFIS_RANGE` [FBW-API, FBW-SIMVARS] | Mappings `0=10:1=20:2=40:3=80:4=160:5=320` |
 | 2,8 | `OVHD` | Folder | (Stream Deck) | Opens the child page **ovhd** | none | Folder; the page's keys: "Key table: ovhd" below |
-| 3,1 | `WARN` | Dynamic Button | K2 | `L:A32NX_MASTER_WARNING`, On `0` / Off `0` (always writes 0) [FBW-API] | `L:A32NX_MASTER_WARNING` [FBW-API] | On/Off image, Special State |
-| 3,2 | `CAUT` | Dynamic Button | K2 | `L:A32NX_MASTER_CAUTION`, On `0` / Off `0` (always writes 0) [FBW-API] | `L:A32NX_MASTER_CAUTION` [FBW-API] | On/Off image, Special State |
+| 3,1 | `WARN` | Dynamic Button | K10 | `lua:XL24-A32NX:MWARN` (the script presses the MASTER WARN button: its push L-Var 1, 200 ms, 0) [FBW-INTERIOR, FBW-FWC; README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_MASTER_WARNING` [FBW-API, FBW-FWC] | On/Off image |
+| 3,2 | `CAUT` | Dynamic Button | K10 | `lua:XL24-A32NX:MCAUT` (the script presses the MASTER CAUT button: its push L-Var 1, 200 ms, 0) [FBW-INTERIOR, FBW-FWC; README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_MASTER_CAUTION` [FBW-API, FBW-FWC] | On/Off image |
 | 3,3 | `PARK` | Dynamic Button | K2 | `L:A32NX_PARK_BRAKE_LEVER_POS`, On `1` / Off `0` [FBW-API] | `L:A32NX_PARK_BRAKE_LEVER_POS` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
 | 3,4 | `FLAPS` | Display Value | T3 (FLAPS form) | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` [FBW-API] | `L:A32NX_FLAPS_HANDLE_INDEX` [FBW-API, FBW-SIMVARS] | Mappings `0=UP:1=1:2=2:3=3:4=FULL` |
 | 3,5 | `GND SPLR` | Dynamic Button | K1 | `K:SPOILERS_ARM_TOGGLE` [FBW-API] | `L:A32NX_SPOILERS_ARMED` [FBW-API, FBW-SIMVARS] | On/Off image |
@@ -91,7 +94,7 @@ types: `K:` = K-Var (saved as 16), `L:` = L-Var (3; the key writes its On or Off
 | 4,5 | `LAND R` | Display Value | K5 | `L:LIGHTING_LANDING_3`, On `0` / Off `2` (ON / RETRACT) [FBW-API] | `L:LIGHTING_LANDING_3` [FBW-API] | Mappings `0=ON:1=OFF:2=RETR` |
 | 4,6 | `NOSE` | Display Value | K5 | `L:LIGHTING_LANDING_1`, On `0` / Off `1` (T.O. / TAXI) [FBW-API] | `L:LIGHTING_LANDING_1` [FBW-API] | Mappings `0=T.O.:1=TAXI:2=OFF` |
 | 4,7 | `SEAT BELT` | Dynamic Button | K1 | `K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE` [FBW-API] | `(A:CABIN SEATBELTS ALERT SWITCH, Bool)` [FBW-API] | On/Off image |
-| 4,8 | | Empty | | | | Reserved: CHECKLIST (Phase 5) |
+| 4,8 | `EFIS` | Folder | (Stream Deck) | Opens the child page **efis** | none | Folder; the page's keys: "Key table: efis" in [phase4-a32nx-efis.md](phase4-a32nx-efis.md) |
 
 What the main page keys do:
 - **AP1, AP2, A/THR, LOC, APPR, FD, LS** press the FCU and EFIS buttons and light from the button's own light
@@ -101,8 +104,12 @@ What the main page keys do:
   has the turn and pull keys.
 - **ND MODE, ND RNG**: press = one step clockwise (ILS > VOR > NAV > ARC > PLAN; 10 > 20 > ... > 320), long
   press = one step back. They stop at the ends. The key shows the ND setting the aircraft reads.
-- **WARN, CAUT** light while the MASTER WARNING or MASTER CAUTION light is on; a press writes 0 to clear it
-  (FlyByWire documents no press event for these lights: FBW-API lists the L-Vars as read/write).
+- **WARN, CAUT** light while the MASTER WARNING or MASTER CAUTION light is on. A press runs the script's
+  `MWARN` / `MCAUT`, which presses the Captain's MASTER WARN / MASTER CAUT button the way the cockpit does:
+  the button's push L-Var (`L:PUSH_AUTOPILOT_MASTERAWARN_L` / `L:PUSH_AUTOPILOT_MASTERCAUT_L`) 1, 200 ms,
+  then 0 (FBW-INTERIOR). The flight warning computer cancels on that 0 -> 1 edge and writes the lamp L-Var
+  itself (FBW-FWC). (P4-1's key wrote 0 to the lamp L-Var, which the FWC owns; P4-2 replaced it.)
+- **EFIS** opens the EFIS page ([phase4-a32nx-efis.md](phase4-a32nx-efis.md)), which repeats WARN and CAUT.
 - **PARK** sets or releases the parking brake lever; **FLAPS**: press = one notch down (`K:FLAPS_INCR`),
   long press = one notch up (`K:FLAPS_DECR`), as on the C172 profile.
 - **BRK LO, BRK MED, BRK MAX** press the autobrake buttons; each lights when that mode is armed.
@@ -232,7 +239,8 @@ shows `AVAIL` when the APU is available.
 ## The script
 
 [`pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua`](../pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua),
-a standard script (README 3.5.1). It uses only `SimVar`, `SimRead` and `SimWrite`. PilotsDeck runs a Lua
+a standard script (README 3.5.1). It uses only `SimVar`, `SimRead`, `SimWrite` and `Sleep` (README 3.5:
+in a command, Sleep blocks nothing). PilotsDeck runs a Lua
 function used as a key's Value Address on every process cycle and shows what it returns (README 2.1.1
 LUAFUNC: functions can be used "as Variable or Command"); `lua:XL24-A32NX:SPD` runs `SPD()` (PilotsDeck adds
 the `()`).
@@ -246,10 +254,15 @@ the `()`).
 | `BARO()` | `STD`, or `1013` (hPa), or `29.92` (inHg), as the baro value mode says | `L:A32NX_FCU_EFIS_L_DISPLAY_BARO_VALUE`, `L:A32NX_FCU_EFIS_L_DISPLAY_BARO_VALUE_MODE` (0 STD, 1 hPa, 2 inHg) |
 | `NDMODE(step)` | reads the ND mode, adds `step` (1 or -1), keeps it in 0..4 and writes it | `L:A32NX_FCU_EFIS_L_EFIS_MODE` |
 | `NDRANGE(step)` | the same for the ND range, 0..5 | `L:A32NX_FCU_EFIS_L_EFIS_RANGE` |
+| `NAV1(step)` | moves the Captain's ADF/VOR 1 switch one position (`1` toward VOR, `-1` toward ADF; left to right ADF = 1, OFF = 0, VOR = 2), stops at the ends and writes the value (EFIS page) | `L:A32NX_FCU_EFIS_L_NAVAID_1_MODE` |
+| `NAV2(step)` | the same for ADF/VOR 2 | `L:A32NX_FCU_EFIS_L_NAVAID_2_MODE` |
+| `MWARN()` | presses the Captain's MASTER WARN button: writes `L:PUSH_AUTOPILOT_MASTERAWARN_L` 1, waits 200 ms (`Sleep`), writes 0 | none |
+| `MCAUT()` | the same for MASTER CAUT with `L:PUSH_AUTOPILOT_MASTERCAUT_L` | none |
 
 - All five readouts return an empty text when `L:A32NX_FCU_HEALTHY` is not 1 ("If the FCU is healthy in one or
   more channels", FBW-SIMVARS): with no A32NX loaded, or the FCU unpowered, the readout keys are blank, as the
-  real FCU windows. `NDMODE` and `NDRANGE` do nothing then.
+  real FCU windows. `NDMODE`, `NDRANGE`, `NAV1` and `NAV2` do nothing then; `MWARN` and `MCAUT` have no FCU
+  check (the glareshield buttons are not part of the FCU).
 - The managed marker is ` *` (plain ASCII; the real FCU shows a dot).
 - Units (FBW-API ranges, not yet seen in the sim): speed in knots, Mach as a decimal (0.1..0.99); V/S in
   ft/min, FPA in degrees (-9.9..9.9); altitude in feet (100..49000); baro in hPa or inHg.
@@ -271,6 +284,7 @@ that key of the Phase 1 export; `simple_button` = the templates.json entry, as o
 | K7 Lua step | Display Value (`p1:2,0`) | Value Address (`L:`), Format empty, Mappings, Command Type Lua Function (14), Command Address `...(1)`, long press on, Second Command `...(-1)` |
 | K8 B-Var selector | Display Value (`p1:2,0`) | Value and Command Address (the same `B:`), Command Type B-Var (13), On `1` / Off `0`, "Do not request B-Var" off, Format empty, Mappings |
 | K9 readout only | Display Value (`p1:2,0`) | Value Address (`L:`), Format empty, Mappings |
+| K10 Lua button | Dynamic Button, the Phase 1 AP key (`p1:3,0`, T2), as the C172 sim rate `1X` key | Command Type Lua Function (`ActionType` 14), Command Address `lua:XL24-A32NX:<function>`, Value Address (`L:`) |
 | T3 (FLAPS form) | Display Value (`p1:2,0`), as the C172 FLAPS key | Value Address, Format empty, Mappings, K-Var press and long press |
 
 Title sizes ([navigation.md](navigation.md), "Rules"): Dynamic and Simple Buttons copied from the AP key draw
@@ -293,7 +307,8 @@ That the events arrive is an inference until the sim test.
    plugin's Scripts folder,
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\` (or build and install the
    package with the Profile Manager, which puts `Scripts/` files there). Without it the readouts stay blank
-   and ND MODE / ND RNG do nothing. Copy it again after any change to it in the repo.
+   and ND MODE / ND RNG and the WARN / CAUT presses (and the EFIS page's script keys) do nothing. Copy it
+   again after any change to it in the repo.
 3. Back up your Stream Deck profiles ([installation.md](installation.md#back-up-existing-profiles)). A profile
    already named `MSFS2024 A32NX`: export it to the backup folder and delete it before you import (the
    Profile Manager finds profiles by name).
@@ -329,6 +344,9 @@ new file.
   doesn't have reads 0, so the AP, FD, LS, BRK, WARN, CAUT, PARK and BAT keys show off, **STROBE shows `ON`,
   LAND L/R `ON`, NOSE `T.O.`, NO SMOKE `ON`**, ND MODE `ILS`, ND RNG `10`, FLAPS `UP`, APU AVAIL `---`. That is
   the 0 of a missing variable, not the aircraft's state.
+- WARN and CAUT presses write the A32NX's push L-Vars (`L:PUSH_AUTOPILOT_MASTERAWARN_L` /
+  `L:PUSH_AUTOPILOT_MASTERCAUT_L`) 1 then 0 in any aircraft; another aircraft does not read them, so nothing
+  moves. The keys stay off (the lamp L-Vars read 0).
 - A command the sim refuses shows PilotsDeck's alert sign on the key.
 - BRK LO, MED and MAX all read the same L-Var: a key whose value is neither its On nor its Off value (for
   example BRK LO while MED is armed) draws no On or Off image, only the key background and its title
@@ -343,7 +361,7 @@ aircraft-mappings.md says "does not work".
 | Key | If it fails | Fallback | Source |
 |---|---|---|---|
 | Every `K:A32NX.*` key | The plugin log shows the command, the cockpit doesn't move | A Lua function per key that sends the event as calculator code, `SimCalculator("(>K:A32NX.FCU_SPD_PUSH)")` (command type Lua Function) | FBW-SCI; README 2.1.1 CALCULATOR, 3.5.1 |
-| WARN, CAUT | Writing 0 doesn't clear the light (or the aural goes on) | Readout only (command none) | FBW-API, FBW-WARN |
+| WARN, CAUT | The press (push L-Var 1, 200 ms, 0) doesn't put the lamp out or stop the aural | First a longer press: only the `Sleep` value in `MWARN` / `MCAUT` changes. If that fails: P4-1's form, a K2 key that writes 0 to the lamp L-Var (`L:A32NX_MASTER_WARNING` / `L:A32NX_MASTER_CAUTION`, On `0` / Off `0`); then readout only (command none) | FBW-INTERIOR, FBW-FWC, FBW-API, FBW-WARN |
 | STROBE, LAND L/R, NOSE, NO SMOKE | Writing the `LIGHTING_*` / `XMLVAR_*` L-Var doesn't move the switch in the MSFS 2024 build | STROBE: `K:STROBES_TOGGLE` (FBW-API: ON and OFF only, no AUTO; FBW-API also lists `STROBES_SET`, `STROBES_ON`, `STROBES_OFF`); the others readout only | FBW-API |
 | NAV LOGO | The B-Var command does nothing, or the key does not follow the switch (FlyByWire names `_Set`, `_Inc`, `_Dec` forms) | Record what `InputEvents.txt` lists for it, then use that form; for the readout, FlyByWire's state L-Var `L:A32NX_LIGHTS_NAV_LOGO` (FBW-REL; values not documented there) | FBW-IE, FBW-REL; README 2.1.1 BVAR |
 | RWY TURN | The circuit toggles don't move the switch or the lights | Readout only | SDK-ELECE, FBW-API |
@@ -352,9 +370,10 @@ aircraft-mappings.md says "does not work".
 
 ## How to test
 
-Run [tests/manual-checklist.md](../tests/manual-checklist.md), section "Phase 4: A32NX profile (P4-1)". As on
-the C172 pages, check both directions: press a key and watch the cockpit, then **move the control in the
-cockpit with the mouse and check that the key follows without a key being pressed.**
+Run [tests/manual-checklist.md](../tests/manual-checklist.md), section "Phase 4: A32NX profile (P4-1)"; for main
+WARN, CAUT and EFIS (changed or added in P4-2), section "Phase 4: A32NX EFIS page (P4-2)". As on the C172
+pages, check both directions: press a key and watch the cockpit, then **move the control in the cockpit with
+the mouse and check that the key follows without a key being pressed.**
 
 ## When it passes
 
@@ -375,8 +394,10 @@ cockpit with the mouse and check that the key follows without a key being presse
 | FBW-NOTAM | https://flybywiresim.com/notams/development-update-sim-specific-releases-for-msfs-2020-and-2024/ (2026-05-13): separate MSFS 2020 and 2024 releases |
 | FBW-SCI | FlyByWire `fbw-a32nx/src/wasm/fbw_a320/src/interface/SimConnectInterface.cpp` (master): the `A32NX.*` events are SimConnect client events (`SimConnect_MapClientEventToSimEvent`) |
 | FBW-WARN | https://docs.flybywiresim.com/pilots-corner/a32nx/a32nx-briefing/flight-deck/glareshield/warning/ (what pressing MASTER WARN/CAUT does) |
+| FBW-INTERIOR | FlyByWire `A320_NEO_INTERIOR.xml`, https://raw.githubusercontent.com/flybywiresim/aircraft/master/fbw-a32nx/src/base/flybywire-aircraft-a320-neo/SimObjects/AirPlanes/FlyByWire_A320_NEO/model/A320_NEO_INTERIOR.xml (master, read 2026-11-14): the glareshield MASTER WARN / MASTER CAUT buttons `A32NX_PUSH_WARN_L` / `A32NX_PUSH_CAUTION_L` write `PUSH_AUTOPILOT_MASTERAWARN_L` / `PUSH_AUTOPILOT_MASTERCAUT_L` 1 on press and 0 on release and light from `A32NX_MASTER_WARNING` / `A32NX_MASTER_CAUTION` |
+| FBW-FWC | FlyByWire `PseudoFWC.ts`, https://raw.githubusercontent.com/flybywiresim/aircraft/master/fbw-a32nx/src/systems/systems-host/systems/FWC/PseudoFWC.ts (master and tag v2024.1.0, read 2026-11-14): the FWC reads the push L-Vars, makes a pulse on their rising edge, and writes `L:A32NX_MASTER_WARNING` / `L:A32NX_MASTER_CAUTION` itself |
 | SDK-ELECE | MSFS 2024 SDK, Aircraft Electrical Events, https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/aircraft-electrical-events/: `TOGGLE_BEACON_LIGHTS`, `TOGGLE_WING_LIGHTS`, `ELECTRICAL_CIRCUIT_TOGGLE` ("Toggle the named (or indexed) circuit switch state.") |
-| README | PilotsDeck README, https://github.com/Fragtality/PilotsDeck/blob/master/README.md: 2.1 (long press, Second command), 2.1.1 (LVAR, KVAR, BVAR, LUAFUNC, CALCULATOR address forms), 2.1.2 (toggle between On and Off Value), 3.5.1 (standard scripts: `SimVar`, `SimRead`, `SimWrite`, `SimCalculator`) |
+| README | PilotsDeck README, https://github.com/Fragtality/PilotsDeck/blob/master/README.md: 2.1 (long press, Second command), 2.1.1 (LVAR, KVAR, BVAR, LUAFUNC, CALCULATOR address forms), 2.1.2 (toggle between On and Off Value), 3.5 (Lua scripts: Sleep in a command blocks nothing), 3.5.1 (standard scripts: `SimVar`, `SimRead`, `SimWrite`, `SimCalculator`, `Sleep`) |
 | PD-SRC | PilotsDeck source, https://github.com/Fragtality/PilotsDeck (tree 11bdf1f7): `Plugin/Simulator/SimCommand.cs` (`LVAR = 3`, `BVAR = 13`, `LUAFUNC = 14`, `KVAR = 16`), `Plugin/Simulator/ConnectorMSFS.cs` (L-Var command: write the value), `Plugin/Simulator/MSFS/ToolsMSFS.cs` (`WriteKvar`: the event name sent unchanged), `Plugin/Actions/Simple/ActionSwitchDisplay.cs` (no value image when neither value matches) |
 | PD-PI | The installed plugin's settings panel, `Plugin\PI\js\pi-Common.js`: line 179 (`validNameKvar` takes `.` in K-Var names), 182 (`regLvar`), 195 (`rxKvarCmd`: one event with up to five parameters, or a sequence), 196 (`regLuaFunc`), 205 (`type == 3 //lvar`) |
 | REF-FENIX | The Fenix A320 XL reference profile the user keeps in `A:\FS2024 Stuff\PilotsDeck` (read only, nothing copied): page layout ideas (FCU knob columns), and a real saved L-Var command (Display Gauge, command type 3, On and Off Value set) |
