@@ -31,7 +31,7 @@ Checks:
   template every PilotsDeck key differs from its template only in the fields its data file entry names
            (States: Title, FontSize and TitleAlignment aside), and its FontSize is the expected title size
            (see size; TitleAlignment: see align)
-  phase1   BAT, PARK and AP settings equal the Phase 1 export's apart from the fields the data file names;
+  phase1   "phase1_keys" (default BAT 1,1, PARK 1,4, AP 2,1; [] = none): settings equal the Phase 1 export's apart from the fields the data file names;
            States equal apart from FontSize, which is the expected title size (see size), and apart from
            TitleAlignment only on keys with a "title_align" (see align)
   size     title sizes: generate.py's rule constants are the ruled 10 -> 14 (LR210-C4); every key entry field
@@ -80,8 +80,9 @@ BACK = "com.elgato.streamdeck.profile.backtoparent"
 # SimCommandType (PilotsDeck Plugin/Simulator/SimCommand.cs): LVAR 3 (also "no command"), HVAR 8, AVAR 12, BVAR 13,
 # KVAR 16 (HVAR 8: the installed plugin's settings panel, Plugin/PI/js/pi-Common.js "type == 8 //HVar"), LUAFUNC 14
 # (SimCommand.cs "LUAFUNC = 14"; pi-Common.js line 227 "type == 14 //LuaFunc"; the address form `lua:File:Function(...)`
-# of the README 2.1.1 LUAFUNC section; the saved GSX Pro and Fenix reference keys hold type 14 with such addresses)
-TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12, "H:": 8, "lua:": 14}
+# of the README 2.1.1 LUAFUNC section; the saved GSX Pro and Fenix reference keys hold type 14 with such addresses);
+# LVAR 3 as a command too, "L:<name>" with On/Off values (README 2.1.1 LVAR; pi-Common.js line 205 "type == 3 //lvar")
+TYPE_BY_PREFIX = {"B:": 13, "K:": 16, "(A:": 12, "H:": 8, "lua:": 14, "L:": 3}
 # PilotsDeck 11bdf1f7 runs `lua:<Script>:<Function>(...)` as the Lua code `<Function>(...)` in Scripts/<script>.lua,
 # the name lowercased, ".lua" dropped and added back (Plugin/Resources/Variables/ManagedAddress.cs lines 421, 475;
 # Plugin/Resources/ScriptManager.cs lines 216, 383-402; Plugin/AppConfiguration.cs line 76): found by File.Exists,
@@ -506,7 +507,7 @@ def main():
                   (f"  {problem}" if problem else ""))
 
     print("== phase1: BAT, PARK, AP against the Phase 1 export")
-    for pos in ("1,1", "1,4", "2,1"):
+    for pos in data.get("phase1_keys", ["1,1", "1,4", "2,1"]):
         key = keys_by_pos[pos]
         src = p1main[key["template"][3:]]
         a = acts[key_of(pos)]

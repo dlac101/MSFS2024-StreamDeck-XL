@@ -299,3 +299,66 @@ Aircraft string: _TBD_
 
 | Function | Read (variable) | Units | Write (command) | Verified |
 |---|---|---|---|---|
+
+### FlyByWire A32NX (MSFS 2024)
+
+For [phase4-a32nx.md](phase4-a32nx.md): the profile `MSFS2024 A32NX` (main page, FCU page, OVHD page; positions
+below are page and row,column) and its Lua script `XL24-A32NX.lua`. The A32NX is not installed on this PC yet
+(2026-11-14); FlyByWire's MSFS 2024 release is "FS2024 A32NX Stable Release v2024.1.0", "not yet a native 2024
+package" (FBW-REL). Generated, not yet sim-tested: every row is **Unverified** until the checklist section
+"Phase 4: A32NX profile (P4-1)" passes (then the date, MSFS version and A32NX version). A key that fails gets
+"does not work" in its row, and the row stays. The table above stays empty; these are the rows.
+
+Aircraft string: to be recorded at the first A32NX flight (from the PilotsDeck log).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| AP1 push button (main 1,1; fcu 2,4) | `L:A32NX_FCU_AP_1_LIGHT_ON` | 0/1 | `K:A32NX.FCU_AP_1_PUSH` | Lua `SimCalculator` with the same event | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| AP2 push button (main 1,2; fcu 2,5) | `L:A32NX_FCU_AP_2_LIGHT_ON` | 0/1 | `K:A32NX.FCU_AP_2_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| A/THR push button (main 1,3; fcu 3,4) | `L:A32NX_FCU_ATHR_LIGHT_ON` | 0/1 | `K:A32NX.FCU_ATHR_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| LOC push button (main 1,4; fcu 4,4) | `L:A32NX_FCU_LOC_LIGHT_ON` | 0/1 | `K:A32NX.FCU_LOC_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| APPR push button (main 1,5; fcu 4,5) | `L:A32NX_FCU_APPR_LIGHT_ON` | 0/1 | `K:A32NX.FCU_APPR_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| EXPED push button (fcu 3,5) | `L:A32NX_FCU_EXPED_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EXPED_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| FD push button, Captain (main 1,6; fcu 2,1) | `L:A32NX_FCU_EFIS_L_FD_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_FD_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| LS push button, Captain (main 1,7; fcu 3,1) | `L:A32NX_FCU_EFIS_L_LS_LIGHT_ON` | 0/1 | `K:A32NX.FCU_EFIS_L_LS_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| FCU powered (read by the script; blank readouts when not 1) | `L:A32NX_FCU_HEALTHY` | 0/1 | (read only) | none | FBW-SIMVARS | Unverified |
+| SPD/MACH window (main 2,1; fcu 2,2) | `lua:XL24-A32NX:SPD`, which reads `L:A32NX_FCU_AFS_DISPLAY_SPD_MACH_VALUE`, `L:A32NX_FCU_AFS_DISPLAY_SPD_MACH_DASHES`, `L:A32NX_FCU_AFS_DISPLAY_SPD_MACH_MANAGED`, `L:A32NX_FCU_AFS_DISPLAY_MACH_MODE` | knots, or Mach as a decimal (0.1..0.99); dashes and managed dot 0/1 | knob push `K:A32NX.FCU_SPD_PUSH` (readout press), pull `K:A32NX.FCU_SPD_PULL` (fcu 4,2), turn `K:A32NX.FCU_SPD_INC` / `K:A32NX.FCU_SPD_DEC` (fcu 1,2 / 3,2) | other text format in the script only | FBW-SIMVARS, FBW-EVENTS, FBW-API | Unverified |
+| SPD/MACH button (fcu 1,4) | `L:A32NX_FCU_AFS_DISPLAY_MACH_MODE` | 0 SPD, 1 MACH | `K:A32NX.FCU_SPD_MACH_TOGGLE_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| HDG/TRK window (main 2,2; fcu 2,3) | `lua:XL24-A32NX:HDG`, which reads `L:A32NX_FCU_AFS_DISPLAY_HDG_TRK_VALUE`, `L:A32NX_FCU_AFS_DISPLAY_HDG_TRK_DASHES`, `L:A32NX_FCU_AFS_DISPLAY_HDG_TRK_MANAGED` | degrees 0..359 | knob push `K:A32NX.FCU_HDG_PUSH`, pull `K:A32NX.FCU_HDG_PULL` (fcu 4,3), turn `K:A32NX.FCU_HDG_INC` / `K:A32NX.FCU_HDG_DEC` (fcu 1,3 / 3,3) | as SPD | FBW-SIMVARS, FBW-EVENTS, FBW-API | Unverified |
+| HDG-V/S / TRK-FPA button (fcu 1,5; also read by the script for V/S) | `L:A32NX_FCU_AFS_DISPLAY_TRK_FPA_MODE` | 0 HDG-V/S, 1 TRK-FPA | `K:A32NX.FCU_TRK_FPA_TOGGLE_PUSH` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| ALT window (main 2,3; fcu 2,6) | `lua:XL24-A32NX:ALT`, which reads `L:A32NX_FCU_AFS_DISPLAY_ALT_VALUE`, `L:A32NX_FCU_AFS_DISPLAY_LVL_CH_MANAGED` | feet 100..49000 | knob push `K:A32NX.FCU_ALT_PUSH`, pull `K:A32NX.FCU_ALT_PULL` (fcu 4,6), turn `K:A32NX.FCU_ALT_INC` / `K:A32NX.FCU_ALT_DEC` (fcu 1,6 / 3,6; no parameter = "Use FCU setting") | as SPD | FBW-SIMVARS, FBW-EVENTS, FBW-API | Unverified |
+| ALT increment 100/1000 (fcu 4,1) | `L:A32NX_FCU_ALT_INCREMENT_1000` | 0 = 100, 1 = 1000 | `K:A32NX.FCU_ALT_INCREMENT_TOGGLE` | as AP1 | FBW-SIMVARS, FBW-EVENTS | Unverified |
+| V/S-FPA window (main 2,4; fcu 2,7) | `lua:XL24-A32NX:VS`, which reads `L:A32NX_FCU_AFS_DISPLAY_VS_FPA_VALUE`, `L:A32NX_FCU_AFS_DISPLAY_VS_FPA_DASHES` | ft/min, or degrees in FPA mode | knob push `K:A32NX.FCU_VS_PUSH`, pull `K:A32NX.FCU_VS_PULL` (fcu 4,7), turn `K:A32NX.FCU_VS_INC` / `K:A32NX.FCU_VS_DEC` (fcu 1,7 / 3,7) | as SPD | FBW-SIMVARS, FBW-EVENTS, FBW-API | Unverified |
+| Baro window, Captain (main 2,5; fcu 2,8) | `lua:XL24-A32NX:BARO`, which reads `L:A32NX_FCU_EFIS_L_DISPLAY_BARO_VALUE`, `L:A32NX_FCU_EFIS_L_DISPLAY_BARO_VALUE_MODE` | hPa or inHg; mode 0 STD, 1 hPa, 2 inHg | push (QNH) `K:A32NX.FCU_EFIS_L_BARO_PUSH` (readout press), pull (STD) `K:A32NX.FCU_EFIS_L_BARO_PULL` (readout long press), turn `K:A32NX.FCU_EFIS_L_BARO_INC` / `K:A32NX.FCU_EFIS_L_BARO_DEC` (fcu 1,8 / 3,8) | as SPD; push/pull meaning is aircraft knowledge | FBW-SIMVARS, FBW-EVENTS, FBW-API | Unverified |
+| Baro unit hPa/inHg, Captain (fcu 4,8) | `L:A32NX_FCU_EFIS_L_BARO_IS_INHG` | 0 hPa, 1 inHg | `L:A32NX_FCU_EFIS_L_BARO_IS_INHG`, On `1` / Off `0` (L-Var write) | readout only | FBW-API, FBW-SIMVARS | Unverified |
+| ND mode, Captain (main 2,6) | `L:A32NX_FCU_EFIS_L_EFIS_MODE` | 0 ROSE ILS, 1 ROSE VOR, 2 ROSE NAV, 3 ARC, 4 PLAN | `lua:XL24-A32NX:NDMODE(1)`, long press `lua:XL24-A32NX:NDMODE(-1)` (the script writes the L-Var, 0..4) | readout only | FBW-API, FBW-SIMVARS; README 2.1.1 LUAFUNC | Unverified |
+| ND range, Captain (main 2,7) | `L:A32NX_FCU_EFIS_L_EFIS_RANGE` | 0 = 10, 1 = 20, 2 = 40, 3 = 80, 4 = 160, 5 = 320 NM | `lua:XL24-A32NX:NDRANGE(1)`, long press `lua:XL24-A32NX:NDRANGE(-1)` (the script writes the L-Var, 0..5) | readout only | FBW-API, FBW-SIMVARS; README 2.1.1 LUAFUNC | Unverified |
+| MASTER WARNING (main 3,1) | `L:A32NX_MASTER_WARNING` | 0/1 | `L:A32NX_MASTER_WARNING`, On `0` / Off `0` (writes 0; no press event documented) | readout only | FBW-API, FBW-WARN | Unverified |
+| MASTER CAUTION (main 3,2) | `L:A32NX_MASTER_CAUTION` | 0/1 | `L:A32NX_MASTER_CAUTION`, On `0` / Off `0` | readout only | FBW-API, FBW-WARN | Unverified |
+| Parking brake lever (main 3,3) | `L:A32NX_PARK_BRAKE_LEVER_POS` | 0/1 | `L:A32NX_PARK_BRAKE_LEVER_POS`, On `1` / Off `0` | `K:PARKING_BRAKES` | FBW-API, FBW-SIMVARS, FBW-REL | Unverified |
+| Flaps lever (main 3,4) | `L:A32NX_FLAPS_HANDLE_INDEX` | 0 UP, 1, 2, 3, 4 FULL | `K:FLAPS_INCR` (press), `K:FLAPS_DECR` (long press) | none | FBW-API, FBW-SIMVARS | Unverified |
+| Ground spoilers armed (main 3,5) | `L:A32NX_SPOILERS_ARMED` | 0/1 | `K:SPOILERS_ARM_TOGGLE` | none | FBW-API, FBW-SIMVARS | Unverified |
+| Autobrake LO / MED / MAX (main 3,6 / 3,7 / 3,8) | `L:A32NX_AUTOBRAKES_ARMED_MODE` (On `1` / `2` / `3`, Off `0`) | 0 DIS, 1 LO, 2 MED, 3 MAX | `K:A32NX.AUTOBRAKE_BUTTON_LO`, `K:A32NX.AUTOBRAKE_BUTTON_MED`, `K:A32NX.AUTOBRAKE_BUTTON_MAX` | as AP1 | FBW-EVENTS, FBW-API | Unverified |
+| Strobe (main 4,1; ovhd 1,2) | `L:LIGHTING_STROBE_0` | 0 ON, 1 AUTO, 2 OFF | `L:LIGHTING_STROBE_0`, On `0` / Off `1` (ON / AUTO) | `K:STROBES_TOGGLE` (ON and OFF only, no AUTO) | FBW-API | Unverified |
+| Beacon (main 4,2; ovhd 1,3) | `(A:LIGHT BEACON, Bool)` | 0/1 | `K:TOGGLE_BEACON_LIGHTS` | none | FBW-API, SDK-ELECE | Unverified |
+| Wing lights (ovhd 1,4) | `(A:LIGHT WING, Bool)` | 0/1 | `K:TOGGLE_WING_LIGHTS` | none | FBW-API, SDK-ELECE | Unverified |
+| NAV & LOGO (main 4,3; ovhd 1,5) | `B:A32NX_OVH_LIGHTS_NAV_LOGO_SW` (input event) | 0 OFF, 1 SYS 1, 2 SYS 2 | `B:A32NX_OVH_LIGHTS_NAV_LOGO_SW`, On `1` / Off `0` (B-Var command) | the form `InputEvents.txt` lists; read `L:A32NX_LIGHTS_NAV_LOGO` (FBW-REL) | FBW-IE, FBW-REL; README 2.1.1 BVAR | Unverified |
+| Runway turn-off lights (ovhd 1,6) | `(A:CIRCUIT SWITCH ON:21, Bool)` (left; right is `:22`) | 0/1 | `K:ELECTRICAL_CIRCUIT_TOGGLE:21:K:ELECTRICAL_CIRCUIT_TOGGLE:22` (K-event sequence) | readout only | FBW-API, SDK-ELECE; PD-PI line 195 | Unverified |
+| Landing light left / right (main 4,4 / 4,5; ovhd 1,7 / 1,8) | `L:LIGHTING_LANDING_2` / `L:LIGHTING_LANDING_3` | 0 ON, 1 OFF, 2 RETRACT | `L:LIGHTING_LANDING_2` / `L:LIGHTING_LANDING_3`, On `0` / Off `2` | readout only | FBW-API | Unverified |
+| Nose light (main 4,6; ovhd 2,1) | `L:LIGHTING_LANDING_1` | 0 T.O., 1 TAXI, 2 OFF | `L:LIGHTING_LANDING_1`, On `0` / Off `1` | readout only | FBW-API | Unverified |
+| Seat belts sign (main 4,7; ovhd 2,2) | `(A:CABIN SEATBELTS ALERT SWITCH, Bool)` | 0/1 | `K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE` | none | FBW-API | Unverified |
+| No smoking sign (ovhd 2,3) | `L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION` | 0 ON, 1 AUTO, 2 OFF | `L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION`, On `0` / Off `1` | readout only | FBW-API | Unverified |
+| BAT 1 / BAT 2 (ovhd 3,1 / 3,2) | `L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO` / `L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO` | 1 AUTO, 0 OFF | `L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO` / `L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO`, On `1` / Off `0` | readout only | FBW-API, FBW-SIMVARS | Unverified |
+| EXT PWR (ovhd 3,3) | `L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON` | 0/1 | `L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON`, On `1` / Off `0` | readout only | FBW-API | Unverified |
+| APU master switch (ovhd 3,4) | `L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON` | 0/1 | `L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON`, On `1` / Off `0` | readout only | FBW-API, FBW-SIMVARS | Unverified |
+| APU start (ovhd 3,5) | `L:A32NX_OVHD_APU_START_PB_IS_ON` | 0/1 | `L:A32NX_OVHD_APU_START_PB_IS_ON`, On `1` / Off `1` (always writes 1) | readout only | FBW-API, FBW-SIMVARS | Unverified |
+| APU available (ovhd 3,6) | `L:A32NX_OVHD_APU_START_PB_IS_AVAILABLE` | 0/1 | (read only) | none | FBW-API, FBW-SIMVARS | Unverified |
+
+Sources: the tags of [phase4-a32nx.md](phase4-a32nx.md), "Sources": FBW-SIMVARS (FlyByWire
+`fbw-a32nx/docs/a320-simvars.md`), FBW-EVENTS (`fbw-a32nx/docs/a320-events.md`), FBW-IE
+(`fbw-a32nx/docs/a32nx-input-events.md`), FBW-API (the FlyByWire Flight Deck API page; "might lag behind the
+current developments of the A32NX"), FBW-REL (the v2024.1.0 release notes), FBW-WARN (the glareshield warning
+page), SDK-ELECE (MSFS 2024 SDK Aircraft Electrical Events), README and PD-PI (PilotsDeck). Weak points the
+hand test decides: the `A32NX.*` events sent as K-Vars (inferred from FlyByWire's SimConnect interface and
+PilotsDeck's source), WARN/CAUT cleared by writing 0, the `LIGHTING_*` L-Vars in the MSFS 2024 build, the NAV
+LOGO B-Var form, RWY TURN by circuit toggles, baro push = QNH / pull = STD, the Mach and FPA display scale.

@@ -1,0 +1,1023 @@
+{
+  "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables in docs/phase4-a32nx.md ('## Key table', '## Key table: fcu', '## Key table: ovhd') are the reference; check.py compares them. 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
+  "profile_name": "MSFS2024 A32NX",
+  "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile",
+  "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
+  "spec": "docs/phase4-a32nx.md",
+  "grid": {
+    "rows": 4,
+    "columns": 8
+  },
+  "back_key_pos": "1,1",
+  "phase1_keys": [],
+  "pages": [
+    {
+      "id": "main",
+      "keys": [
+        {
+          "pos": "1,1",
+          "title": "AP1",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_AP_1_PUSH",
+            "Address": "L:A32NX_FCU_AP_1_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,2",
+          "title": "AP2",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_AP_2_PUSH",
+            "Address": "L:A32NX_FCU_AP_2_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "A/THR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_ATHR_PUSH",
+            "Address": "L:A32NX_FCU_ATHR_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "LOC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_LOC_PUSH",
+            "Address": "L:A32NX_FCU_LOC_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "APPR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_APPR_PUSH",
+            "Address": "L:A32NX_FCU_APPR_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_FD_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_FD_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "LS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_LS_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_LS_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "FCU",
+          "folder": "fcu"
+        },
+        {
+          "pos": "2,1",
+          "title": "SPD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:SPD",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_PUSH"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:HDG",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_HDG_PUSH"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ALT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:ALT",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_PUSH"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "V/S",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:VS",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_VS_PUSH"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:BARO",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_PUSH",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:A32NX.FCU_EFIS_L_BARO_PULL"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "ND MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_EFIS_MODE",
+            "Format": "",
+            "ValueMappings": "0=ILS:1=VOR:2=NAV:3=ARC:4=PLAN",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NDMODE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NDMODE(-1)"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "ND RNG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_EFIS_RANGE",
+            "Format": "",
+            "ValueMappings": "0=10:1=20:2=40:3=80:4=160:5=320",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:NDRANGE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:NDRANGE(-1)"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "OVHD",
+          "folder": "ovhd"
+        },
+        {
+          "pos": "3,1",
+          "title": "WARN",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_MASTER_WARNING",
+            "AddressAction": "L:A32NX_MASTER_WARNING",
+            "SwitchOnState": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "CAUT",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_MASTER_CAUTION",
+            "AddressAction": "L:A32NX_MASTER_CAUTION",
+            "SwitchOnState": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "PARK",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_PARK_BRAKE_LEVER_POS",
+            "AddressAction": "L:A32NX_PARK_BRAKE_LEVER_POS",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FLAPS_HANDLE_INDEX",
+            "Format": "",
+            "ValueMappings": "0=UP:1=1:2=2:3=3:4=FULL",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "GND SPLR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:SPOILERS_ARM_TOGGLE",
+            "Address": "L:A32NX_SPOILERS_ARMED"
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "3,6",
+          "title": "BRK LO",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.AUTOBRAKE_BUTTON_LO",
+            "Address": "L:A32NX_AUTOBRAKES_ARMED_MODE"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "BRK MED",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.AUTOBRAKE_BUTTON_MED",
+            "Address": "L:A32NX_AUTOBRAKES_ARMED_MODE",
+            "OnState": "2"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "BRK MAX",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.AUTOBRAKE_BUTTON_MAX",
+            "Address": "L:A32NX_AUTOBRAKES_ARMED_MODE",
+            "OnState": "3"
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "STROBE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_STROBE_0",
+            "Format": "",
+            "ValueMappings": "0=ON:1=AUTO:2=OFF",
+            "AddressAction": "L:LIGHTING_STROBE_0",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "BEACON",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_BEACON_LIGHTS",
+            "Address": "(A:LIGHT BEACON, Bool)"
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "NAV LOGO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:A32NX_OVH_LIGHTS_NAV_LOGO_SW",
+            "AddressAction": "B:A32NX_OVH_LIGHTS_NAV_LOGO_SW",
+            "ActionType": 13,
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "DoNotRequestBvar": false,
+            "Format": "",
+            "ValueMappings": "0=OFF:1=SYS 1:2=SYS 2"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "LAND L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_2",
+            "Format": "",
+            "ValueMappings": "0=ON:1=OFF:2=RETR",
+            "AddressAction": "L:LIGHTING_LANDING_2",
+            "SwitchOnState": "0",
+            "SwitchOffState": "2"
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "LAND R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_3",
+            "Format": "",
+            "ValueMappings": "0=ON:1=OFF:2=RETR",
+            "AddressAction": "L:LIGHTING_LANDING_3",
+            "SwitchOnState": "0",
+            "SwitchOffState": "2"
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "NOSE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_1",
+            "Format": "",
+            "ValueMappings": "0=T.O.:1=TAXI:2=OFF",
+            "AddressAction": "L:LIGHTING_LANDING_1",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "SEAT BELT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE",
+            "Address": "(A:CABIN SEATBELTS ALERT SWITCH, Bool)"
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "4,8",
+          "empty": "Reserved: CHECKLIST (Phase 5)"
+        }
+      ]
+    },
+    {
+      "id": "fcu",
+      "parent": "main",
+      "note": "FCU: knob +/- and PULL keys, readouts, AP/A/THR/LOC/APPR/EXPED, FD/LS, mode toggles (P4-1)",
+      "spec": "docs/phase4-a32nx.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "SPD+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "HDG+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_HDG_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "SPD/MACH",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_AFS_DISPLAY_MACH_MODE",
+            "Format": "",
+            "ValueMappings": "0=SPD:1=MACH",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_MACH_TOGGLE_PUSH"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "TRK/FPA",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_AFS_DISPLAY_TRK_FPA_MODE",
+            "Format": "",
+            "ValueMappings": "0=HDG VS:1=TRK FPA",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_TRK_FPA_TOGGLE_PUSH"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "ALT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "V/S+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_VS_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "BARO+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_FD_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_FD_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "SPD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:SPD",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_PUSH"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "HDG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:HDG",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_HDG_PUSH"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "AP1",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_AP_1_PUSH",
+            "Address": "L:A32NX_FCU_AP_1_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "AP2",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_AP_2_PUSH",
+            "Address": "L:A32NX_FCU_AP_2_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "ALT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:ALT",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_PUSH"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "V/S",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:VS",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_VS_PUSH"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:BARO",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_PUSH",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:A32NX.FCU_EFIS_L_BARO_PULL"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "LS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EFIS_L_LS_PUSH",
+            "Address": "L:A32NX_FCU_EFIS_L_LS_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "SPD-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "HDG-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_HDG_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "A/THR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_ATHR_PUSH",
+            "Address": "L:A32NX_FCU_ATHR_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "EXPED",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_EXPED_PUSH",
+            "Address": "L:A32NX_FCU_EXPED_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "ALT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "V/S-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_VS_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "BARO-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_EFIS_L_BARO_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "ALT STEP",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_ALT_INCREMENT_1000",
+            "Format": "",
+            "ValueMappings": "0=100:1=1000",
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_INCREMENT_TOGGLE"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "SPD PULL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_SPD_PULL",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "4,3",
+          "title": "HDG PULL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_HDG_PULL",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "4,4",
+          "title": "LOC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_LOC_PUSH",
+            "Address": "L:A32NX_FCU_LOC_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "APPR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:A32NX.FCU_APPR_PUSH",
+            "Address": "L:A32NX_FCU_APPR_LIGHT_ON"
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "ALT PULL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_ALT_PULL",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "4,7",
+          "title": "V/S PULL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:A32NX.FCU_VS_PULL",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "4,8",
+          "title": "hPa/inHg",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FCU_EFIS_L_BARO_IS_INHG",
+            "Format": "",
+            "ValueMappings": "0=hPa:1=inHg",
+            "AddressAction": "L:A32NX_FCU_EFIS_L_BARO_IS_INHG",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ovhd",
+      "parent": "main",
+      "note": "Overhead: exterior lights, signs, BAT, EXT PWR, APU (P4-1)",
+      "spec": "docs/phase4-a32nx.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "STROBE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_STROBE_0",
+            "Format": "",
+            "ValueMappings": "0=ON:1=AUTO:2=OFF",
+            "AddressAction": "L:LIGHTING_STROBE_0",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "BEACON",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_BEACON_LIGHTS",
+            "Address": "(A:LIGHT BEACON, Bool)"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "WING",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_WING_LIGHTS",
+            "Address": "(A:LIGHT WING, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "NAV LOGO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:A32NX_OVH_LIGHTS_NAV_LOGO_SW",
+            "AddressAction": "B:A32NX_OVH_LIGHTS_NAV_LOGO_SW",
+            "ActionType": 13,
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "DoNotRequestBvar": false,
+            "Format": "",
+            "ValueMappings": "0=OFF:1=SYS 1:2=SYS 2"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "RWY TURN",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:ELECTRICAL_CIRCUIT_TOGGLE:21:K:ELECTRICAL_CIRCUIT_TOGGLE:22",
+            "Address": "(A:CIRCUIT SWITCH ON:21, Bool)"
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "1,7",
+          "title": "LAND L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_2",
+            "Format": "",
+            "ValueMappings": "0=ON:1=OFF:2=RETR",
+            "AddressAction": "L:LIGHTING_LANDING_2",
+            "SwitchOnState": "0",
+            "SwitchOffState": "2"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "LAND R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_3",
+            "Format": "",
+            "ValueMappings": "0=ON:1=OFF:2=RETR",
+            "AddressAction": "L:LIGHTING_LANDING_3",
+            "SwitchOnState": "0",
+            "SwitchOffState": "2"
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "NOSE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:LIGHTING_LANDING_1",
+            "Format": "",
+            "ValueMappings": "0=T.O.:1=TAXI:2=OFF",
+            "AddressAction": "L:LIGHTING_LANDING_1",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "SEAT BELT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE",
+            "Address": "(A:CABIN SEATBELTS ALERT SWITCH, Bool)"
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "2,3",
+          "title": "NO SMOKE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION",
+            "Format": "",
+            "ValueMappings": "0=ON:1=AUTO:2=OFF",
+            "AddressAction": "L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "BAT 1",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO",
+            "AddressAction": "L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "BAT 2",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO",
+            "AddressAction": "L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "EXT PWR",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON",
+            "AddressAction": "L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "APU MSTR",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON",
+            "AddressAction": "L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "3,5",
+          "title": "APU START",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_OVHD_APU_START_PB_IS_ON",
+            "AddressAction": "L:A32NX_OVHD_APU_START_PB_IS_ON",
+            "SwitchOffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "3,6",
+          "title": "APU AVAIL",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_OVHD_APU_START_PB_IS_AVAILABLE",
+            "Format": "",
+            "ValueMappings": "0=---:1=AVAIL"
+          }
+        },
+        {
+          "pos": "2,4",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "2,5",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "2,6",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "2,7",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "2,8",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "3,7",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "3,8",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,1",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,2",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,3",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,4",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,5",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,6",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,7",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        },
+        {
+          "pos": "4,8",
+          "empty": "Reserved for a later unit (XPDR/TCAS, EMER EXIT and others)"
+        }
+      ]
+    }
+  ]
+}

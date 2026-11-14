@@ -653,3 +653,66 @@ Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or chang
 - [ ] Record each step's result, the real steps (HDG, CRS, ALT short and long, VS, SPD), the ALT long-press
   outcome (step or set), the VNV three answers, whether FLC took the current IAS, armed versus active for
   NAV/APR, the sim version, and every fallback or change.
+
+## Phase 4: A32NX profile (P4-1)
+
+Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD
+pages) and the script `XL24-A32NX.lua`. Not yet tested in the app or the sim. Record: date, MSFS 2024
+version, A32NX version (FlyByWire Installer), PilotsDeck version, and every fallback or changed value you used.
+
+**Before you start**
+- [ ] Install the A32NX for MSFS 2024 with the FlyByWire Installer (`A:\FS2024 Stuff`; Stable, v2024.1.0 or
+  later, MSFS 2024 selected in its header). Record the version.
+- [ ] Copy `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua` into
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\` (or install the built
+  package with the Profile Manager). Copy it again after any change to it in the repo.
+
+**Import (no sim needed)**
+- [ ] Import `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile` as
+  docs/phase4-a32nx.md "Import the profile" says, and select `MSFS2024 A32NX`. The C172 profiles stay as
+  they were.
+- [ ] The main page matches the layout in the doc; `FCU` (1,8) and `OVHD` (2,8) open their pages; each back
+  key (1,1) returns to the main page; 4,8 on the main page and the 15 reserved OVHD positions are empty.
+- [ ] Select `AP1`, `STROBE`, `ND MODE`, `SPD` and `WARN` and compare their settings panels with the doc's Key
+  table (command type, addresses, On/Off values, long press). Record every field that differs.
+
+**Read only, first flight (load the A32NX cold and dark)**
+- [ ] Record the aircraft string from the PilotsDeck log (`log\PilotsDeck<date>.log`, "Aircraft String
+  changed to") and map the profile to it in the Profile Manager.
+- [ ] Open the plugin's `InputEvents.txt` (written for the loaded aircraft) and record which `A32NX_` and
+  `LIGHTING_` input events it lists, and whether `A32NX_OVH_LIGHTS_NAV_LOGO_SW` is there and in which form.
+- [ ] Cold and dark: the SPD, HDG, ALT, V/S and BARO readouts are blank; the other keys show the cockpit's
+  switch positions.
+
+**Each key, both directions (power on: batteries, external power or APU)**
+For every key: press it and check the cockpit control and the key; then move the control in the cockpit
+with the mouse and check that the key follows without a key being pressed.
+- [ ] Main: AP1, AP2, A/THR, LOC, APPR, FD, LS light with the FCU and EFIS buttons.
+- [ ] Main: SPD, HDG, ALT, V/S, BARO show the FCU and EFIS windows: dashes, ` *` when managed, Mach as `.78`
+  after SPD/MACH, the V/S sign, FPA after TRK/FPA, `STD` after a baro pull. A readout press pushes its knob;
+  a BARO long press (at least 0.5 s) pulls it (STD) and a press pushes it (QNH): record what each does.
+- [ ] Main: ND MODE and ND RNG step once per press (long press one step back) and match the ND.
+- [ ] Main: WARN and CAUT light with a master warning or caution; a press clears the light. Record whether
+  the aural warning stops too.
+- [ ] Main: PARK, FLAPS (press one notch down, long press one notch up), GND SPLR, BRK LO/MED/MAX (record
+  the image of the two not-selected BRK keys), STROBE (ON/AUTO), BEACON, NAV LOGO (SYS 1/OFF; set SYS 2 in
+  the cockpit and check the key shows it), LAND L, LAND R (ON/RETRACT), NOSE (T.O./TAXI), SEAT BELT.
+- [ ] FCU: each `+` / `-` key steps its window once per press (ALT by 100 or 1000 ft, as ALT STEP shows);
+  each PULL key pulls its knob; SPD/MACH, TRK/FPA, ALT STEP and hPa/inHg toggle and read back.
+- [ ] OVHD: WING, RWY TURN (both lights), NO SMOKE (ON/AUTO), BAT 1, BAT 2, EXT PWR (with a GPU connected),
+  APU MSTR, APU START, APU AVAIL (lights when the APU is available).
+- [ ] If an `A32NX.*` key does nothing: plugin log "Running Command" line for it, and any error; then
+  record it (the doc's fallback is a Lua `SimCalculator` call).
+
+**Unpowered and other aircraft**
+- [ ] Batteries off: the FCU readouts are blank, ND MODE / ND RNG presses do nothing, and the keys show the
+  read state.
+- [ ] Load the C172 G1000 and select `MSFS2024 A32NX` by hand: readouts blank. Press STROBE, LAND L, NOSE,
+  BEACON and record whether anything in the C172 moves; then switch back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the aircraft string, the input
+  events found, the MSFS and A32NX versions, and every fallback or change.

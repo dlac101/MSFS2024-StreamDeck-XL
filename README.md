@@ -23,6 +23,7 @@ Optional local icon build of the same profile (Guenseli pack, personal use only,
 COM1 number pad under More (MORE 1,5; a Lua script sets the frequency; generated, not yet sim-tested; the script must be copied into the plugin's Scripts folder): [docs/phase2-com1-pad.md](docs/phase2-com1-pad.md).
 Autopilot page under More (MORE 1,6; GFC 700 mode keys lit from sim state, heading, course, altitude, VS and FLC speed readouts with step keys; generated, not yet sim-tested): [docs/phase3-autopilot.md](docs/phase3-autopilot.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
+**Phase 4: FlyByWire A32NX profile (main, FCU and OVHD pages), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md).
 ## Layout
 
 ```text
@@ -37,6 +38,7 @@ docs/
   phase2-com1-pad.md    Phase 2 COM1 pad (MORE > COM PAD): number pad, Lua script, key-by-key reference (C172 G1000)
   phase3-autopilot.md   Phase 3 Autopilot page (MORE > AUTOPILOT, GFC 700): mode keys, readouts, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
+  phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main, FCU and OVHD pages, Lua script XL24-A32NX.lua, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon build (Guenseli pack, personal use only, never committed)

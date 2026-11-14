@@ -18,8 +18,9 @@ page ideas come from [original-plan.md](original-plan.md).
 - **At most two levels below the main page** (main > folder > sub-folder), so any page is at most two
   back presses from the main page. The Fenix XL profile goes five levels deep; this project keeps it
   shallow on purpose.
-- **Folder keys keep their positions** on the main page across versions and aircraft, so the grid stays
+- **Folder keys keep their positions** on the main page across versions of a profile, so the grid stays
   familiar. A function that doesn't exist on an aircraft leaves its key empty instead of moving others.
+  A profile for another aircraft type may have its own main-page grid ("MSFS2024 A32NX pages" below).
 - Nothing on any page depends on the connected flight controls (Xbox Elite or T.16000M/TWCS).
 - **Key titles at 14 by default** (`tools/profilegen/generate.py`: on Simple and Dynamic Buttons a template
   title size of 10 becomes 14; keys at 15 and folder and back keys at 12 stay). Readout keys (COM Radio,
@@ -43,8 +44,9 @@ page ideas come from [original-plan.md](original-plan.md).
 Main page position 4,7 (Anti-ice) stays a reserved key, not a folder. (3,7 was reserved for a timer; it
 is the `SIM RATE` folder now, and a later timer unit takes a free position.)
 
-Other aircraft (plan, Phase 4): each gets its own profile with its own permanent name, the same main-page
-grid and the same folder positions where the function applies.
+Other aircraft (Phase 4): each gets its own profile with its own permanent name. The A32NX profile has its
+own main-page grid ("MSFS2024 A32NX pages"); a later aircraft uses this grid and these folder positions
+where the function applies, unless its own grid is decided for it.
 
 - **Page levels (plan):** original-plan.md sorts functions into three levels: universal (parking brake,
   gear, flaps, lights, ATC, maps, views, page navigation), aircraft-class (GA autopilot and Garmin avionics,
@@ -69,3 +71,18 @@ grid and the same folder positions where the function applies.
    `check.py` checks folder keys on every page (each opens the child page the data file and the doc's row
    name, and no page is opened twice), the back key at 1,1 on every child page, and at most two folder
    levels below the main page: a folder key on a second-level page fails the check.
+
+## MSFS2024 A32NX pages
+
+The FlyByWire A32NX profile `MSFS2024 A32NX` ([phase4-a32nx.md](phase4-a32nx.md), generated, not yet
+sim-tested) follows the same rules: one main page (no back key), child pages opened by folder keys, the back
+key at 1,1 on every child page, one folder level so far.
+
+| Main page key | Child page | Holds now |
+|---|---|---|
+| 1,8 `FCU` | fcu | back key; the FCU knobs as columns (`+` above the readout above `-`, PULL at the bottom: SPD, HDG, ALT, V/S, baro), SPD/MACH, TRK/FPA, ALT STEP, hPa/inHg, AP1, AP2, A/THR, LOC, APPR, EXPED, FD, LS; no empty position |
+| 2,8 `OVHD` | ovhd | back key; exterior lights (STROBE, BEACON, WING, NAV LOGO, RWY TURN, LAND L/R, NOSE), SEAT BELT, NO SMOKE, BAT 1/2, EXT PWR, APU MSTR, APU START, APU AVAIL; 15 empty positions reserved for a later unit |
+
+Main page position 4,8 is reserved for CHECKLIST (Phase 5), not a folder yet. The A32NX main page has its own
+grid (FCU buttons, readouts, flight controls, lights): the C172 profile's VIEWS, SIM RATE and MORE folders are
+not on it, and its CHECKLIST reservation is at 4,8 (the C172 has CHECKLIST at 3,8).
