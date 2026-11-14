@@ -449,7 +449,7 @@
     {
       "id": "more",
       "parent": "main",
-      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad; later: autopilot values, radios",
+      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad, autopilot (P3-1); later: radios",
       "keys": [
         {
           "pos": "1,2",
@@ -470,6 +470,11 @@
           "pos": "1,5",
           "title": "COM PAD",
           "folder": "compad"
+        },
+        {
+          "pos": "1,6",
+          "title": "AUTOPILOT",
+          "folder": "autopilot"
         }
       ],
       "spec": "docs/phase2-g1000-vspeeds.md"
@@ -1700,6 +1705,325 @@
         }
       ],
       "spec": "docs/phase2-com1-pad.md"
+    },
+    {
+      "id": "autopilot",
+      "parent": "more",
+      "note": "Autopilot (GFC 700): mode keys lit from sim state; HDG, CRS, ALT, VS and FLC speed steps with readouts (P3-1)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "AP",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_MASTER",
+            "Address": "(A:AUTOPILOT MASTER, Bool)"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_FLIGHT_DIRECTOR",
+            "Address": "(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "HDG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_HDG_HOLD",
+            "Address": "(A:AUTOPILOT HEADING LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "NAV",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_NAV1_HOLD",
+            "Address": "(A:AUTOPILOT NAV1 LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "APR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_APR_HOLD",
+            "Address": "(A:AUTOPILOT APPROACH HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "BC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_BC_HOLD",
+            "Address": "(A:AUTOPILOT BACKCOURSE HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "VNV",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:XMLVAR_VNAVButtonValue",
+            "AddressAction": "B:as1000_autopilot_vertical_navigation_pfd",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "ALT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_ALT_HOLD",
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:HEADING_BUG_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "CRS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_CRS_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:VOR1_OBI_FAST_INC"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ALT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_ALT_VAR_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:AP_ALT_VAR_INC:1000"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "VS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_VS_VAR_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "SPD+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_SPD_VAR_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "empty": "YD: the 2024 C172 G1000 (GFC 700) has no yaw damper button or input event; reserved (docs/phase3-autopilot.md)"
+        },
+        {
+          "pos": "3,1",
+          "title": "VS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_VS_HOLD",
+            "Address": "(A:AUTOPILOT VERTICAL HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "HDG BUG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT HEADING LOCK DIR, Degrees)",
+            "Format": "3.0:%s°",
+            "ActionType": 16,
+            "AddressAction": "K:AP_HDG_CURRENT_HDG_SET"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "CRS1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV OBS:1, Degrees)",
+            "Format": "3.0:%s°",
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_CRS_PUSH"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "ALT SEL",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "VS TGT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "FLC SPD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,7",
+          "empty": "LVL: the 2024 C172 G1000 (GFC 700) has no LVL button or input event; reserved (docs/phase3-autopilot.md)"
+        },
+        {
+          "pos": "4,1",
+          "title": "FLC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FLIGHT_LEVEL_CHANGE",
+            "Address": "(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "HDG-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:HEADING_BUG_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "CRS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:AS1000_PFD_CRS_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:VOR1_OBI_FAST_DEC"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "ALT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_ALT_VAR_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:AP_ALT_VAR_DEC:1000"
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "VS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_VS_VAR_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "SPD-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:AP_SPD_VAR_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        }
+      ],
+      "spec": "docs/phase3-autopilot.md"
     }
   ]
 }

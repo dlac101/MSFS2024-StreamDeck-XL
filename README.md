@@ -21,6 +21,7 @@ Under More: G1000 PFD and MFD bezel pages and a V-speeds page (untested): [docs/
 Sim rate page (behind main page 3,7; repaired after the first sim test, not yet sim-tested): 1X (back to 1x in one press, by a Lua script that steps the rate; the script `XL24-SIMRATE.lua` must be copied into the plugin's Scripts folder), SLOWER (one step down), a RATE readout (press one step up, hold a full second one step down) and FASTER (one step up): [docs/phase2-sim-rate.md](docs/phase2-sim-rate.md).
 Optional local icon build of the same profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md).
 COM1 number pad under More (MORE 1,5; a Lua script sets the frequency; generated, not yet sim-tested; the script must be copied into the plugin's Scripts folder): [docs/phase2-com1-pad.md](docs/phase2-com1-pad.md).
+Autopilot page under More (MORE 1,6; GFC 700 mode keys lit from sim state, heading, course, altitude, VS and FLC speed readouts with step keys; generated, not yet sim-tested): [docs/phase3-autopilot.md](docs/phase3-autopilot.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
 ## Layout
 
@@ -34,6 +35,7 @@ docs/
   phase2-g1000-vspeeds.md  Phase 2 More, G1000 PFD/MFD bezel and V-speeds pages (C172 G1000)
   phase2-sim-rate.md    Phase 2 Sim rate child page: 1X (Lua script XL24-SIMRATE.lua), SLOWER, RATE and FASTER, key-by-key reference (C172 G1000)
   phase2-com1-pad.md    Phase 2 COM1 pad (MORE > COM PAD): number pad, Lua script, key-by-key reference (C172 G1000)
+  phase3-autopilot.md   Phase 3 Autopilot page (MORE > AUTOPILOT, GFC 700): mode keys, readouts, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units

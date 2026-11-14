@@ -248,6 +248,47 @@ profile in ProfilesV3 (an `X:` string shown on a key, Lua commands of type 14), 
 PilotsDeck source (`SimCommand.cs` LUAFUNC = 14; an A-Var with unit `String` is read as text), see
 phase2-com1-pad.md.
 
+### Phase 3 autopilot page
+
+For [phase3-autopilot.md](phase3-autopilot.md) (the second-level page behind MORE 1,6 `AUTOPILOT`; positions
+below are on that page). Generated, not yet sim-tested: all rows are **Unverified** until the checklist
+section "P3-1: Autopilot page (C172 G1000)" passes. The mode keys use the K-event even where the aircraft
+lists an input event, because the value a B-Var push needs is unknown and the cockpit buttons drive the
+same SimVars through these K-events (SDK-APT); VNV is the one B-Var key (no K-event or SimVar exists). The
+reasons per key: phase3-autopilot.md, "Which route each key uses, and why". The mode rows repeat the Phase 2
+main page rows' addresses (same pairs, a second key); the "Selected heading (Phase 3)" row at the top is the
+HDG BUG readout below.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| AP master (autopilot 1,2 `AP`) | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | none needed | SDK-APV; SDK-APE; IE 15 | Unverified on this page (the same pair passed on the Phase 1 key, 2026-11-11, row at the top) |
+| Flight director (1,3 `FD`) | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | `B:as1000_autopilot_fd_pfd` (push value unknown) | SDK-APV; SDK-APE; SDK-APT; IE 21 | Unverified |
+| AP heading mode (1,4 `HDG`) | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | `K:AP_PANEL_HEADING_HOLD`, then `B:as1000_autopilot_heading_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 25 | Unverified |
+| AP NAV mode (1,5 `NAV`) | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | `B:as1000_autopilot_navigation_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 27 | Unverified |
+| AP approach mode (1,6 `APR`) | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | `B:as1000_autopilot_approach_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 17 | Unverified |
+| AP back course mode (1,7 `BC`) | `(A:AUTOPILOT BACKCOURSE HOLD, Bool)` | Bool | `K:AP_BC_HOLD` | `B:as1000_autopilot_backcourse_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 19 | Unverified |
+| AP vertical navigation (1,8 `VNV`) | `L:XMLVAR_VNAVButtonValue` (L-Var read; **weak source**: a general-path SDK template page and a pre-2024 profile, no 2024 source, A-6) | 0/1 assumed | `B:as1000_autopilot_vertical_navigation_pfd`, On `1` / Off `0` (command type 13) | write: an L-Var toggle of `L:XMLVAR_VNAVButtonValue` (needs a ruling and a TOOLS LOCK), else Empty; read: the B-Var itself, else no state; every second press only: the Reset Switch (`UseLvarReset`, README 2.1.2) | IE 29; SDK-APT; lead: Jiblet's C172 G1000 profile; README 2.1.1 | Unverified |
+| AP altitude mode (2,1 `ALT`) | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | `K:AP_PANEL_ALTITUDE_HOLD`, then `B:as1000_autopilot_altitude_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 13 | Unverified |
+| AP vertical speed mode (3,1 `VS`) | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | `K:AP_PANEL_VS_HOLD`, then `B:as1000_autopilot_verticalspeed_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 33 | Unverified |
+| AP FLC mode (4,1 `FLC`) | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` (does not set the speed target to IAS as the cockpit button does, A-9) | `B:as1000_autopilot_flightlevelchange_pfd`, or a Lua script with `K:AP_SPD_VAR_SET` (ruling needed) | SDK-APV; SDK-APE; SDK-APT; IE 23 | Unverified |
+| Heading bug (3,2 `HDG BUG` readout; press = sync) | `(A:AUTOPILOT HEADING LOCK DIR, Degrees)`, Format `3.0:%s°` | Degrees, 0-359 | press `K:AP_HDG_CURRENT_HDG_SET` (no parameter = slot 0, A-5) | read `(A:AUTOPILOT HEADING LOCK DIR:1, Degrees)`; sync `K:AP_HDG_CURRENT_HDG_SET:1`, then `B:as1000_heading_sync_pfd` | SDK-APV; SDK-APE; IE 82; lead: forum report | Unverified |
+| Heading bug step (2,2 `HDG+`, 4,2 `HDG-`) | none (HDG BUG shows it) | 1 degree expected; wrap 359-000 expected (checklist step 4) | `K:HEADING_BUG_INC`, `K:HEADING_BUG_DEC` | `B:as1000_heading_pfd` (value unknown) | SDK-APE; IE 80 | Unverified |
+| NAV1 course (3,3 `CRS1` readout; press = CRS push) | `(A:NAV OBS:1, Degrees)`, Format `3.0:%s°` | Degrees | press `H:AS1000_PFD_CRS_PUSH` (command type 8) | `B:as1000_course_push_pfd` (value unknown) | SDK-RADV; SDK-AS1000; IE 64 | Unverified |
+| Course step (2,3 `CRS+`, 4,3 `CRS-`; long press 10 degrees) | none (CRS1 shows it) | 1 degree; long press 10 degrees, stops at 0/360 | `H:AS1000_PFD_CRS_INC`, `H:AS1000_PFD_CRS_DEC`; long press `K:VOR1_OBI_FAST_INC`, `K:VOR1_OBI_FAST_DEC` | `K:VOR1_OBI_INC`, `K:VOR1_OBI_DEC` | SDK-AS1000; SDK-RADE; README 2.1; IE 62 | Unverified |
+| Selected altitude (3,4 `ALT SEL` readout) | `(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)`, Format `1.0` | Feet | (read only) | `(A:AUTOPILOT ALTITUDE LOCK VAR:1, Feet)` | SDK-APV | Unverified |
+| Selected altitude step (2,4 `ALT+`, 4,4 `ALT-`) | none (ALT SEL shows it) | the sim's step, 100 ft expected; long press 1000 ft expected | `K:AP_ALT_VAR_INC`, `K:AP_ALT_VAR_DEC`; long press `K:AP_ALT_VAR_INC:1000`, `K:AP_ALT_VAR_DEC:1000` (**risk, A-4:** the SDK calls the parameter "New reference altitude", so the long press may set 1000 ft instead of stepping) | long press: the README sequence of ten single steps, or no long press; short press 1000 ft: `K:AP_ALT_VAR_INC:100` / `K:AP_ALT_VAR_DEC:100` | SDK-APE; SDK-AS1000; README 2.1.1, 2.1; IE 7, 9; lead: Jiblet passes 100 and 1000 | Unverified |
+| Vertical speed target (3,5 `VS TGT` readout) | `(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)`, Format `1.0` | ft/min, signed (no `+` drawn) | (read only) | none | SDK-APV; README 2.2.2 | Unverified |
+| Vertical speed target step (2,5 `VS+`, 4,5 `VS-`) | none (VS TGT shows it) | the sim's step, 100 fpm expected | `K:AP_VS_VAR_INC`, `K:AP_VS_VAR_DEC` | `B:as1000_autopilot_verticalspeed_up_pfd` / `B:as1000_autopilot_verticalspeed_down_pfd` (value unknown) | SDK-APE; SDK-AS1000; IE 35, 31 | Unverified |
+| FLC speed target (3,6 `FLC SPD` readout) | `(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)`, Format `1.0` | Knots | (read only) | none | SDK-APV | Unverified |
+| FLC speed target step (2,6 `SPD+`, 4,6 `SPD-`) | none (FLC SPD shows it) | the sim's step | `K:AP_SPD_VAR_INC`, `K:AP_SPD_VAR_DEC` | none | SDK-APE | Unverified |
+
+Sources (read 2026-11-14; URLs in phase3-autopilot.md, "Sources"): SDK-APE = MSFS 2024 SDK autopilot key
+events; SDK-APV = MSFS 2024 SDK autopilot SimVars; SDK-RADV / SDK-RADE = MSFS 2024 SDK radio navigation
+SimVars / events; SDK-AS1000 and SDK-APT = SDK template explorer pages (general `/html/` path) for the
+AS1000 glass cockpit and Asobo's autopilot buttons; README = PilotsDeck README; IE n = line n of
+[reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's profile and the
+forum report are leads only. YD and LVL are not built (no button or input event in this aircraft).
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).

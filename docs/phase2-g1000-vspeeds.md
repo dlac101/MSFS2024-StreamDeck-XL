@@ -25,15 +25,16 @@ with the Xbox Elite controller and the T.16000M + TWCS.
 
 ## MORE page
 
-A menu of further pages. Four folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
-[phase2-com1-pad.md](phase2-com1-pad.md)); the other positions stay free for later folders (autopilot
-values, radios: [navigation.md](navigation.md), "Pages").
+A menu of further pages. Five folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
+[phase2-com1-pad.md](phase2-com1-pad.md); the fifth, `AUTOPILOT` at 1,6, opens the autopilot page:
+[phase3-autopilot.md](phase3-autopilot.md)); the other positions stay free for later folders (radios:
+[navigation.md](navigation.md), "Pages").
 
 ### Layout: more
 
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
-| **Row 1** | < back | PFD > | MFD > | V-SPEEDS > | COM PAD > | | | |
+| **Row 1** | < back | PFD > | MFD > | V-SPEEDS > | COM PAD > | AUTOPILOT > | | |
 | **Row 2** | | | | | | | | |
 | **Row 3** | | | | | | | | |
 | **Row 4** | | | | | | | | |
@@ -51,7 +52,7 @@ action on that key.
 | 1,3 | `MFD` | Folder | (Stream Deck) | Opens the child page **mfd** | none | Folder; the page's keys: "Key table: mfd" below |
 | 1,4 | `V-SPEEDS` | Folder | (Stream Deck) | Opens the child page **vspeeds** | none | Folder; the page's keys: "Key table: vspeeds" below |
 | 1,5 | `COM PAD` | Folder | (Stream Deck) | Opens the child page **compad** | none | Folder; the page's keys: "Key table: compad" in [phase2-com1-pad.md](phase2-com1-pad.md) |
-| 1,6 | | Empty | | | | |
+| 1,6 | `AUTOPILOT` | Folder | (Stream Deck) | Opens the child page **autopilot** | none | Folder; the page's keys: "Key table: autopilot" in [phase3-autopilot.md](phase3-autopilot.md) |
 | 1,7 | | Empty | | | | |
 | 1,8 | | Empty | | | | |
 | 2,1 | | Empty | | | | |

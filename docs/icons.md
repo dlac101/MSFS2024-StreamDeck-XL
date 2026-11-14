@@ -30,7 +30,7 @@ python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.js
 It checks the mapping first (every pack file present with its recorded sha256), then writes:
 
 - `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile`: the icon profile;
-- `.local\icons\Images\Guenseli-C172\`: 23 PNG files, byte copies of the pack files used by PilotsDeck keys.
+- `.local\icons\Images\Guenseli-C172\`: 27 PNG files, byte copies of the pack files used by PilotsDeck keys.
 
 Run it again after a pull that changes the generator, the data file or the mapping. Two runs give the
 same bytes. To check the result: `python tools/profilegen/check_icons.py`.
@@ -42,7 +42,7 @@ it stops (writing nothing) when the image folder holds a file the mapping no lon
 
 1. In File Explorer, copy the folder `.local\icons\Images\Guenseli-C172` into
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\`.
-   Result: `...\Images\Guenseli-C172\*.png`, 23 files.
+   Result: `...\Images\Guenseli-C172\*.png`, 27 files.
 2. Quit and restart the Stream Deck app (normally, not "Run as administrator").
 
 Do this **before** you import the profile or open any key's settings: if a key's image is not in the
@@ -113,8 +113,8 @@ a reason). To change an icon:
 ## Open points (checked by the look test in the checklist)
 
 - **A-3, back key image.** No saved Stream Deck profile on this PC has an image on a back key, so it is not
-  known whether the app shows one. If the back keys show the plain default arrow, the 8 back-key rows go
-  (nothing else changes).
+  known whether the app shows one. If the back keys show the plain default arrow, the back-key rows (one per
+  child page) go (nothing else changes).
 - **A-5, 303x303 images.** Many G1000 and folder images in the pack are 303x303. They are used without
   resizing (PilotsDeck and the Stream Deck app scale them). If DIRECT, FMS OUT- or the PFD folder look
   cropped or blurred, the mapping switches those keys to 144x144 alternatives.

@@ -569,3 +569,87 @@ the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback
 **Result for the worker**
 - [ ] Record each step's result, the log lines for any step that failed, the spacing mode, the 8.33 result
   if tried, what `STBY ID` showed, the sim version, and every fallback or change.
+
+## P3-1: Autopilot page (C172 G1000)
+
+Reference: [docs/phase3-autopilot.md](../docs/phase3-autopilot.md). The page is in the same profile file as
+the main page, behind MORE 1,6 `AUTOPILOT`. No script to install. Not yet tested in the app or the sim.
+Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+
+**Reimport (no sim needed)**
+- [ ] As in the Sim rate section's Reimport steps: export the installed `MSFS2024 C172 G1000` to the backup
+  folder, delete every installed profile of that name (and its `copy` versions; leave the profile named
+  `G1000`), double-click the generated profile, select it, check its aircraft mapping. For the local icon
+  profile, rebuild it first as [docs/icons.md](../docs/icons.md) says (delete `.local\icons`, rebuild, replace
+  the plugin's `Images\Guenseli-C172` folder, restart the app, import).
+- [ ] The main page and the other pages look as before; the More page now has a fifth folder key,
+  `AUTOPILOT` at 1,6.
+
+**Layout and round trip (no sim needed)**
+- [ ] `AUTOPILOT` opens the page: back key 1,1; row 1 `AP FD HDG NAV APR BC VNV` (1,2-1,8); column 1 `ALT`
+  2,1, `VS` 3,1, `FLC` 4,1; `HDG+ CRS+ ALT+ VS+ SPD+` at 2,2-2,6; readouts `HDG BUG CRS1 ALT SEL VS TGT FLC SPD`
+  at 3,2-3,6; `HDG- CRS- ALT- VS- SPD-` at 4,2-4,6; everything else empty (2,7 and 3,7 are reserved for YD
+  and LVL, which this aircraft lacks). Its back key returns to MORE.
+- [ ] Select `ALT+` and compare its settings panel with the doc: Command `K:AP_ALT_VAR_INC`, long press on,
+  Second Command `K:AP_ALT_VAR_INC:1000`. Select `VNV`: Command `B:as1000_autopilot_vertical_navigation_pfd`,
+  On `1` / Off `0`, Value Address `L:XMLVAR_VNAVButtonValue`. Select `HDG BUG`: Value Address
+  `(A:AUTOPILOT HEADING LOCK DIR, Degrees)`, Format `3.0:%s°`. Record every field that differs. Select
+  `VS TGT`: Value Address `(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)`, Format `1.0`; the settings panel may
+  draw that field red while it has focus (its pattern has no `/` in the unit; the plugin itself accepts it):
+  leave it, don't retype it.
+
+**In the air (flight loaded, engine running, about 5000 ft, AP off first)**
+- [ ] 1. AP: press -> AP engages on the PFD, key lit; press again -> off, dark. Click the cockpit AP button:
+  the key follows.
+- [ ] 2. FD: press -> FD bars shown, key lit; again -> off, dark (with AP on, the sim may keep FD on: note it).
+- [ ] 3. HDG: with AP on, press -> the PFD shows HDG, key lit; press again -> dark. Click the cockpit HDG
+  button: the key follows.
+- [ ] 4. `HDG BUG` = the PFD's HDG box (if not, record both values: fallback `:1` index, A-5). `HDG+` / `HDG-`
+  -> bug and readout +1 / -1 per press; step across 360/000. Press `HDG BUG` -> the bug jumps to the current
+  heading (sync; if nothing happens, record it: fallback `K:AP_HDG_CURRENT_HDG_SET:1`).
+- [ ] 5. `ALT SEL` = the selected altitude above the PFD altitude tape (if not, or if it does not follow
+  `ALT+` / `ALT-`, record both values: fallback `:1` index, A-5). `ALT+` / `ALT-` -> +/-100 ft per press
+  (record the real step). Then **hold** `ALT+` a full second and record what happens: +1000 ft is the expected
+  result; **if the selected altitude jumps to 1000 ft instead** (A-4: the SDK calls the parameter "New
+  reference altitude"), say so, set it back with short presses, and don't use the long press until the repair
+  (ten single steps per long press, or no long press). Same for `ALT-`. `ALT`: press -> ALT hold lit; again ->
+  dark.
+- [ ] 6. VS: press -> the PFD shows VS with a target, key lit; `VS+` / `VS-` change `VS TGT` and the PFD
+  target (record the step, likely 100 fpm; a descent shows `-`, a climb shows no `+`). Press VS again -> dark.
+- [ ] 7. FLC: note `FLC SPD` first; press FLC -> FLC lit; record whether the target speed jumped to the
+  current IAS (A-9: the key doesn't set it, the cockpit button does); `SPD+` / `SPD-` change `FLC SPD` and
+  the PFD target (record the step). Press FLC again -> dark.
+- [ ] 8. NAV / APR / BC: tune a VOR/ILS (or CDI GPS with a flight plan); NAV -> lit when the PFD shows NAV
+  armed or active (record which: A-8); APR and BC the same on a localizer; each press again -> dark.
+- [ ] 9. `CRS1` = the PFD CRS (in VLOC mode). `CRS+` / `CRS-` -> +/-1 degree; hold a full second -> +/-10
+  degrees; press `CRS1` -> the CDI centres (course to the station). In GPS mode record what the CRS keys do.
+  With the CDI on NAV2 (if tuned), record what `CRS+` / `CRS-` and the `CRS1` readout do (the long press and
+  the readout are NAV1 only).
+- [ ] 10. VNV (weak source, A-6: the read `L:XMLVAR_VNAVButtonValue` comes from a general-path SDK template
+  page and a pre-2024 profile only): with a flight plan with altitudes, press -> VNV on the PFD, key lit;
+  again -> dark; press it four more times and record whether every press toggles VNV or only every second one
+  (fallback: the Reset Switch, A-6); click the cockpit VNV button: does the key follow? Record each of the
+  three separately (press works / key lights / key follows the cockpit).
+- [ ] 11. Turn each mode off from the cockpit with the mouse and check its key goes dark; the readouts follow
+  the cockpit knobs (HDG, CRS, ALT, VS wheel) without a key being pressed.
+- [ ] 12. No flight loaded (sim at the main menu): the page opens and every key shows the plugin's Wait image,
+  no mode key lit (phase2-main-page.md, "What the keys show when the sim isn't there"). Record what the
+  readouts show.
+
+**scmon checks (Admin account, optional; [tools/scmon/README.md](../tools/scmon/README.md))**
+- [ ] Build once:
+  `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" build "A:\FS2024 Stuff\msfs2024-streamdeck-xl\tools\scmon\scmon.csproj" -c Release -o "$env:TEMP\scmon-bin"`.
+- [ ] VNV: `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" "$env:TEMP\scmon-bin\scmon.dll" 180 L:XMLVAR_VNAVButtonValue`,
+  then click the cockpit VNV button a few times: does the `plugin L:XMLVAR_VNAVButtonValue=` value change
+  0/1? Repeat with `B:as1000_autopilot_vertical_navigation_pfd` as the second argument (does the B-Var have
+  a value to read?). `AP=...` in the same lines shows AP master.
+- [ ] A readout that disagrees with the PFD (`HDG BUG`, `ALT SEL`): report it for a later scmon run with the
+  index `:1`.
+
+**Controller independence**
+- [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the real steps (HDG, CRS, ALT short and long, VS, SPD), the ALT long-press
+  outcome (step or set), the VNV three answers, whether FLC took the current IAS, armed versus active for
+  NAV/APR, the sim version, and every fallback or change.
