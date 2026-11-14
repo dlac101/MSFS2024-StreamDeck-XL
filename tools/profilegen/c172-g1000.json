@@ -475,6 +475,11 @@
           "pos": "1,6",
           "title": "AUTOPILOT",
           "folder": "autopilot"
+        },
+        {
+          "pos": "1,7",
+          "title": "XPDR",
+          "folder": "xpdr"
         }
       ],
       "spec": "docs/phase2-g1000-vspeeds.md"
@@ -2024,6 +2029,270 @@
         }
       ],
       "spec": "docs/phase3-autopilot.md"
+    },
+    {
+      "id": "xpdr",
+      "parent": "more",
+      "note": "Transponder (P3-2): code pad (Lua script XL24-XPDRPAD.lua), code and mode readouts, STBY/ON/ALT by A-Var write, IDENT, VFR",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "XPDR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER CODE:1, Bco16)",
+            "Format": "4.0",
+            "DecodeBCD": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "ENTRY",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "X:XL24_XPDRPAD_ENTRY",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=STBY:2=TEST:3=ON:4=ALT:5=GND"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(7)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "empty": "8: transponder codes use the digits 0 to 7 only (docs/phase3-transponder.md)"
+        },
+        {
+          "pos": "1,8",
+          "empty": "9: transponder codes use the digits 0 to 7 only (docs/phase3-transponder.md)"
+        },
+        {
+          "pos": "2,2",
+          "title": "STBY",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=1",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "1",
+            "OffState": "4"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ON",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=3",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "3",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ALT",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=4",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "4",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(4)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(5)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(6)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "IDENT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:XPNDR_IDENT_ON",
+            "Address": "(A:TRANSPONDER IDENT:1, Bool)"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "VFR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:XPNDR_SET:4608",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(1)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(2)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(3)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:BACK",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-XPDRPAD:CLEAR"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "0",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(0)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "ENT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:ENTER",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        }
+      ],
+      "spec": "docs/phase3-transponder.md"
     }
   ]
 }

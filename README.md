@@ -22,6 +22,7 @@ Sim rate page (behind main page 3,7; repaired after the first sim test, not yet 
 Optional local icon build of the same profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md).
 COM1 number pad under More (MORE 1,5; a Lua script sets the frequency; generated, not yet sim-tested; the script must be copied into the plugin's Scripts folder): [docs/phase2-com1-pad.md](docs/phase2-com1-pad.md).
 Autopilot page under More (MORE 1,6; GFC 700 mode keys lit from sim state, heading, course, altitude, VS and FLC speed readouts with step keys; generated, not yet sim-tested): [docs/phase3-autopilot.md](docs/phase3-autopilot.md).
+Transponder page under More (MORE 1,7; code pad by a Lua script, code and mode readouts, STBY/ON/ALT, IDENT, VFR; generated, not yet sim-tested; the script `XL24-XPDRPAD.lua` must be copied into the plugin's Scripts folder): [docs/phase3-transponder.md](docs/phase3-transponder.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
 **Phase 4: FlyByWire A32NX profile (main, FCU and OVHD pages), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md).
 ## Layout
@@ -37,6 +38,7 @@ docs/
   phase2-sim-rate.md    Phase 2 Sim rate child page: 1X (Lua script XL24-SIMRATE.lua), SLOWER, RATE and FASTER, key-by-key reference (C172 G1000)
   phase2-com1-pad.md    Phase 2 COM1 pad (MORE > COM PAD): number pad, Lua script, key-by-key reference (C172 G1000)
   phase3-autopilot.md   Phase 3 Autopilot page (MORE > AUTOPILOT, GFC 700): mode keys, readouts, key-by-key reference (C172 G1000)
+  phase3-transponder.md Phase 3 Transponder page (MORE > XPDR): code pad, Lua script XL24-XPDRPAD.lua, mode keys, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main, FCU and OVHD pages, Lua script XL24-A32NX.lua, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages

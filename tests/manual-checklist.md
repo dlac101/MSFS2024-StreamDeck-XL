@@ -654,6 +654,67 @@ Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or chang
   outcome (step or set), the VNV three answers, whether FLC took the current IAS, armed versus active for
   NAV/APR, the sim version, and every fallback or change.
 
+## P3-2: Transponder page (C172 G1000)
+
+Reference: [docs/phase3-transponder.md](../docs/phase3-transponder.md). The page is in the same profile file
+as the main page, behind MORE 1,7 `XPDR`, and needs the script `XL24-XPDRPAD.lua`. Not yet tested in the app
+or the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+
+**Install the script (no sim needed)**
+- [ ] Copy `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-XPDRPAD.lua` into
+  `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\` (as the COM1 pad's
+  script, [docs/phase2-com1-pad.md](../docs/phase2-com1-pad.md), "Install the script"). Copy it again after
+  any change to it in the repo.
+
+**Reimport (no sim needed)**
+- [ ] As in the P3-1 section's Reimport steps: export the installed `MSFS2024 C172 G1000` to the backup
+  folder, delete every installed profile of that name (and its `copy` versions; leave the profile named
+  `G1000`), double-click the generated profile, select it, check its aircraft mapping. For the local icon
+  profile, rebuild it first as [docs/icons.md](../docs/icons.md) says.
+- [ ] The main page and the other pages look as before; the More page now has a sixth folder key, `XPDR`
+  at 1,7.
+
+**Layout and round trip (no sim needed)**
+- [ ] `XPDR` opens the page: back key 1,1; readouts `XPDR ENTRY MODE` at 1,2-1,4; `STBY ON ALT` at 2,2-2,4;
+  `IDENT` 3,2, `VFR` 3,3; digits `7` at 1,6, `4 5 6` at 2,6-2,8, `1 2 3` at 3,6-3,8; `CLR` 4,6, `0` 4,7,
+  `ENT` 4,8; everything else empty (no 8 and 9). Its back key returns to MORE.
+- [ ] Select `ALT` and compare its settings panel with the doc: Command Type A-Var, Command Address
+  `(A:TRANSPONDER STATE:1, Enum)`, On Value `$=4`, Off Value empty; Value Address the same, On/Off States
+  `4` / `1`. Select `CLR`: Main Command `lua:XL24-XPDRPAD:BACK`, long press on, Second Command
+  `lua:XL24-XPDRPAD:CLEAR`. Select `XPDR`: Decode BCD on, Format `4.0`. Record every field that differs.
+
+**In the sim (flight loaded, battery and avionics on)**
+- [ ] 1. `XPDR` = the code in the PFD's XPDR box; `MODE` = the PFD's transponder mode (STBY / ON / ALT).
+  Record what `MODE` shows on the ground.
+- [ ] 2. Type `7 0 0 0`: `ENTRY` shows `7___` ... `7000`; press `ENT` -> the PFD code becomes 7000, `XPDR`
+  shows `7000`, `ENTRY` clears. `CLR` deletes one digit; hold `CLR` a full second -> the entry clears.
+  `ENT` with 3 digits -> nothing is sent (`lua.log` line "need 4 digits"). Leave the page and open it
+  again: `ENTRY` is empty.
+- [ ] 3. `VFR` -> code 1200 on the PFD and on `XPDR`.
+- [ ] 4. `STBY` / `ON` / `ALT` -> **the PFD's own XPDR mode display** changes to that mode, `MODE` follows,
+  and the pressed key is lit. Check the PFD itself, not only `MODE`: the G1000 can hold its own mode and set
+  the SimVar back. A key that changes `MODE` (the SimVar) but not the PFD's mode display **fails** this
+  step: record what the PFD and `MODE` showed; the repair then empties the three keys and the PFD softkeys
+  set the mode (A-4). On the ground the transponder may go to its ground mode after `ALT` (the PFD and
+  `MODE` show `GND`, SDK enum 5): record that and repeat `ALT` in the air before you count the key as
+  failed. Then change the mode with the PFD softkeys (XPDR, then STBY / ON / ALT): `MODE` and the keys
+  follow.
+- [ ] 5. `IDENT` -> the PFD shows IDENT, the key is lit about 18 s, then dark. Also press the PFD's IDENT
+  softkey: the key follows.
+- [ ] 6. No flight loaded (sim at the main menu): the page opens; readouts empty (or the plugin's Wait
+  image); no key lit.
+- [ ] If the pad keys do nothing: plugin log `log\PilotsDeck<date>.log` ("Running Command" for
+  `lua:XL24-XPDRPAD:...`, any "not registered" warning) and `log\lua.log`. "Not registered" = the script is
+  not in the Scripts folder.
+
+**Controller independence**
+- [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, what `MODE` showed on the ground, for step 4 what the PFD's mode display
+  and `MODE` showed for each key, the log lines for any step that failed, the sim version, and every fallback
+  or change.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD

@@ -289,6 +289,34 @@ AS1000 glass cockpit and Asobo's autopilot buttons; README = PilotsDeck README; 
 [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's profile and the
 forum report are leads only. YD and LVL are not built (no button or input event in this aircraft).
 
+### Phase 3 transponder page
+
+For [phase3-transponder.md](phase3-transponder.md) (the second-level page behind MORE 1,7 `XPDR`; positions
+below are on that page). Generated, not yet sim-tested: all rows are **Unverified** until the checklist
+section "P3-2: Transponder page (C172 G1000)" passes. The 2024 C172 G1000 has **no transponder input event**
+(IE: only the breaker `B:electrical_breaker_btn_breaker_xpndr`, IE 172), so every key uses SDK K-events or
+SimVars. The XPDR readout (1,2) repeats the main page's "Transponder code (3,2)" row (same address, a second
+key). STBY / ON / ALT write an A-Var (command type 12): the SDK has no transponder mode event, the SDK marks
+`TRANSPONDER STATE` settable (SDK-RADV, rechecked 2026-11-14), and the coordinator's P3-2 ruling A-4 allows
+this write for these three keys only; a key that changes the SimVar but not the PFD's XPDR mode display fails
+the hand test (repair: the three keys go Empty, the PFD softkeys set the mode).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Squawk code readout (xpdr 1,2 `XPDR`) | `(A:TRANSPONDER CODE:1, Bco16)`, Decode BCD, Format `4.0` | Bco16 (four octal digits, one per hex nibble) | (read only) | `(A:TRANSPONDER CODE:1, number)`, no Decode BCD | SDK-RADV; SDK-UNITS | Unverified |
+| Set the squawk code (xpdr 4,8 `ENT`, by the script `XL24-XPDRPAD.lua`) | `(A:TRANSPONDER CODE:1, Bco16)` (1,2) | parameter: the four digits read as hex, sent in decimal (7000 = `28672`) | `K:XPNDR_SET:<n>` sent by `SimCommand` | per-digit `K:XPNDR_1000_INC`, `K:XPNDR_100_INC`, `K:XPNDR_10_INC`, `K:XPNDR_1_INC` (and `_DEC`) | SDK-RADE; README 2.1.1, 3.5.1 | Unverified |
+| Typed entry (xpdr 1,3 `ENTRY`) | `X:XL24_XPDRPAD_ENTRY` (PilotsDeck internal variable, written by the script) | String, e.g. `70__` | the script's `DIGIT(n)`, `BACK`, `CLEAR`, `ENTER` (`lua:XL24-XPDRPAD:...`, command type 14) | the script function as the key's Address instead of the `X:` variable | README 2.1.1 (INTERNAL, LUAFUNC) | Unverified |
+| Transponder mode readout (xpdr 1,4 `MODE`) | `(A:TRANSPONDER STATE:1, Enum)`, Mappings `0=OFF:1=STBY:2=TEST:3=ON:4=ALT:5=GND` | Enum: 0 = Off, 1 = Standby, 2 = Test, 3 = On, 4 = Alt, 5 = Ground | (read only) | none | SDK-RADV | Unverified |
+| Mode STBY / ON / ALT (xpdr 2,2 `STBY`, 2,3 `ON`, 2,4 `ALT`) | `(A:TRANSPONDER STATE:1, Enum)`; lit at 1 / 3 / 4 | Enum as above | A-Var `(A:TRANSPONDER STATE:1, Enum)`, On Value `$=1` / `$=3` / `$=4`, Off Value empty (command type 12) | none by event: the keys go Empty and the PFD softkeys (XPDR, then STBY / ON / ALT) set the mode | SDK-RADV (settable mark); README 2.1.1 AVAR, 2.1.2; ruling A-4 | Unverified (the PFD's own mode display must follow) |
+| Ident (xpdr 3,2 `IDENT`) | `(A:TRANSPONDER IDENT:1, Bool)` | Bool; the sim sets it back to 0 after 18 s | `K:XPNDR_IDENT_ON` | `K:XPNDR_IDENT_TOGGLE`, then `K:XPNDR_IDENT_SET:1` | SDK-RADE; SDK-RADV | Unverified |
+| VFR code 1200 (xpdr 3,3 `VFR`) | (XPDR at 1,2 shows it) | 4608 = 0x1200 | `K:XPNDR_SET:4608` | `K:XPNDR_SET:0x1200` | SDK-RADE; README 2.1.1 | Unverified |
+
+Sources (read 2026-11-14; URLs in phase3-transponder.md, "Sources"): SDK-RADE / SDK-RADV = MSFS 2024 SDK radio
+navigation events / SimVars (the Settable mark of `TRANSPONDER STATE` read from the page source: a green tick;
+`TRANSPONDER CODE` has the red cross); SDK-UNITS = MSFS 2024 SDK SimVar units; README = PilotsDeck README;
+IE n = line n of [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's
+C172 G1000 profile (per-digit XPNDR keys) is a lead only.
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).
