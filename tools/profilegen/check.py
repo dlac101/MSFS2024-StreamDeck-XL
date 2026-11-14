@@ -272,7 +272,9 @@ def check_keys(label, acts, rows, keys_by_pos, page_uuid):
             child = keys_by_pos.get(pos, {}).get("folder")
             if not check(child is not None, f"{label}{pos} {title}: the data file has a folder key here"):
                 continue
-            check(child.lower() in r["command"].lower(), f"{label}{pos} {title}: doc names the child page '{child}'")
+            named = re.fullmatch(r"Opens the child page \*\*([^*]+)\*\*", r["command"])
+            check(named is not None and named.group(1) == child, f"{label}{pos} {title}: doc names the child page '{child}'" +
+                  ("" if named and named.group(1) == child else f"  DOC SAYS {r['command']!r} (expected 'Opens the child page **{child}**')"))
             target = (a.get("Settings") or {}).get("ProfileUUID")
             check(target == page_uuid.get(child), f"{label}{pos} {title}: opens page '{child}' ({target})")
             continue

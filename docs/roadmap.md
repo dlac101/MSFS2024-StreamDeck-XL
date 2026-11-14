@@ -91,8 +91,9 @@ events) and [../tests/manual-checklist.md](../tests/manual-checklist.md).
 ### A.6 The package and how it is installed today
 
 - `pilotsdeck/MSFS2024-XL/_Package/` is a PilotsDeck Profile Manager work folder: `package.json`,
-  `Profiles/` (the two profiles above), `Scripts/` (two scripts, empty `global/` and `image/`), an empty
-  `Images/`.
+  `Profiles/` (three profiles: `MSFS2024 C172 POC`, `MSFS2024 C172 G1000`, `MSFS2024 A32NX`), `Scripts/`
+  (three scripts: `XL24-SIMRATE.lua`, `XL24-COMPAD.lua`, `XL24-A32NX.lua`; empty `global/` and `image/`),
+  an empty `Images/`.
 - `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000 and FlyByWire A32NX
   (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the C172 G1000 mapping.
 - `tools/package/build_package.py` builds the package `MSFS2024-XL v0.2.ppp` from the committed work folder
@@ -427,7 +428,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 
 ### E.3 Lane R: roadmap and release (after P5-PKG)
 
-**P5-PKG versioned package** (next; not re-planned)
+**P5-PKG versioned package** (committed; not re-planned)
 
 - Scope: a versioned Profile Manager package built from `pilotsdeck/MSFS2024-XL/_Package/`, a build script
   under `tools/`, install steps, releases into the git-ignored `_Releases/`.

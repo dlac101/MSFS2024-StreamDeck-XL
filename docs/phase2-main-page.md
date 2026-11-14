@@ -112,6 +112,9 @@ K: plus the event name for SimConnect events, B: plus the name for the aircraft'
 
 ## Import the profile
 
+The package ([package.md](package.md); not yet tested with the Profile Manager) installs this profile, the other
+profiles and the Lua scripts in one step; the steps below import this file by hand.
+
 The profile is the file
 `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile`, generated in the repo
 (see "Regenerating the profile"). Signed in as Admin:

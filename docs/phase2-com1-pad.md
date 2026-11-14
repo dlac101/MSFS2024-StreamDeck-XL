@@ -34,15 +34,15 @@ the plugin itself ships. A PilotsDeck key can't open a Stream Deck folder; only 
 
 The pad keys call functions of the standard script
 `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua`. PilotsDeck reads scripts from its own Scripts
-folder (README 3.5), so the file must be there before the page can work. Signed in as Admin, either:
+folder (README 3.5), so the file must be there before the page can work. Signed in as Admin:
 
-- copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
-  (the plugin loads new and changed scripts while it runs; no restart needed, README 3.5), or
-- build and install the package with the Profile Manager (README.md, "Building the package"), which puts
-  `Scripts/` files in the same place.
+- main route: install the package with the Profile Manager ([package.md](package.md), "Install"; not yet tested
+  with the Profile Manager). It copies every script of the package into the plugin's `Scripts` folder.
+- by hand (fallback): copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
+  (the plugin loads new and changed scripts while it runs; no restart needed, README 3.5).
 
-After any change to the script in the repo, copy it again. Without the file, the digit keys do nothing and
-the plugin log says the script is not registered.
+After any change to the script in the repo, install the new package or copy it again. Without the file, the
+digit keys do nothing and the plugin log says the script is not registered.
 
 ## Layout: compad
 

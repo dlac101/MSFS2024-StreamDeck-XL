@@ -49,17 +49,17 @@ same with the Xbox Elite controller and the T.16000M + TWCS.
 
 The 1X key calls the function `SET` of the standard script
 `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SIMRATE.lua`. PilotsDeck reads scripts from its own Scripts
-folder (README 3.5), so the file must be there before this key can work. Signed in as Admin, either:
+folder (README 3.5), so the file must be there before this key can work. Signed in as Admin:
 
-- copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
+- main route: install the package with the Profile Manager ([package.md](package.md), "Install"; not yet tested
+  with the Profile Manager). It copies every script of the package into the plugin's `Scripts` folder.
+- by hand (fallback): copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
   (the plugin loads new and changed scripts while it runs; no restart needed, README 3.5) (if the sim
-  rate page was open while you copied it, go back and open the page again), or
-- build and install the package with the Profile Manager (README.md, "Building the package"), which puts
-  `Scripts/` files in the same place.
+  rate page was open while you copied it, go back and open the page again).
 
-After any change to the script in the repo, copy it again. Without the file, 1X does nothing and the
-plugin log says the script is not registered ("The Script ... is not registered or running", PD-SRC
-`ScriptManager.cs`). RATE, SLOWER and FASTER don't need the script.
+After any change to the script in the repo, install the new package or copy it again. Without the file, 1X
+does nothing and the plugin log says the script is not registered ("The Script ... is not registered or
+running", PD-SRC `ScriptManager.cs`). RATE, SLOWER and FASTER don't need the script.
 
 ## Layout: simrate
 

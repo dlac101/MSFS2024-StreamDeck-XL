@@ -355,17 +355,19 @@ def build(data_path, icons=None):
 
 
 def is_ignored(path):
-    """True if git says the file is ignored in this repo (the icon build writes only there)."""
+    """True if git says the file is ignored in this repo (the icon build writes only there), False if it is not,
+    None if git gave no answer (the error is printed)."""
     try:
         r = subprocess.run(["git", "-C", str(ROOT), "check-ignore", "-q", str(path)], capture_output=True)
-    except OSError:
-        return False
+    except OSError as ex:
+        print(f"git check-ignore could not run: {ex}")
+        return None
     if r.returncode not in (0, 1):  # 1 = not ignored; anything else is a git error: report it, still refuse
         err = r.stderr.decode("utf-8", "replace").strip()
         if err:
             print(err)
         print(f"git check-ignore failed (exit {r.returncode}) for {path}")
-        return False
+        return None
     return r.returncode == 0
 
 
@@ -387,7 +389,14 @@ def main_icons(args):
     profile_path = out / (plan["profile_name"] + ".streamDeckProfile")
     img_dir = out / "Images" / plan["plugin_subfolder"]
     targets = [profile_path] + [img_dir / n for n in sorted(plan["copies"])]
-    not_ignored = [t for t in targets if not is_ignored(t)]
+    not_ignored = []
+    for t in targets:
+        ignored = is_ignored(t)
+        if ignored is None:
+            print("nothing written (git check-ignore gave no answer, see above)")
+            return 2
+        if not ignored:
+            not_ignored.append(t)
     if not_ignored:
         for t in not_ignored:
             print(f"refused: {t} is not git-ignored (git check-ignore); the icon build writes only to an ignored folder")

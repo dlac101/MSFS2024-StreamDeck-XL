@@ -29,6 +29,7 @@ Checks:
            every Images/<plugin_subfolder>/ path has its file in <out> with the pack sha256; every embedded
            image is in its page's Images/ with the pack sha256; <out> holds no file the mapping does not name
 """
+import argparse
 import hashlib
 import io
 import json
@@ -47,7 +48,7 @@ DEFAULT_MAPPING = HERE / "icons-c172-g1000.json"
 PNG_SIG = b"\x89PNG\r\n\x1a\n"
 # the PNG header chunk type, written as hex so the repo's image-byte scan (which looks for the chunk name) stays at 0
 HEADER_CHUNK = bytes.fromhex("49484452")
-NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
+NAME_RE = re.compile(r"[A-Za-z0-9_.-]+")
 KINDS = {  # action UUID -> key kind
     "com.extension.pilotsdeck.action.switch.display": "dynamic",  # Dynamic Button
     "com.extension.pilotsdeck.action.display.switch": "display",  # Display Value
@@ -149,7 +150,7 @@ def load_plan(mapping_path, pack=None, data=None):
     if missing or unknown:
         return [f"mapping: missing field(s) {missing}, unknown field(s) {unknown}"], None
     sub = m["plugin_subfolder"]
-    if not (isinstance(sub, str) and NAME_RE.match(sub)) or sub.strip(".") == "":
+    if not (isinstance(sub, str) and NAME_RE.fullmatch(sub)) or sub.strip(".") == "":
         err(f"plugin_subfolder {sub!r}: use only [A-Za-z0-9_.-] (one folder level, no '@', not only dots)")
     if not (isinstance(m["profile_name"], str) and m["profile_name"].strip()):
         err("profile_name must be a non-empty string")
@@ -169,7 +170,7 @@ def load_plan(mapping_path, pack=None, data=None):
         if set(e) != {"pack", "sha256", "size"}:
             err(f"{label}: fields must be pack, sha256, size (got {sorted(e)})")
             continue
-        if not NAME_RE.match(local) or not local.lower().endswith(".png"):
+        if not NAME_RE.fullmatch(local) or not local.lower().endswith(".png"):
             err(f"{label}: name must be [A-Za-z0-9_.-] only and end in .png (no '@', no spaces)")
         if e["pack"].replace("\\", "/").rsplit("/", 1)[-1] != local:
             err(f"{label}: local name must be the pack file's base name ({e['pack']})")
@@ -402,23 +403,19 @@ def check_profile(plan, out_dir):
 
 
 def main():
-    args = sys.argv[1:]
-    opts = {}
-    for flag in ("--mapping", "--pack", "--out"):
-        if flag in args:
-            i = args.index(flag)
-            if i + 1 >= len(args):
-                print(f"error: {flag} needs a value", file=sys.stderr)
-                return 2
-            opts[flag] = args[i + 1]
-            del args[i:i + 2]
-    mapping_only = "--mapping-only" in args
-    args = [a for a in args if a != "--mapping-only"]
-    data = args[0] if args else None
-    mapping = Path(opts.get("--mapping", DEFAULT_MAPPING))
+    ap = argparse.ArgumentParser(description="Check the key-to-icon mapping and the LOCAL icon profile (docs/icons.md).",
+                                 allow_abbrev=False)
+    ap.add_argument("data", nargs="?", help="page data file (default: the mapping's data)")
+    ap.add_argument("--mapping", default=str(DEFAULT_MAPPING),
+                    help="key-to-icon mapping (default tools/profilegen/icons-c172-g1000.json)")
+    ap.add_argument("--pack", help="the icon pack folder, read only (default: the mapping's pack_root)")
+    ap.add_argument("--out", help="the icon build folder to check (default: the mapping's out)")
+    ap.add_argument("--mapping-only", action="store_true", help="check the mapping only, not the icon profile")
+    args = ap.parse_args()
+    mapping = Path(args.mapping)
 
     print(f"== mapping: {mapping}")
-    errors, plan = load_plan(mapping, pack=opts.get("--pack"), data=data)
+    errors, plan = load_plan(mapping, pack=args.pack, data=args.data)
     for e in errors:
         print(f"  FAIL  {e}")
     if plan and not errors:
@@ -429,8 +426,8 @@ def main():
         print(f"  ok    {len(rows)} key rows (pass 1: {p1}, pass 2: {len(rows) - p1}) + "
               f"{len(plan['table']) - len(rows)} left as is = {len(plan['table'])} keys, each once")
         print(f"  ok    {len(plan['copies'])} files for PilotsDeck keys (copied), {len(r2)} embedded only")
-    if not mapping_only and plan is not None and not errors:
-        out = Path(opts["--out"]).resolve() if "--out" in opts else (ROOT / plan["out"]).resolve()
+    if not args.mapping_only and plan is not None and not errors:
+        out = Path(args.out).resolve() if args.out is not None else (ROOT / plan["out"]).resolve()
         print(f"== profile: {out}")
         perr, notes = check_profile(plan, out)
         for n in notes:

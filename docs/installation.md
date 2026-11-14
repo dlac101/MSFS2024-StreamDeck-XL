@@ -21,7 +21,7 @@ Admin account into the repo before they can be reviewed elsewhere.
 | PilotsDeck | 0.9.7 | "Latest Build" dev installer (`A:\FS2024 Stuff\PilotsDeck-Installer-latest.exe`), installed 2026-11-11. Latest stable is 0.9.1. |
 | Stream Deck app | 7.6.1 | PilotsDeck needs 7.4 or later |
 | .NET Desktop Runtime | 10.x | Installed by the PilotsDeck installer |
-| MobiFlight WASM module | _TBD_ | Installed by the PilotsDeck installer: check the Community folder |
+| MobiFlight WASM module | 1.0.1 | Folder `mobiflight-event-module` in the Community folder: `package_version` in its `manifest.json`, read 2026-11-14. Installed by the PilotsDeck installer. The G1000 bezel keys need it (see "MobiFlight WASM module" below). |
 | FSUIPC7 | 7.5.9 | Optional for PilotsDeck on MSFS; free (unregistered) is enough |
 | MSFS 2024 | 1.9.24.0 | File version of `FlightSimulator2024.exe`, read 2026-11-11 |
 
@@ -34,7 +34,8 @@ From the PilotsDeck README:
 - If the action dropdowns are empty, Windows or antivirus is probably blocking the plugin. Fix:
   `dir -Path $env:APPDATA\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin -Recurse | Unblock-File`
 - Known MSFS 2024 issue (won't connect / "Out of Bound" exception): remove the MobiFlight
-  module, re-run the installer, reboot.
+  module, re-run the installer, reboot. On this PC that is blocked while the patched build is in use
+  (see "MobiFlight WASM module" below).
 
 ## Known issue on this PC: PilotsDeck exits at startup (worked around with a patched build)
 
@@ -56,6 +57,25 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
 - The patched build logs "New Build detected" at startup because its build stamp differs. Ignore it.
 - When an official build with the fix ships, run the PilotsDeck installer as usual. It replaces
   the patched exe, and the `-original` file can then be deleted.
+
+## MobiFlight WASM module (the G1000 bezel keys need it)
+
+- PilotsDeck sends every H-event (`H:` address) through the MobiFlight WASM module, not through SimConnect
+  (PilotsDeck source at `11bdf1f`, `Plugin/Simulator/MSFS/ToolsMSFS.cs` lines 163-184, `WriteSingleHvar`).
+  In this repo those are the C172 G1000 PFD and MFD bezel keys
+  ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)) and the autopilot page's `CRS+`, `CRS1` and `CRS-`
+  presses ([phase3-autopilot.md](phase3-autopilot.md); the long presses of `CRS+` and `CRS-` are K-events):
+  without the module they do nothing. No other key sends an H-event.
+- Check: after a flight has loaded, the plugin log shows "MobiFlight WASM Client Connection opened" (seen on
+  this PC on 2026-11-14 with module 1.0.1, the latest release on MobiFlight's
+  [releases page](https://github.com/MobiFlight/MobiFlight-WASM-Module/releases)).
+- Reinstalling the module is blocked while the patched plugin build is in use. The README's way (1.4, 4.2.3:
+  remove the module, re-run the installer, reboot) is a full installer run: the installer queues the module
+  step and the plugin install step together (`Installer/WorkerManager.cs` lines 18-33 at `11bdf1f`), and the
+  plugin step deletes the plugin's program files before it installs the release
+  (`Installer/Worker/WorkerInstallUpdate.cs` lines 51-69). That replaces the patched `PilotsDeck.exe` and
+  brings back the startup crash ([#176](https://github.com/Fragtality/PilotsDeck/issues/176), still open on
+  2026-11-14). Until an official build fixes #176, keep the module folder and don't re-run the installer.
 
 ## Back up existing profiles
 
