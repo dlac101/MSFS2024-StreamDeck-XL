@@ -74,6 +74,7 @@ In the repository folder, run `python tools/package/build_package.py`. It builds
 `pilotsdeck/MSFS2024-XL/_Releases/MSFS2024-XL v<version>.ppp` (not committed) from the committed work
 folder `pilotsdeck/MSFS2024-XL/_Package/`; you install it with PilotsDeck's Profile Manager. Build, install,
 aircraft mapping and update steps: [docs/package.md](docs/package.md) (not yet tested with the Profile Manager).
+Local icon package (personal use only, never committed; not yet tested): `python tools/package/build_icon_package.py` packs the icon profiles, their images, the other profiles and the scripts into one `.ppp` under the git-ignored `.local/` ([docs/icons.md](docs/icons.md)).
 
 ## Ground rules (from the plan)
 

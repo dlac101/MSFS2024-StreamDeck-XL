@@ -38,44 +38,76 @@ same bytes. To check the result: `python tools/profilegen/check_icons.py`.
 Before a rebuild after a mapping change, delete the `.local\icons` folder: the generator never deletes, and
 it stops (writing nothing) when the image folder holds a file the mapping no longer names.
 
-## 2. Install the images (your own hand step, before the import)
+Then pack it for the Profile Manager (the main install route, section 2):
 
-1. In File Explorer, copy the folder `.local\icons\Images\Guenseli-C172` into
-   `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\`.
-   Result: `...\Images\Guenseli-C172\*.png`, 27 files.
-2. Quit and restart the Stream Deck app (normally, not "Run as administrator").
+```text
+python tools/package/build_icon_package.py
+```
 
-Do this **before** you import the profile or open any key's settings: if a key's image is not in the
-plugin's Images folder, opening that key's settings panel resets its image field to the first image in
-the list.
+It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping, today this one) is complete
+and matches the committed files, then writes `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp`: the
+icon profiles, their images, the committed profiles that have no icon version, and the Lua scripts. It
+refuses, writing nothing, when an icon build is missing or out of date (delete the `.local\icons` folder and
+rebuild as above) and when the output folder is not a git-ignored folder inside `.local\`. Personal use
+only, like everything in `.local\`.
+
+## 2. Install with the Profile Manager (your own step)
+
+1. Open the Profile Manager and drop `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp` on the
+   arrow, as for the public package ([package.md](package.md), "Install"). If it lists profiles that are
+   already installed, keep **Remove old Profiles** checked.
+2. Click **Install**. It copies the images into the plugin's `Images\Guenseli-C172\` folder and the Lua
+   scripts into its `Scripts\` folder before it shows the profile links; click each link and pick the XL.
+3. Quit and restart the Stream Deck app (normally, not "Run as administrator") before the look test.
+
+The images are copied before any profile is imported, so no key's settings panel resets its image (it does
+that when the image file is missing). Keep only one of `MSFS2024 C172 G1000` and `MSFS2024 C172 G1000 Icons`
+installed: the Profile Manager takes `MSFS2024 C172 G1000 Icons` for a copy of `MSFS2024 C172 G1000`, so an
+update of the plain profile stops with "Found multiple Copies" while both exist. If the plain profile is
+installed, map the icon profile instead (section 3) and delete the plain profile in the Stream Deck app.
+
+Fallback without the package: in File Explorer, copy the folder `.local\icons\Images\Guenseli-C172` into
+`%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\` (result:
+`...\Images\Guenseli-C172\*.png`), restart the Stream Deck app, then import the profile file (section 3).
+Do the copy **before** you import the profile or open any key's settings.
 
 About this step:
 
-- It is the plugin's documented way to add images: PilotsDeck README section 3.3 ("Custom Images": copy the
-  image to the plugin's Images folder; image packs can go in subfolders). It is your own step; no Claude
-  session writes in the plugin folder.
-- It is a file copy into the `Images\` folder, not a settings edit. It touches none of the plugin's
+- Both routes are the plugin's own ways to add images: the Profile Manager copies a package's `Images/`
+  folder, one subfolder deep, into the plugin's `Images\` folder and replaces files of the same name, and
+  PilotsDeck README section 3.3 ("Custom Images": copy the image to the plugin's Images folder; image packs
+  can go in subfolders) describes the hand copy. It is your own step; no Claude session writes in the
+  plugin folder.
+- Either way it is a file copy into the plugin folder, not a settings edit. It touches none of the plugin's
   program files, so the locally patched PilotsDeck build stays as it is
   ([docs/installation.md](installation.md#known-issue-on-this-pc-pilotsdeck-exits-at-startup-worked-around-with-a-patched-build)).
 - **Never re-run the PilotsDeck installer to "fix" icons.** It would replace the patched build and bring
   back the startup crash ([Fragtality/PilotsDeck#176](https://github.com/Fragtality/PilotsDeck/issues/176)).
   The plugin's Wait image (a dark square with three dots, the same image keys show while the sim loads)
   means a missing image file only when MSFS is closed or the flight has fully loaded, so do the look test
-  then, not while the sim loads. A key that shows it then has its file missing: copy the folder again
-  (step 1) and restart the Stream Deck app.
+  then, not while the sim loads. A key that shows it then has its file missing: install the package again
+  (or do the fallback copy) and restart the Stream Deck app.
+- Neither route deletes images: a file the mapping no longer uses stays in the plugin's folder until you
+  delete it.
 - If PilotsDeck is ever reinstalled or updated (after #176 is fixed), the plugin folder may be replaced:
-  copy the folder again then.
+  install the package again then.
 
 ## 3. Import, use, remove
 
-- Import: double-click `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile` (or Stream Deck app >
-  Preferences > Profiles > Import), pick the XL if asked. It appears as `MSFS2024 C172 G1000 Icons` beside
-  `MSFS2024 C172 G1000`; switch the XL to it. Its own name keeps the committed profile and its Profile
-  Manager aircraft mapping untouched.
+- Import: the package install (section 2) imports the profiles through its links. Without the package,
+  double-click `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile` (or Stream Deck app >
+  Preferences > Profiles > Import) and pick the XL if asked. It appears as `MSFS2024 C172 G1000 Icons`;
+  switch the XL to it. The import leaves `MSFS2024 C172 G1000` as it is: keep only one of the two
+  installed (section 2).
+- Automatic switching: map `MSFS2024 C172 G1000 Icons` as [package.md](package.md) says for
+  `MSFS2024 C172 G1000` (same search string). A later install of the icon package with **Remove old
+  Profiles** checked keeps that mapping.
 - Remove: delete the `MSFS2024 C172 G1000 Icons` profile in Preferences > Profiles, then delete
   `...\Images\Guenseli-C172` from the plugin's Images folder.
-- After a rebuild: delete the imported icon profile, replace the plugin's `Images\Guenseli-C172` folder
-  with the new one (delete the old folder, then copy the new one as in section 2), restart the app, import.
+- After a rebuild: delete `.local\icons`, rebuild and pack (section 1), then install the new package with
+  **Remove old Profiles** checked (section 2). Without the package: delete the imported icon profile,
+  replace the plugin's `Images\Guenseli-C172` folder with the new one (delete the old folder, then copy the
+  new one), restart the app, import.
 
 ## How the images reach the keys
 
@@ -107,8 +139,9 @@ a reason). To change an icon:
    file no row uses any more.
 2. Run `check_icons.py --mapping-only`.
 3. Delete the `.local\icons` folder (the generator never deletes), then rebuild (section 1).
-4. Replace the plugin's `Images\Guenseli-C172` folder with the new one and import again (section 3,
-   "After a rebuild").
+4. Commit the mapping change, then pack and install the new icon package (sections 1 and 2; the package
+   build refuses uncommitted changes under `tools/profilegen/`). Or, without the package, replace the
+   plugin's `Images\Guenseli-C172` folder with the new one and import again (section 3, "After a rebuild").
 
 ## Open points (checked by the look test in the checklist)
 

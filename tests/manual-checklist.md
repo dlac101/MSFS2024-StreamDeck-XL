@@ -966,6 +966,31 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
 - [ ] Record the build sha256, each step's result, the versions, and anything the Profile Manager showed that
   differs from these steps.
 
+## P5-ICONPKG: local icon package install (C172 G1000)
+
+Reference: [docs/icons.md](../docs/icons.md), sections 1 to 3. Personal use only: never commit, upload or
+share `.local/` or the icon package. Never re-run the PilotsDeck installer or update the plugin for this.
+
+- [ ] After the icon build (docs/icons.md section 1), in the repo folder:
+  `python tools/package/build_icon_package.py`. It ends with `package ...`, `sha256 ...` and `size ...`;
+  record the sha256. Run it again: it prints `unchanged` and the same sha256.
+- [ ] If `MSFS2024 C172 G1000` is installed: delete it in the Stream Deck app (Preferences > Profiles), so
+  only the icon profile stays installed (docs/icons.md section 2); the mapping step below maps the icon
+  profile instead.
+- [ ] Profile Manager: drop `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp` on the arrow, keep
+  **Remove old Profiles** checked if it lists installed profiles, click **Install**, click each profile link
+  and pick the XL. The Stream Deck app then lists each profile once (no "Copy" profile).
+- [ ] For each `Images/Guenseli-C172/...` and `Scripts/...` entry the build printed, `Get-FileHash` of the
+  same file in the plugin's `Images\Guenseli-C172\` or `Scripts\` folder equals the printed sha256.
+- [ ] Restart the Stream Deck app. With MSFS closed (or the flight fully loaded), switch the XL to
+  `MSFS2024 C172 G1000 Icons`: the keys show the pack images as in the section "P2-5: local icon build", and
+  no key shows the Wait image (dark square, three dots).
+- [ ] Map `MSFS2024 C172 G1000 Icons` with `asobo_c172sp_g1000` (docs/package.md) and load a C172 G1000
+  flight: the XL switches to it. Install the same package again with Remove old Profiles checked: one icon
+  profile, the mapping kept.
+- [ ] Record the build sha256, each step's result and the versions (Stream Deck app, PilotsDeck 0.9.7
+  patched, MSFS 2024).
+
 ## Phase 4: A32NX EFIS page (P4-2)
 
 Reference: [docs/phase4-a32nx-efis.md](../docs/phase4-a32nx-efis.md). The new page `efis` (main 4,8 `EFIS`) of

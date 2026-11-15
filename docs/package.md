@@ -69,6 +69,14 @@ profiles by name: the new profile takes the old one's place, the old one goes to
 aircraft mapping moves to the new one. It never compares package versions, so installing the same version
 again works the same way.
 
+## Local icon package (personal use)
+
+`python tools/package/build_icon_package.py` builds a second package from the local icon builds in the
+git-ignored `.local/` folder: the icon profiles in place of the plain profiles they copy, their images, the
+other committed profiles and the scripts, written only to `.local/package/`. It is for your own Profile
+Manager install, never for a release or an upload; build and install steps: [icons.md](icons.md). The
+public package above stays icon-free and unchanged.
+
 ## For maintainers: versions and releases
 
 - The version lives only in `package.json` `versionpackage`, as `MAJOR.MINOR`. Each release bumps MINOR;
