@@ -125,8 +125,10 @@ Fix: copy the missing images as icons.md says. Never re-run the PilotsDeck insta
 
 PilotsDeck sends every H-event and all calculator code through the MobiFlight WASM module. In this repo the
 H-event keys are the C172 G1000 PFD and MFD bezel keys and the autopilot page's CRS+, CRS1 and CRS- presses:
-without the module they do nothing. No key at this version sends calculator code. Whether a Lua script's
-`SimCalculator` call also needs the module is not confirmed. The other address kinds don't use it
+without the module they do nothing. A Lua script's `SimCalculator` call is calculator code too, so the A32NX
+fuel MODE SEL key (ovhdsys 1,8, [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md)) needs the module as
+well: without it the press does nothing (CFIT.SimConnectLib at `8c06162c`: `MobiModule.ExecuteCode` sends the
+code with no check that the module is connected). The other address kinds don't use it
 (installation.md, linked below).
 
 1. In File Explorer, check that the sim's Community folder ([installation.md](installation.md#this-pc))

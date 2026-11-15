@@ -7,14 +7,15 @@ package, but nothing has been tried in the app or the sim yet, and the A32NX is 
 [tests/manual-checklist.md](../tests/manual-checklist.md), section "Phase 4: A32NX profile (P4-1)", pass.
 
 Goal: a second profile, for the **FlyByWire A32NX** (the Phase 4 airliner), generated the same way as the
-C172 G1000 profile: a main page and two child pages, **FCU** (the autopilot panel) and **OVHD** (exterior
+C172 G1000 profile: a main page and three child pages, **FCU** (the autopilot panel), **EFIS** and **OVHD** (exterior
 lights, signs, batteries, external power, APU). Every readout and every key light reads the aircraft's own
 state; no key assumes its press worked.
 
 The profile is the file `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile`,
 generated in the repo by `tools/profilegen/generate.py` from `tools/profilegen/a32nx.json`. The tables below
 are the reference for what each key holds; `tools/profilegen/check.py tools/profilegen/a32nx.json` compares
-the profile with the "Key table", "Key table: fcu" and "Key table: ovhd" sections key by key.
+the profile with the "Key table" and "Key table: fcu" sections key by key (the OVHD and EFIS pages with the
+key tables of their own docs, "OVHD pages" below and [phase4-a32nx-efis.md](phase4-a32nx-efis.md)).
 
 Nothing on these pages uses keyboard bindings, vJoy or anything tied to a controller: the keys send
 SimConnect events (K-events, including FlyByWire's `A32NX.*` custom events), write L-Vars or one input event
@@ -78,7 +79,7 @@ types: `K:` = K-Var (saved as 16), `L:` = L-Var (3; the key writes its On or Off
 | 2,5 | `BARO` | Display Value | K3 | Main `K:A32NX.FCU_EFIS_L_BARO_PUSH` (QNH), Second (long press) `K:A32NX.FCU_EFIS_L_BARO_PULL` (STD) [FBW-EVENTS, FBW-API] | `lua:XL24-A32NX:BARO` (the script) [README 2.1.1 LUAFUNC; FBW-SIMVARS, FBW-API] | Lua text: the Captain's baro window |
 | 2,6 | `ND MODE` | Display Value | K7 | Main `lua:XL24-A32NX:NDMODE(1)`, Second (long press) `lua:XL24-A32NX:NDMODE(-1)` (the script writes the L-Var) [README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_FCU_EFIS_L_EFIS_MODE` [FBW-API, FBW-SIMVARS] | Mappings `0=ILS:1=VOR:2=NAV:3=ARC:4=PLAN` |
 | 2,7 | `ND RNG` | Display Value | K7 | Main `lua:XL24-A32NX:NDRANGE(1)`, Second (long press) `lua:XL24-A32NX:NDRANGE(-1)` (the script writes the L-Var) [README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_FCU_EFIS_L_EFIS_RANGE` [FBW-API, FBW-SIMVARS] | Mappings `0=10:1=20:2=40:3=80:4=160:5=320` |
-| 2,8 | `OVHD` | Folder | (Stream Deck) | Opens the child page **ovhd** | none | Folder; the page's keys: "Key table: ovhd" below |
+| 2,8 | `OVHD` | Folder | (Stream Deck) | Opens the child page **ovhd** | none | Folder; the page's keys: "Key table: ovhd" in [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md) |
 | 3,1 | `WARN` | Dynamic Button | K10 | `lua:XL24-A32NX:MWARN` (the script presses the MASTER WARN button: its push L-Var 1, 200 ms, 0) [FBW-INTERIOR, FBW-FWC; README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_MASTER_WARNING` [FBW-API, FBW-FWC] | On/Off image |
 | 3,2 | `CAUT` | Dynamic Button | K10 | `lua:XL24-A32NX:MCAUT` (the script presses the MASTER CAUT button: its push L-Var 1, 200 ms, 0) [FBW-INTERIOR, FBW-FWC; README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_MASTER_CAUTION` [FBW-API, FBW-FWC] | On/Off image |
 | 3,3 | `PARK` | Dynamic Button | K2 | `L:A32NX_PARK_BRAKE_LEVER_POS`, On `1` / Off `0` [FBW-API] | `L:A32NX_PARK_BRAKE_LEVER_POS` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
@@ -176,70 +177,17 @@ STEP shows); each PULL key pulls its knob (selected mode); SPD/MACH, TRK/FPA and
 buttons and show the mode the aircraft reads; hPa/inHg writes the unit selector (inHg / hPa) and shows it.
 The other keys are the main page's.
 
-## Layout: ovhd
+## OVHD pages
 
-1,1 is the back key (it returns to the main page).
-
-| | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
-|---|---|---|---|---|---|---|---|---|
-| **Row 1** | < back | STROBE | BEACON | WING | NAV LOGO | RWY TURN | LAND L | LAND R |
-| **Row 2** | NOSE | SEAT BELT | NO SMOKE | | | | | |
-| **Row 3** | BAT 1 | BAT 2 | EXT PWR | APU MSTR | APU START | APU AVAIL | | |
-| **Row 4** | | | | | | | | |
-
-16 keys, the back key and 15 empty positions (reserved for a later unit: transponder and TCAS, EMER EXIT
-lights and others).
-
-## Key table: ovhd
-
-Forms as in "Key table".
-
-| Pos | Title | Action | Template | Command [source] | Read [source] | Display |
-|---|---|---|---|---|---|---|
-| 1,1 | | Back | (Stream Deck) | Returns to the main page | none | Back key |
-| 1,2 | `STROBE` | Display Value | K5 | `L:LIGHTING_STROBE_0`, On `0` / Off `1` (ON / AUTO) [FBW-API] | `L:LIGHTING_STROBE_0` [FBW-API] | Mappings `0=ON:1=AUTO:2=OFF` |
-| 1,3 | `BEACON` | Dynamic Button | K1 | `K:TOGGLE_BEACON_LIGHTS` [SDK-ELECE] | `(A:LIGHT BEACON, Bool)` [FBW-API] | On/Off image |
-| 1,4 | `WING` | Dynamic Button | K1 | `K:TOGGLE_WING_LIGHTS` [SDK-ELECE] | `(A:LIGHT WING, Bool)` [FBW-API] | On/Off image |
-| 1,5 | `NAV LOGO` | Display Value | K8 | `B:A32NX_OVH_LIGHTS_NAV_LOGO_SW`, On `1` / Off `0` (SYS 1 / OFF) [FBW-IE, FBW-REL; README 2.1.1 BVAR] | `B:A32NX_OVH_LIGHTS_NAV_LOGO_SW` [FBW-IE] | Mappings `0=OFF:1=SYS 1:2=SYS 2` |
-| 1,6 | `RWY TURN` | Dynamic Button | K1 | `K:ELECTRICAL_CIRCUIT_TOGGLE:21:K:ELECTRICAL_CIRCUIT_TOGGLE:22` (left and right light circuits) [SDK-ELECE, FBW-API; README 2.1.1 KVAR, PD-PI line 195] | `(A:CIRCUIT SWITCH ON:21, Bool)` [FBW-API] | On/Off image |
-| 1,7 | `LAND L` | Display Value | K5 | `L:LIGHTING_LANDING_2`, On `0` / Off `2` (ON / RETRACT) [FBW-API] | `L:LIGHTING_LANDING_2` [FBW-API] | Mappings `0=ON:1=OFF:2=RETR` |
-| 1,8 | `LAND R` | Display Value | K5 | `L:LIGHTING_LANDING_3`, On `0` / Off `2` (ON / RETRACT) [FBW-API] | `L:LIGHTING_LANDING_3` [FBW-API] | Mappings `0=ON:1=OFF:2=RETR` |
-| 2,1 | `NOSE` | Display Value | K5 | `L:LIGHTING_LANDING_1`, On `0` / Off `1` (T.O. / TAXI) [FBW-API] | `L:LIGHTING_LANDING_1` [FBW-API] | Mappings `0=T.O.:1=TAXI:2=OFF` |
-| 2,2 | `SEAT BELT` | Dynamic Button | K1 | `K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE` [FBW-API] | `(A:CABIN SEATBELTS ALERT SWITCH, Bool)` [FBW-API] | On/Off image |
-| 2,3 | `NO SMOKE` | Display Value | K5 | `L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION`, On `0` / Off `1` (ON / AUTO) [FBW-API] | `L:XMLVAR_SWITCH_OVHD_INTLT_NOSMOKING_POSITION` [FBW-API] | Mappings `0=ON:1=AUTO:2=OFF` |
-| 2,4 | | Empty | | | | Reserved (a later unit) |
-| 2,5 | | Empty | | | | Reserved (a later unit) |
-| 2,6 | | Empty | | | | Reserved (a later unit) |
-| 2,7 | | Empty | | | | Reserved (a later unit) |
-| 2,8 | | Empty | | | | Reserved (a later unit) |
-| 3,1 | `BAT 1` | Dynamic Button | K2 | `L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO`, On `1` / Off `0` (AUTO / OFF) [FBW-API] | `L:A32NX_OVHD_ELEC_BAT_1_PB_IS_AUTO` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
-| 3,2 | `BAT 2` | Dynamic Button | K2 | `L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO`, On `1` / Off `0` (AUTO / OFF) [FBW-API] | `L:A32NX_OVHD_ELEC_BAT_2_PB_IS_AUTO` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
-| 3,3 | `EXT PWR` | Dynamic Button | K2 | `L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON`, On `1` / Off `0` [FBW-API] | `L:A32NX_OVHD_ELEC_EXT_PWR_PB_IS_ON` [FBW-API] | On/Off image, Special State |
-| 3,4 | `APU MSTR` | Dynamic Button | K2 | `L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON`, On `1` / Off `0` [FBW-API] | `L:A32NX_OVHD_APU_MASTER_SW_PB_IS_ON` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
-| 3,5 | `APU START` | Dynamic Button | K2 | `L:A32NX_OVHD_APU_START_PB_IS_ON`, On `1` / Off `1` (always writes 1) [FBW-API] | `L:A32NX_OVHD_APU_START_PB_IS_ON` [FBW-API, FBW-SIMVARS] | On/Off image, Special State |
-| 3,6 | `APU AVAIL` | Display Value | K9 | none | `L:A32NX_OVHD_APU_START_PB_IS_AVAILABLE` [FBW-API, FBW-SIMVARS] | Mappings `0=---:1=AVAIL` |
-| 3,7 | | Empty | | | | Reserved (a later unit) |
-| 3,8 | | Empty | | | | Reserved (a later unit) |
-| 4,1 | | Empty | | | | Reserved (a later unit) |
-| 4,2 | | Empty | | | | Reserved (a later unit) |
-| 4,3 | | Empty | | | | Reserved (a later unit) |
-| 4,4 | | Empty | | | | Reserved (a later unit) |
-| 4,5 | | Empty | | | | Reserved (a later unit) |
-| 4,6 | | Empty | | | | Reserved (a later unit) |
-| 4,7 | | Empty | | | | Reserved (a later unit) |
-| 4,8 | | Empty | | | | Reserved (a later unit) |
-
-What the OVHD page keys do: STROBE, BEACON, NAV LOGO, LAND L/R, NOSE and SEAT BELT are the main page's keys.
-**WING** toggles the wing lights; **RWY TURN** toggles both runway turn-off light circuits (21 left, 22 right)
-and lights from the left one; **NO SMOKE** toggles ON and AUTO and shows all three positions; **BAT 1, BAT 2**
-switch the battery pushbuttons between AUTO (lit) and OFF; **EXT PWR** and **APU MSTR** switch their
-pushbuttons; **APU START** always writes 1 (start) and lights while the START pushbutton is on; **APU AVAIL**
-shows `AVAIL` when the APU is available.
+The OVHD page (main 2,8, P4-1's 16 keys plus the P4-3 power-up keys) and its SYSTEMS page (ovhd 2,8: fuel,
+ADIRS, bleed and packs, ELEC pushbuttons, anti-ice) have their own doc:
+[phase4-a32nx-overhead.md](phase4-a32nx-overhead.md), with "Layout: ovhd", "Key table: ovhd" and what the
+OVHD keys do (moved there from this doc in P4-3; no key changed).
 
 ## The script
 
 [`pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua`](../pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua),
-a standard script (README 3.5.1). It uses only `SimVar`, `SimRead`, `SimWrite` and `Sleep` (README 3.5:
+a standard script (README 3.5.1). It uses only `SimVar`, `SimRead`, `SimWrite`, `SimCalculator` (in `FUELMODE`, see [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md), "The script") and `Sleep` (README 3.5:
 in a command, Sleep blocks nothing). PilotsDeck runs a Lua
 function used as a key's Value Address on every process cycle and shows what it returns (README 2.1.1
 LUAFUNC: functions can be used "as Variable or Command"); `lua:XL24-A32NX:SPD` runs `SPD()` (PilotsDeck adds
@@ -290,7 +238,8 @@ that key of the Phase 1 export; `simple_button` = the templates.json entry, as o
 Title sizes ([navigation.md](navigation.md), "Rules"): Dynamic and Simple Buttons copied from the AP key draw
 their titles at 14, the ones copied from the BAT key keep 15; titles of 8 or more characters on Dynamic and
 Simple Buttons are set to 13 (`GND SPLR`, `SEAT BELT`, `RWY TURN`, `APU MSTR`, `APU START`, `SPD PULL`,
-`HDG PULL`, `ALT PULL`, `V/S PULL`); Display Values keep their template size (15).
+`HDG PULL`, `ALT PULL`, `V/S PULL`, and the overhead doc's, [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md));
+Display Values keep their template size (15).
 
 PilotsDeck forms (README 2.1.1): an L-Var "with or without preceding `L:`", read as a Number; as a command
 "The Plugin will toggle between these two Values" (On and Off Value). A K-Var takes up to five parameters, or
@@ -329,7 +278,8 @@ python tools/profilegen/generate.py tools/profilegen/a32nx.json
 python tools/profilegen/check.py tools/profilegen/a32nx.json
 ```
 
-`check.py` compares the profile with this doc's three key tables, the Phase 1 export, the templates and a
+`check.py` compares the profile with this doc's two key tables and the key tables of
+[phase4-a32nx-efis.md](phase4-a32nx-efis.md) and [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md), the Phase 1 export, the templates and a
 fresh build, and checks every `lua:` key against `XL24-A32NX.lua`. `--sources` adds the provenance check (as
 for the C172 profile, phase2-main-page.md). The data file sets `"phase1_keys": []`: the A32NX main page holds
 none of the Phase 1 keys (BAT, PARK, AP) that check.py's phase1 check compares on the C172 main page. A change

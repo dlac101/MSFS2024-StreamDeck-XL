@@ -1,6 +1,7 @@
 -- XL24-A32NX.lua: FCU readouts and ND steps for the MSFS2024 A32NX profile (PilotsDeck standard script).
 -- Page and keys: docs/phase4-a32nx.md. Not yet sim-tested.
 -- EFIS page keys (ADF/VOR steps, MASTER WARN/CAUT press): docs/phase4-a32nx-efis.md.
+-- OVHD systems page key (fuel MODE SEL press): docs/phase4-a32nx-overhead.md.
 --
 -- Readout keys (Display Value) use SPD, HDG, ALT, VS and BARO as their Value Address
 -- ("lua:XL24-A32NX:SPD"); PilotsDeck runs them on every process cycle and shows the text they
@@ -195,4 +196,15 @@ end
 
 function MCAUT()
     press_button(CAUT_PUSH)
+end
+
+-- OVHD systems page (P4-3): fuel MODE SEL press, the cockpit's own code (A320_NEO_INTERIOR.xml,
+-- PUSH_OVHD_FUEL_MODESEL LEFT_SINGLE_CODE); only when an A32NX fuel L-Var reads more than 0
+local FUEL_TOTAL = "L:A32NX_TOTAL_FUEL_QUANTITY"
+SimVar(FUEL_TOTAL)
+
+function FUELMODE()
+    if num(FUEL_TOTAL) <= 0 then return end
+    SimCalculator("(L:A32NX_OVHD_FUEL_MODESEL_MANUAL) ! s0 (>L:A32NX_OVHD_FUEL_MODESEL_MANUAL) " ..
+        "1 l0 + sp0 l0 4 (>K:2:FUELSYSTEM_JUNCTION_SET) l0 5 (>K:2:FUELSYSTEM_JUNCTION_SET)")
 end

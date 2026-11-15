@@ -45,6 +45,7 @@ docs/
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main, FCU and OVHD pages, Lua script XL24-A32NX.lua, key-by-key reference
   phase4-a32nx-efis.md  Phase 4 A32NX EFIS page (main > EFIS): Captain EFIS control panel and glareshield lamps, key-by-key reference
+  phase4-a32nx-overhead.md  Phase 4 A32NX overhead pages (main > OVHD > SYSTEMS): lights, ELEC, APU, fuel, ADIRS, bleed, anti-ice, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon build (Guenseli pack, personal use only, never committed)

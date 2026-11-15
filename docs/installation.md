@@ -73,9 +73,13 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   (`Plugin/Simulator/MSFS/ToolsMSFS.cs`, `WriteSingleKvar`), B-Vars through SimConnect's input-event calls,
   and L-Var reads and writes through PilotsDeck's SimConnect variable manager
   (`Plugin/Simulator/ConnectorMSFS.cs` and `Plugin/Simulator/MSFS/SubManager.cs` at `11bdf1f`). Only H-events
-  and calculator code (README 2.1.1, CALCULATOR) go through it. No key at this version sends calculator code,
-  so the A32NX's L-Var and `A32NX.*` event keys and the input-event switches work without the module. Whether
-  a Lua script's `SimCalculator` call also goes through the module is not confirmed.
+  and calculator code (README 2.1.1, CALCULATOR) go through it. A Lua script's `SimCalculator` call is
+  calculator code too: PilotsDeck passes it to `MobiModule.ExecuteCode` (`Plugin/Simulator/ConnectorMSFS.cs`
+  lines 551-569 at `11bdf1f`), which sends it to the module with no check that the module is connected
+  (CFIT.SimConnectLib at `8c06162c`, `SimConnectLib/Modules/MobiFlight/MobiModule.cs`). The A32NX fuel
+  MODE SEL key (`lua:XL24-A32NX:FUELMODE`, ovhdsys 1,8, [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md))
+  uses one, so it needs the module; the A32NX's other L-Var and `A32NX.*` event keys and the input-event
+  switches work without it.
 - Check: after a flight has loaded, the plugin log shows "MobiFlight WASM Client Connection opened" (seen on
   this PC on 2026-11-14 with module 1.0.1, the latest release on MobiFlight's
   [releases page](https://github.com/MobiFlight/MobiFlight-WASM-Module/releases)).

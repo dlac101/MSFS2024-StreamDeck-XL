@@ -951,3 +951,69 @@ with the mouse and check that the key follows without a key being pressed.
 **Result for the worker**
 - [ ] Record each step's result, the log lines for any step that failed, the ADF/VOR values, the CHRONO and
   AUTOLAND results, the MSFS and A32NX versions, and every fallback or change.
+
+## Phase 4: A32NX overhead pages (P4-3)
+
+Reference: [docs/phase4-a32nx-overhead.md](../docs/phase4-a32nx-overhead.md). The OVHD page `ovhd` (main 2,8;
+12 new keys beside P4-1's 16) and the new SYSTEMS page `ovhdsys` (ovhd 2,8) of the profile `MSFS2024 A32NX`, and
+the new function `FUELMODE` of `XL24-A32NX.lua`. Not yet tested in the app or the sim. This section replaces
+the P4-1 section's item on the "15 reserved OVHD positions" (now 3). Record: date, MSFS 2024 version, A32NX
+version, PilotsDeck version, and every fallback or changed value you used.
+
+**Before you start**
+- [ ] The P4-1 section's "Before you start" and "Import" steps, with the regenerated
+  `MSFS2024 A32NX.streamDeckProfile` and the new `XL24-A32NX.lua` copied into the plugin's Scripts folder
+  (the old copy lacks `FUELMODE`).
+- [ ] For MODE SEL: the MobiFlight WASM module installed (see docs/installation.md, "MobiFlight WASM module");
+  after the flight loads, the plugin log shows "MobiFlight WASM Client Connection opened". PilotsDeck sends a
+  script's `SimCalculator` code through that module (PilotsDeck and CFIT.SimConnectLib source): without it
+  MODE SEL does nothing, most likely with no alert sign on the key.
+
+**Import (no sim needed)**
+- [ ] Main 2,8 `OVHD` opens the OVHD page; ovhd 2,8 `SYSTEMS` opens the SYSTEMS page; its back key (1,1)
+  returns to the OVHD page, and the OVHD back key to the main page. Both pages match the layouts in the doc;
+  ovhd 2,6, 2,7, 4,8 and ovhdsys 2,8, 3,8, 4,5 to 4,8 are empty.
+- [ ] Select `EMER EXIT`, `APU N`, `EXT AVAIL`, `GEN 1`, `BUS TIE` (OVHD) and `L TK 1`, `MODE SEL`, `IR 1`,
+  `ALIGN`, `WING A/I` (SYSTEMS) and compare their settings panels with the doc's key tables (command type,
+  addresses, On/Off values, format, mappings). Record every field that differs.
+
+**Cold-and-dark power-up (flight loaded cold and dark, parked)**
+For every key: press it and check the cockpit control and the key; then move the control in the cockpit
+with the mouse and check that the key follows without a key being pressed.
+- [ ] BAT 1, BAT 2 lit (AUTO); BAT1 V and BAT2 V show about 25 to 28 V (record the values).
+- [ ] With a GPU connected: EXT AVAIL shows `AVAIL` (record whether it matches the cockpit's AVAIL light while
+  EXT PWR is off; once EXT PWR is on the cockpit shows ON and the key stays `AVAIL`), EXT PWR lit and the
+  ECAM shows external power. Else the APU: APU MSTR lit, APU START lit, APU N climbs to about 100 (record
+  whether it matches the ECAM's APU N), APU AVAIL `AVAIL`.
+- [ ] APU GEN lit (on); APU BLEED lit; EMER EXIT `ARM`; SEAT BELT lit (on); NO SMOKE `AUTO`.
+- [ ] SYSTEMS page: IR 1, IR 3, IR 2 `NAV` (the cockpit knobs follow; record whether the keys are in the
+  cockpit's left-to-right order); ON BAT shows `ON BAT` briefly; ALIGN counts down to 0 (record the start value
+  and whether it counts).
+- [ ] L TK 1/2, R TK 1/2, CTR TK 1/2 lit (pumps on, the cockpit's OFF lights out); BLEED 1/2 and PACK 1/2 lit;
+  ESS FEED, GALY CAB, COMML lit (normal).
+
+**Each remaining key once**
+- [ ] GEN 1 and GEN 2 off and on (engines off: the cockpit's OFF light follows; record what the ECAM shows),
+  BUS TIE.
+- [ ] X FEED: XFEED VLV moves from `SHUT` to `OPEN` and back (record the delay).
+- [ ] MODE SEL: the cockpit's MAN light follows (record whether the fuel ECAM page changes). If it does
+  nothing: the plugin log "Running Command" line, the MobiFlight line above, then the doc's fallback.
+- [ ] WING A/I, ENG1 A/I, ENG2 A/I and PROBE HT: the cockpit's ON lights follow.
+- [ ] ANN LT `TEST` lights every annunciator, then `BRT`; ESS FEED off shows the cockpit's ALTN light.
+
+**P4-1 / P4-2 regression**
+- [ ] Run "Phase 4: A32NX profile (P4-1)" for every main, FCU and OVHD key and "Phase 4: A32NX EFIS page
+  (P4-2)": unchanged.
+
+**Other aircraft**
+- [ ] Load the C172 G1000 and select `MSFS2024 A32NX` by hand: the A32NX L-Var keys show the 0 values of the
+  doc ("What the keys show when the A32NX isn't there") and their presses move nothing; MODE SEL does nothing.
+  **Do not press GEN 1, GEN 2, APU GEN, the tank keys or X FEED there**: they are standard sim events that act
+  on any aircraft. Then switch back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the voltages, the EXT AVAIL, APU N,
+  ALIGN and MODE SEL results, the IR order, the MSFS and A32NX versions, and every fallback or change.

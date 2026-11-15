@@ -455,3 +455,51 @@ FBW-FCU-XML (`A32NX_Interior_FCU.xml`), FBW-FWC (`PseudoFWC.ts`), FBW-EFIS-PILOT
 panel page). Weak points the hand test decides: the ADF/VOR values (1 ADF, 2 VOR against `a320-simvars.md`),
 CHRONO as a K-Var custom event, the deprecated AUTOLAND L-Var, the 200 ms press length, and the `A32NX.*`
 events sent as K-Vars (as P4-1).
+
+### FlyByWire A32NX overhead pages (P4-3)
+
+For [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md): the 12 new keys of the OVHD page `ovhd` (main 2,8) and
+the SYSTEMS page `ovhdsys` (ovhd 2,8) of the profile `MSFS2024 A32NX` (positions are page and row,column), and
+the function `FUELMODE` P4-3 added to `XL24-A32NX.lua`. P4-1's 16 OVHD keys are the rows of "FlyByWire A32NX
+(MSFS 2024)" above, unchanged. The A32NX is not installed on this PC yet (2026-11-14). Generated, not yet
+sim-tested: every row is **Unverified** until the checklist section "Phase 4: A32NX overhead pages (P4-3)"
+passes (then the date, MSFS version and A32NX version). The standard-event rows (GEN, APU GEN, tank pumps,
+X FEED) act on any aircraft with those indexes (phase4-a32nx-overhead.md).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| EMER EXIT LT switch (ovhd 2,4) | `L:XMLVAR_SWITCH_OVHD_INTLT_EMEREXIT_POSITION` | 0 ON, 1 ARM (FBW-API: AUTO), 2 OFF | `L:XMLVAR_SWITCH_OVHD_INTLT_EMEREXIT_POSITION`, On `1` / Off `2` (ARM / OFF) | readout only | FBW-API | Unverified |
+| ANN LT switch (ovhd 2,5) | `L:A32NX_OVHD_INTLT_ANN` | 0 TEST, 1 BRT, 2 DIM | `L:A32NX_OVHD_INTLT_ANN`, On `0` / Off `1` (TEST / BRT) | readout only | FBW-API, FBW-SIMVARS | Unverified |
+| APU BLEED pushbutton (ovhd 3,7) | `L:A32NX_OVHD_PNEU_APU_BLEED_PB_IS_ON` | 0/1 | `L:A32NX_OVHD_PNEU_APU_BLEED_PB_IS_ON`, On `1` / Off `0` | readout only | FBW-API, FBW-MISC | Unverified |
+| APU N (ovhd 3,8) | `L:A32NX_APU_N_RAW` | percent | (read only) | the key becomes Empty | FBW-SIMVARS | Unverified |
+| BAT 1 / BAT 2 voltage (ovhd 4,1 / 4,2) | `L:A32NX_ELEC_BAT_1_POTENTIAL` / `L:A32NX_ELEC_BAT_2_POTENTIAL` | volts | (read only) | none | FBW-API, FBW-SIMVARS | Unverified |
+| EXT PWR AVAIL (ovhd 4,3) | `L:A32NX_EXT_PWR_AVAIL:1` | 0/1 | (read only) | read `L:A32NX_ELEC_EXT_PWR_POTENTIAL_NORMAL` | FBW-API, FBW-SIMVARS, FBW-ELEC; PD-PI line 181 | Unverified |
+| GEN 1 / GEN 2 (ovhd 4,4 / 4,5) | `(A:GENERAL ENG MASTER ALTERNATOR:1, Bool)` / `(A:GENERAL ENG MASTER ALTERNATOR:2, Bool)` | 0/1 | `K:TOGGLE_ALTERNATOR1` / `K:TOGGLE_ALTERNATOR2` | none | FBW-ELEC, FBW-API, SDK-ELECE | Unverified |
+| APU GEN (ovhd 4,6) | `(A:APU GENERATOR SWITCH:1, Bool)` | 0/1 | `K:APU_GENERATOR_SWITCH_TOGGLE:1` | none | FBW-ELEC, SDK-ELECE; README 3.5.1 | Unverified |
+| BUS TIE pushbutton (ovhd 4,7) | `L:A32NX_OVHD_ELEC_BUS_TIE_PB_IS_AUTO` | 1 AUTO, 0 OFF | `L:A32NX_OVHD_ELEC_BUS_TIE_PB_IS_AUTO`, On `1` / Off `0` | readout only | FBW-API, FBW-INTERIOR, FBW-GEN | Unverified |
+| L TK pumps 1 / 2 (ovhdsys 1,2 / 1,3) | `(A:FUELSYSTEM PUMP SWITCH:2, Enum)` / `(A:FUELSYSTEM PUMP SWITCH:5, Enum)` | 0 off, 1 on (the key lights at 1) | `K:FUELSYSTEM_PUMP_TOGGLE:2` / `K:FUELSYSTEM_PUMP_TOGGLE:5` | none | FBW-MISC, FBW-INTERIOR, FBW-API, SDK-FUELE | Unverified |
+| CTR TK jet pump valves 1 / 2 (ovhdsys 1,4 / 1,5) | `(A:FUELSYSTEM VALVE SWITCH:9, Enum)` / `(A:FUELSYSTEM VALVE SWITCH:10, Enum)` | 0 off, 1 on (the key lights at 1) | `K:FUELSYSTEM_VALVE_TOGGLE:9` / `K:FUELSYSTEM_VALVE_TOGGLE:10` | none | FBW-MISC, FBW-INTERIOR, FBW-API, SDK-FUELE | Unverified |
+| R TK pumps 1 / 2 (ovhdsys 1,6 / 1,7) | `(A:FUELSYSTEM PUMP SWITCH:3, Enum)` / `(A:FUELSYSTEM PUMP SWITCH:6, Enum)` | 0 off, 1 on (the key lights at 1) | `K:FUELSYSTEM_PUMP_TOGGLE:3` / `K:FUELSYSTEM_PUMP_TOGGLE:6` | none | FBW-MISC, FBW-INTERIOR, FBW-API, SDK-FUELE | Unverified |
+| Fuel MODE SEL (ovhdsys 1,8) | `L:A32NX_OVHD_FUEL_MODESEL_MANUAL` | 1 MAN, 0 AUTO | `lua:XL24-A32NX:FUELMODE`: when `L:A32NX_TOTAL_FUEL_QUANTITY` > 0, the script runs the cockpit's code by `SimCalculator`, which writes `L:A32NX_OVHD_FUEL_MODESEL_MANUAL` and sends `(>K:2:FUELSYSTEM_JUNCTION_SET)` for junctions 4 and 5 (needs the MobiFlight WASM module, PD-SRC) | `SimWrite` the L-Var and `SimCommand("K:FUELSYSTEM_JUNCTION_SET:4:<1\|2>")` and `:5:`; then readout only | FBW-INTERIOR, SDK-FUELE, FBW-API; README 3.5.1; PD-SRC | Unverified |
+| Total fuel, the script's guard for FUELMODE (no key) | `L:A32NX_TOTAL_FUEL_QUANTITY` | kg | (read only) | none | FBW-SIMVARS | Unverified |
+| X FEED switch (ovhdsys 2,1) | `(A:FUELSYSTEM VALVE SWITCH:3, Bool)` | 0/1 | `K:FUELSYSTEM_VALVE_TOGGLE:3` | none | FBW-MISC, FBW-INTERIOR, FBW-API, SDK-FUELE | Unverified |
+| X FEED valve open (ovhdsys 2,2) | `(A:FUELSYSTEM VALVE OPEN:3, Bool)` | 0 SHUT, 1 OPEN | (read only) | none | FBW-MISC, FBW-API | Unverified |
+| IR 1 / IR 3 / IR 2 mode knobs (ovhdsys 2,3 / 2,4 / 2,5) | `L:A32NX_OVHD_ADIRS_IR_1_MODE_SELECTOR_KNOB` / `L:A32NX_OVHD_ADIRS_IR_3_MODE_SELECTOR_KNOB` / `L:A32NX_OVHD_ADIRS_IR_2_MODE_SELECTOR_KNOB` | 0 OFF, 1 NAV, 2 ATT | the same L-Vars, On `1` / Off `0` (NAV / OFF) | readout only | FBW-API, FBW-SIMVARS, FBW-ADIRS | Unverified |
+| ADIRS ON BAT light (ovhdsys 2,6) | `L:A32NX_OVHD_ADIRS_ON_BAT_IS_ILLUMINATED` | 0/1 | (read only) | none | FBW-API, FBW-INTERIOR | Unverified |
+| IR alignment time left (ovhdsys 2,7) | `L:A32NX_ADIRS_REMAINING_IR_ALIGNMENT_TIME` | seconds (deprecated in FBW-SIMVARS) | (read only) | the key becomes Empty | FBW-API, FBW-SIMVARS | Unverified |
+| ENG 1 / ENG 2 BLEED pushbuttons (ovhdsys 3,1 / 3,2) | `L:A32NX_OVHD_PNEU_ENG_1_BLEED_PB_IS_AUTO` / `L:A32NX_OVHD_PNEU_ENG_2_BLEED_PB_IS_AUTO` | 1 AUTO, 0 OFF | the same L-Vars, On `1` / Off `0` | readout only | FBW-SIMVARS, FBW-MISC | Unverified |
+| PACK 1 / PACK 2 pushbuttons (ovhdsys 3,3 / 3,4) | `L:A32NX_OVHD_COND_PACK_1_PB_IS_ON` / `L:A32NX_OVHD_COND_PACK_2_PB_IS_ON` | 0/1 | the same L-Vars, On `1` / Off `0` | readout only | FBW-API, FBW-SIMVARS, FBW-INTERIOR, FBW-GEN | Unverified |
+| AC ESS FEED pushbutton (ovhdsys 3,5) | `L:A32NX_OVHD_ELEC_AC_ESS_FEED_PB_IS_NORMAL` | 1 NORMAL, 0 ALTN | the same L-Var, On `1` / Off `0` | readout only | FBW-API, FBW-SIMVARS, FBW-INTERIOR, FBW-GEN | Unverified |
+| GALY & CAB pushbutton (ovhdsys 3,6) | `L:A32NX_OVHD_ELEC_GALY_AND_CAB_PB_IS_AUTO` | 1 AUTO, 0 OFF | the same L-Var, On `1` / Off `0` | readout only | FBW-API, FBW-SIMVARS, FBW-INTERIOR, FBW-GEN | Unverified |
+| COMMERCIAL pushbutton (ovhdsys 3,7) | `L:A32NX_OVHD_ELEC_COMMERCIAL_PB_IS_ON` | 0/1 | the same L-Var, On `1` / Off `0` | readout only | FBW-SIMVARS, FBW-INTERIOR, FBW-GEN (FBW-API's `_PB_IS_AUTO` is older) | Unverified |
+| WING anti-ice pushbutton (ovhdsys 4,1) | `L:A32NX_BUTTON_OVHD_ANTI_ICE_WING_POSITION` | 0/1 | the same L-Var, On `1` / Off `0` | readout only | FBW-MISC | Unverified |
+| ENG 1 / ENG 2 anti-ice pushbuttons (ovhdsys 4,2 / 4,3) | `L:A32NX_BUTTON_OVHD_ANTI_ICE_ENG_1_POSITION` / `L:A32NX_BUTTON_OVHD_ANTI_ICE_ENG_2_POSITION` | 0/1 | the same L-Vars, On `1` / Off `0` | readout only | FBW-MISC, FBW-SIMVARS | Unverified |
+| PROBE/WINDOW HEAT pushbutton (ovhdsys 4,4) | `L:A32NX_MAN_PITOT_HEAT` | 0/1 | the same L-Var, On `1` / Off `0` | readout only | FBW-API, FBW-MISC | Unverified |
+
+Sources: the tags of [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md), "Sources": FBW-API, FBW-SIMVARS,
+SDK-ELECE, README and PD-PI as above; FBW-INTERIOR (`A320_NEO_INTERIOR.xml`), FBW-ELEC
+(`A32NX_Interior_Elec.xml`), FBW-MISC (`A32NX_Interior_Misc.xml`), FBW-GEN (`A32NX_Interior_Generics.xml`),
+FBW-ADIRS (`A32NX_Interior_ADIRS.xml`), SDK-FUELE (MSFS 2024 SDK Aircraft Fuel System Events), PD-SRC
+(PilotsDeck source at `11bdf1f`). Weak points the hand test decides: MODE SEL by `SimCalculator` (and the
+MobiFlight module it needs), `L:A32NX_EXT_PWR_AVAIL:1` read with its `:1`, APU N from the raw L-Var, the
+deprecated alignment time L-Var, the IR knob order 1, 3, 2.
