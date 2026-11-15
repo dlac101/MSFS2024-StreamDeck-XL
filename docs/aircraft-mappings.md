@@ -317,6 +317,37 @@ navigation events / SimVars (the Settable mark of `TRANSPONDER STATE` read from 
 IE n = line n of [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's
 C172 G1000 profile (per-digit XPNDR keys) is a lead only.
 
+### Phase 3 radios page
+
+For [phase3-radios.md](phase3-radios.md) (the second-level page behind MORE 1,8 `RADIOS`; positions below
+are on that page). Generated, not yet sim-tested: all rows are **Unverified** until the checklist section
+"P3-2b: Radios page (C172 G1000)" passes. Every key uses a K-event that names its radio index, and the
+readouts read the indexed SimVars: the aircraft's NAV/COM input events (the PFD knobs and swap buttons, IE 95,
+99, 101, 48, 52, 57) act on whichever radio the G1000's tuning box has selected, and their push values are
+unknown. Open points (hand test): A-6 (index 1 / 2 are the PFD's NAV1 / NAV2, index 2 its COM2), A-7 (the
+steps change the standby, not the active frequency), A-8 (the kHz step size; 8.33 kHz not handled), A-9 (mic
+select). COM1 is not repeated here: main 3,1 and the COM1 pad rows above.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| NAV1 active / standby, swap (radios 1,2 `NAV1`) | `(A:NAV ACTIVE FREQUENCY:1, MHz)`, `(A:NAV STANDBY FREQUENCY:1, MHz)`, Format `2` | MHz, 108.00 to 117.95 | press `K:NAV1_RADIO_SWAP` | index change (A-6); `B:as1000_nav_switch_pfd` (acts on the selected NAV radio, value unknown) | SDK-RADV; SDK-RADE; IE 101 | Unverified |
+| NAV2 active / standby, swap (1,4 `NAV2`) | `(A:NAV ACTIVE FREQUENCY:2, MHz)`, `(A:NAV STANDBY FREQUENCY:2, MHz)`, Format `2` | MHz | press `K:NAV2_RADIO_SWAP` | as NAV1 | SDK-RADV; SDK-RADE; IE 101 | Unverified |
+| NAV1 / NAV2 station ident (1,3 `NAV1 ID`, 1,5 `NAV2 ID`) | `(A:NAV IDENT:1, String)`, `(A:NAV IDENT:2, String)` | String | (read only) | the key goes Empty | SDK-RADV | Unverified |
+| COM2 active / standby, swap (1,6 `COM2`) | `(A:COM ACTIVE FREQUENCY:2, MHz)`, `(A:COM STANDBY FREQUENCY:2, MHz)`, Format `3` | SDK unit "Frequency BCD16", read in MHz as COM1 | press `K:COM2_RADIO_SWAP` | read as BCD16 (the COM1 keys' fallback); `B:as1000_com_switch_pfd` (selected COM radio, value unknown) | SDK-RADV; SDK-RADE; IE 57 | Unverified |
+| COM2 station ident (1,7 `COM2 ID`) | `(A:COM ACTIVE FREQ IDENT:2, String)` | String | (read only) | the key goes Empty | SDK-RADV | Unverified |
+| NAV1 MHz step (2,2 `MHZ+`, 3,2 `MHZ-`) | none (NAV1 shows it) | 1 MHz; standby expected (A-7) | `K:NAV1_RADIO_WHOLE_INC`, `K:NAV1_RADIO_WHOLE_DEC` | A-7: a script with `K:NAV1_STBY_SET_HZ` (new ruling), else Empty | SDK-RADE; IE 95 | Unverified |
+| NAV1 kHz step (2,3 `KHZ+`, 3,3 `KHZ-`) | none (NAV1 shows it) | SDK "by 25 KHz", no carry; 50 kHz expected (A-8) | `K:NAV1_RADIO_FRACT_INC`, `K:NAV1_RADIO_FRACT_DEC` | `K:NAV1_RADIO_FRACT_INC_CARRY`, `K:NAV1_RADIO_FRACT_DEC_CARRY` ("by 50 KHz, and will carry"); A-7 as above | SDK-RADE; IE 99 | Unverified |
+| NAV2 MHz step (2,4 `MHZ+`, 3,4 `MHZ-`) | none (NAV2 shows it) | as NAV1 | `K:NAV2_RADIO_WHOLE_INC`, `K:NAV2_RADIO_WHOLE_DEC` | A-7: a script with `K:NAV2_STBY_SET_HZ` (new ruling), else Empty | SDK-RADE; IE 95 | Unverified |
+| NAV2 kHz step (2,5 `KHZ+`, 3,5 `KHZ-`) | none (NAV2 shows it) | as NAV1 | `K:NAV2_RADIO_FRACT_INC`, `K:NAV2_RADIO_FRACT_DEC` | `K:NAV2_RADIO_FRACT_INC_CARRY`, `K:NAV2_RADIO_FRACT_DEC_CARRY`; A-7 as above | SDK-RADE; IE 99 | Unverified |
+| COM2 MHz step (2,6 `MHZ+`, 3,6 `MHZ-`) | none (COM2 shows it) | 1 MHz, 118 to 137 with wrap; standby expected (A-7) | `K:COM2_RADIO_WHOLE_INC`, `K:COM2_RADIO_WHOLE_DEC` | A-7: a script with `K:COM2_STBY_RADIO_SET_HZ` (new ruling), else Empty | SDK-RADE; IE 48 | Unverified |
+| COM2 kHz step (2,7 `KHZ+`, 3,7 `KHZ-`) | none (COM2 shows it) | 25 kHz, no carry (A-8; 8.33 kHz mode not handled) | `K:COM2_RADIO_FRACT_INC`, `K:COM2_RADIO_FRACT_DEC` | `K:COM2_RADIO_FRACT_INC_CARRY`, `K:COM2_RADIO_FRACT_DEC_CARRY`; A-7 as above | SDK-RADE; IE 52 | Unverified |
+| COM1 / COM2 mic select (4,6 `MIC1`, 4,7 `MIC2`) | `(A:COM TRANSMIT:1, Bool)`, `(A:COM TRANSMIT:2, Bool)` | Bool; lit for the transmitting COM | `K:PILOT_TRANSMITTER_SET:0` (COM1), `K:PILOT_TRANSMITTER_SET:1` (COM2) | A-9: `K:COM1_TRANSMIT_SELECT` / `K:COM2_TRANSMIT_SELECT`, then `B:as1000_com_1_mic_midcom` / `B:as1000_com_2_mic_midcom` (scmon check first); if the read fails, Simple Buttons | SDK-RADE; SDK-RADV; IE 41, 43 | Unverified |
+
+Sources (read 2026-11-14; URLs in phase3-radios.md, "Sources"): SDK-RADE / SDK-RADV = MSFS 2024 SDK radio
+navigation events / SimVars (the `_CARRY` event names rechecked 2026-11-14 for P3-2b); IE n = line n of
+[reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's C172 G1000 profile
+(NAV/COM dials on the same WHOLE/FRACT events) is a lead only.
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).

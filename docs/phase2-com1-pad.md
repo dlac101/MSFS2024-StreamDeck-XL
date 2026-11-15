@@ -171,8 +171,8 @@ Every key is a copy of a template with only these fields changed (the generator 
 
 | Function | Why not now |
 |---|---|
-| COM2, NAV1/2 | Same script with an index; first prove COM1. NAV would use `NAV1_STBY_SET_HZ` (SDK-RADE) and 108.000 to 117.950. |
-| Transponder code entry | Natural next use of the same pad (4 octal digits, `K:XPNDR_SET`); planned in phase2-main-page.md. A later unit. |
+| COM2, NAV1/2 by number entry | Tuned by swap and MHz/kHz steps on the radios page (MORE 1,8 `RADIOS`, [phase3-radios.md](phase3-radios.md)); a pad for them would be the same script with an index. NAV would use `NAV1_STBY_SET_HZ` (SDK-RADE) and 108.000 to 117.950. |
+| Transponder code entry | On its own page: MORE 1,7 `XPDR`, [phase3-transponder.md](phase3-transponder.md) (script XL24-XPDRPAD.lua). |
 | Opening the pad from a long press on main 3,1 | Not possible with a folder (see "Where the page sits"). |
 | The G1000's own COM knobs (`B:as1000_com_large_pfd` and so on, IE 47-52) | Turning knobs digit by digit is what the pad replaces; the K-event sets the frequency in one step. |
 | Digit and ENT images from the icon pack | Personal use only; possible later in the local icon build ([icons.md](icons.md)). |

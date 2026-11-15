@@ -449,7 +449,7 @@
     {
       "id": "more",
       "parent": "main",
-      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad, autopilot (P3-1); later: radios",
+      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad, autopilot (P3-1), transponder (P3-2), radios (P3-2b)",
       "keys": [
         {
           "pos": "1,2",
@@ -480,6 +480,11 @@
           "pos": "1,7",
           "title": "XPDR",
           "folder": "xpdr"
+        },
+        {
+          "pos": "1,8",
+          "title": "RADIOS",
+          "folder": "radios"
         }
       ],
       "spec": "docs/phase2-g1000-vspeeds.md"
@@ -2293,6 +2298,275 @@
         }
       ],
       "spec": "docs/phase3-transponder.md"
+    },
+    {
+      "id": "radios",
+      "parent": "more",
+      "note": "NAV1, NAV2, COM2 (P3-2b): frequency readouts (press swaps), MHz and kHz steps of the standby, idents, COM1/COM2 mic select",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "NAV1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:NAV ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:NAV STANDBY FREQUENCY:1, MHz)",
+            "Format": "2",
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "NAV1 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV IDENT:1, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "NAV2",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:NAV ACTIVE FREQUENCY:2, MHz)",
+            "AddressRadioStandby": "(A:NAV STANDBY FREQUENCY:2, MHz)",
+            "Format": "2",
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "NAV2 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV IDENT:2, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "COM2",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:2, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:2, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "COM2 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM ACTIVE FREQ IDENT:2, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_WHOLE_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_FRACT_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_WHOLE_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_FRACT_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_WHOLE_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_FRACT_INC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_WHOLE_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_FRACT_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_WHOLE_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_FRACT_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_WHOLE_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_FRACT_DEC",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "MIC1",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PILOT_TRANSMITTER_SET:0",
+            "Address": "(A:COM TRANSMIT:1, Bool)"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "MIC2",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PILOT_TRANSMITTER_SET:1",
+            "Address": "(A:COM TRANSMIT:2, Bool)"
+          }
+        }
+      ],
+      "spec": "docs/phase3-radios.md"
     }
   ]
 }

@@ -416,7 +416,9 @@ Drop a new **PilotsDeck > COM Radio** action on position 3,1:
 
 `K:COM_STBY_RADIO_SWAP` "swaps COM 1 frequency with standby" (SDK-RADE). The SDK gives the unit of both
 frequencies as `Frequency BCD16`; reading them in `MHz` is an assumption. If the key shows nonsense, use
-the fallback (see "Fallbacks"). Tuning stays on the G1000 (a radio page comes later).
+the fallback (see "Fallbacks"). Tuning: the G1000 knobs or the COM1 pad (MORE 1,5,
+[phase2-com1-pad.md](phase2-com1-pad.md)); NAV1, NAV2 and COM2 on the radios page (MORE 1,8,
+[phase3-radios.md](phase3-radios.md)).
 
 ### T5: Simple Button. Keys 3,3 ATC and 3,4 MAP
 

@@ -23,6 +23,7 @@ Optional local icon build of the same profile (Guenseli pack, personal use only,
 COM1 number pad under More (MORE 1,5; a Lua script sets the frequency; generated, not yet sim-tested; the script must be copied into the plugin's Scripts folder): [docs/phase2-com1-pad.md](docs/phase2-com1-pad.md).
 Autopilot page under More (MORE 1,6; GFC 700 mode keys lit from sim state, heading, course, altitude, VS and FLC speed readouts with step keys; generated, not yet sim-tested): [docs/phase3-autopilot.md](docs/phase3-autopilot.md).
 Transponder page under More (MORE 1,7; code pad by a Lua script, code and mode readouts, STBY/ON/ALT, IDENT, VFR; generated, not yet sim-tested; the script `XL24-XPDRPAD.lua` must be copied into the plugin's Scripts folder): [docs/phase3-transponder.md](docs/phase3-transponder.md).
+Radios page under More (MORE 1,8; NAV1, NAV2 and COM2 readouts that swap on a press, MHz and kHz steps, station idents, COM1/COM2 mic select; generated, not yet sim-tested): [docs/phase3-radios.md](docs/phase3-radios.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
 **Phase 4: FlyByWire A32NX profile (main, FCU and OVHD pages), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md).
 ## Layout
@@ -39,6 +40,7 @@ docs/
   phase2-com1-pad.md    Phase 2 COM1 pad (MORE > COM PAD): number pad, Lua script, key-by-key reference (C172 G1000)
   phase3-autopilot.md   Phase 3 Autopilot page (MORE > AUTOPILOT, GFC 700): mode keys, readouts, key-by-key reference (C172 G1000)
   phase3-transponder.md Phase 3 Transponder page (MORE > XPDR): code pad, Lua script XL24-XPDRPAD.lua, mode keys, key-by-key reference (C172 G1000)
+  phase3-radios.md      Phase 3 Radios page (MORE > RADIOS): NAV1, NAV2, COM2 readouts and steps, idents, mic select, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design (not built): elevator trim bar gauge on the Trim page (C172 G1000)
   phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main, FCU and OVHD pages, Lua script XL24-A32NX.lua, key-by-key reference
   phase4-a32nx-efis.md  Phase 4 A32NX EFIS page (main > EFIS): Captain EFIS control panel and glareshield lamps, key-by-key reference

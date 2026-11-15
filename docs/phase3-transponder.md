@@ -23,8 +23,8 @@ readouts read SimVars, so they work the same with the Xbox Elite controller and 
 ## Where the page sits
 
 A second-level folder page **xpdr**, opened by the folder key `XPDR` at **MORE 1,7** (next to AUTOPILOT at
-1,6; [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), "Key table: more"). MORE 1,8 stays free for the
-radios page (a later unit). How the pages connect: [navigation.md](navigation.md).
+1,6; [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), "Key table: more"). MORE 1,8 `RADIOS` opens the
+radios page ([phase3-radios.md](phase3-radios.md)). How the pages connect: [navigation.md](navigation.md).
 
 ## Install the script (once)
 
@@ -192,7 +192,7 @@ for these keys checks the PFD's mode display, not only MODE.
 |---|---|
 | Keys 8 and 9 | Squawk codes are octal: digits 0 to 7 only. |
 | OFF, TEST and GND mode keys | Not built (this page has the three flying modes STBY / ON / ALT); MODE still shows these modes when the sim has them. |
-| NAV1/NAV2 and COM2 tuning, COM1/COM2 mic select | The radios page, a later unit (MORE 1,8; [navigation.md](navigation.md)). |
+| NAV1/NAV2 and COM2 tuning, COM1/COM2 mic select | The radios page (MORE 1,8 `RADIOS`, [phase3-radios.md](phase3-radios.md)). |
 | Code entry by the G1000 softkeys (`H:` events) | The pad sets the code in one step; the PFD's XPDR softkeys stay usable by hand. |
 | Digit and ENT images from the icon pack | Personal use only; in the local icon build ([icons.md](icons.md)). |
 

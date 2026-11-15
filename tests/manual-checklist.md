@@ -715,6 +715,67 @@ or the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallb
   and `MODE` showed for each key, the log lines for any step that failed, the sim version, and every fallback
   or change.
 
+## P3-2b: Radios page (C172 G1000)
+
+Reference: [docs/phase3-radios.md](../docs/phase3-radios.md). The page is in the same profile file as the
+main page, behind MORE 1,8 `RADIOS`; it needs no script. Not yet tested in the app or the sim. Record: date,
+MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+
+**Reimport (no sim needed)**
+- [ ] As in the P3-1 section's Reimport steps: export the installed `MSFS2024 C172 G1000` to the backup
+  folder, delete every installed profile of that name (and its `copy` versions; leave the profile named
+  `G1000`), double-click the generated profile, select it, check its aircraft mapping. For the local icon
+  profile, rebuild it first as [docs/icons.md](../docs/icons.md) says.
+- [ ] The main page and the other pages look as before; the More page now has a seventh folder key,
+  `RADIOS` at 1,8.
+
+**Layout and round trip (no sim needed)**
+- [ ] `RADIOS` opens the page: back key 1,1; `NAV1 NAV1 ID NAV2 NAV2 ID COM2 COM2 ID` at 1,2-1,7;
+  `MHZ+ KHZ+` under each radio at 2,2-2,7 and `MHZ- KHZ-` at 3,2-3,7; `MIC1` 4,6, `MIC2` 4,7; everything
+  else empty. Its back key returns to MORE.
+- [ ] Select `NAV1` and compare its settings panel with the doc: COM Radio, Active
+  `(A:NAV ACTIVE FREQUENCY:1, MHz)`, Standby `(A:NAV STANDBY FREQUENCY:1, MHz)`, Format `2`, Command
+  `K:NAV1_RADIO_SWAP`. Select `MIC2`: Command `K:PILOT_TRANSMITTER_SET:1`, Value Address
+  `(A:COM TRANSMIT:2, Bool)`. Record every field that differs.
+
+**In the sim (flight loaded, battery and avionics on)**
+First write down the NAV1, NAV2 and COM2 active and standby frequencies and which MIC light is on. Way back
+after each step: swap back with a second press, step back with the opposite key (or tune on the G1000 with the
+mouse), and press the MIC key that was lit before.
+- [ ] 1. `NAV1` key: top = the PFD's NAV1 active frequency, bottom = NAV1 standby; `NAV2` the same for NAV2;
+  `COM2` = the PFD's COM2 active and standby. If `NAV1` shows NAV2's frequencies (or none), record it
+  (index, **A-6**). Press each -> that radio swaps on the PFD, and the key follows.
+- [ ] 2. `MHZ+` / `MHZ-` / `KHZ+` / `KHZ-` under each radio: record **which frequency changes** (standby
+  expected, **A-7**), **the step** (NAV 50 kHz expected; COM2 25 kHz or 8.33 kHz, **A-8**) and the wrap at
+  117.95 / 108.00 (NAV) and 136.975 / 118.000 (COM2).
+- [ ] 3. Idents: tune a VOR in range -> `NAV1 ID` / `NAV2 ID` show its ident; `COM2 ID` shows the tuned
+  station (it may stay empty: record it; the repair then makes the key Empty).
+- [ ] 4. `MIC1` / `MIC2` -> the audio panel's COM1 MIC / COM2 MIC light moves and the lit key follows
+  (**A-9**); press the audio panel's MIC buttons with the mouse: the keys follow.
+- [ ] 5. Turn the G1000's NAV and COM knobs with the mouse (and use its swap buttons): the readouts follow
+  without a key press.
+- [ ] 6. No flight loaded (sim at the main menu): the page opens; readouts empty (or the plugin's Wait
+  image); no key lit.
+- [ ] scmon (Admin; [tools/scmon/README.md](../tools/scmon/README.md)), **only if step 4 fails** (A-9): build
+  it once with
+  `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" build "A:\FS2024 Stuff\msfs2024-streamdeck-xl\tools\scmon\scmon.csproj" -c Release -o "$env:TEMP\scmon-bin"`,
+  then run
+  `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" "$env:TEMP\scmon-bin\scmon.dll" 180 B:as1000_com_2_mic_midcom`
+  and click the audio panel's COM2 MIC button: does the `plugin B:as1000_com_2_mic_midcom=` value change (a
+  readable B-Var for the fallback)? Radio SimVars are not in scmon's list; the page's own readouts are the
+  monitor.
+
+**Which results decide the open points**
+- A-6 (radio indexes): step 1. A-7 (standby or active): step 2, which frequency changes. A-8 (kHz step):
+  step 2, the step size. A-9 (mic select): step 4, and the scmon check if step 4 fails.
+
+**Controller independence**
+- [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, for step 2 which frequency changed and by how much for each radio, the log
+  lines for any step that failed, the sim version, and every fallback or change.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD

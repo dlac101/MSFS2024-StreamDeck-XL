@@ -7,7 +7,8 @@ V-speeds checks pass.
 Goal: three pages under the main page's **MORE** folder (key 4,8) for the default MSFS 2024 **Cessna 172
 Skyhawk G1000**: the **PFD** bezel keys, the **MFD** bezel keys and a **V-speeds** display. They are the
 first second-level pages of the profile (main > MORE > page, [navigation.md](navigation.md) "Rules": at
-most two levels). The MORE page itself now holds three folder keys that open them.
+most two levels). The MORE page holds the three folder keys that open them, among its other folder
+keys ("MORE page" below).
 
 The pages are part of the generated profile `MSFS2024 C172 G1000` (same file, same name, same import as
 the main page: see [phase2-main-page.md](phase2-main-page.md), "Import the profile"). The tables below are
@@ -25,17 +26,18 @@ with the Xbox Elite controller and the T.16000M + TWCS.
 
 ## MORE page
 
-A menu of further pages. Six folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
+A menu of further pages. Seven folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
 [phase2-com1-pad.md](phase2-com1-pad.md); the fifth, `AUTOPILOT` at 1,6, opens the autopilot page:
 [phase3-autopilot.md](phase3-autopilot.md); the sixth, `XPDR` at 1,7, opens the transponder page:
-[phase3-transponder.md](phase3-transponder.md)); the other positions stay free for later folders (radios:
-[navigation.md](navigation.md), "Pages").
+[phase3-transponder.md](phase3-transponder.md); the seventh, `RADIOS` at 1,8, opens the radios page:
+[phase3-radios.md](phase3-radios.md)); the other positions stay free for later folders
+([navigation.md](navigation.md), "Pages").
 
 ### Layout: more
 
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
-| **Row 1** | < back | PFD > | MFD > | V-SPEEDS > | COM PAD > | AUTOPILOT > | XPDR > | |
+| **Row 1** | < back | PFD > | MFD > | V-SPEEDS > | COM PAD > | AUTOPILOT > | XPDR > | RADIOS > |
 | **Row 2** | | | | | | | | |
 | **Row 3** | | | | | | | | |
 | **Row 4** | | | | | | | | |
@@ -55,7 +57,7 @@ action on that key.
 | 1,5 | `COM PAD` | Folder | (Stream Deck) | Opens the child page **compad** | none | Folder; the page's keys: "Key table: compad" in [phase2-com1-pad.md](phase2-com1-pad.md) |
 | 1,6 | `AUTOPILOT` | Folder | (Stream Deck) | Opens the child page **autopilot** | none | Folder; the page's keys: "Key table: autopilot" in [phase3-autopilot.md](phase3-autopilot.md) |
 | 1,7 | `XPDR` | Folder | (Stream Deck) | Opens the child page **xpdr** | none | Folder; the page's keys: "Key table: xpdr" in [phase3-transponder.md](phase3-transponder.md) |
-| 1,8 | | Empty | | | | |
+| 1,8 | `RADIOS` | Folder | (Stream Deck) | Opens the child page **radios** | none | Folder; the page's keys: "Key table: radios" in [phase3-radios.md](phase3-radios.md) |
 | 2,1 | | Empty | | | | |
 | 2,2 | | Empty | | | | |
 | 2,3 | | Empty | | | | |
@@ -251,7 +253,7 @@ is the fallback.
 |---|---|---|
 | Range joystick pan (`_JOYSTICK_UP`, `_DOWN`, `_LEFT`, `_RIGHT`) | Named in SDK-AS1000 (the range knob's pan, `_Range_Pan_X` / `_Y`). The 2024 C172's input event `as1000_range_*` may be that control (the input events list names only; `as1000_range_zoom_*` is likely the range knob, `as1000_range_push_*` its push). Left Empty (3,7, 3,8, 4,7, 4,8) in this unit, until a test or source shows it. | SDK-AS1000; IE 108 to 113 |
 | FMS outer knob push | SDK-AS1000 names no push for the outer ring. | SDK-AS1000 |
-| COM, NAV, heading, course, baro, altitude knobs; autopilot keys; volume | Other bezel controls with their own input events (the other `as1000_*` lines of IE): planned for the autopilot-values and radio pages (navigation.md, MORE row). The autopilot mode keys are on the main page (2,1 to 2,8). | IE; navigation.md |
+| COM, NAV, heading, course, baro, altitude knobs; autopilot keys; volume | Other bezel controls with their own input events (the other `as1000_*` lines of IE), not used: heading, course and altitude are set on the autopilot page ([phase3-autopilot.md](phase3-autopilot.md), K-events and H-events) and NAV1, NAV2 and COM2 are tuned on the radios page ([phase3-radios.md](phase3-radios.md), K-events). The autopilot mode keys are on the main page (2,1 to 2,8). | IE; navigation.md |
 | Softkey labels, the active G1000 page | No SimVar in the MSFS 2024 SDK gives them (labels only through third-party bridges, not installed). | README 2.1.1 (H-events can't be read) |
 
 ## V-speeds page
