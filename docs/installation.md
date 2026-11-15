@@ -55,8 +55,11 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   The original exe is kept next to it as `PilotsDeck.exe.0.9.7-original`. The build used a
   per-user .NET 10 SDK in `%LOCALAPPDATA%\Microsoft\dotnet` (not on PATH).
 - The patched build logs "New Build detected" at startup because its build stamp differs. Ignore it.
-- When an official build with the fix ships, run the PilotsDeck installer as usual. It replaces
-  the patched exe, and the `-original` file can then be deleted.
+- When an official build with the fix ships, run the PilotsDeck installer as usual. Its update step
+  deletes every file at the top of the plugin folder except the plugin's configuration and colour files,
+  then installs the release, so it replaces the patched exe and also removes
+  `PilotsDeck.exe.0.9.7-original`: nothing is left to delete by hand
+  (`Installer/Worker/WorkerInstallUpdate.cs` lines 45-69 at `11bdf1f`).
 
 ## MobiFlight WASM module (the G1000 bezel keys need it)
 
@@ -66,6 +69,13 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)) and the autopilot page's `CRS+`, `CRS1` and `CRS-`
   presses ([phase3-autopilot.md](phase3-autopilot.md); the long presses of `CRS+` and `CRS-` are K-events):
   without the module they do nothing. No other key sends an H-event.
+- The other address kinds don't use the module: K-events go through SimConnect's event calls
+  (`Plugin/Simulator/MSFS/ToolsMSFS.cs`, `WriteSingleKvar`), B-Vars through SimConnect's input-event calls,
+  and L-Var reads and writes through PilotsDeck's SimConnect variable manager
+  (`Plugin/Simulator/ConnectorMSFS.cs` and `Plugin/Simulator/MSFS/SubManager.cs` at `11bdf1f`). Only H-events
+  and calculator code (README 2.1.1, CALCULATOR) go through it. No key at this version sends calculator code,
+  so the A32NX's L-Var and `A32NX.*` event keys and the input-event switches work without the module. Whether
+  a Lua script's `SimCalculator` call also goes through the module is not confirmed.
 - Check: after a flight has loaded, the plugin log shows "MobiFlight WASM Client Connection opened" (seen on
   this PC on 2026-11-14 with module 1.0.1, the latest release on MobiFlight's
   [releases page](https://github.com/MobiFlight/MobiFlight-WASM-Module/releases)).

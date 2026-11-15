@@ -32,6 +32,7 @@ Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-t
 docs/
   original-plan.md      the project brief
   installation.md       this PC's setup, versions, backups, git across accounts
+  troubleshooting.md    what to check when a key, script or image doesn't work: plugin states, log messages, MobiFlight module, the patched build
   poc-c172.md           Phase 1 key-by-key setup
   phase2-main-page.md   Phase 2 main page: import, regenerate, key-by-key reference (C172 G1000)
   phase2-trim-views.md  Phase 2 Trim and Views child pages: key-by-key reference (C172 G1000)

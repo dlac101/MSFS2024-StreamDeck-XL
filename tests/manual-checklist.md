@@ -2,6 +2,7 @@
 
 Copy the relevant section into a dated note (or the CHANGELOG) each time you run it.
 Record: date, MSFS 2024 version, PilotsDeck version, aircraft.
+Script steps below: the package install ([docs/package.md](../docs/package.md), "Install") copies every script; copying by hand is the fallback.
 
 ## Phase 1: four-key proof of concept (C172 G1000)
 
