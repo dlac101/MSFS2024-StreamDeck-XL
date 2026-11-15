@@ -26,11 +26,12 @@ with the Xbox Elite controller and the T.16000M + TWCS.
 
 ## MORE page
 
-A menu of further pages. Seven folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
+A menu of further pages. Eight folder keys now (the fourth, `COM PAD` at 1,5, opens the COM1 number pad:
 [phase2-com1-pad.md](phase2-com1-pad.md); the fifth, `AUTOPILOT` at 1,6, opens the autopilot page:
 [phase3-autopilot.md](phase3-autopilot.md); the sixth, `XPDR` at 1,7, opens the transponder page:
 [phase3-transponder.md](phase3-transponder.md); the seventh, `RADIOS` at 1,8, opens the radios page:
-[phase3-radios.md](phase3-radios.md)); the other positions stay free for later folders
+[phase3-radios.md](phase3-radios.md); the eighth, `SYSTEMS` at 2,2, opens the systems page:
+[phase3-systems.md](phase3-systems.md)); the other positions stay free for later folders
 ([navigation.md](navigation.md), "Pages").
 
 ### Layout: more
@@ -38,7 +39,7 @@ A menu of further pages. Seven folder keys now (the fourth, `COM PAD` at 1,5, op
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
 | **Row 1** | < back | PFD > | MFD > | V-SPEEDS > | COM PAD > | AUTOPILOT > | XPDR > | RADIOS > |
-| **Row 2** | | | | | | | | |
+| **Row 2** | | SYSTEMS > | | | | | | |
 | **Row 3** | | | | | | | | |
 | **Row 4** | | | | | | | | |
 
@@ -59,7 +60,7 @@ action on that key.
 | 1,7 | `XPDR` | Folder | (Stream Deck) | Opens the child page **xpdr** | none | Folder; the page's keys: "Key table: xpdr" in [phase3-transponder.md](phase3-transponder.md) |
 | 1,8 | `RADIOS` | Folder | (Stream Deck) | Opens the child page **radios** | none | Folder; the page's keys: "Key table: radios" in [phase3-radios.md](phase3-radios.md) |
 | 2,1 | | Empty | | | | |
-| 2,2 | | Empty | | | | |
+| 2,2 | `SYSTEMS` | Folder | (Stream Deck) | Opens the child page **systems** | none | Folder; the page's keys: "Key table: systems" in [phase3-systems.md](phase3-systems.md) |
 | 2,3 | | Empty | | | | |
 | 2,4 | | Empty | | | | |
 | 2,5 | | Empty | | | | |

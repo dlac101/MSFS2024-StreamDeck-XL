@@ -245,8 +245,9 @@ listed under the trim page.
 Sources: SDK-RADE and SDK-RADV as above (read again 2026-11-12 for `COM_STBY_RADIO_SET_HZ`,
 `COM SPACING MODE`, `COM STANDBY FREQ IDENT`); README = PilotsDeck README; REF-GSX = the GSX Pro reference
 profile in ProfilesV3 (an `X:` string shown on a key, Lua commands of type 14), a lead only; PD-SRC =
-PilotsDeck source (`SimCommand.cs` LUAFUNC = 14; an A-Var with unit `String` is read as text), see
-phase2-com1-pad.md.
+PilotsDeck source (`SimCommand.cs` LUAFUNC = 14; `Plugin/Simulator/MSFS/SubMapping.cs` `OnReceived` at
+11bdf1f7: a value that is not numeric is stored as text, so an A-Var with unit `String` shown as text is
+Unverified), see phase2-com1-pad.md.
 
 ### Phase 3 autopilot page
 
@@ -347,6 +348,42 @@ Sources (read 2026-11-14; URLs in phase3-radios.md, "Sources"): SDK-RADE / SDK-R
 navigation events / SimVars (the `_CARRY` event names rechecked 2026-11-14 for P3-2b); IE n = line n of
 [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's C172 G1000 profile
 (NAV/COM dials on the same WHOLE/FRACT events) is a lead only.
+
+### Phase 3 systems page
+
+For [phase3-systems.md](phase3-systems.md) (the second-level page behind MORE 2,2 `SYSTEMS`; positions below
+are on that page). Generated, not yet sim-tested: all rows are **Unverified** until the checklist section
+"P3-3: Systems page (C172 G1000)" passes. Every switch on the page is in the aircraft's input event list, so
+every switch key reads and writes its input event (command type 13, On `1` / Off `0` unless the row says
+otherwise; the battery precedent above); the SDK K-event and SimVar pairs are fallbacks (the alternator
+events are for the v1.00 electrical system only, and the indexes the cockpit drives are unknown). The
+readouts read SimVars. Open points (hand test): A-3 (switch values: STBY BATT has three positions, the light
+switches may be dimmers), A-4 (fuel selector values), A-6 (readout indexes), A-7 (what the dimmer readout
+follows), A-8 (which light each light key drives). FUEL VLV is for the ground only (A-5).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Alternator switch (systems 1,2 `ALT`) | `B:electrical_alternator_1` | 1 = on, 0 = off (A-3) | `B:electrical_alternator_1`, On `1` / Off `0` | read `(A:GENERAL ENG MASTER ALTERNATOR:1, Bool)`, write `K:TOGGLE_ALTERNATOR1` (v1.00 only) | IE 140; README 2.1.1; SDK-ELECV; SDK-ELECE; lead: Jiblet | Unverified |
+| Avionics bus 1 / 2 switches (1,3 `AVN 1`, 1,4 `AVN 2`) | `B:electrical_line_bus_1_to_avionics_bus_1`, `B:electrical_line_bus_2_to_avionics_bus_2` | 1 = on, 0 = off (A-3) | the same input events, On `1` / Off `0` | read `(A:LINE CONNECTION ON:n, Bool)` or `(A:AVIONICS MASTER SWITCH:n, Bool)`, write `K:ELECTRICAL_LINE_CONNECTION_TOGGLE:n`; n unknown | IE 174, 175; SDK-ELECV; SDK-SYSV; SDK-ELECE; lead: Jiblet | Unverified |
+| Standby battery switch (1,5 `STBY BAT`) | `B:electrical_battery_stby_2` | 1 / 0 assumed; the switch is ARM / OFF / TEST (A-3) | `B:electrical_battery_stby_2`, On `1` / Off `0` | read `(A:ELECTRICAL MASTER BATTERY:n, Bool)`; n unknown | IE 142; SDK-ELECV | Unverified |
+| Bus volts (1,6 `BUS V`) | `(A:ELECTRICAL BUS VOLTAGE:1, Volts)`, Format `2.1` | Volts; bus index 1 is a global index (A-6) | (read only) | `(A:ELECTRICAL MAIN BUS VOLTAGE:1, Volts)` (v1.00), another index | SDK-ELECV | Unverified |
+| Battery amps (1,7 `BATT A`) | `(A:ELECTRICAL BATTERY LOAD:2, Amperes)`, Format `1.1` | Amperes, the load drawn from the battery while it supplies (SDK: not when charging); its sign against the EIS M BATT is open; battery index 2 = the cockpit BAT's (A-6) | (read only) | index 1; `(A:ELECTRICAL BUS AMPS:1, Amperes)` | SDK-ELECV | Unverified |
+| Total load amps (1,8 `LOAD A`) | `(A:ELECTRICAL TOTAL LOAD AMPS, Amperes)`, Format `1.1` | Amperes, no index | (read only) | none | SDK-ELECV | Unverified |
+| Cabin lights 1 / 2 (2,2 `CABIN 1`, 2,3 `CABIN 2`) | `B:lighting_cabin_1`, `B:lighting_cabin_2` | 1 / 0 assumed; may be dimmers (A-3); which light: A-8 | the same input events, On `1` / Off `0` | `K:TOGGLE_CABIN_LIGHTS`, read `(A:LIGHT CABIN, Bool)` | IE 194, 195; SDK-ELECE; SDK-SYSV | Unverified |
+| Panel lights 1 / 2 (2,4 `PANEL 1`, 2,5 `PANEL 2`) | `B:lighting_panel_1`, `B:lighting_panel_2` | 1 / 0 assumed; may be dimmer knobs (A-3); which light: A-8 | the same input events, On `1` / Off `0` | `K:PANEL_LIGHTS_TOGGLE`, read `(A:LIGHT PANEL, Bool)`; a dimmer becomes a Display Value of its input event | IE 198, 199; SDK-ELECE; SDK-SYSV | Unverified |
+| Pedestal light (2,6 `PED LT`) | `B:lighting_pedestral_1` (the aircraft's spelling) | 1 / 0 assumed (A-3) | `B:lighting_pedestral_1`, On `1` / Off `0` | `K:PEDESTRAL_LIGHTS_TOGGLE`, read `(A:LIGHT PEDESTRAL, Bool)` | IE 200; SDK-ELECE; SDK-SYSV | Unverified |
+| Light dimmer readout (2,7 `DIMMER`) | `(A:LIGHT POTENTIOMETER:5, Percent)`, Format `1.0` | Percent; what potentiometer 5 dims is unknown (A-7) | (read only) | read `B:lighting_potentiometer_5` | SDK-SYSV; IE 201 | Unverified |
+| Fuel selector LEFT / BOTH / RIGHT (3,2 `LEFT`, 3,3 `BOTH`, 3,4 `RIGHT`) | `B:fuel_selector_1`; lit at `1` / `2` / `3` | 1 = LEFT, 2 = BOTH, 3 = RIGHT assumed (A-4, weak: a lead's junction option numbers) | `B:fuel_selector_1`, On = Off = `1` / `2` / `3` (every press sets that position) | the values from the scmon check; `K:FUEL_SELECTOR_LEFT` / `K:FUEL_SELECTOR_ALL` / `K:FUEL_SELECTOR_RIGHT` as Simple Buttons | IE 180; SDK-FUELE; lead: Jiblet | Unverified |
+| Fuel selector readout (3,5 `FUEL SEL`) | `(A:FUELSYSTEM JUNCTION SETTING:1, Number)`, Mappings `1=LEFT:2=BOTH:3=RIGHT` | Number (junction option) | (read only) | `(A:FUEL TANK SELECTOR:1, Enum)` (legacy only) | SDK-FUELV; lead: Jiblet | Unverified |
+| Fuel shutoff valve (3,6 `FUEL VLV`; ground only, A-5) | `B:fuel_valve_shutoffvalve` | 1 = open (fuel on), 0 = closed assumed (A-3) | `B:fuel_valve_shutoffvalve`, On `1` / Off `0` | `K:FUELSYSTEM_VALVE_TOGGLE:n`, read `(A:FUELSYSTEM VALVE SWITCH:n, Bool)`; n unknown | IE 181; SDK-FUELE; SDK-FUELV | Unverified |
+| Fuel quantity left / right / total (4,2 `FUEL L`, 4,3 `FUEL R`, 4,4 `FUEL TOT`) | `(A:FUEL LEFT QUANTITY, Gallons)`, `(A:FUEL RIGHT QUANTITY, Gallons)`, `(A:FUEL TOTAL QUANTITY, Gallons)`, Format `1.1` | Gallons, no index (the EIS shows usable fuel) | (read only) | `(A:FUELSYSTEM TANK QUANTITY:n, Gallons)` | SDK-FUELV | Unverified |
+
+Sources (read 2026-11-14; URLs in phase3-systems.md, "Sources"): SDK-ELECE / SDK-ELECV = MSFS 2024 SDK
+electrical events / electrics SimVars; SDK-SYSV = MSFS 2024 SDK system SimVars (lights, avionics master);
+SDK-FUELV / SDK-FUELE = MSFS 2024 SDK fuel SimVars / fuel system events; README = PilotsDeck README; IE n =
+line n of [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). Jiblet's C172 G1000
+profile (the alternator and bus input events, the fuel selector read as junction options 1/2/3) is a lead
+only.
 
 ## FlyByWire A32NX (Phase 4 airliner)
 

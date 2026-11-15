@@ -449,7 +449,7 @@
     {
       "id": "more",
       "parent": "main",
-      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad, autopilot (P3-1), transponder (P3-2), radios (P3-2b)",
+      "note": "More: a menu of further pages; PFD, MFD and V-speeds (P2-4), COM1 pad, autopilot (P3-1), transponder (P3-2), radios (P3-2b), systems (P3-3)",
       "keys": [
         {
           "pos": "1,2",
@@ -485,6 +485,11 @@
           "pos": "1,8",
           "title": "RADIOS",
           "folder": "radios"
+        },
+        {
+          "pos": "2,2",
+          "title": "SYSTEMS",
+          "folder": "systems"
         }
       ],
       "spec": "docs/phase2-g1000-vspeeds.md"
@@ -2567,6 +2572,242 @@
         }
       ],
       "spec": "docs/phase3-radios.md"
+    },
+    {
+      "id": "systems",
+      "parent": "more",
+      "note": "Systems (P3-3): alternator, avionics buses 1/2, standby battery, bus volts and amps; interior lights and the dimmer readout; fuel selector LEFT/BOTH/RIGHT, fuel shutoff valve, fuel quantity left/right/total",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "ALT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:electrical_alternator_1",
+            "AddressAction": "B:electrical_alternator_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "AVN 1",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:electrical_line_bus_1_to_avionics_bus_1",
+            "AddressAction": "B:electrical_line_bus_1_to_avionics_bus_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "AVN 2",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:electrical_line_bus_2_to_avionics_bus_2",
+            "AddressAction": "B:electrical_line_bus_2_to_avionics_bus_2",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "STBY BAT",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:electrical_battery_stby_2",
+            "AddressAction": "B:electrical_battery_stby_2",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "BUS V",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL BUS VOLTAGE:1, Volts)",
+            "Format": "2.1"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "BATT A",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL BATTERY LOAD:2, Amperes)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "LOAD A",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL TOTAL LOAD AMPS, Amperes)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "CABIN 1",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_cabin_1",
+            "AddressAction": "B:lighting_cabin_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "CABIN 2",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_cabin_2",
+            "AddressAction": "B:lighting_cabin_2",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "PANEL 1",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_panel_1",
+            "AddressAction": "B:lighting_panel_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "PANEL 2",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_panel_2",
+            "AddressAction": "B:lighting_panel_2",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "PED LT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_pedestral_1",
+            "AddressAction": "B:lighting_pedestral_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "DIMMER",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:LIGHT POTENTIOMETER:5, Percent)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "LEFT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fuel_selector_1",
+            "AddressAction": "B:fuel_selector_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "OnState": "1",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "BOTH",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fuel_selector_1",
+            "AddressAction": "B:fuel_selector_1",
+            "SwitchOnState": "2",
+            "SwitchOffState": "2",
+            "OnState": "2",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "RIGHT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fuel_selector_1",
+            "AddressAction": "B:fuel_selector_1",
+            "SwitchOnState": "3",
+            "SwitchOffState": "3",
+            "OnState": "3",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "FUEL SEL",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUELSYSTEM JUNCTION SETTING:1, Number)",
+            "Format": "",
+            "ValueMappings": "1=LEFT:2=BOTH:3=RIGHT"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "FUEL VLV",
+          "title_size": 14,
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fuel_valve_shutoffvalve",
+            "AddressAction": "B:fuel_valve_shutoffvalve",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "FUEL L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL LEFT QUANTITY, Gallons)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "FUEL R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL RIGHT QUANTITY, Gallons)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "FUEL TOT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL TOTAL QUANTITY, Gallons)",
+            "Format": "1.1"
+          }
+        }
+      ],
+      "spec": "docs/phase3-systems.md"
     }
   ]
 }

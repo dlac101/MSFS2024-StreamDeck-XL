@@ -777,6 +777,83 @@ mouse), and press the MIC key that was lit before.
 - [ ] Record each step's result, for step 2 which frequency changed and by how much for each radio, the log
   lines for any step that failed, the sim version, and every fallback or change.
 
+## P3-3: Systems page (C172 G1000)
+
+Reference: [docs/phase3-systems.md](../docs/phase3-systems.md). The page is in the same profile file as the
+main page, behind MORE 2,2 `SYSTEMS`; it needs no script. Not yet tested in the app or the sim. Record: date,
+MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+
+**Reimport (no sim needed)**
+- [ ] As in the P3-1 section's Reimport steps: export the installed `MSFS2024 C172 G1000` to the backup
+  folder, delete every installed profile of that name (and its `copy` versions; leave the profile named
+  `G1000`), double-click the generated profile, select it, check its aircraft mapping. For the local icon
+  profile, rebuild it first as [docs/icons.md](../docs/icons.md) says.
+- [ ] The main page and the other pages look as before; the More page now has an eighth folder key,
+  `SYSTEMS` at 2,2 (the first key of its second row).
+
+**Layout and round trip (no sim needed)**
+- [ ] `SYSTEMS` opens the page: back key 1,1; `ALT AVN 1 AVN 2 STBY BAT BUS V BATT A LOAD A` at 1,2-1,8;
+  `CABIN 1 CABIN 2 PANEL 1 PANEL 2 PED LT DIMMER` at 2,2-2,7; `LEFT BOTH RIGHT FUEL SEL FUEL VLV` at 3,2-3,6;
+  `FUEL L FUEL R FUEL TOT` at 4,2-4,4; everything else empty. Its back key returns to MORE.
+- [ ] Select `ALT` and compare its settings panel with the doc: Dynamic Button, Command Type B-Var,
+  "Run as Command" unchecked, Command Address and Value Address `B:electrical_alternator_1`, On `1` / Off `0`,
+  Special State on with Any Value. Select `BOTH`: Command and Value Address `B:fuel_selector_1`, On Value `2`,
+  Off Value `2`, image states On `2` / Off `1`, Special State off. Select `FUEL SEL`: Value Address
+  `(A:FUELSYSTEM JUNCTION SETTING:1, Number)`, Mappings `1=LEFT:2=BOTH:3=RIGHT`. Record every field that differs.
+
+**First, the fuel selector values (scmon, A-4)**
+- [ ] scmon (Admin; [tools/scmon/README.md](../tools/scmon/README.md)): build it once with
+  `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" build "A:\FS2024 Stuff\msfs2024-streamdeck-xl\tools\scmon\scmon.csproj" -c Release -o "$env:TEMP\scmon-bin"`,
+  then, with the flight loaded, run
+  `& "$env:LOCALAPPDATA\Microsoft\dotnet\dotnet.exe" "$env:TEMP\scmon-bin\scmon.dll" 180 B:fuel_selector_1`
+  and turn the cockpit fuel selector with the mouse through LEFT, BOTH and RIGHT: record the
+  `plugin B:fuel_selector_1=` value in each position. These are the On/Off values the three selector keys need
+  (expected `1` / `2` / `3`). Do the same for any key that does not follow in the steps below:
+  `B:electrical_battery_stby_2` (each switch position), `B:lighting_panel_1` / `B:lighting_panel_2` (the knob
+  range), `B:lighting_potentiometer_5`. scmon's SimVar list does not hold these systems SimVars; the page's
+  own readouts are the monitor.
+
+**In the sim (2024 C172 G1000, flight loaded, parked, engine off unless a step says)**
+Way back after each step: press the key again (or set the cockpit control back with the mouse); leave the
+fuel selector on BOTH and the fuel shutoff valve open (fuel on) at the end.
+- [ ] 1. Cold and dark: `ALT`, `AVN 1`, `AVN 2`, `STBY BAT` and the five light keys show their Off image (no
+  Fault); `FUEL L` / `FUEL R` / `FUEL TOT` = the EIS fuel gauges; `FUEL SEL` and the lit selector key = the
+  cockpit selector; `FUEL VLV` lit if the shutoff knob is in (fuel on). Record any Fault image.
+- [ ] 2. Main BAT on (main page 1,1): `BUS V` and `BATT A` = the EIS "M BUS" volts and "M BATT" amps (record
+  both, **A-6**); `LOAD A` shows a load.
+- [ ] 3. `ALT`, `AVN 1`, `AVN 2`, `STBY BAT`: press each -> the cockpit switch moves and the key follows; press
+  again -> back. Work each switch with the mouse: the key follows. `AVN 1` / `AVN 2` on -> the G1000 displays
+  and radios power (bus 1 / bus 2). `STBY BAT`: record the value in each position (ARM / OFF / TEST; TEST may
+  show the Fault image, **A-3**).
+- [ ] 4. `CABIN 1`, `CABIN 2`, `PANEL 1`, `PANEL 2`, `PED LT`: press -> record which cockpit light changes (dome,
+  flood, panel, pedestal, **A-8**) and whether it goes full on or only to a dim step (a dimmer knob: the key may
+  show the Fault image after a mouse turn, **A-3**). Turn the panel dimmer knobs with the mouse: does `DIMMER`
+  follow one of them (record which, **A-7**)?
+- [ ] 5. Fuel selector: `LEFT`, `BOTH`, `RIGHT` -> the cockpit selector moves, only the pressed key is lit, and
+  `FUEL SEL` shows the same word. Turn the selector with the mouse: the keys and `FUEL SEL` follow. Record what
+  the two unlit keys show in each position (the doc expects no On or Off image on a key whose Off value is
+  not the selector's value, W-5). If a key lights for another position, record the values (scmon check above,
+  **A-4**).
+- [ ] 6. `FUEL VLV` (**on the ground, engine off; never in flight**, A-5): press -> the shutoff knob pulls out
+  (fuel off), the key shows Off; press -> knob in, the key shows On. Leave it ON.
+- [ ] 7. Engine running at idle (optional): `BUS V` rises to charging volts with `ALT` on; `ALT` off -> `BATT A`
+  shows a discharge.
+- [ ] 8. No flight loaded (sim at the main menu): the page opens; the keys show the Wait image.
+
+**Which results decide the open points**
+- A-3 (switch values): steps 3 and 4 (the STBY BAT positions, the light switches full on or dimmed, any
+  Fault image). A-4 (fuel selector values): the scmon check first, then step 5. A-6 (readout indexes): step 2.
+  A-7 (what DIMMER follows): step 4. A-8 (which light each light key drives): step 4.
+
+**Controller independence**
+- [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected: every
+  key is an input event or a SimVar read.
+
+**Result for the worker**
+- [ ] Record each step's result, the scmon values of the fuel selector (and of any other input event
+  checked), which light each light key drove, the log lines for any step that failed, the sim version, and
+  every fallback or change.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD
