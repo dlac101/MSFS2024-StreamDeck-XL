@@ -6,6 +6,8 @@ Research only. Nothing here is built or sim-tested. Every name is Unverified.
 When a profile is built, its names go into [aircraft-mappings.md](aircraft-mappings.md), Unverified until a
 sim test passes.
 
+The first profile built from this page: [visionjet-sf50.md](visionjet-sf50.md) (V-1, not yet sim-tested).
+
 This page collects what the public sources say about the Cirrus Vision Jet (SF50) that comes with MSFS 2024,
 the default aircraft and the one target of this page: its name and edition, the variable and event names the
 sources give for it, and a draft Stream Deck XL page layout. FlightFX's add-on is not the target (see

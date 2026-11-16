@@ -689,3 +689,158 @@ ECAM H-event sequences sent through the MobiFlight module and their lamps (code 
 the ENG MODE L-Var write and its code, GEAR long press (never on the ground), the `K:SPOILERS_SET`
 parameter, the rudder trim step and the trim readout's variable and sign, LDG GEAR from landing gear
 computer 1 only, the brake pressure unit, and the long press on the ENG 1 / ENG 2 Dynamic Buttons.
+
+## Cirrus Vision SF50 (MSFS 2024 default, V-1)
+
+For [visionjet-sf50.md](visionjet-sf50.md): the profile `MSFS2024 VisionJet` for the Cirrus Vision SF50
+(VisionJet) that comes with MSFS 2024 (not FlightFX's add-on). Every key of the profile has a row (positions
+are page and row,column), the keys copied from the C172 G1000 pages too: their names are verified on the C172
+only where its rows above say so, never on the SF50. Built with the SF50's input event list,
+[reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt) (2026-11-16, 141 lines; "IE-SF50 n" = line
+n). Generated, not yet sim-tested: every row is **Unverified** until the checklist section "VisionJet SF50
+profile (V-1)" passes (then the date, MSFS version and SF50 preset). A key that fails gets "does not work" in
+its row, and the row stays. Tags: the page doc's "Sources". Every `H:` command needs the MobiFlight WASM
+module.
+
+Aircraft string (PD-LOG, PilotsDeck20261116.log): the path of the preset's `aircraft.cfg` in the package
+`fs24-microsoft-aircraft-sf50`:
+`...\simobjects\airplanes\microsoft_sf50\presets\microsoft\<preset>\config\aircraft.cfg`, with the presets
+`sf50_family`, `sf50_executive` and `sf50_complete`; the Profile Manager search string is `microsoft_sf50`.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| main 1,1 `BAT` | `B:sf50_electrical_battery_1_switch` | B-var value (0/1 expected) | `B:sf50_electrical_battery_1_switch`, On `1` / Off `0` | Empty (no battery key) | IE-SF50 80; README 2.1.1; V-1 A-5 | Unverified |
+| main 1,2 `N1` | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| main 1,4 `PARK` | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | - | AM; AM, SDK-GEARV | Unverified |
+| main 1,5 `GEAR` | `(A:GEAR HANDLE POSITION, Bool)` | Bool | none | - | SDK-GEARV | Unverified |
+| main 1,6 `FLAPS` | `(A:FLAPS HANDLE INDEX, number)` | number | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` | Mappings after the test (number per detent) | SDK-FCE, README 2.1; SDK-CTLV | Unverified |
+| main 2,1 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | AM | Unverified |
+| main 2,2 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,3 `ALT` | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,4 `VS` | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,5 `NAV` | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,6 `APR` | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,7 `FLC` | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,8 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APV | Unverified |
+| main 3,1 `COM1` | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
+| main 3,2 `XPDR` | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
+| main 3,3 `ATC` | none (a sim window has no state) | - | `K:SIMUI_WINDOW_HIDESHOW` | - | SDK-MISCE | Unverified |
+| main 3,4 `MAP` | none (a sim window has no state) | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
+| main 3,5 `CDI` | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
+| main 3,6 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | `K:BAROMETRIC` | STD in V-2 (HH-MS) | SDK-INSTE; SDK-SYSV | Unverified |
+| main 4,1 `NAV LT` | `B:sf50_lighting_nav_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_nav_lights_intercept`, On `1` / Off `0` | `K:TOGGLE_NAV_LIGHTS`, read `(A:LIGHT NAV, Bool)` | IE-SF50 130; README 2.1.1; V-1 A-5, A-15 | Unverified |
+| main 4,3 `STRB` | `B:lighting_strobe_1` | B-var value (0/1 expected) | `B:lighting_strobe_1`, On `1` / Off `0` | `K:STROBES_TOGGLE`, read `(A:LIGHT STROBE, Bool)` | IE-SF50 40; README 2.1.1; V-1 A-5 | Unverified |
+| main 4,4 `LDG` | `B:sf50_lighting_landing_lights` | B-var value (0/1 expected) | `B:sf50_lighting_landing_lights`, On `1` / Off `0` | `K:LANDING_LIGHTS_TOGGLE`, read `(A:LIGHT LANDING, Bool)` | IE-SF50 129; README 2.1.1; V-1 A-5 | Unverified |
+| main 4,5 `TAXI` | `(A:LIGHT TAXI, Bool)` | Bool | `K:TOGGLE_TAXI_LIGHTS` | Empty (the list has no taxi light) | SDK-ELECE; no taxi B-var in IE-SF50, V-1 A-5, A-15; SDK-SYSV | Unverified |
+| main 4,6 `PITOT` | `B:deice_pitot_1` | B-var value (0/1 expected) | `B:deice_pitot_1`, On `1` / Off `0` | `K:PITOT_HEAT_TOGGLE`, read `(A:PITOT HEAT, Bool)` | IE-SF50 31; README 2.1.1; V-1 A-5 | Unverified |
+| trim 2,2 `TRIM UP` (the C172's key) | none (the readouts 3,2 and 3,3 show the result) | - | `K:ELEV_TRIM_UP` | - | SDK-FCE | Unverified |
+| trim 3,2 `TRIM` (the C172's key) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| trim 3,3 `TRIM DEG` (the C172's key) | `(A:ELEVATOR TRIM POSITION, degrees)` | degrees | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| trim 3,4 `TRIM` (the C172's key) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| trim 4,2 `TRIM DN` (the C172's key) | none (the readouts 3,2 and 3,3 show the result) | - | `K:ELEV_TRIM_DN` | - | SDK-FCE | Unverified |
+| views 1,2 `COCKPIT` (the C172's key) | `(A:CAMERA STATE, Enum)` | Enum | `(A:CAMERA STATE, Enum)`, On `$=2` / Off `` | - | SDK-CAMV, README 2.1.1, 2.1.2; SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,3 `EXTERNAL` (the C172's key) | `(A:CAMERA STATE, Enum)` | Enum | `(A:CAMERA STATE, Enum)`, On `$2,=3<` / Off `` | - | SDK-CAMV, README 2.1.1, 2.1.2; SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,4 `CAMERA` (the C172's key) | `(A:CAMERA STATE, Enum)` | Enum | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,5 `VIEW` (the C172's key) | `(A:CAMERA VIEW TYPE AND INDEX:0, Enum)` | Enum | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,6 `VIEW NO` (the C172's key) | `(A:CAMERA VIEW TYPE AND INDEX:1, number)` | number | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| vspeeds 1,2 `VS0` (the C172's key) | `(A:DESIGN SPEED VS0, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,3 `VS1` (the C172's key) | `(A:DESIGN SPEED VS1, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,4 `VR` (the C172's key) | `(A:DESIGN SPEED MIN ROTATION, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,6 `CLIMB` (the C172's key) | `(A:DESIGN SPEED CLIMB, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,2 `CRUISE` (the C172's key) | `(A:DESIGN SPEED VC, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,4 `VNE` (the C172's key) | `(A:REFERENCE SPEED MAX IAS, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,5 `VFE` (the C172's key) | `(A:FLAPS CURRENT SPEED LIMITATION, knots)` | knots | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| simrate 1,2 `1X` (the C172's key) | `(A:SIMULATION RATE, number)` | number | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) | - | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; LR153-C4; SDK-ENVV, PD-SRC | Unverified |
+| simrate 1,3 `SLOWER` (the C172's key) | none | - | `K:SIM_RATE_DECR` | - | SDK-MISCE | Unverified |
+| simrate 1,4 `RATE` (the C172's key) | `(A:SIMULATION RATE, number)` | number | Main `K:SIM_RATE_INCR`, Second (long press) `K:SIM_RATE_DECR` | - | SDK-MISCE, README 2.1; SDK-ENVV, PD-SRC | Unverified |
+| simrate 1,5 `FASTER` (the C172's key) | none | - | `K:SIM_RATE_INCR` | - | SDK-MISCE | Unverified |
+| compad 1,2 `COM1` (the C172's key) | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| compad 1,3 `ENTRY` (the C172's key) | `X:XL24_COMPAD_ENTRY` | PilotsDeck internal variable | none | - | README 2.1.1 INTERNAL; written by the script | Unverified |
+| compad 1,6 `7` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 1,7 `8` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(8)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 1,8 `9` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(9)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 2,2 `STBY ID` (the C172's key) | `(A:COM STANDBY FREQ IDENT:1, String)` | String | none | - | SDK-RADV; PD-SRC string A-Var | Unverified |
+| compad 2,6 `4` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 2,7 `5` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 2,8 `6` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 3,6 `1` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 3,7 `2` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 3,8 `3` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 4,6 `CLR` (the C172's key) | none | - | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
+| compad 4,7 `0` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 4,8 `ENT` (the C172's key) | none (COM1 at 1,2 shows the result) | - | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
+| autopilot 1,2 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | SDK-APE; AM; SDK-APV | Unverified |
+| autopilot 1,3 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APT; SDK-APV | Unverified |
+| autopilot 1,4 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,5 `NAV` | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APT; SDK-APV | Unverified |
+| autopilot 1,6 `APR` | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APT; SDK-APV | Unverified |
+| autopilot 1,8 `VNV` | `L:XMLVAR_VNAVButtonValue` | L-Var value | `B:sf50_autopilot_vnav_mode`, On `1` / Off `0` | L-Var write `L:XMLVAR_VNAVButtonValue` On `1` / Off `0`; else readout only | IE-SF50 62; README 2.1.1; V-1 A-5; HH-MS; SDK-APT | Unverified |
+| autopilot 2,1 `ALT` | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APT; SDK-APV | Unverified |
+| autopilot 2,2 `HDG+` | none | - | `K:HEADING_BUG_INC` | - | SDK-APE | Unverified |
+| autopilot 2,3 `CRS+` | none | - | Main `H:AS3000_PFD_1_CRS_INC`, Second (long press) `K:VOR1_OBI_FAST_INC` | the long press K-event only | WT-G3000H; SF50-PKG; weak, V-1 A-15; SDK-RADE; README 2.1 | Unverified |
+| autopilot 2,4 `ALT+` | none | - | Main `K:AP_ALT_VAR_INC`, Second (long press) `K:AP_ALT_VAR_INC:1000` | - | SDK-APE; SDK-AS1000; README 2.1.1, 2.1; A-4 | Unverified |
+| autopilot 2,5 `VS+` | none | - | `K:AP_VS_VAR_INC` | - | SDK-APE | Unverified |
+| autopilot 2,6 `SPD+` | none | - | `K:AP_SPD_VAR_INC` | - | SDK-APE | Unverified |
+| autopilot 2,8 `A/T` | `(A:AUTOPILOT THROTTLE ARM, Bool)` | Bool | `K:AUTO_THROTTLE_ARM` | readout only (command none) | SDK-APE; FORUM-24; V-1 A-15; SDK-APV | Unverified |
+| autopilot 3,1 `VS` | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 3,2 `HDG BUG` | `(A:AUTOPILOT HEADING LOCK DIR, Degrees)` | Degrees | `H:Garmin_AP_HDG_Sync` | `K:AP_HDG_CURRENT_HDG_SET` (as the C172) | WT-G3000H; weak, V-1 A-15; SDK-APV | Unverified |
+| autopilot 3,3 `CRS1` | `(A:NAV OBS:1, Degrees)` | Degrees | `H:AS3000_PFD_1_CRS_PUSH` | readout only | WT-G3000H; SF50-PKG; weak, V-1 A-15; SDK-RADV | Unverified |
+| autopilot 3,4 `ALT SEL` | `(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)` | Feet | none | - | SDK-APV; A-5 | Unverified |
+| autopilot 3,5 `VS TGT` | `(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)` | Feet/minute | none | - | SDK-APV | Unverified |
+| autopilot 3,6 `FLC SPD` | `(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)` | Knots | none | - | SDK-APV | Unverified |
+| autopilot 3,7 `LVL` | `(A:AUTOPILOT WING LEVELER, Bool)` | Bool | `K:AP_WING_LEVELER` | - | SDK-APE; V-1 A-15; SDK-APV | Unverified |
+| autopilot 3,8 `TOGA` | `L:WT_TOGA_ACTIVE` | L-Var value | none | `(A:AUTOPILOT TAKEOFF POWER ACTIVE, Bool)` | HH-MS; weak, V-1 A-15 | Unverified |
+| autopilot 4,1 `FLC` | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APT; A-9; SDK-APV | Unverified |
+| autopilot 4,2 `HDG-` | none | - | `K:HEADING_BUG_DEC` | - | SDK-APE | Unverified |
+| autopilot 4,3 `CRS-` | none | - | Main `H:AS3000_PFD_1_CRS_DEC`, Second (long press) `K:VOR1_OBI_FAST_DEC` | the long press K-event only | WT-G3000H; SF50-PKG; weak, V-1 A-15; SDK-RADE; README 2.1 | Unverified |
+| autopilot 4,4 `ALT-` | none | - | Main `K:AP_ALT_VAR_DEC`, Second (long press) `K:AP_ALT_VAR_DEC:1000` | - | SDK-APE; SDK-AS1000; README 2.1.1, 2.1; A-4 | Unverified |
+| autopilot 4,5 `VS-` | none | - | `K:AP_VS_VAR_DEC` | - | SDK-APE | Unverified |
+| autopilot 4,6 `SPD-` | none | - | `K:AP_SPD_VAR_DEC` | - | SDK-APE | Unverified |
+| autopilot 4,8 `A/T MGD` | `(A:AUTOPILOT MANAGED THROTTLE ACTIVE, Bool)` | Bool | none | - | SDK-APV | Unverified |
+| xpdr 1,2 `XPDR` (the C172's key) | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
+| xpdr 1,3 `ENTRY` (the C172's key) | `X:XL24_XPDRPAD_ENTRY` | PilotsDeck internal variable | none | - | README 2.1.1 INTERNAL; written by the script | Unverified |
+| xpdr 1,4 `MODE` (the C172's key) | `(A:TRANSPONDER STATE:1, Enum)` | Enum | none | - | SDK-RADV | Unverified |
+| xpdr 1,6 `7` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,2 `STBY` (the C172's key) | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)`, On `$=1` / Off `` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,3 `ON` (the C172's key) | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)`, On `$=3` / Off `` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,4 `ALT` (the C172's key) | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)`, On `$=4` / Off `` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,6 `4` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,7 `5` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,8 `6` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,2 `IDENT` (the C172's key) | `(A:TRANSPONDER IDENT:1, Bool)` | Bool | `K:XPNDR_IDENT_ON` | - | SDK-RADE; SDK-RADV | Unverified |
+| xpdr 3,3 `VFR` (the C172's key) | none | - | `K:XPNDR_SET:4608` | - | SDK-RADE | Unverified |
+| xpdr 3,6 `1` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,7 `2` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,8 `3` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 4,6 `CLR` (the C172's key) | none | - | Main `lua:XL24-XPDRPAD:BACK`, Second (long press) `lua:XL24-XPDRPAD:CLEAR` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
+| xpdr 4,7 `0` (the C172's key) | none | - | `lua:XL24-XPDRPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 4,8 `ENT` (the C172's key) | none (XPDR at 1,2 shows the result) | - | `lua:XL24-XPDRPAD:ENTER` | - | README 2.1.1 LUAFUNC | Unverified |
+| radios 1,2 `NAV1` (the C172's key) | Active `(A:NAV ACTIVE FREQUENCY:1, MHz)`, Standby `(A:NAV STANDBY FREQUENCY:1, MHz)` | MHz | `K:NAV1_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,3 `NAV1 ID` (the C172's key) | `(A:NAV IDENT:1, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 1,4 `NAV2` (the C172's key) | Active `(A:NAV ACTIVE FREQUENCY:2, MHz)`, Standby `(A:NAV STANDBY FREQUENCY:2, MHz)` | MHz | `K:NAV2_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,5 `NAV2 ID` (the C172's key) | `(A:NAV IDENT:2, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 1,6 `COM2` (the C172's key) | Active `(A:COM ACTIVE FREQUENCY:2, MHz)`, Standby `(A:COM STANDBY FREQUENCY:2, MHz)` | MHz | `K:COM2_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,7 `COM2 ID` (the C172's key) | `(A:COM ACTIVE FREQ IDENT:2, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 2,2 `MHZ+` (the C172's key) | none | - | `K:NAV1_RADIO_WHOLE_INC` | - | SDK-RADE | Unverified |
+| radios 2,3 `KHZ+` (the C172's key) | none | - | `K:NAV1_RADIO_FRACT_INC` | - | SDK-RADE | Unverified |
+| radios 2,4 `MHZ+` (the C172's key) | none | - | `K:NAV2_RADIO_WHOLE_INC` | - | SDK-RADE | Unverified |
+| radios 2,5 `KHZ+` (the C172's key) | none | - | `K:NAV2_RADIO_FRACT_INC` | - | SDK-RADE | Unverified |
+| radios 2,6 `MHZ+` (the C172's key) | none | - | `K:COM2_RADIO_WHOLE_INC` | - | SDK-RADE | Unverified |
+| radios 2,7 `KHZ+` (the C172's key) | none | - | `K:COM2_RADIO_FRACT_INC` | - | SDK-RADE | Unverified |
+| radios 3,2 `MHZ-` (the C172's key) | none | - | `K:NAV1_RADIO_WHOLE_DEC` | - | SDK-RADE | Unverified |
+| radios 3,3 `KHZ-` (the C172's key) | none | - | `K:NAV1_RADIO_FRACT_DEC` | - | SDK-RADE | Unverified |
+| radios 3,4 `MHZ-` (the C172's key) | none | - | `K:NAV2_RADIO_WHOLE_DEC` | - | SDK-RADE | Unverified |
+| radios 3,5 `KHZ-` (the C172's key) | none | - | `K:NAV2_RADIO_FRACT_DEC` | - | SDK-RADE | Unverified |
+| radios 3,6 `MHZ-` (the C172's key) | none | - | `K:COM2_RADIO_WHOLE_DEC` | - | SDK-RADE | Unverified |
+| radios 3,7 `KHZ-` (the C172's key) | none | - | `K:COM2_RADIO_FRACT_DEC` | - | SDK-RADE | Unverified |
+| radios 4,6 `MIC1` (the C172's key) | `(A:COM TRANSMIT:1, Bool)` | Bool | `K:PILOT_TRANSMITTER_SET:0` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 4,7 `MIC2` (the C172's key) | `(A:COM TRANSMIT:2, Bool)` | Bool | `K:PILOT_TRANSMITTER_SET:1` | - | SDK-RADE; SDK-RADV | Unverified |
+| engine 1,2 `N1` | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 1,3 `N2` | `(A:TURB ENG N2:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 1,4 `ITT` | `(A:TURB ENG ITT:1, Celsius)` | Celsius | none | - | SDK-ENGV; SDK-UNITS | Unverified |
+| engine 1,5 `FF PPH` | `(A:TURB ENG FUEL FLOW PPH:1, Pounds per hour)` | Pounds per hour | none | - | SDK-ENGV | Unverified |
+| engine 2,2 `ENG RUN` | `(A:GENERAL ENG COMBUSTION:1, Bool)` | Bool | none | - | SDK-ENGV | Unverified |
+| engine 2,3 `IGN` | `(A:TURB ENG IGNITION SWITCH:1, Bool)` | Bool | none | - | SDK-ENGV; V-1 A-15 | Unverified |
+| engine 3,2 `FUEL L` | `(A:FUEL LEFT QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+| engine 3,3 `FUEL R` | `(A:FUEL RIGHT QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+| engine 3,4 `FUEL TOT` | `(A:FUEL TOTAL QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |

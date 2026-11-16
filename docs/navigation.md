@@ -92,3 +92,22 @@ Main page position 4,8 is the EFIS folder (P4-2); CHECKLIST (Phase 5) has no pos
 yet. The A32NX main page has its own
 grid (FCU buttons, readouts, flight controls, lights): the C172 profile's VIEWS, SIM RATE and MORE folders are
 not on it (the C172 has CHECKLIST at 3,8).
+
+## MSFS2024 VisionJet pages
+
+The Cirrus Vision SF50 profile `MSFS2024 VisionJet` ([visionjet-sf50.md](visionjet-sf50.md), generated, not
+yet sim-tested) uses the C172 G1000 profile's main-page grid and folder positions where the function applies,
+and the same rules: one main page (no back key), the back key at 1,1 on every child page, at most two folder
+levels.
+
+| Main page key | Child page | Holds now |
+|---|---|---|
+| 1,7 `TRIM` | trim | the C172's trim page as it was when this profile was built (elevator trim keys, TRIM and TRIM DEG readouts, trim gauge), without the C172's later aileron and rudder trim keys |
+| 1,8 `VIEWS` | views | the C172's views page as it is |
+| 3,7 `SIM RATE` | simrate | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
+| 3,8 `CHECKLIST` | checklist | back key only |
+| 4,8 `MORE` | more | back key and six folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,5 `COM PAD` > compad, 1,7 `XPDR` > xpdr and 1,8 `RADIOS` > radios (the C172's pages as they are), 1,6 `AUTOPILOT` > autopilot (the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts) |
+
+MORE 1,2 and 1,3 (the C172's PFD and MFD pages) and 2,2 (SYSTEMS) are empty, reserved for the VisionJet's V-2
+(systems, ice and environment, GTC, PFD and MFD softkeys); main 1,3, 4,2 (no beacon in the SF50's input event
+list) and 4,7 are empty.

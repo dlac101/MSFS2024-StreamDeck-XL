@@ -1476,3 +1476,79 @@ file is missing: note the key)
 **Result for the worker**
 - [ ] Record each page's look (Wait images, back keys, readability, taste changes) and the sim check when it
   can run.
+
+## VisionJet SF50 profile (V-1)
+
+Reference: [docs/visionjet-sf50.md](../docs/visionjet-sf50.md). The profile `MSFS2024 VisionJet` for the
+MSFS 2024 default Cirrus Vision SF50 (12 pages, 146 keys), built with the SF50's input event list
+([docs/reference/InputEvents-SF50.txt](../docs/reference/InputEvents-SF50.txt)). Not yet tested in the app or
+the sim. **GEAR and TOGA are readouts: never expect an action from them.** Record: date, MSFS 2024 version,
+SF50 preset (`sf50_executive`, `sf50_family` or `sf50_complete`), PilotsDeck version, and every fallback or
+changed value you used.
+
+**Before you start**
+- [ ] The input event list is already captured (2026-11-16). If PilotsDeck writes a new `InputEvents.txt` for
+  the SF50 after a sim update, keep a copy and compare it with docs/reference/InputEvents-SF50.txt.
+- [ ] Install the new package with the Profile Manager, or import `MSFS2024 VisionJet.streamDeckProfile` by
+  hand (as the C172 profile, docs/phase2-main-page.md "Import the profile"). The C172's scripts
+  `XL24-SIMRATE.lua`, `XL24-COMPAD.lua` and `XL24-XPDRPAD.lua` are installed (the sim rate, COM pad and
+  transponder pages call them).
+- [ ] The MobiFlight WASM module installed (CRS+, CRS-, CRS1 and the HDG BUG press need it).
+- [ ] Profile Manager, **Profile Mapping**: pick `MSFS2024 VisionJet`, check "StreamDeck Profile modified for
+  Switching", search string `microsoft_sf50`, **Plus**, **Save** (docs/visionjet-sf50.md, "Profile Manager
+  mapping").
+
+**Profile switching**
+- [ ] Load the SF50: the deck switches to `MSFS2024 VisionJet`, and the plugin log's `ProfileSwitcherManager`
+  line no longer says "Searching 0 valid Profiles" for the SF50. Load the C172: the deck switches to the C172
+  profile.
+
+**Main page, cold and dark, then powered**
+- [ ] BAT: press, the cockpit battery switch moves and the key follows; flip the switch with the mouse, the
+  key follows. Record which battery it is (1 or 2) and the values the key shows.
+- [ ] NAV LT, STRB, LDG, PITOT: press, the cockpit switch moves; flip the cockpit switch with the mouse, the
+  key follows. Record any key that does not (NAV LT uses an `_intercept` input event).
+- [ ] TAXI: press, the taxi light changes; record whether the cockpit switch follows, and whether the SF50
+  has a taxi light switch at all.
+- [ ] 4,2 (BCN), 1,3 and 4,7 are empty.
+- [ ] PARK: press, the parking brake sets and releases, the key follows. FLAPS: press, one detent out; long
+  press, one detent in; record the number per detent. GEAR shows `DOWN` on the ground (no press). N1 matches
+  the engine display.
+- [ ] COM1, XPDR, ATC, MAP, CDI and BARO as in the C172 checklist's main page items; record whether BARO
+  works on the G3000.
+
+**Autopilot page (MORE > AUTOPILOT), in flight**
+- [ ] AP, FD, HDG, NAV, APR, ALT, VS, FLC, LVL and VNV: each press, the PFD mode annunciator and the key
+  agree; engage each mode in the cockpit too: the key follows.
+- [ ] A/T: arms the autothrottle, the key is lit; A/T MGD shows `ON` while the autothrottle drives.
+- [ ] HDG+/-, ALT+/-, VS+/-, SPD+/- step and the readouts follow. HDG BUG press syncs the heading bug.
+- [ ] CRS+ and CRS- step the course and CRS1 follows; record what a CRS1 press does, and any of the three
+  that does nothing (the long press of CRS+ and CRS- steps by 10 with the standard event).
+- [ ] On a takeoff with the cockpit TOGA button: TOGA shows `TO/GA`.
+
+**Other pages**
+- [ ] Radios, COM pad, transponder, views, sim rate and V-speeds: the C172 checklist's items of those pages,
+  on the SF50; record any key the G3000 ignores, especially XPDR STBY/ON/ALT and the COM pad ENT.
+- [ ] Engine page (MORE > ENGINE): N1, N2, ITT, FF PPH, ENG RUN, IGN and the fuel readouts against the
+  engine display; record the units and whether IGN follows the FADEC.
+
+**Guarded**
+- [ ] GEAR and TOGA do nothing on a press. No CAPS, Safe Return or engine start key exists on any page.
+
+**Icon look test (optional local icon build, no sim)**
+- [ ] Build `MSFS2024 VisionJet Icons` with `tools/profilegen/icons-visionjet-sf50.json` (docs/icons.md),
+  import it: the 157 mapped or as-is keys show the mapped images, titles readable.
+
+**Other aircraft**
+- [ ] Load the C172 G1000 and select `MSFS2024 VisionJet` by hand: the readouts show the C172's own values,
+  BAT, NAV LT, STRB and LDG show nothing, PITOT shows the C172's pitot heat (the C172 has the same
+  `deice_pitot_1` input event). **Do not press the light keys (NAV LT, STRB, LDG, TAXI), PITOT, PARK, FLAPS,
+  the AP keys, A/T or LVL there** (they act on the C172). Then switch back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the battery number, the B-var values,
+  the flap number per detent, the keys the G3000 ignores, the MSFS version and SF50 preset, and every fallback
+  or change.

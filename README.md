@@ -30,6 +30,7 @@ Trim gauge on the Trim page (trim 3,4; a vertical bar with a pointer and the num
 Engine and fuel page under More (MORE 2,3; RPM, fuel flow, oil pressure and temperature, EGT and vacuum readouts, fuel left/right bar gauges, bus volts and battery amps, read only; generated, not yet sim-tested): [docs/phase3-engine-fuel.md](docs/phase3-engine-fuel.md).
 **Phase 4: FlyByWire A32NX profile (main, FCU, EFIS and OVHD pages, OVHD > SYSTEMS, and EFIS > RADIO, XPDR and PED), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md), [docs/phase4-a32nx-efis.md](docs/phase4-a32nx-efis.md), [docs/phase4-a32nx-overhead.md](docs/phase4-a32nx-overhead.md), [docs/phase4-a32nx-radios.md](docs/phase4-a32nx-radios.md), [docs/phase4-a32nx-pedestal.md](docs/phase4-a32nx-pedestal.md).
 Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
+**VisionJet SF50 profile (MSFS 2024 default Cirrus Vision SF50; main page, TRIM, VIEWS, SIM RATE, CHECKLIST and MORE with V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS and ENGINE), generated, not yet sim-tested** (built with the SF50's input event list; map it to the aircraft in the Profile Manager with `microsoft_sf50`): [docs/visionjet-sf50.md](docs/visionjet-sf50.md).
 ## Layout
 
 ```text
@@ -55,6 +56,7 @@ docs/
   phase4-a32nx-radios.md  Phase 4 A32NX radio and transponder pages (main > EFIS > RADIO / XPDR): RMP 1, ATC/TCAS panel, key-by-key reference
   phase4-a32nx-pedestal.md  Phase 4 A32NX pedestal page (main > EFIS > PED): ECAM control panel, speed brake, gear, engines, key-by-key reference
   visionjet-g2-research.md  research for a profile of the Cirrus Vision SF50 that comes with MSFS 2024: candidate names with sources, draft layout; nothing built, all Unverified
+  visionjet-sf50.md  VisionJet SF50 profile (MSFS 2024 default): main page and child pages, Profile Manager mapping, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon builds of the C172 G1000 and A32NX profiles and the local icon package (Guenseli pack, personal use only, never committed)
