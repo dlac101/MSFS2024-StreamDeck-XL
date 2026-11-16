@@ -1162,6 +1162,79 @@ with the mouse and check that the key follows without a key being pressed.
 - [ ] Record each step's result, the log lines for any step that failed, the voltages, the EXT AVAIL, APU N,
   ALIGN and MODE SEL results, the IR order, the MSFS and A32NX versions, and every fallback or change.
 
+## Phase 4: A32NX radio and transponder pages (P4-4)
+
+Reference: [docs/phase4-a32nx-radios.md](../docs/phase4-a32nx-radios.md). The second-level pages `radio` (efis
+3,4 `RADIO`, the Captain's RMP 1) and `xpdr` (efis 3,5 `XPDR`, the ATC/TCAS panel) of the profile
+`MSFS2024 A32NX`, and the five new functions of `XL24-A32NX.lua` (`RMPACT`, `RMPSTBY`, `XPDRMODE`, `TCASMODE`,
+`TCASTRAF`). Not yet tested in the app or the sim. This section replaces the P4-2 section's item "3,4 to 3,7
+and 4,3 to 4,8 are empty" (3,4 and 3,5 are now folder keys). Record: date, MSFS 2024 version, A32NX version,
+PilotsDeck version, and every fallback or changed value you used.
+
+**Before you start**
+- [ ] The P4-1 section's "Before you start" and "Import" steps, with the regenerated
+  `MSFS2024 A32NX.streamDeckProfile` (or the icon profile) and the new `XL24-A32NX.lua` installed (the new
+  package with the Profile Manager, or the script copied into the plugin's Scripts folder; the old copy lacks
+  the five new functions).
+- [ ] The MobiFlight WASM module installed (docs/installation.md, "MobiFlight WASM module (which keys need
+  it)"); after the flight loads, the plugin log shows "MobiFlight WASM Client Connection opened". Every
+  H-event key on these pages (VHF1, VHF2, XFER, the four knob keys, the keypad and CLR) goes through
+  it: without it they do nothing, most likely with no alert sign on the key.
+
+**Import (no sim needed)**
+- [ ] Main 4,8 `EFIS` opens the EFIS page; efis 3,4 `RADIO` opens the RADIO page and efis 3,5 `XPDR` the XPDR
+  page; each back key (1,1) returns to the EFIS page. Both pages match the layouts in the doc; efis 3,6, 3,7
+  and 4,3 to 4,8 are empty.
+- [ ] Select `VHF2`, `MHz+`, `ACTIVE`, `COM1` (RADIO) and `XPDR`, `IDENT`, `MODE`, `ALT RPTG`, `TCAS`, `7`
+  (XPDR) and compare their settings panels with the doc's key tables (command type, addresses, On/Off
+  values, long press, format, Decode BCD, mappings). Record every field that differs.
+
+**COM set and swap (flight loaded cold and dark, then batteries on)**
+For every key: press it and check the cockpit control and the key; then work the control in the cockpit
+with the mouse and check that the key follows without a key being pressed.
+- [ ] RMP ON lit and the cockpit's RMP 1 lit; ACTIVE and STBY show RMP 1's windows; VHF1 lit.
+- [ ] kHz+ three times and MHz+ once: STBY and the cockpit's STBY window change alike (record whether a kHz
+  step is 8.33 or 25 kHz); kHz- and MHz- step back.
+- [ ] XFER: ACTIVE and STBY swap, as the cockpit windows; COM1 shows the new active frequency.
+- [ ] VHF2: VHF2 lit, the cockpit's VHF2 key and SEL light lit (record what VHF1 shows now: no image is
+  expected); set a VHF2 standby with the knob keys, XFER, COM2 shows it. VHF1 again.
+- [ ] RMP ON off: ACTIVE and STBY blank, the cockpit's RMP 1 dark; on again.
+
+**Transponder and TCAS (A32NX powered)**
+- [ ] Press CLR twice (the cockpit's ATC display clears), then type four digits (for example 2 0 0 0): XPDR
+  shows the old code until the fourth digit, then the new one, as the cockpit's ATC display. Type a digit
+  with no entry open (no CLR first): nothing changes. CLR, CLR, three digits, then wait 7 seconds: the
+  display shows the old code again and XPDR is unchanged.
+- [ ] MODE STBY -> AUTO -> ON (press) and back (long press, at least 0.5 s): the cockpit knob follows; record
+  what STATE shows in each position (STBY; on the ground in AUTO `GND`; ON or ALT).
+- [ ] ALT RPTG off and on: the cockpit switch follows; record STATE (ON or ALT) each way.
+- [ ] IDENT: the key lights and the cockpit's ATC display shows the ident; record how long it stays lit.
+- [ ] TCAS STBY -> TA -> TA/RA and TRAFFIC THRT -> ALL -> ABV -> BLW, and back with long presses: record
+  whether the cockpit knobs follow and whether the ND shows TA ONLY and the traffic as expected. If a key
+  shows `STBY` / `THRT` while the cockpit knob is elsewhere: the doc's fallback (the upper-case names).
+
+**P4-1 to P4-3 regression**
+- [ ] Run "Phase 4: A32NX profile (P4-1)", "Phase 4: A32NX EFIS page (P4-2)" and "Phase 4: A32NX overhead
+  pages (P4-3)": unchanged (efis 3,4 and 3,5 are now folder keys).
+
+**Icon look test (icon profile, no sim)**
+- [ ] The two folder keys, the two back keys and the 28 other new keys show the images of their rows in
+  `tools/profilegen/icons-a32nx.json`; titles readable.
+
+**Other aircraft**
+- [ ] Load the C172 G1000 and select `MSFS2024 A32NX` by hand: VHF1, VHF2 and RMP ON dark, ACTIVE and STBY
+  blank, COM1, COM2, XPDR and STATE show the C172's values; MODE, TCAS and TRAFFIC presses change only the
+  keys' text; nothing in the C172 moves. **Do not press IDENT there** unless you want an ident (a standard
+  event). Then switch back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, the kHz step, what VHF1 shows with
+  VHF2 selected, STATE in each mode, the IDENT time, the TCAS results, the MSFS and A32NX versions, and every
+  fallback or change.
+
 ## P4-ICONS: local icon build (A32NX)
 
 Reference: [docs/icons.md](../docs/icons.md), section 4. A second A32NX profile, `MSFS2024 A32NX Icons`, with key

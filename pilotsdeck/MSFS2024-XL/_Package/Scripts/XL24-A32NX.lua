@@ -2,6 +2,7 @@
 -- Page and keys: docs/phase4-a32nx.md. Not yet sim-tested.
 -- EFIS page keys (ADF/VOR steps, MASTER WARN/CAUT press): docs/phase4-a32nx-efis.md.
 -- OVHD systems page key (fuel MODE SEL press): docs/phase4-a32nx-overhead.md.
+-- RADIO and XPDR page keys: docs/phase4-a32nx-radios.md.
 --
 -- Readout keys (Display Value) use SPD, HDG, ALT, VS and BARO as their Value Address
 -- ("lua:XL24-A32NX:SPD"); PilotsDeck runs them on every process cycle and shows the text they
@@ -207,4 +208,96 @@ function FUELMODE()
     if num(FUEL_TOTAL) <= 0 then return end
     SimCalculator("(L:A32NX_OVHD_FUEL_MODESEL_MANUAL) ! s0 (>L:A32NX_OVHD_FUEL_MODESEL_MANUAL) " ..
         "1 l0 + sp0 l0 4 (>K:2:FUELSYSTEM_JUNCTION_SET) l0 5 (>K:2:FUELSYSTEM_JUNCTION_SET)")
+end
+
+-- RADIO and XPDR pages (P4-4): the Captain's RMP (RMP 1) windows and the ATC/TCAS panel selectors.
+-- docs/phase4-a32nx-radios.md. RMPACT() and RMPSTBY() return the frequency RMP 1 shows for the VHF radio
+-- it has selected (VhfRadioPanel.tsx: VHF 1 reads the sim's COM 1 frequencies, VHF 2 and VHF 3 the sim's
+-- active frequency and RMP 1's own standby L-Var), "" when RMP 1 is off or unpowered (BaseRadioPanels.tsx:
+-- DC ESS bus and the ON/OFF switch) or in a NAV mode; "DATA" for VHF 3 when its active frequency is 0.
+-- XPDRMODE, TCASMODE and TCASTRAF move the ATC panel's selectors one position (A32NX_Interior_ATC.xml
+-- position values) and stop at the ends; the keys show the L-Var they read.
+local RMP_MODE    = "L:A32NX_RMP_L_SELECTED_MODE"             -- 1 VHF1, 2 VHF2, 3 VHF3, 6-10 NAV modes
+local RMP_SWITCH  = "L:A32NX_RMP_L_TOGGLE_SWITCH"             -- RMP 1 ON/OFF switch, 1 = ON
+local RMP_POWER   = "L:A32NX_ELEC_DC_ESS_BUS_IS_POWERED"      -- RMP 1's bus
+local VHF1_ACTIVE = "(A:COM ACTIVE FREQUENCY:1, Hz)"
+local VHF2_ACTIVE = "(A:COM ACTIVE FREQUENCY:2, Hz)"
+local VHF3_ACTIVE = "(A:COM ACTIVE FREQUENCY:3, Hz)"
+local VHF1_STBY   = "(A:COM STANDBY FREQUENCY:1, Hz)"
+local VHF2_STBY   = "L:A32NX_RMP_L_VHF2_STANDBY_FREQUENCY"    -- Hz
+local VHF3_STBY   = "L:A32NX_RMP_L_VHF3_STANDBY_FREQUENCY"    -- Hz
+local XPDR_MODE   = "L:A32NX_TRANSPONDER_MODE"                -- 0 STBY, 1 AUTO, 2 ON
+local TCAS_MODE   = "L:A32NX_SWITCH_TCAS_Position"            -- 0 STBY, 1 TA, 2 TA/RA
+local TCAS_TRAF   = "L:A32NX_SWITCH_TCAS_Traffic_Position"    -- 0 THRT, 1 ALL, 2 ABV, 3 BLW
+SimVar(RMP_MODE)
+SimVar(RMP_SWITCH)
+SimVar(RMP_POWER)
+SimVar(VHF1_ACTIVE)
+SimVar(VHF2_ACTIVE)
+SimVar(VHF3_ACTIVE)
+SimVar(VHF1_STBY)
+SimVar(VHF2_STBY)
+SimVar(VHF3_STBY)
+SimVar(XPDR_MODE)
+SimVar(TCAS_MODE)
+SimVar(TCAS_TRAF)
+
+-- the VHF radio (1 to 3) RMP 1 shows, or nil when it is off, unpowered or in a NAV mode
+local function rmp_vhf()
+    if not on(RMP_SWITCH) or not on(RMP_POWER) then return nil end
+    local m = round(num(RMP_MODE))
+    if m == 1 or m == 2 or m == 3 then return m end
+    return nil
+end
+
+-- Hz as "118.700" (MHz with three decimals), from whole kHz so no rounding shows
+local function mhz_text(hz)
+    local khz = round(hz / 1000)
+    return string.format("%d.%03d", math.floor(khz / 1000), khz % 1000)
+end
+
+function RMPACT()
+    local v = rmp_vhf()
+    if v == nil then return "" end
+    local hz = num(VHF1_ACTIVE)
+    if v == 2 then hz = num(VHF2_ACTIVE) end
+    if v == 3 then hz = num(VHF3_ACTIVE) end
+    if hz <= 0 then
+        if v == 3 then return "DATA" end
+        return ""
+    end
+    return mhz_text(hz)
+end
+
+function RMPSTBY()
+    local v = rmp_vhf()
+    if v == nil then return "" end
+    local hz = num(VHF1_STBY)
+    if v == 2 then hz = num(VHF2_STBY) end
+    if v == 3 then hz = num(VHF3_STBY) end
+    if hz <= 0 then return "" end
+    return mhz_text(hz)
+end
+
+-- read a selector L-Var, add step, keep it in first..last, write it (no FCU check: the ATC/TCAS panel
+-- is not part of the FCU; in another aircraft the L-Var is not read, so nothing moves)
+local function step_selector(address, step, first, last)
+    step = tonumber(step)
+    if step == nil then return end
+    local v = round(num(address)) + step
+    if v < first then v = first end
+    if v > last then v = last end
+    SimWrite(address, v)
+end
+
+function XPDRMODE(step)
+    step_selector(XPDR_MODE, step, 0, 2)
+end
+
+function TCASMODE(step)
+    step_selector(TCAS_MODE, step, 0, 2)
+end
+
+function TCASTRAF(step)
+    step_selector(TCAS_TRAF, step, 0, 3)
 end

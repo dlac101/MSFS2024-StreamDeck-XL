@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables are the reference; check.py compares them: docs/phase4-a32nx.md ('## Key table', '## Key table: fcu'), docs/phase4-a32nx-efis.md ('## Key table: efis') and docs/phase4-a32nx-overhead.md ('## Key table: ovhd', '## Key table: ovhdsys'; ovhdsys is a second-level page under ovhd). 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
+  "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables are the reference; check.py compares them: docs/phase4-a32nx.md ('## Key table', '## Key table: fcu'), docs/phase4-a32nx-efis.md ('## Key table: efis'), docs/phase4-a32nx-overhead.md ('## Key table: ovhd', '## Key table: ovhdsys'; ovhdsys is a second-level page under ovhd) and docs/phase4-a32nx-radios.md ('## Key table: radio', '## Key table: xpdr'; radio and xpdr are second-level pages under efis). 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
   "profile_name": "MSFS2024 A32NX",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile",
   "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
@@ -1309,11 +1309,13 @@
         },
         {
           "pos": "3,4",
-          "empty": "Reserved (a later unit)"
+          "title": "RADIO",
+          "folder": "radio"
         },
         {
           "pos": "3,5",
-          "empty": "Reserved (a later unit)"
+          "title": "XPDR",
+          "folder": "xpdr"
         },
         {
           "pos": "3,6",
@@ -1690,6 +1692,524 @@
         {
           "pos": "4,8",
           "empty": "Reserved for a later unit"
+        }
+      ]
+    },
+    {
+      "id": "radio",
+      "parent": "efis",
+      "note": "Captain's RMP (RMP 1): VHF1/VHF2, windows, XFER, knobs, ON/OFF; COM1/COM2 active (P4-4)",
+      "spec": "docs/phase4-a32nx-radios.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "VHF1",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_VHF1_BUTTON_PRESSED",
+            "Address": "L:A32NX_RMP_L_SELECTED_MODE"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "VHF2",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_VHF2_BUTTON_PRESSED",
+            "Address": "L:A32NX_RMP_L_SELECTED_MODE",
+            "OnState": "2"
+          }
+        },
+        {
+          "pos": "1,4",
+          "empty": "Reserved: VHF3 (data link; a later unit)"
+        },
+        {
+          "pos": "1,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "1,6",
+          "title": "RMP ON",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_RMP_L_TOGGLE_SWITCH",
+            "AddressAction": "L:A32NX_RMP_L_TOGGLE_SWITCH",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "MHz+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_OUTER_KNOB_TURNED_CLOCKWISE",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "kHz+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_INNER_KNOB_TURNED_CLOCKWISE",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "COM1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM ACTIVE FREQUENCY:1, MHz)",
+            "Format": "1.3"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "COM2",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM ACTIVE FREQUENCY:2, MHz)",
+            "Format": "1.3"
+          }
+        },
+        {
+          "pos": "2,3",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "2,4",
+          "title": "ACTIVE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:RMPACT",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "XFER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_TRANSFER_BUTTON_PRESSED",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "STBY",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:RMPSTBY",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "MHz-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_OUTER_KNOB_TURNED_ANTICLOCKWISE",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "kHz-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_RMP_L_INNER_KNOB_TURNED_ANTICLOCKWISE",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,2",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,3",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,4",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,6",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,7",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,8",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,1",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,2",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,3",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,4",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,6",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,7",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,8",
+          "empty": "Reserved (a later unit)"
+        }
+      ]
+    },
+    {
+      "id": "xpdr",
+      "parent": "efis",
+      "note": "ATC/TCAS panel: code keypad, IDENT, mode, ALT RPTG, TCAS mode and traffic (P4-4)",
+      "spec": "docs/phase4-a32nx-radios.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "XPDR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER CODE:1, Bco16)",
+            "DecodeBCD": true,
+            "Format": "4.0"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "STATE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=STBY:2=TEST:3=ON:4=ALT:5=GND"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "IDENT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:XPNDR_IDENT_ON",
+            "Address": "(A:TRANSPONDER IDENT:1, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "1,6",
+          "title": "7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_7",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "1,8",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "2,1",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "2,2",
+          "title": "MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_TRANSPONDER_MODE",
+            "Format": "",
+            "ValueMappings": "0=STBY:1=AUTO:2=ON",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:XPDRMODE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:XPDRMODE(-1)"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ALT RPTG",
+          "template": "p1:0,0",
+          "title_size": 13,
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_SWITCH_ATC_ALT",
+            "AddressAction": "L:A32NX_SWITCH_ATC_ALT",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "empty": "Reserved: XPDR SYS 1/2 (a later unit)"
+        },
+        {
+          "pos": "2,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "2,6",
+          "title": "4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_4",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_5",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_6",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,2",
+          "title": "TCAS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_SWITCH_TCAS_Position",
+            "Format": "",
+            "ValueMappings": "0=STBY:1=TA:2=TA/RA",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:TCASMODE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:TCASMODE(-1)"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "TRAFFIC",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_SWITCH_TCAS_Traffic_Position",
+            "Format": "",
+            "ValueMappings": "0=THRT:1=ALL:2=ABV:3=BLW",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:TCASTRAF(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:TCASTRAF(-1)"
+          }
+        },
+        {
+          "pos": "3,4",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "3,6",
+          "title": "1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_1",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_2",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_3",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,1",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,2",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,3",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,4",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,5",
+          "empty": "Reserved (a later unit)"
+        },
+        {
+          "pos": "4,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_CLR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "0",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A320_Neo_ATC_BTN_0",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,8",
+          "empty": "Reserved (a later unit)"
         }
       ]
     }

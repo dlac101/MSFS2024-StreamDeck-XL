@@ -542,3 +542,44 @@ FBW-ADIRS (`A32NX_Interior_ADIRS.xml`), SDK-FUELE (MSFS 2024 SDK Aircraft Fuel S
 (PilotsDeck source at `11bdf1f`). Weak points the hand test decides: MODE SEL by `SimCalculator` (and the
 MobiFlight module it needs), `L:A32NX_EXT_PWR_AVAIL:1` read with its `:1`, APU N from the raw L-Var, the
 deprecated alignment time L-Var, the IR knob order 1, 3, 2.
+
+### FlyByWire A32NX radio and transponder pages (P4-4)
+
+For [phase4-a32nx-radios.md](phase4-a32nx-radios.md): the second-level pages `radio` (efis 3,4 `RADIO`, the
+Captain's RMP 1) and `xpdr` (efis 3,5 `XPDR`, the ATC/TCAS panel) of the profile `MSFS2024 A32NX` (positions
+are page and row,column), and the five functions P4-4 added to `XL24-A32NX.lua` (`RMPACT`, `RMPSTBY`,
+`XPDRMODE`, `TCASMODE`, `TCASTRAF`). The A32NX is not installed on this PC yet (2026-11-16). Generated, not
+yet sim-tested: every row is **Unverified** until the checklist section "Phase 4: A32NX radio and transponder
+pages (P4-4)" passes (then the date, MSFS version and A32NX version). Every `H:` command needs the MobiFlight
+WASM module ([troubleshooting.md](troubleshooting.md#the-mobiflight-wasm-module)).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| RMP 1 VHF1 key (radio 1,2) | `L:A32NX_RMP_L_SELECTED_MODE` (lit at 1) | 1 VHF1, 2 VHF2, 3 VHF3, 6 to 10 NAV modes (FBW-API lists 0..3) | `H:A32NX_RMP_L_VHF1_BUTTON_PRESSED` | none | FBW-RMP-XML, FBW-RMP-BASE, FBW-API | Unverified |
+| RMP 1 VHF2 key (radio 1,3) | `L:A32NX_RMP_L_SELECTED_MODE` (lit at 2) | as VHF1 | `H:A32NX_RMP_L_VHF2_BUTTON_PRESSED` | none | FBW-RMP-XML, FBW-RMP-BASE, FBW-API | Unverified |
+| RMP 1 ON/OFF switch (radio 1,6) | `L:A32NX_RMP_L_TOGGLE_SWITCH` | 0/1 | `L:A32NX_RMP_L_TOGGLE_SWITCH`, On `1` / Off `0` (L-Var write, FBW-API: R/W; not `H:A32NX_RMP_L_TOGGLE_SWITCH`, which only makes the RMP read the L-Var again, FBW-REACT) | readout only | FBW-API, FBW-RMP-XML, FBW-RMP-BASE, FBW-SIMVARS, FBW-REACT | Unverified |
+| RMP 1 outer knob, MHz (radio 1,7 / 2,7) | (none: STBY shows the result) | MHz step, 118 to 136 | `H:A32NX_RMP_L_OUTER_KNOB_TURNED_CLOCKWISE` / `H:A32NX_RMP_L_OUTER_KNOB_TURNED_ANTICLOCKWISE` | none | FBW-RMP-XML, FBW-RMP-STBY | Unverified |
+| RMP 1 inner knob, kHz (radio 1,8 / 2,8) | (none: STBY shows the result) | one channel, 8.33 or 25 kHz | `H:A32NX_RMP_L_INNER_KNOB_TURNED_CLOCKWISE` / `H:A32NX_RMP_L_INNER_KNOB_TURNED_ANTICLOCKWISE` | none | FBW-RMP-XML, FBW-RMP-STBY | Unverified |
+| RMP 1 transfer key (radio 2,5) | (none: ACTIVE and STBY show the result) | - | `H:A32NX_RMP_L_TRANSFER_BUTTON_PRESSED` | none | FBW-RMP-XML, FBW-RMP-VHF | Unverified |
+| COM1 / COM2 active frequency (radio 2,1 / 2,2) | `(A:COM ACTIVE FREQUENCY:1, MHz)` / `(A:COM ACTIVE FREQUENCY:2, MHz)` | MHz | (read only) | none | SDK-RADV, FBW-API, FBW-RMP-VHF | Unverified |
+| RMP 1 active window (radio 2,4) | `lua:XL24-A32NX:RMPACT`: the script reads `L:A32NX_RMP_L_TOGGLE_SWITCH`, `L:A32NX_ELEC_DC_ESS_BUS_IS_POWERED`, `L:A32NX_RMP_L_SELECTED_MODE` and `(A:COM ACTIVE FREQUENCY:1, Hz)`, `(A:COM ACTIVE FREQUENCY:2, Hz)` or `(A:COM ACTIVE FREQUENCY:3, Hz)` | text `118.700`, blank, or `DATA` (VHF3) | (read only) | none | FBW-RMP-VHF, FBW-RMP-BASE; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| RMP 1 standby window (radio 2,6) | `lua:XL24-A32NX:RMPSTBY`: the script reads the three L-Vars above and `(A:COM STANDBY FREQUENCY:1, Hz)` (VHF1), `L:A32NX_RMP_L_VHF2_STANDBY_FREQUENCY` (VHF2) or `L:A32NX_RMP_L_VHF3_STANDBY_FREQUENCY` (VHF3) | text `118.700` or blank; the L-Vars in Hz (FBW-SIMVARS names the VHF2 one `A32NX_RMP_L_VHF2_STANDBY`; the code wins) | (read only) | none | FBW-RMP-VHF, FBW-RMP-BASE, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| DC ESS bus powered, the scripts' RMP 1 power check (no key) | `L:A32NX_ELEC_DC_ESS_BUS_IS_POWERED` | 0/1 | (read only) | none | FBW-RMP-BASE | Unverified |
+| Transponder code (xpdr 1,2) | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16, Decode BCD | (read only; the panel writes it with `K:XPNDR_SET`) | none | SDK-RADV, FBW-API, FBW-ATC-GAUGE | Unverified |
+| Transponder state (xpdr 1,3) | `(A:TRANSPONDER STATE:1, Enum)` | 0 OFF, 1 STBY, 2 TEST, 3 ON, 4 ALT, 5 GND | (read only: FlyByWire writes it) | none | SDK-RADV, FBW-ATC-XML | Unverified |
+| IDENT (xpdr 1,4) | `(A:TRANSPONDER IDENT:1, Bool)` | 0/1 (off by itself after 18 s, SDK-RADE) | `K:XPNDR_IDENT_ON` | K6 Simple Button, same command, no light | FBW-API, FBW-ATC-XML, SDK-RADE, SDK-RADV | Unverified |
+| ATC keypad digits (xpdr 4,7 0, 3,6 1, 3,7 2, 3,8 3, 2,6 4, 2,7 5, 2,8 6, 1,6 7) | (none: XPDR shows the code after the fourth digit, typed after CLR, CLR) | - | `H:A320_Neo_ATC_BTN_0`, `H:A320_Neo_ATC_BTN_1`, `H:A320_Neo_ATC_BTN_2`, `H:A320_Neo_ATC_BTN_3`, `H:A320_Neo_ATC_BTN_4`, `H:A320_Neo_ATC_BTN_5`, `H:A320_Neo_ATC_BTN_6`, `H:A320_Neo_ATC_BTN_7` | a code pad of the script's own that sends `K:XPNDR_SET` (not built) | FBW-ATC-XML, FBW-ATC-GAUGE, FBW-BEGIN | Unverified |
+| ATC keypad CLR (xpdr 4,6) | (none) | - | `H:A320_Neo_ATC_BTN_CLR` | as the digits | FBW-ATC-XML, FBW-ATC-GAUGE | Unverified |
+| Transponder mode selector (xpdr 2,2) | `L:A32NX_TRANSPONDER_MODE` | 0 STBY, 1 AUTO, 2 ON | `lua:XL24-A32NX:XPDRMODE(1)` (one position clockwise), long press `lua:XL24-A32NX:XPDRMODE(-1)`; the script writes the L-Var (L-Var write) | readout only | FBW-ATC-XML, FBW-API, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| ALT RPTG switch (xpdr 2,3) | `L:A32NX_SWITCH_ATC_ALT` | 0 OFF, 1 ON | `L:A32NX_SWITCH_ATC_ALT`, On `1` / Off `0` | readout only | FBW-ATC-XML, FBW-API, FBW-SIMVARS | Unverified |
+| TCAS mode selector (xpdr 3,2) | `L:A32NX_SWITCH_TCAS_Position` | 0 STBY, 1 TA, 2 TA/RA | `lua:XL24-A32NX:TCASMODE(1)`, long press `lua:XL24-A32NX:TCASMODE(-1)`; the script writes the L-Var (FBW-SIMVARS says Read-Only, FBW-API R/W) | the upper-case name `L:A32NX_SWITCH_TCAS_POSITION` (FBW-API); then readout only | FBW-ATC-XML, FBW-API, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+| TCAS traffic selector (xpdr 3,3) | `L:A32NX_SWITCH_TCAS_Traffic_Position` | 0 THRT, 1 ALL, 2 ABV, 3 BLW | `lua:XL24-A32NX:TCASTRAF(1)`, long press `lua:XL24-A32NX:TCASTRAF(-1)`; the script writes the L-Var (as TCAS mode) | the upper-case name `L:A32NX_SWITCH_TCAS_TRAFFIC_POSITION` (FBW-API); then readout only | FBW-ATC-XML, FBW-API, FBW-SIMVARS; README 2.1.1 LUAFUNC, 3.5.1 | Unverified |
+
+Sources: the tags of [phase4-a32nx-radios.md](phase4-a32nx-radios.md), "Sources" (FlyByWire at the tag
+v2024.1.0): FBW-RMP-VHF (`VhfRadioPanel.tsx`), FBW-RMP-STBY (`StandbyFrequency.tsx`), FBW-RMP-BASE
+(`BaseRadioPanels.tsx`), FBW-RMP-XML (`A32NX_Interior_RMP.xml`), FBW-ATC-XML (`A32NX_Interior_ATC.xml`),
+FBW-ATC-GAUGE (the ATC panel gauge `ATC/index.tsx`), FBW-REACT (`simVars.tsx`), FBW-BEGIN, FBW-SIMVARS,
+FBW-API, SDK-RADE, SDK-RADV and README as above. Weak points the hand test decides: the H-events sent through
+the MobiFlight module, the RMP ON L-Var write, the transponder mode by L-Var write (STATE following), the TCAS
+L-Var names' case and their writes, IDENT lit from the sim's ident SimVar, and the VHF1/VHF2 keys showing no
+image while the other radio is selected.

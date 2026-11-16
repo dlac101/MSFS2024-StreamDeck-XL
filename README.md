@@ -26,7 +26,7 @@ Transponder page under More (MORE 1,7; code pad by a Lua script, code and mode r
 Radios page under More (MORE 1,8; NAV1, NAV2 and COM2 readouts that swap on a press, MHz and kHz steps, station idents, COM1/COM2 mic select; generated, not yet sim-tested): [docs/phase3-radios.md](docs/phase3-radios.md).
 Systems page under More (MORE 2,2; alternator, avionics bus and standby battery switches, bus volts and amps, interior lights and a dimmer readout, fuel selector, fuel shutoff valve and fuel quantity; generated, not yet sim-tested): [docs/phase3-systems.md](docs/phase3-systems.md).
 Trim gauge on the Trim page (trim 3,4; a vertical bar with a pointer and the number; generated, not yet sim-tested): [docs/phase2-trim-views.md](docs/phase2-trim-views.md), design [docs/design-trim-gauge.md](docs/design-trim-gauge.md).
-**Phase 4: FlyByWire A32NX profile (main, FCU, EFIS and OVHD pages, and OVHD > SYSTEMS), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md), [docs/phase4-a32nx-efis.md](docs/phase4-a32nx-efis.md), [docs/phase4-a32nx-overhead.md](docs/phase4-a32nx-overhead.md).
+**Phase 4: FlyByWire A32NX profile (main, FCU, EFIS and OVHD pages, OVHD > SYSTEMS, and EFIS > RADIO and XPDR), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md), [docs/phase4-a32nx-efis.md](docs/phase4-a32nx-efis.md), [docs/phase4-a32nx-overhead.md](docs/phase4-a32nx-overhead.md), [docs/phase4-a32nx-radios.md](docs/phase4-a32nx-radios.md).
 Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
 ## Layout
 
@@ -49,6 +49,7 @@ docs/
   phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main, FCU and OVHD pages, Lua script XL24-A32NX.lua, key-by-key reference
   phase4-a32nx-efis.md  Phase 4 A32NX EFIS page (main > EFIS): Captain EFIS control panel and glareshield lamps, key-by-key reference
   phase4-a32nx-overhead.md  Phase 4 A32NX overhead pages (main > OVHD > SYSTEMS): lights, ELEC, APU, fuel, ADIRS, bleed, anti-ice, key-by-key reference
+  phase4-a32nx-radios.md  Phase 4 A32NX radio and transponder pages (main > EFIS > RADIO / XPDR): RMP 1, ATC/TCAS panel, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon build (Guenseli pack, personal use only, never committed)
