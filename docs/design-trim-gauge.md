@@ -1,8 +1,9 @@
 # Design: elevator trim gauge, Cessna 172 G1000
 
-**Status: design only. Nothing is built, generated or sim-tested.** This doc is the brief for the build
-unit. It adds no new variable: the gauge reads the same SimVar as the trim page's `TRIM` readout (3,2),
-which is already in [aircraft-mappings.md](aircraft-mappings.md) as Unverified.
+**Status: built (P3-4), generated, not yet sim-tested.** The key is in the profile; its reference is
+[phase2-trim-views.md](phase2-trim-views.md) (trim 3,4). It adds no new variable: the gauge reads the same
+SimVar as the trim page's `TRIM` readout (3,2), which is already in [aircraft-mappings.md](aircraft-mappings.md)
+as Unverified.
 
 Goal: show the elevator trim as a bar with a pointer, as the Flight Tracker Stream Deck plugin (FT-SD) does
 with its custom gauge (the user likes how it shows trim), instead of only a number. PilotsDeck has its own
@@ -30,20 +31,21 @@ percent readout (the gauge also draws the number), so the column reads UP, gauge
 | Minimum / Maximum | `-100` / `100` | The SimVar's range |
 | Draw Arc | off (a bar) | FT-SD's trim gauges are bars; a trim wheel moves in a line |
 | Orientation | vertical, values increasing **up** | Matches TRIM UP above and TRIM DN below on the same page |
-| Size | about `12; 56` (width; height) for a 72 px key | Tall, narrow bar; adjust in the panel |
+| Size | `52; 12` (length; thickness: PilotsDeck sizes the bar before it turns it), Offset `-6; 0` | Tall, narrow bar; adjust in the panel |
 | Center Line | on, white | Marks neutral (0) |
 | Indicator | on, triangle, a bright color (yellow) | The pointer FT-SD calls the chevron |
 | Warning Range | off | No source gives the C172's takeoff trim range, so none is drawn (not invented) |
 | Text | on, Format `1.0` | The percent as a number under or beside the bar |
 | Title | `TRIM`, top | As FT-SD's header |
 
-There is no Display Gauge in `tools/profilegen/templates.json` yet. A real saved one exists to copy the
-settings layout from: the MSFS-Fenix320-XL profile in ProfilesV3 has 18 Display Gauge keys (all arcs, for
-light and volume knobs). Its saved fields show the names the generator needs (`DrawArc`,
-`BarOrientation`, `GaugeSize`, `Offset`, `CenterLine`, `IndicatorSize`, `IndicatorColor`, `ShowText`,
-`Format`, `MinimumValue`, `MaximumValue`). Which `BarOrientation` number means "vertical, up" is not in the
-README: the build unit makes one gauge by hand in the settings panel, saves it, and reads the number from
-the saved profile (the project's usual way). That fieldset is a lead only; no file is copied.
+The generator's template is `display_gauge` in `tools/profilegen/templates.json`, derived from the Phase 1
+HDG key (`p1:2,0`, a Display Value saved by PilotsDeck 0.9.7: every simple PilotsDeck action saves the same
+settings). The MSFS-Fenix320-XL profile's 18 Display Gauge keys are arcs saved by older builds
+(BUILD_VERSION 7 and 10); they were a lead for the field names (`DrawArc`, `BarOrientation`, `GaugeSize`,
+`Offset`, `CenterLine`, `IndicatorSize`, `IndicatorColor`, `ShowText`, `Format`, `MinimumValue`,
+`MaximumValue`) only, and no file is copied. `BarOrientation` Up = `-90`, from the PilotsDeck source
+(IAction.cs) and the installed plugin's own code; no hand-saved key was needed. PilotsDeck draws the number
+on the turned bar, so on this vertical bar it stands sideways on the right edge and reads bottom to top.
 
 ## Icon build option (local only, never committed)
 
@@ -56,12 +58,17 @@ example:
 - `LORBY SD Gauges/Trim_Pitch_Back.png` with `Trim_Pitch_Arrow.png`, and `pitch_trim_scale.png`.
 - `Standard Avionics Suite/icons/Trim_PITCH.png` (white on transparent).
 
-In the local icon build (`generate.py --icons`, [icons.md](icons.md)) the gauge key can take one of these as
-its background. The pack's licence is personal use only, so this stays in the git-ignored local build.
+In the local icon build (`generate.py --icons`, [icons.md](icons.md)) the gauge key could take one of these as
+its background. For now it takes none: `tools/profilegen/icons-c172-g1000.json` leaves trim 3,4 as it is (no
+pack face is known to fit an upward bar). The pack's licence is personal use only, so this stays in the
+git-ignored local build.
 A needle-over-face gauge (Composite Action) would look closest to a real instrument but needs more setup;
 the plain Display Gauge comes first.
 
-## How to test (goes into tests/manual-checklist.md when built)
+## How to test
+
+The steps are in [tests/manual-checklist.md](../tests/manual-checklist.md), section "P3-4: Trim gauge (C172
+G1000)". In short:
 
 1. Trim fully down, neutral and fully up with the cockpit wheel: the pointer goes to the bottom, the
    center line and the top; the number matches `TRIM` at 3,2.

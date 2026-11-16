@@ -115,6 +115,8 @@ stay as a record ("does not work" for the five that were pressed, "not tested" f
 | Previous view toggle (was views 2,8; now Empty) | none | | `K:VIEW_PREVIOUS_TOGGLE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
 | Camera select 1 to 9, 0 (was views 3,1 to 3,8, 4,1, 4,2; now Empty) | none | | `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9`, `K:VIEW_CAMERA_SELECT_0` (which view each selects is not documented) | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
 
+The trim gauge (trim 3,4, P3-4, Display Gauge) reads the same `(A:ELEVATOR TRIM PCT EX2, percent)` as trim 3,2 (in the table above), Minimum -100 / Maximum 100; Unverified.
+
 The view events are aircraft-independent (they act on the sim's camera, not the C172); they are listed
 here because every event the project uses goes in this file. Sources as above, plus:
 - SDK-VCE: key-events/view-and-camera-events/

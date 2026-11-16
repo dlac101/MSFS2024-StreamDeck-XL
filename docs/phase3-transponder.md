@@ -30,17 +30,17 @@ radios page ([phase3-radios.md](phase3-radios.md)). How the pages connect: [navi
 
 The pad keys call functions of the standard script
 `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-XPDRPAD.lua`. PilotsDeck reads scripts from its own Scripts
-folder (README 3.5), so the file must be there before the pad can work. Signed in as Admin, either:
+folder (README 3.5), so the file must be there before the pad can work. Signed in as Admin:
 
-- copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
-  (the plugin loads new and changed scripts while it runs; no restart needed, README 3.5), or
-- build and install the package with the Profile Manager ([package.md](package.md), "Build" and
-  "Install"), which puts `Scripts/` files in the same place.
+- main route: install the package with the Profile Manager ([package.md](package.md), "Install"; not yet tested
+  with the Profile Manager). It copies every script of the package into the plugin's `Scripts` folder.
+- by hand (fallback): copy the file into `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`
+  (the plugin loads new and changed scripts while it runs; no restart needed, README 3.5).
 
 This is the same step as for the COM1 pad ([phase2-com1-pad.md](phase2-com1-pad.md), "Install the script").
-After any change to the script in the repo, copy it again. Without the file, the digit, CLR and ENT keys do
-nothing and the plugin log says the script is not registered. The other keys (readouts, STBY / ON / ALT,
-IDENT, VFR) don't need the script.
+After any change to the script in the repo, install the new package or copy it again. Without the file, the
+digit, CLR and ENT keys do nothing and the plugin log says the script is not registered. The other keys
+(readouts, STBY / ON / ALT, IDENT, VFR) don't need the script.
 
 ## Layout: xpdr
 

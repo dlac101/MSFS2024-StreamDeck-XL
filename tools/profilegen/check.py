@@ -73,6 +73,7 @@ ACTION_UUIDS = {
     "Dynamic Button": "com.extension.pilotsdeck.action.switch.display",
     "Display Value": "com.extension.pilotsdeck.action.display.switch",
     "COM Radio": "com.extension.pilotsdeck.action.display.radio",
+    "Display Gauge": "com.extension.pilotsdeck.action.display.gauge",
     "Simple Button": "com.extension.pilotsdeck.action.switch",
     "Folder": "com.elgato.streamdeck.profile.openchild",
 }

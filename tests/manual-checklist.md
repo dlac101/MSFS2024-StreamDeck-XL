@@ -854,6 +854,48 @@ fuel selector on BOTH and the fuel shutoff valve open (fuel on) at the end.
   checked), which light each light key drove, the log lines for any step that failed, the sim version, and
   every fallback or change.
 
+## P3-4: Trim gauge (C172 G1000)
+
+Reference: [docs/phase2-trim-views.md](../docs/phase2-trim-views.md) (trim 3,4, "What each key holds", T9)
+and [docs/design-trim-gauge.md](../docs/design-trim-gauge.md). The gauge is a new key on the trim page (main
+1,7 `TRIM`), in the same profile file as the main page; it needs no script and only reads a SimVar. The trim
+page now also holds 3,4: the Phase 2 section's "everything else empty" and the P2-5 and P2-7 key lists
+predate it. Not yet tested in the app or the sim. Record: date, MSFS 2024 version, PilotsDeck version, and
+every fallback or changed value you used.
+
+**Reimport and layout (no sim needed)**
+- [ ] 1. Export a backup of the installed profile, then rebuild and import the icon profile or package as
+  [docs/icons.md](../docs/icons.md) says (or the plain profile, [docs/phase2-main-page.md](../docs/phase2-main-page.md),
+  "Import the profile"). Main 1,7 `TRIM` opens the trim page: `TRIM UP` 2,2, `TRIM` 3,2, `TRIM DEG` 3,3,
+  the gauge `TRIM` 3,4, `TRIM DN` 4,2. The other pages look as before.
+- [ ] Select 3,4 and compare its settings panel with the doc (T9): Display Gauge, Value tab Address
+  `(A:ELEVATOR TRIM PCT EX2, percent)`, Minimum `-100`, Maximum `100`; Gauge tab Draw Arc off, Orientation
+  Up, Size `52; 12`, Offset `-6; 0`; Center Line on; Indicator yellow; Text on, Format `1.0`; no command.
+  Record every field that differs.
+- [ ] 2. No flight (sim at the main menu): the trim page opens and 3,4 shows the Wait image (with the sim
+  closed, PilotsDeck shows a still preview: the bar with no number is expected).
+
+**In the sim (2024 C172 G1000, flight loaded, parked)**
+Way back: at the end, set the trim wheel back with the mouse (neutral, or where it was when the flight
+loaded); if the new profile misbehaves, delete it and import the backup exported in step 1.
+- [ ] 3. The look: a vertical bar in the middle of 3,4, `TRIM` at the top, a yellow triangle on the bar's
+  left edge, a white line across it, the number on the right edge reading bottom to top (**A-TEXT**: say if
+  you want the number off). Say whether the size and colors suit (**A-SIZE**).
+- [ ] 4. Trim wheel with the mouse fully down, neutral, fully up: the pointer goes to the bottom, the white
+  line, the top; the gauge's number equals `TRIM` at 3,2 (rounded). Record the numbers. If the bar grows
+  downward instead, record it (**A-ORIENT**). If 3,2 shows only -1 to 1 and the pointer barely moves,
+  record it (**A-SCALE**).
+- [ ] 5. `TRIM UP` / `TRIM DN` presses: the pointer moves the same way as the 3,2 readout.
+- [ ] 6. Pressing the gauge sends nothing: PilotsDeck shows its yellow alert sign on the key for a moment and
+  the plugin log notes that no command could be built (expected).
+  Nothing depends on the connected flight controls (Xbox Elite or T.16000M + TWCS): the key only reads a
+  SimVar.
+- [ ] 7. Say whether to keep the gauge at 3,4 or move it to 3,2 in place of the percent readout (**A-POS**).
+
+**Result for the worker**
+- [ ] Record each step's result, the numbers of step 4, the log lines for any step that failed, the sim
+  version, and every fallback or change.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD

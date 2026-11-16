@@ -275,6 +275,30 @@
     },
     "states_from": "p1:3,0"
   },
+  "display_gauge": {
+    "source": {
+      "kind": "derived",
+      "note": "No Display Gauge key saved by PilotsDeck 0.9.7 (BUILD_VERSION 11) exists on this PC: the only saved ones, 18 arcs in the MSFS-Fenix320-XL profile, were saved by older builds (BUILD_VERSION 7 and 10, 8 settings fields fewer), and no saved bar exists. Built from the Phase 1 HDG key (a Display Value: every PilotsDeck 0.9.7 simple action saves the same settings class, SettingsModelSimple) with the action identity from the plugin's manifest.json, no command (HasAction false, the SettingsModelSimple default) and the bar text rectangle that ActionDisplayGauge gives a new bar (ResetCoords and CheckSettings). The bar fields keep the Display Value's saved defaults (DrawArc false, BarOrientation 0 = RIGHT); a key names its own.",
+      "refs": [
+        "%APPDATA%/Elgato/StreamDeck/Plugins/com.extension.pilotsdeck.sdPlugin/manifest.json (action UUID com.extension.pilotsdeck.action.display.gauge, Name 'Display Gauge', default state TitleAlignment top)",
+        "https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/ActionDisplayGauge.cs (CheckSettings, ResetCoords: bar RectCoord 7; 45; 60; 21, GaugeSize 58; 10)",
+        "https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/SettingsModelSimple.cs (one settings class for all simple actions; HasAction default false; BarOrientation is a GaugeOrientation)",
+        "https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/IAction.cs (enum GaugeOrientation: UP = -90, DOWN = 90, LEFT = 180, RIGHT = 0; the same values in the installed PilotsDeck.exe)",
+        "%APPDATA%/Elgato/StreamDeck/ProfilesV3/FE3A1952-E04C-4247-BBEC-DBA01EB37809.sdProfile (MSFS-Fenix320-XL, 18 saved Display Gauge keys: field names and value types, BarOrientation saved as a number)"
+      ]
+    },
+    "derived_from": "p1:2,0",
+    "shell": {
+      "Name": "Display Gauge",
+      "UUID": "com.extension.pilotsdeck.action.display.gauge"
+    },
+    "set": {
+      "Address": "",
+      "Format": "",
+      "HasAction": false,
+      "RectCoord": "7; 45; 60; 21"
+    }
+  },
   "avar_dynamic_button": {
     "source": {
       "kind": "ProfilesV3",

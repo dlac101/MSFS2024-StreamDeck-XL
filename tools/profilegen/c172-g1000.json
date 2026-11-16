@@ -321,7 +321,7 @@
     {
       "id": "trim",
       "parent": "main",
-      "note": "Trim page: elevator trim keys and readouts (P2-3)",
+      "note": "Trim page: elevator trim keys and readouts (P2-3), trim gauge 3,4 (P3-4)",
       "keys": [
         {
           "pos": "2,2",
@@ -354,6 +354,22 @@
           "set": {
             "Address": "(A:ELEVATOR TRIM POSITION, degrees)",
             "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:ELEVATOR TRIM PCT EX2, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "BarOrientation": -90,
+            "GaugeSize": "52; 12",
+            "Offset": "-6; 0",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.0"
           }
         },
         {

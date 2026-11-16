@@ -3,7 +3,8 @@
 **Status: partly tested.** An early import was tried in the sim on 2026-11-11: the view K-events did
 nothing (LR95-C2) and are off the page now; the EXTERNAL key's A-Var write passed a hand test (LR101-C2).
 Every other new name below is recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md)
-until the Phase 2 trim and views checks pass.
+until the Phase 2 trim and views checks pass. The trim gauge (3,4, P3-4) is generated, not yet
+sim-tested.
 
 Goal: fill the two child pages that the main page's folder keys open, for the default MSFS 2024
 **Cessna 172 Skyhawk G1000**: **trim** (main page key 1,7 `TRIM`) and **views** (main page key 1,8
@@ -19,7 +20,8 @@ the reference for what each key holds; `tools/profilegen/check.py` compares the 
 Positions are **row,column**, 1-based, row 1 at the top. On both pages **1,1 is the back key** (it
 returns to the main page), as on every child page. The templates T3 and T5 are the main page's (see
 [phase2-main-page.md](phase2-main-page.md), "What each key holds"); T6 (Dynamic Button with an A-Var
-command) is new, copied from the user's saved key (see "What each key holds" below).
+command) is new, copied from the user's saved key (see "What each key holds" below). T9 (Display
+Gauge) is new for the trim gauge (see "What each key holds").
 
 ## Trim page
 
@@ -35,7 +37,7 @@ the connected flight controls.
 |---|---|---|---|---|---|---|---|---|
 | **Row 1** | < back | | | | | | | |
 | **Row 2** | | TRIM UP | | | | | | |
-| **Row 3** | | TRIM | TRIM DEG | | | | | |
+| **Row 3** | | TRIM | TRIM DEG | TRIM (gauge) | | | | |
 | **Row 4** | | TRIM DN | | | | | | |
 
 The up key sits above the readout and the down key below it. Column 2, so the back key (1,1) is not
@@ -67,7 +69,7 @@ by the generator on every child page. "Empty" = no action on that key.
 | 3,1 | | Empty | | | | |
 | 3,2 | `TRIM` | Display Value | T3 | none | `(A:ELEVATOR TRIM PCT EX2, percent)` [SDK-CTLV, SDK-UNITS] | Format `1.1` |
 | 3,3 | `TRIM DEG` | Display Value | T3 | none | `(A:ELEVATOR TRIM POSITION, degrees)` [SDK-CTLV, SDK-UNITS] | Format `1.1` |
-| 3,4 | | Empty | | | | |
+| 3,4 | `TRIM` | Display Gauge | T9 | none | `(A:ELEVATOR TRIM PCT EX2, percent)` [SDK-CTLV, SDK-UNITS] | Format `1.0`; vertical bar, values up (Orientation Up, saved `-90`), `-100` to `100`, center line, pointer |
 | 3,5 | | Empty | | | | |
 | 3,6 | | Empty | | | | |
 | 3,7 | | Empty | | | | |
@@ -95,6 +97,17 @@ by the generator on every child page. "Empty" = no action on that key.
 - **TRIM DEG** shows the trim deflection in degrees (SDK-CTLV, `ELEVATOR TRIM POSITION`, "Elevator trim
   deflection", read in `degrees`, SDK-UNITS). It is the cross-check for TRIM: if TRIM shows nothing or
   `0` while TRIM DEG moves, the EX2 SimVar is the problem (see "Fallbacks").
+- **TRIM (gauge)** (3,4) shows the same SimVar as TRIM, `(A:ELEVATOR TRIM PCT EX2, percent)`, as a
+  PilotsDeck Display Gauge: a vertical bar whose values increase upward, -100 (down limit) at the bottom,
+  0 (neutral) at the white center line and 100 (up limit) at the top, with a yellow pointer on the bar's
+  left edge at the current value (PD-SRC `RenderBar.cs`). Values outside -100 to 100 are drawn at the ends
+  (PilotsDeck clamps them, `Plugin/Plugin/Render/ToolsRender.cs` in the PD-SRC commit).
+  It also draws the number, Format `1.0` (no decimals). PilotsDeck draws that number on the turned bar, so
+  it stands on the right edge and reads bottom to top (PD-SRC `ActionDisplayGauge.cs`). The title `TRIM` is
+  the Stream Deck app's, upright at the top. The key has no press action: a press sends nothing; PilotsDeck
+  logs that it could not build a SimCommand and shows its yellow alert sign on the key for a moment
+  (`Plugin/Actions/Simple/ActionBaseSimple.cs`, `OnKeyUp`, in the PD-SRC commit). It only reads a SimVar, so
+  nothing depends on the connected flight controls.
 - No hold-to-repeat and no long press: the PilotsDeck README documents no auto-repeat; its **Hold
   Switch** sends the command on key down and a second one on key up (no repeat), and the long press
   (>= 500 ms) sends one Second Command. If one step per press turns out too small, that is recorded and a
@@ -240,8 +253,8 @@ type; SDK-CAMV says the Pilot View options are 1, 2, 4 and 5 (Close, Pilot, Land
 | SDK-VCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/view-and-camera-events/ |
 | SDK-CAMV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/camera-variables/ |
 | IE n | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt), line n (identical to the plugin's live `InputEvents.txt` on 2026-11-11) |
-| PD-SRC | PilotsDeck source, https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/ActionSwitchDisplay.cs (which image a Dynamic Button shows); `Plugin/Simulator/SimCommand.cs` in the same commit (command type AVAR = 12) |
-| PD-PI | The installed plugin's settings panel, `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Plugin\PI\js\pi-Common.js` line 221 (command type 12, "Avar") |
+| PD-SRC | PilotsDeck source, https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/ActionSwitchDisplay.cs (which image a Dynamic Button shows); `Plugin/Simulator/SimCommand.cs` in the same commit (command type AVAR = 12); `Plugin/Actions/Simple/ActionDisplayGauge.cs` (how a Display Gauge draws its bar and text, a new bar's text rectangle), `Plugin/Plugin/Render/RenderBar.cs` (bar size, center line, pointer) and `Plugin/Actions/IAction.cs` (`GaugeOrientation`: Up = -90, Down = 90, Left = 180, Right = 0) in the same commit |
+| PD-PI | The installed plugin's settings panel, `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Plugin\PI\js\pi-Common.js` line 221 (command type 12, "Avar"); `Plugin\PI\pi-DisplayGauge.html` (the Display Gauge field names by tab; Orientation saved as a number) |
 | LR95-C2, LR101-C2 | Sim test rows in the project's chain ledger (2026-11-11): the view K-events did nothing; the EXTERNAL A-Var key worked |
 
 Address syntax is the README's section 2.1.1 (A: SimVars with index and unit in brackets, K: events; an
@@ -277,6 +290,36 @@ EXTERNAL equals the saved key in every field (the generator gives it a new Actio
 only in the On Value and the On/Off States values. The settings panel saves a text field only when focus
 leaves it: after a hand change, Tab out of the field.
 
+**T9 Display Gauge** (new; template `display_gauge` in `tools/profilegen/templates.json`). No Display Gauge
+saved by PilotsDeck 0.9.7 exists on this PC to copy (the MSFS-Fenix320-XL profile's 18 are arcs saved by
+older builds), so the template is derived from the Phase 1 HDG key (`p1:2,0`, a Display Value: every simple
+PilotsDeck action saves the same settings) with the plugin's action name `Display Gauge` and UUID
+`com.extension.pilotsdeck.action.display.gauge` (its `manifest.json`), no command, and the text rectangle
+PilotsDeck gives a new bar. Trim: 3,4. Its saved settings, by settings panel tab (Indicator, Center Line and
+Warning Range are sections of the Gauge tab; "key" = set by the trim key in
+`tools/profilegen/c172-g1000.json`, "template" = the template's value):
+
+| Field (panel tab) | Saved value | From | Source |
+|---|---|---|---|
+| Address (Value) | `(A:ELEVATOR TRIM PCT EX2, percent)` | key | PD-PI; SDK-CTLV |
+| Scalar / Minimum / Maximum (Value) | `1` / `-100` / `100` | template / key / key | PD-PI; SDK-CTLV range |
+| Draw Arc (Gauge) | off (`DrawArc` `false`: a bar) | template | PD-PI |
+| Orientation (Gauge) | Up, saved `BarOrientation` `-90` (vertical, values increase upward) | key | PD-SRC `IAction.cs` (Up = -90; the same in the installed plugin); PD-PI |
+| Size (Gauge) | `52; 12`: 52 px long, 12 px thick (PilotsDeck sizes the bar before it turns it) | key | PD-PI; PD-SRC `RenderBar.cs` |
+| Offset (Gauge) | `-6; 0`: moves the bar 6 px down, clear of the title | key | PD-PI; PD-SRC `RenderBar.cs` |
+| Gauge color / color switching (Gauge) | `#006400` / off | template | PD-PI |
+| Center Line / its color / thickness (Center Line) | on / `#ffffff` / `2` | key / template / template | PD-PI; PD-SRC `RenderBar.cs` (the line sits at the middle, value 0) |
+| Indicator color / size / flip (Indicator) | `#ffcc00` (yellow) / `10` / off | key / template / template | PD-PI; PD-SRC `RenderBar.cs` |
+| Warning Range | off (no takeoff trim range is sourced) | template | PD-PI |
+| Show Text / Format / Mappings / font inherit (Text) | on / `1.0` / empty / on | template / key / template / template | PD-PI |
+| Draw Rectangle (Text) | `7; 45; 60; 21` | template | PD-SRC `ActionDisplayGauge.cs` (a new bar's text rectangle) |
+| Commands | none (`HasAction` `false`, Command Type `3`, empty address) | template | PD-PI |
+| Background | `Images/Empty.png` (PilotsDeck draws everything) | template | PD-SRC `ActionDisplayGauge.cs` |
+| Title | `TRIM`, top | key | as every key |
+
+If you change the gauge by hand during a test, Tab out of each text field (Size, Offset, Minimum, Maximum,
+Format): the settings panel saves a text field only when focus leaves it.
+
 ## Fallbacks
 
 Use one only if the checklist shows the main address doesn't work, and say which one you used. None is
@@ -286,6 +329,7 @@ tested; they are recorded in aircraft-mappings.md too.
 |---|---|---|
 | trim 3,2 TRIM | `(A:ELEVATOR TRIM PCT, percent)` (marked legacy in the SDK; 0 to 100 or -100 to 100 is not stated) | SDK-CTLV, SDK-UNITS |
 | trim 2,2 / 4,2 | Input event `B:handling_elevatortrim_wheel`: values unknown, needs a `tools/scmon` session first | IE 182 |
+| trim 3,4 TRIM (gauge) | If the pointer hardly moves and TRIM 3,2 reads only -1 to 1 (the scale is -1 to 1, not -100 to 100): Minimum `-1` / Maximum `1` and Format `1.2` (A-SCALE) | SDK-CTLV, SDK-UNITS |
 | views 1,2 COCKPIT | If `$=2` does nothing: EXTERNAL (`$2,=3<`, hand-tested) also goes back to the cockpit from the external view; COCKPIT then becomes Empty. No K-event fallback: the view K-events are ignored (LR95-C2). | README 2.1.2; LR101-C2 |
 | views 1,3 EXTERNAL | none needed (hand test passed, LR101-C2) | LR101-C2 |
 | views 1,2 / 1,3 values | 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2). If CAMERA shows other numbers in a later sim version, the On Value and On/Off values change to them | SDK-CAMV; LR95-C2 |
@@ -293,7 +337,8 @@ tested; they are recorded in aircraft-mappings.md too.
 ## How to test
 
 Run [tests/manual-checklist.md](../tests/manual-checklist.md), section "Phase 2: Trim and Views pages
-(C172 G1000)", after the main page's import step. As on the main page, the important direction is the
+(C172 G1000)", after the main page's import step, and for the trim gauge (3,4) the section "P3-4: Trim
+gauge (C172 G1000)". As on the main page, the important direction is the
 reverse one: **move the trim wheel or change the view with the mouse or keyboard, and check that the
 readouts and the COCKPIT/EXTERNAL keys follow without being pressed.**
 
