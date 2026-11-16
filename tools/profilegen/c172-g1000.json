@@ -321,7 +321,7 @@
     {
       "id": "trim",
       "parent": "main",
-      "note": "Trim page: elevator trim keys and readouts (P2-3), trim gauge 3,4 (P3-4)",
+      "note": "Trim page: elevator trim keys (P2-3), trim gauge 3,4 (P3-4); aileron and rudder trim keys and gauges (P3-TRIM2)",
       "keys": [
         {
           "pos": "2,2",
@@ -339,21 +339,46 @@
           }
         },
         {
-          "pos": "3,2",
-          "title": "TRIM",
-          "template": "p1:2,0",
+          "pos": "2,6",
+          "title": "AIL L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
           "set": {
-            "Address": "(A:ELEVATOR TRIM PCT EX2, percent)",
+            "ActionType": 16,
+            "AddressAction": "K:AILERON_TRIM_LEFT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "AIL TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:AILERON TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
             "Format": "1.1"
           }
         },
         {
-          "pos": "3,3",
-          "title": "TRIM DEG",
-          "template": "p1:2,0",
+          "pos": "2,8",
+          "title": "AIL R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
           "set": {
-            "Address": "(A:ELEVATOR TRIM POSITION, degrees)",
-            "Format": "1.1"
+            "ActionType": 16,
+            "AddressAction": "K:AILERON_TRIM_RIGHT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
           }
         },
         {
@@ -370,6 +395,49 @@
             "CenterLine": true,
             "IndicatorColor": "#ffcc00",
             "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "RUD L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_LEFT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "RUD TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:RUDDER TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "RUD R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_RIGHT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
           }
         },
         {

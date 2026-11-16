@@ -2,8 +2,8 @@
 
 **Status: built (P3-4), generated, not yet sim-tested.** The key is in the profile; its reference is
 [phase2-trim-views.md](phase2-trim-views.md) (trim 3,4). It adds no new variable: the gauge reads the same
-SimVar as the trim page's `TRIM` readout (3,2), which is already in [aircraft-mappings.md](aircraft-mappings.md)
-as Unverified.
+SimVar as the trim page's `TRIM` readout (3,2) did until P3-TRIM2 took that readout off, which is already in
+[aircraft-mappings.md](aircraft-mappings.md) as Unverified.
 
 Goal: show the elevator trim as a bar with a pointer, as the Flight Tracker Stream Deck plugin (FT-SD) does
 with its custom gauge (the user likes how it shows trim), instead of only a number. PilotsDeck has its own
@@ -12,10 +12,12 @@ value, an optional center line and the value as text. No Lua and no plugin chang
 
 ## Where it sits
 
-Trim page (main 1,7 `TRIM`), new key at **3,4**. The page's existing keys stay as they are
+Trim page (main 1,7 `TRIM`), new key at **3,4**. The page's keys at the time (P3-4) stayed as they were
 ([phase2-trim-views.md](phase2-trim-views.md)): `TRIM UP` 2,2, `TRIM` 3,2 (percent), `TRIM DEG` 3,3,
 `TRIM DN` 4,2. After the trim page's sim test, the user may move the gauge to 3,2 in place of the
-percent readout (the gauge also draws the number), so the column reads UP, gauge, DN.
+percent readout (the gauge also draws the number), so the column reads UP, gauge, DN. P3-TRIM2 later took
+`TRIM` 3,2 and `TRIM DEG` 3,3 off and added aileron and rudder trim keys and gauges; the page as it is
+now is in [phase2-trim-views.md](phase2-trim-views.md).
 
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
@@ -27,7 +29,7 @@ percent readout (the gauge also draws the number), so the column reads UP, gauge
 
 | Field (Display Gauge) | Value | Why |
 |---|---|---|
-| Address | `(A:ELEVATOR TRIM PCT EX2, percent)` | Same as 3,2 [SDK-CTLV]: -100 = down limit, 0 = neutral, 100 = up limit |
+| Address | `(A:ELEVATOR TRIM PCT EX2, percent)` | Same as 3,2 had (until P3-TRIM2) [SDK-CTLV]: -100 = down limit, 0 = neutral, 100 = up limit |
 | Minimum / Maximum | `-100` / `100` | The SimVar's range |
 | Draw Arc | off (a bar) | FT-SD's trim gauges are bars; a trim wheel moves in a line |
 | Orientation | vertical, values increasing **up** | Matches TRIM UP above and TRIM DN below on the same page |
@@ -71,8 +73,8 @@ The steps are in [tests/manual-checklist.md](../tests/manual-checklist.md), sect
 G1000)". In short:
 
 1. Trim fully down, neutral and fully up with the cockpit wheel: the pointer goes to the bottom, the
-   center line and the top; the number matches `TRIM` at 3,2.
-2. TRIM UP / TRIM DN on the deck: the pointer moves the same way as the readout.
+   center line and the top; the number goes from -100 through 0 to 100.
+2. TRIM UP / TRIM DN on the deck: the pointer and the number go up / down with each press.
 
 ## Sources
 

@@ -95,10 +95,10 @@ stay as a record ("does not work" for the five that were pressed, "not tested" f
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
-| Elevator trim up (trim 2,2) | none (readouts trim 3,2 and 3,3) | | `K:ELEV_TRIM_UP` | input event `B:handling_elevatortrim_wheel` (values unknown, not used) | SDK-FCE; IE 182 | Unverified |
-| Elevator trim down (trim 4,2) | none (readouts trim 3,2 and 3,3) | | `K:ELEV_TRIM_DN` | as trim up | SDK-FCE; IE 182 | Unverified |
-| Elevator trim position, percent (trim 3,2) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent, -100 (down limit) to 100 (up limit), 0 = 0° | (read only here; the SimVar is settable, SDK-CTLV) | `(A:ELEVATOR TRIM PCT, percent)` (legacy SimVar) | SDK-CTLV; SDK-UNITS | Unverified |
-| Elevator trim deflection (trim 3,3) | `(A:ELEVATOR TRIM POSITION, degrees)` | degrees | (read only here; the SimVar is settable, SDK-CTLV) | none | SDK-CTLV; SDK-UNITS | Unverified |
+| Elevator trim up (trim 2,2) | none (the trim gauge 3,4) | | `K:ELEV_TRIM_UP` | input event `B:handling_elevatortrim_wheel` (values unknown, not used) | SDK-FCE; IE 182 | Unverified |
+| Elevator trim down (trim 4,2) | none (the trim gauge 3,4) | | `K:ELEV_TRIM_DN` | as trim up | SDK-FCE; IE 182 | Unverified |
+| Elevator trim position, percent (trim gauge 3,4; readout 3,2 until P3-TRIM2) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent, -100 (down limit) to 100 (up limit), 0 = 0° | (read only here; the SimVar is settable, SDK-CTLV) | `(A:ELEVATOR TRIM PCT, percent)` (legacy SimVar) | SDK-CTLV; SDK-UNITS | Unverified |
+| Elevator trim deflection (not on a key since P3-TRIM2, a fallback lead; was trim 3,3) | `(A:ELEVATOR TRIM POSITION, degrees)` | degrees | (read only here; the SimVar is settable, SDK-CTLV) | none | SDK-CTLV; SDK-UNITS | Unverified |
 | Yoke trim switch (not on a key) | `B:handling_elevatortrim_yoke` exists | unknown | not used | | IE 183 | Unverified (not used) |
 | Trim disconnect (not on a key) | `B:handling_trim_disconnect` exists | unknown | not used | | IE 185 | Unverified (not used) |
 | Cockpit view (views 1,2) | `(A:CAMERA STATE, Enum)`, On `2` (cockpit) / Off `3` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$=2` (always writes 2), Off Value empty | EXTERNAL (views 1,3) also returns to the cockpit from the external view | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Unverified |
@@ -115,12 +115,32 @@ stay as a record ("does not work" for the five that were pressed, "not tested" f
 | Previous view toggle (was views 2,8; now Empty) | none | | `K:VIEW_PREVIOUS_TOGGLE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
 | Camera select 1 to 9, 0 (was views 3,1 to 3,8, 4,1, 4,2; now Empty) | none | | `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9`, `K:VIEW_CAMERA_SELECT_0` (which view each selects is not documented) | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
 
-The trim gauge (trim 3,4, P3-4, Display Gauge) reads the same `(A:ELEVATOR TRIM PCT EX2, percent)` as trim 3,2 (in the table above), Minimum -100 / Maximum 100; Unverified.
+The trim gauge (trim 3,4, P3-4, Display Gauge) reads `(A:ELEVATOR TRIM PCT EX2, percent)` (the row "Elevator trim position, percent" above), Minimum -100 / Maximum 100; Unverified.
 
 The view events are aircraft-independent (they act on the sim's camera, not the C172); they are listed
 here because every event the project uses goes in this file. Sources as above, plus:
 - SDK-VCE: key-events/view-and-camera-events/
 - SDK-CAMV: simvars/camera-variables/
+
+### Phase 3 aileron and rudder trim (P3-TRIM2)
+
+On the trim page ([phase2-trim-views.md](phase2-trim-views.md)). The 2024 C172 G1000 has no cockpit aileron or
+rudder trim control (no such input event, IE), so the keys send the sim's generic trim K-events. All rows are
+**Unverified** until the checklist section "P3-TRIM2: Aileron and rudder trim (C172 G1000)" passes; whether
+the C172's flight model honours the events is open (the user's keyboard J / L, bound to aileron trim left /
+right, "seem to work in C172", LR742-C16; U / O, rudder trim, not yet tried, LR743-C16).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Aileron trim left / right (trim 2,6 / 2,8) | none (the gauge trim 2,7) | | `K:AILERON_TRIM_LEFT` / `K:AILERON_TRIM_RIGHT` ("Increments the left [right] aileron trim by 0.001") | none (no aileron trim input event) | SDK-FCE; IE | Unverified |
+| Aileron trim position (trim 2,7, Display Gauge) | `(A:AILERON TRIM PCT, percent)`, Format `1.1` | percent, -100 to 100, 0 = no trim (SDK: "between -1 and 1"; unit "Float", MSFS 2020 SDK "Percent Over 100") | (read only here; the SimVar is settable, SDK-CTLV) | `(A:AILERON TRIM PCT, percent over 100)` with Scalar 100 (lead: TorontoWill's generic profile); `(A:AILERON TRIM, degrees)` | SDK-CTLV; SDK20-CTLV; SDK-UNITS | Unverified |
+| Rudder trim left / right (trim 3,6 / 3,8) | none (the gauge trim 3,7) | | `K:RUDDER_TRIM_LEFT` / `K:RUDDER_TRIM_RIGHT` ("Increments rudder trim left [right]"; step not stated) | none (no rudder trim input event) | SDK-FCE; IE | Unverified |
+| Rudder trim position (trim 3,7, Display Gauge) | `(A:RUDDER TRIM PCT, percent)`, Format `1.1` | percent, -100 to 100, 0 = no trim (SDK: "between -1 and 1"; unit "Float", MSFS 2020 SDK "Percent Over 100") | (read only here; the SimVar is settable, SDK-CTLV) | `(A:RUDDER TRIM PCT, percent over 100)` with Scalar 100; `(A:RUDDER TRIM, degrees)` | SDK-CTLV; SDK20-CTLV; SDK-UNITS | Unverified |
+| Aileron / rudder trim disabled (not on a key; for the `tools/scmon` check) | `AILERON TRIM DISABLED`, `RUDDER TRIM DISABLED` | Bool | not used | | SDK-CTLV | Unverified (not used) |
+
+Sources as the trim and views section above (SDK-FCE: key-events/aircraft-flight-control-events/, sections
+Ailerons and Rudder; SDK-CTLV: simvars/aircraft-simvars/aircraft-control-variables/), plus SDK20-CTLV: the MSFS
+2020 SDK's Aircraft_Control_Variables page (`AILERON TRIM PCT`, `RUDDER TRIM PCT`: "Percent Over 100").
 
 ### Phase 2 G1000 bezel and V-speeds pages
 

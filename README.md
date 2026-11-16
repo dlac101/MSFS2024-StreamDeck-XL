@@ -17,6 +17,7 @@ PilotsDeck runs on this PC with a locally patched build until
 
 **Phase 2: main page (C172 G1000), profile generated, untested.** Import one file; see [docs/phase2-main-page.md](docs/phase2-main-page.md).
 Its Trim and Views pages are filled (untested): [docs/phase2-trim-views.md](docs/phase2-trim-views.md).
+Aileron and rudder trim on the Trim page (trim 2,6 to 2,8 and 3,6 to 3,8: left and right keys on the sim's generic trim events, each pair with a horizontal gauge; the TRIM and TRIM DEG readouts are gone, the trim gauge shows the elevator trim; generated, not yet sim-tested): [docs/phase2-trim-views.md](docs/phase2-trim-views.md).
 Under More: G1000 PFD and MFD bezel pages and a V-speeds page (untested): [docs/phase2-g1000-vspeeds.md](docs/phase2-g1000-vspeeds.md).
 Sim rate page (behind main page 3,7; repaired after the first sim test, not yet sim-tested): 1X (back to 1x in one press, by a Lua script that steps the rate; the script `XL24-SIMRATE.lua` must be copied into the plugin's Scripts folder), SLOWER (one step down), a RATE readout (press one step up, hold a full second one step down) and FASTER (one step up): [docs/phase2-sim-rate.md](docs/phase2-sim-rate.md).
 Optional local icon build of the same profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md).

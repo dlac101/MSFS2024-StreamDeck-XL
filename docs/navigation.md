@@ -35,7 +35,7 @@ page ideas come from [original-plan.md](original-plan.md).
 
 | Main page key | Child page | Holds now | Plan (not built) | Source |
 |---|---|---|---|---|
-| 1,7 `TRIM` | trim | back key, elevator trim up/down, two trim readouts, a trim gauge ([phase2-trim-views.md](phase2-trim-views.md), untested) | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
+| 1,7 `TRIM` | trim | back key, elevator trim up/down and the elevator trim gauge; aileron and rudder trim left/right keys, each pair with a horizontal trim gauge (P3-TRIM2) ([phase2-trim-views.md](phase2-trim-views.md), untested) | Trim controls and trim position readout | original-plan.md, Phase 2 concept layout ("Trim page") |
 | 1,8 `VIEWS` | views | back key, 2 view keys (COCKPIT, EXTERNAL: A-Var writes to CAMERA STATE), 3 camera readouts ([phase2-trim-views.md](phase2-trim-views.md), EXTERNAL hand-tested, rest untested) | Camera views. Must work without vJoy or controller bindings (to be researched) | original-plan.md, Phase 2 concept layout and "Universal" level ("views") |
 | 3,7 `SIM RATE` | simrate | back key, 1,2 `1X` (the Lua script XL24-SIMRATE.lua steps the rate back to 1x; lit at 1x), 1,3 `SLOWER` (one step down), 1,4 the RATE readout (press one step up, long press of a full second one step down) and 1,5 `FASTER` (one step up) ([phase2-sim-rate.md](phase2-sim-rate.md), repaired P2-6R, not yet sim-tested) | Sim rate: back to 1x, slower, faster and the rate readout (the user's layout, LR298-C5) | the user's request (P2-6, layout LR298-C5); position 3,7 was the Timer reservation |
 | 3,8 `CHECKLIST` | checklist | back key only | Optional checklists and startup aids | original-plan.md, Phase 5 |

@@ -433,10 +433,10 @@ version, MSFS 2024 version (sim check only).
 
 **Build and install (no sim needed)**
 - [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.json`.
-  It prints the profile path and the image folder (`.local\icons\Images\Guenseli-C172`, 27 files).
+  It prints the profile path and the image folder (`.local\icons\Images\Guenseli-C172`, 29 files).
 - [ ] Copy the folder `.local\icons\Images\Guenseli-C172` (File Explorer) into
   `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\` (result:
-  `...\Images\Guenseli-C172\*.png`, 27 files). This is your own hand step, the plugin's documented way to add
+  `...\Images\Guenseli-C172\*.png`, 29 files). This is your own hand step, the plugin's documented way to add
   images (PilotsDeck README 3.3); it is a file copy, not a settings edit, and touches none of the patched
   plugin's program files. **Never re-run the PilotsDeck installer to "fix" icons** (it would undo the
   patched build: #176, docs/installation.md).
@@ -941,6 +941,58 @@ profile misbehaves, delete it and import the backup exported in step 1.
 **Result for the worker**
 - [ ] Record each step's result, the numbers of steps 3 to 5, the log lines for any step that failed, the sim
   version, and every fallback or change.
+
+## P3-TRIM2: Aileron and rudder trim (C172 G1000)
+
+Reference: [docs/phase2-trim-views.md](../docs/phase2-trim-views.md) (Key table: trim, "What the trim keys
+do", T5 and T9, "Fallbacks"). New keys on the trim page (main 1,7 `TRIM`), in the same profile file as the main
+page; no script. The C172 G1000 has no cockpit aileron or rudder trim control: the keys send the sim's generic
+trim events, and this test decides whether they stay. The trim page no longer has `TRIM` 3,2 and `TRIM DEG`
+3,3: skip those keys in the older sections (Phase 2 trim steps, P2-5, P2-7, P3-4 steps 4 and 5: compare with
+the gauge's number instead). Not yet tested in the app or the sim. Record: date, MSFS 2024 version, PilotsDeck
+version, and every fallback or changed value you used.
+
+**Reimport and layout (no sim needed)**
+- [ ] 1. Export a backup of the installed profile, then rebuild and import the icon profile or package as
+  [docs/icons.md](../docs/icons.md) says (or the plain profile, [docs/phase2-main-page.md](../docs/phase2-main-page.md),
+  "Import the profile"). Main 1,7 `TRIM` opens the trim page: back 1,1, `TRIM UP` 2,2, `AIL L` 2,6, the gauge
+  `AIL TRIM` 2,7, `AIL R` 2,8, the gauge `TRIM` 3,4, `RUD L` 3,6, the gauge `RUD TRIM` 3,7, `RUD R` 3,8,
+  `TRIM DN` 4,2; everything else empty. The other pages look as before.
+- [ ] Select 2,7 `AIL TRIM` and compare its settings panel with the doc (T9): Display Gauge, Value tab Address
+  `(A:AILERON TRIM PCT, percent)`, Minimum `-100`, Maximum `100`; Gauge tab Draw Arc off, Orientation Right,
+  Size `58; 10`; Center Line on; Indicator yellow; Text on, Format `1.1`; no command. Select 2,6 `AIL L`:
+  Simple Button, Command Type MSFS: K-Var (SimEvent), Command Address `K:AILERON_TRIM_LEFT`. Record every field that differs.
+- [ ] 2. No flight (sim at the main menu): the trim page opens and the gauges show the Wait image (with the
+  sim closed, PilotsDeck shows a still preview).
+
+**In the sim (2024 C172 G1000, flight loaded, parked or in flight)**
+Way back: at the end, centre the aileron and rudder trim with the keyboard (J / L, U / O) or the deck keys
+until both gauges read `0.0`; if the new profile misbehaves, delete it and import the backup exported in step 1.
+- [ ] 3. Flight loaded: record what `AIL TRIM` and `RUD TRIM` show (expected `0.0`). The look: a horizontal
+  bar, `AIL TRIM` / `RUD TRIM` at the top, a white center line, a yellow pointer, the number upright below the
+  bar. Say whether the size and Format `1.1` suit (**A-BAR2**, **A-FMT**).
+- [ ] 4. Keyboard first: press J five times, then L five times; then U five times, then O five times.
+  Record what `AIL TRIM` and `RUD TRIM` show after each group (the step size per press, **A-STEP**), and
+  whether the aircraft rolls or yaws in flight (**A-EFFECT**).
+- [ ] 5. Deck keys, five times each in this order: `AIL L`, `AIL R`, `RUD L`, `RUD R`. Each should move its gauge as J, L, U and O
+  did. Record the numbers. A key that moves nothing (the gauge and the sim's trim stay put while the keyboard
+  key works) is dropped (**A-EVENTS**). If a left key moves the pointer right, record it (**A-SIGN**). If a
+  number stays within -1 to 1 and the pointer barely moves, record it (**A-UNIT**).
+- [ ] 6. Pressing a gauge sends nothing: PilotsDeck shows its yellow alert sign on the key for a moment
+  (expected). Nothing depends on the connected flight controls (Xbox Elite or T.16000M + TWCS): the keys send
+  SimConnect events and the gauges only read SimVars.
+- [ ] 7. With `tools/scmon` ([tools/scmon/README.md](../tools/scmon/README.md); a session in the Admin account sets
+  it up, with its `Vars` list edited to these 11 SimVars: `AILERON TRIM PCT` and `RUDDER TRIM PCT`, each in
+  `percent over 100` and in `percent`; `AILERON TRIM PCT EX1` and `RUDDER TRIM PCT EX1` in `percent over 100`;
+  `AILERON TRIM` and `RUDDER TRIM` in `degrees`; `AILERON TRIM DISABLED` and `RUDDER TRIM DISABLED` in `Bool`;
+  `ELEVATOR TRIM PCT EX2` in `percent over 100`): repeat steps 4 and 5 and save its output for the worker (it
+  settles A-UNIT, A-STEP and A-SIGN; a DISABLED value of 1 explains a key that moves nothing).
+- [ ] 8. Say whether the page layout suits (**A-POS2**) and, if a pair does nothing in the C172, whether to
+  drop it.
+
+**Result for the worker**
+- [ ] Record each step's result, the numbers of steps 3 to 5, the scmon output, the log lines for any step
+  that failed, the sim version, and every fallback or change.
 
 ## Phase 4: A32NX profile (P4-1)
 

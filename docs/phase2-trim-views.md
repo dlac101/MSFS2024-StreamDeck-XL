@@ -4,7 +4,8 @@
 nothing (LR95-C2) and are off the page now; the EXTERNAL key's A-Var write passed a hand test (LR101-C2).
 Every other new name below is recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md)
 until the Phase 2 trim and views checks pass. The trim gauge (3,4, P3-4) is generated, not yet
-sim-tested.
+sim-tested. The aileron and rudder trim keys and gauges (P3-TRIM2) are generated, not yet sim-tested;
+P3-TRIM2 also took the readouts `TRIM` (3,2) and `TRIM DEG` (3,3) off the page (the gauge shows the same).
 
 Goal: fill the two child pages that the main page's folder keys open, for the default MSFS 2024
 **Cessna 172 Skyhawk G1000**: **trim** (main page key 1,7 `TRIM`) and **views** (main page key 1,8
@@ -21,27 +22,32 @@ Positions are **row,column**, 1-based, row 1 at the top. On both pages **1,1 is 
 returns to the main page), as on every child page. The templates T3 and T5 are the main page's (see
 [phase2-main-page.md](phase2-main-page.md), "What each key holds"); T6 (Dynamic Button with an A-Var
 command) is new, copied from the user's saved key (see "What each key holds" below). T9 (Display
-Gauge) is new for the trim gauge (see "What each key holds").
+Gauge) is new for the trim gauges (see "What each key holds").
 
 ## Trim page
 
-Trim controls and a trim position readout, for the trim the C172 actually has: **elevator trim only**.
+Trim controls and trim position gauges: elevator trim, and aileron and rudder trim (P3-TRIM2).
 The C172 G1000's input events list an elevator trim wheel, a yoke trim switch and a trim disconnect, and
-no rudder or aileron trim (IE 182, 183, 185; nothing else with "trim" in the list), so no rudder or aileron
-trim key is on the page. The trim keys send SimConnect events: no keyboard binding, no vJoy, nothing tied to
-the connected flight controls.
+no rudder or aileron trim (IE 182, 183, 185; nothing else with "trim" in the list), so the aircraft has no
+cockpit aileron or rudder trim control. The aileron and rudder trim keys send the sim's generic trim
+K-events instead, the events behind the sim's own control bindings "aileron trim left / right" and "rudder
+trim left / right" (the user's keyboard J / L, bound to aileron trim, "seem to work in C172", LR742-C16; U / O
+are bound to rudder trim, not yet tried, LR743-C16). Whether the 2024 C172's flight model honours them is open until
+the sim test. The trim keys send SimConnect events: no keyboard binding, no vJoy, nothing tied to the
+connected flight controls.
 
 ### Layout: trim
 
 | | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
 |---|---|---|---|---|---|---|---|---|
 | **Row 1** | < back | | | | | | | |
-| **Row 2** | | TRIM UP | | | | | | |
-| **Row 3** | | TRIM | TRIM DEG | TRIM (gauge) | | | | |
+| **Row 2** | | TRIM UP | | | | AIL L | AIL TRIM (gauge) | AIL R |
+| **Row 3** | | | | TRIM (gauge) | | RUD L | RUD TRIM (gauge) | RUD R |
 | **Row 4** | | TRIM DN | | | | | | |
 
-The up key sits above the readout and the down key below it. Column 2, so the back key (1,1) is not
-directly above the up key.
+The elevator trim up key sits above the down key, in column 2, so the back key (1,1) is not directly above
+the up key; the elevator trim gauge stays at 3,4. The aileron (row 2) and rudder (row 3) trim sit on the
+right: the left key, the gauge, the right key, so each bar sits between the two keys that move it.
 
 ## Key table: trim
 
@@ -59,23 +65,23 @@ by the generator on every child page. "Empty" = no action on that key.
 | 1,7 | | Empty | | | | |
 | 1,8 | | Empty | | | | |
 | 2,1 | | Empty | | | | |
-| 2,2 | `TRIM UP` | Simple Button | T5 | `K:ELEV_TRIM_UP` [SDK-FCE] | none (the readouts 3,2 and 3,3 show the result) | fixed image |
+| 2,2 | `TRIM UP` | Simple Button | T5 | `K:ELEV_TRIM_UP` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
 | 2,3 | | Empty | | | | |
 | 2,4 | | Empty | | | | |
 | 2,5 | | Empty | | | | |
-| 2,6 | | Empty | | | | |
-| 2,7 | | Empty | | | | |
-| 2,8 | | Empty | | | | |
+| 2,6 | `AIL L` | Simple Button | T5 | `K:AILERON_TRIM_LEFT` [SDK-FCE] | none (the gauge 2,7 shows the result) | fixed image |
+| 2,7 | `AIL TRIM` | Display Gauge | T9 | none | `(A:AILERON TRIM PCT, percent)` [SDK-CTLV, SDK20-CTLV, SDK-UNITS] | Format `1.1`; horizontal bar, values right (Orientation Right, saved `0`), `-100` to `100`, center line, pointer |
+| 2,8 | `AIL R` | Simple Button | T5 | `K:AILERON_TRIM_RIGHT` [SDK-FCE] | none (the gauge 2,7 shows the result) | fixed image |
 | 3,1 | | Empty | | | | |
-| 3,2 | `TRIM` | Display Value | T3 | none | `(A:ELEVATOR TRIM PCT EX2, percent)` [SDK-CTLV, SDK-UNITS] | Format `1.1` |
-| 3,3 | `TRIM DEG` | Display Value | T3 | none | `(A:ELEVATOR TRIM POSITION, degrees)` [SDK-CTLV, SDK-UNITS] | Format `1.1` |
+| 3,2 | | Empty | | | | |
+| 3,3 | | Empty | | | | |
 | 3,4 | `TRIM` | Display Gauge | T9 | none | `(A:ELEVATOR TRIM PCT EX2, percent)` [SDK-CTLV, SDK-UNITS] | Format `1.0`; vertical bar, values up (Orientation Up, saved `-90`), `-100` to `100`, center line, pointer |
 | 3,5 | | Empty | | | | |
-| 3,6 | | Empty | | | | |
-| 3,7 | | Empty | | | | |
-| 3,8 | | Empty | | | | |
+| 3,6 | `RUD L` | Simple Button | T5 | `K:RUDDER_TRIM_LEFT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
+| 3,7 | `RUD TRIM` | Display Gauge | T9 | none | `(A:RUDDER TRIM PCT, percent)` [SDK-CTLV, SDK20-CTLV, SDK-UNITS] | Format `1.1`; horizontal bar, values right (Orientation Right, saved `0`), `-100` to `100`, center line, pointer |
+| 3,8 | `RUD R` | Simple Button | T5 | `K:RUDDER_TRIM_RIGHT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
 | 4,1 | | Empty | | | | |
-| 4,2 | `TRIM DN` | Simple Button | T5 | `K:ELEV_TRIM_DN` [SDK-FCE] | none (the readouts 3,2 and 3,3 show the result) | fixed image |
+| 4,2 | `TRIM DN` | Simple Button | T5 | `K:ELEV_TRIM_DN` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
 | 4,3 | | Empty | | | | |
 | 4,4 | | Empty | | | | |
 | 4,5 | | Empty | | | | |
@@ -89,15 +95,12 @@ by the generator on every child page. "Empty" = no action on that key.
   "the elevator trim by 0.0005", and "holding down the key will cause the trim to increment faster over
   time" (the sim's own key repeat; a Stream Deck key sends one event per press). **One press is one small
   step.** How many presses a visible change takes is not known; the checklist records it. Whether "up"
-  is nose up is not stated in the SDK: the up key should raise both readouts (SDK-CTLV: for `ELEVATOR TRIM
-  PCT EX2`, 1 is the up limit), and the checklist records which way the cockpit trim wheel turns.
-- **TRIM** shows the trim position in percent, from -100 (down limit) through 0 (neutral, always 0°) to
-  100 (up limit) (SDK-CTLV, `ELEVATOR TRIM PCT EX2`, "asymmetrical +/-Percent Over 100"; read in the unit
-  `percent`, SDK-UNITS). Format `1.1` = one decimal, e.g. `-12.5`.
-- **TRIM DEG** shows the trim deflection in degrees (SDK-CTLV, `ELEVATOR TRIM POSITION`, "Elevator trim
-  deflection", read in `degrees`, SDK-UNITS). It is the cross-check for TRIM: if TRIM shows nothing or
-  `0` while TRIM DEG moves, the EX2 SimVar is the problem (see "Fallbacks").
-- **TRIM (gauge)** (3,4) shows the same SimVar as TRIM, `(A:ELEVATOR TRIM PCT EX2, percent)`, as a
+  is nose up is not stated in the SDK: the up key should raise the gauge's pointer and number (SDK-CTLV:
+  for `ELEVATOR TRIM PCT EX2`, 1 is the up limit), and the checklist records which way the cockpit trim
+  wheel turns.
+- **TRIM (gauge)** (3,4) shows the elevator trim position in percent, `(A:ELEVATOR TRIM PCT EX2, percent)`:
+  from -100 (down limit) through 0 (neutral, always 0°) to 100 (up limit) (SDK-CTLV, "asymmetrical
+  +/-Percent Over 100"; read in the unit `percent`, SDK-UNITS), as a
   PilotsDeck Display Gauge: a vertical bar whose values increase upward, -100 (down limit) at the bottom,
   0 (neutral) at the white center line and 100 (up limit) at the top, with a yellow pointer on the bar's
   left edge at the current value (PD-SRC `RenderBar.cs`). Values outside -100 to 100 are drawn at the ends
@@ -108,6 +111,21 @@ by the generator on every child page. "Empty" = no action on that key.
   logs that it could not build a SimCommand and shows its yellow alert sign on the key for a moment
   (`Plugin/Actions/Simple/ActionBaseSimple.cs`, `OnKeyUp`, in the PD-SRC commit). It only reads a SimVar, so
   nothing depends on the connected flight controls.
+- **AIL L / AIL R** (2,6 / 2,8) send `K:AILERON_TRIM_LEFT` / `K:AILERON_TRIM_RIGHT`. SDK-FCE: "Increments
+  the left aileron trim by 0.001" (and the right one); if that step is on the SimVar's -1 to 1 scale (the
+  SDK does not say), **one press is 0.1 %** on the gauge, and the checklist records it.
+- **RUD L / RUD R** (3,6 / 3,8) send `K:RUDDER_TRIM_LEFT` / `K:RUDDER_TRIM_RIGHT` (SDK-FCE: "Increments rudder
+  trim left" / "right"; the step is not stated, the checklist records it). For both pairs, which sign is left
+  is not stated in the SDK: the left key should move the pointer left; if it moves right, the checklist records
+  it (see "Fallbacks").
+- **AIL TRIM / RUD TRIM (gauges)** (2,7 / 3,7) show `(A:AILERON TRIM PCT, percent)` / `(A:RUDDER TRIM PCT,
+  percent)`: SDK-CTLV gives both "between -1 and 1" (aileron: "where 0 is fully retracted"; rudder: "where
+  0 is no trim"), the MSFS 2020 SDK the unit "Percent Over 100" (SDK20-CTLV), so in `percent` they read
+  -100 to 100 with 0 = no trim. Each is a horizontal Display Gauge, the plugin's default bar (Orientation
+  Right, saved `0`: values increase to the right): -100 at the left end, 0 at the white center line, 100 at
+  the right end, the yellow pointer at the current value, and the number upright below the bar, Format `1.1`
+  (one decimal, so a single aileron step shows). Like 3,4 they have no press action (the yellow alert
+  sign, as above) and only read a SimVar.
 - No hold-to-repeat and no long press: the PilotsDeck README documents no auto-repeat; its **Hold
   Switch** sends the command on key down and a second one on key up (no repeat), and the long press
   (>= 500 ms) sends one Second Command. If one step per press turns out too small, that is recorded and a
@@ -120,15 +138,20 @@ For the elevator trim there is the K-event pair above and the input event `B:han
 input event's values are not documented anywhere this project has (the PilotsDeck README's B-Var form
 `B:name:value` needs a value, and the value for one wheel step is unknown). Trim has no index (one
 elevator trim), so the battery's index problem can't occur in the same way. **If the choice is wrong**,
-the checklist shows it like this: the readouts move when you press the keys, but the cockpit trim wheel
-doesn't turn (or turns back), or the wheel moved with the mouse doesn't move the readouts. Then record it;
+the checklist shows it like this: the trim gauge (3,4) moves when you press the keys, but the cockpit trim
+wheel doesn't turn (or turns back), or the wheel moved with the mouse doesn't move the gauge. Then record it;
 the input event is the fallback to investigate with `tools/scmon` (the user and a session in Admin).
+For aileron and rudder trim there is no input event to choose (no trim entry, IE); the entries
+`B:unknown_aileron_left`, `B:unknown_aileron_right` and `B:unknown_rudder` (IE 209, 210, 231) sit among the
+walkaround items (chocks, covers, tires) and no source says what they do, so they are not used. The keys
+use the K-events; if the 2024 C172 ignores one, the gauge does not move and the key is dropped.
 
 **Not on this page, and why** (all positions not in the table are Empty):
 
 | Function | Why not | Source |
 |---|---|---|
-| Rudder trim, aileron trim | The C172 G1000 lists no rudder or aileron trim control (only elevator trim input events). The K-events exist (`K:RUDDER_TRIM_LEFT`/`RIGHT`, `K:AILERON_TRIM_LEFT`/`RIGHT`) but there is no cockpit control to follow. | IE (no such entry); SDK-FCE |
+| `TRIM` readout (was 3,2) and `TRIM DEG` (was 3,3) | Taken off in P3-TRIM2: the gauge 3,4 shows the same trim position and its number (LR853-C19 for TRIM DEG; LR911-C21, the user's "Yes, remove 3,2", for 3,2). `ELEVATOR TRIM POSITION` stays in aircraft-mappings.md as a fallback lead. | LR853-C19, LR911-C21 |
+| Aileron and rudder trim set and reset (`K:AILERON_TRIM_SET`, `K:RUDDER_TRIM_SET`, `K:RUDDER_TRIM_RESET`), trim disabled (`K:AILERON_TRIM_DISABLED_SET`, `K:RUDDER_TRIM_DISABLED_SET`, ...) | Not asked for; a centring key could come later, after the left/right keys pass the sim test. | SDK-FCE |
 | Yoke trim switch (electric trim) | Input event `B:handling_elevatortrim_yoke` exists; its values are unknown. | IE 183 |
 | Trim disconnect | Input event `B:handling_trim_disconnect` exists; its values are unknown. | IE 185 |
 | Takeoff trim (set to a fixed position) | `K:ELEVATOR_TRIM_SET` (-16383 to 16384) exists, but no source gives the C172's takeoff trim value. | SDK-FCE |
@@ -161,8 +184,9 @@ Cockpit, 3 = Chase Plane Drone, ...; in the sim, 2 = cockpit, 3 = external, seen
   shows neither image, only the key's background (PilotsDeck `ActionSwitchDisplay.cs`, `Refresh()`: no
   image when the value matches neither On nor Off and Special State is off).
 - **CAMERA**, **VIEW** and **VIEW NO** are readouts of those SimVars: they show the camera state whatever
-  changed it (the deck or the sim's own controls). Pressing a readout does nothing (the plugin log shows a
-  warning).
+  changed it (the deck or the sim's own controls). Pressing a readout sends nothing: PilotsDeck logs a
+  warning that it could not build a SimCommand and shows its yellow alert sign on the key for a moment
+  (`Plugin/Actions/Simple/ActionBaseSimple.cs`, `OnKeyUp`, in the PD-SRC commit).
 
 ### Layout: views
 
@@ -247,8 +271,10 @@ type; SDK-CAMV says the Pilot View options are 1, 2, 4 and 5 (Close, Pilot, Land
 | Tag | Source |
 |---|---|
 | README | PilotsDeck README, https://github.com/Fragtality/PilotsDeck/blob/master/README.md (2.1.1 address syntax, and AVAR as a command type; 2.1.2 command options: Hold Switch, Long Press; Value Manipulations such as `$=2` and `$2,=3<`) |
-| SDK-FCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/aircraft-flight-control-events/ (Elevator trim events) |
-| SDK-CTLV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-control-variables/ (Elevator: trim SimVars) |
+| SDK-FCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/aircraft-flight-control-events/ (Elevator trim events; Ailerons and Rudder: the trim events) |
+| SDK-CTLV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-control-variables/ (Elevator: trim SimVars; Ailerons and Rudder: `AILERON TRIM PCT`, `RUDDER TRIM PCT`, "between -1 and 1", index N/A, settable) |
+| SDK20-CTLV | The MSFS 2020 SDK's control variables, https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Aircraft_SimVars/Aircraft_Control_Variables.htm: `AILERON TRIM PCT` and `RUDDER TRIM PCT` in "Percent Over 100" (the unit the 2024 page lists as "Float") |
+| LR742-C16, LR743-C16 | The user's words in the project's chain ledger (2026-11-15): keyboard J / L, bound to aileron trim left / right, "seem to work in C172"; U / O are bound to rudder trim left / right |
 | SDK-UNITS | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/simulation-variable-units/ (`percent`, `degrees`, `Enum`, `number`) |
 | SDK-VCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/view-and-camera-events/ |
 | SDK-CAMV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/camera-variables/ |
@@ -267,10 +293,11 @@ when you change a key during a test, see phase2-main-page.md "Changing a key by 
 
 **T5 Simple Button** (as ATC on the main page): Commands tab Command Type MSFS: K-Var (SimEvent), Command
 Address as in the Key table, On/Off Value empty, Toggle Switch unchecked; background `Images/Switch.png`;
-Title as in the table. Trim: 2,2, 4,2.
+Title as in the table. Trim: 2,2, 4,2, 2,6, 2,8, 3,6, 3,8.
 
 **T3 Display Value** (as RPM on the main page): Value tab Address, Format and Mappings as in the Key table
-(empty where the table names none), Decode BCD unchecked, no command. Trim: 3,2, 3,3. Views: 1,4, 1,5, 1,6.
+(empty where the table names none), Decode BCD unchecked, no command. Views: 1,4, 1,5, 1,6 (the trim page
+has none since P3-TRIM2).
 
 **T6 Dynamic Button with an A-Var command** (new; template `avar_dynamic_button` in
 `tools/profilegen/templates.json`): a verbatim copy of the user's own saved EXTERNAL key, set by hand in
@@ -295,8 +322,9 @@ saved by PilotsDeck 0.9.7 exists on this PC to copy (the MSFS-Fenix320-XL profil
 older builds), so the template is derived from the Phase 1 HDG key (`p1:2,0`, a Display Value: every simple
 PilotsDeck action saves the same settings) with the plugin's action name `Display Gauge` and UUID
 `com.extension.pilotsdeck.action.display.gauge` (its `manifest.json`), no command, and the text rectangle
-PilotsDeck gives a new bar. Trim: 3,4. Its saved settings, by settings panel tab (Indicator, Center Line and
-Warning Range are sections of the Gauge tab; "key" = set by the trim key in
+PilotsDeck gives a new bar. Trim: 3,4, 2,7, 3,7. The saved settings of 3,4 (2,7 and 3,7: below the table),
+by settings panel tab (Indicator, Center Line and Warning Range are sections of the Gauge tab; "key" = set
+by the trim key in
 `tools/profilegen/c172-g1000.json`, "template" = the template's value):
 
 | Field (panel tab) | Saved value | From | Source |
@@ -317,6 +345,14 @@ Warning Range are sections of the Gauge tab; "key" = set by the trim key in
 | Background | `Images/Empty.png` (PilotsDeck draws everything) | template | PD-SRC `ActionDisplayGauge.cs` |
 | Title | `TRIM`, top | key | as every key |
 
+The aileron and rudder trim gauges (2,7 `AIL TRIM`, 3,7 `RUD TRIM`) hold the same fields with these
+differences: Address `(A:AILERON TRIM PCT, percent)` / `(A:RUDDER TRIM PCT, percent)` (key; SDK-CTLV,
+SDK20-CTLV, SDK-UNITS); Orientation Right, saved `BarOrientation` `0` (template: a horizontal bar, values
+increase to the right; PD-SRC `IAction.cs`, Right = 0); Size `58; 10` and Offset `0; 0` (template: the
+plugin's default bar; PD-SRC `ActionDisplayGauge.cs`); Format `1.1` (key: one decimal, so one aileron step
+shows); Title `AIL TRIM` / `RUD TRIM` (key). Minimum `-100`, Maximum `100`, Center Line on and the yellow
+pointer are set by the key as on 3,4.
+
 If you change the gauge by hand during a test, Tab out of each text field (Size, Offset, Minimum, Maximum,
 Format): the settings panel saves a text field only when focus leaves it.
 
@@ -327,9 +363,13 @@ tested; they are recorded in aircraft-mappings.md too.
 
 | Key | Fallback | Source |
 |---|---|---|
-| trim 3,2 TRIM | `(A:ELEVATOR TRIM PCT, percent)` (marked legacy in the SDK; 0 to 100 or -100 to 100 is not stated) | SDK-CTLV, SDK-UNITS |
+| trim 3,4 TRIM (gauge), address | `(A:ELEVATOR TRIM PCT, percent)` (marked legacy in the SDK; 0 to 100 or -100 to 100 is not stated); `(A:ELEVATOR TRIM POSITION, degrees)` as a cross-check (was `TRIM DEG` 3,3) | SDK-CTLV, SDK-UNITS |
+| trim 2,6 / 2,8 / 3,6 / 3,8 | None known: no aileron or rudder trim input event (IE). If a key moves nothing (gauge and sim's trim unchanged, while the keyboard J / L or U / O do), it is dropped (Empty) and its gauge too if both keys of the pair are dropped | IE; SDK-FCE |
+| trim 2,7 / 3,7 gauges, scale | If the number stays within -1 to 1 and the pointer barely moves: `(A:AILERON TRIM PCT, percent over 100)` / `(A:RUDDER TRIM PCT, percent over 100)` with Scalar `100` (the form of a generic profile, a lead), or Minimum `-1` / Maximum `1` with Format `1.3` | SDK20-CTLV, README 2.2.2 (Scalar); lead: TorontoWill's generic profile |
+| trim 2,7 / 3,7 gauges, direction | If the left key moves the pointer right: Scalar `-1` (the bar and the number change sign) | README 2.2.2 (Scalar) |
+| trim 2,7 / 3,7 gauges, variable | If `... TRIM PCT` reads `0` while the trim moves: `(A:AILERON TRIM, degrees)` / `(A:RUDDER TRIM, degrees)` ("Angle deflection", radians native), Minimum / Maximum from a `tools/scmon` run at the trim limits | SDK-CTLV, SDK-UNITS |
 | trim 2,2 / 4,2 | Input event `B:handling_elevatortrim_wheel`: values unknown, needs a `tools/scmon` session first | IE 182 |
-| trim 3,4 TRIM (gauge) | If the pointer hardly moves and TRIM 3,2 reads only -1 to 1 (the scale is -1 to 1, not -100 to 100): Minimum `-1` / Maximum `1` and Format `1.2` (A-SCALE) | SDK-CTLV, SDK-UNITS |
+| trim 3,4 TRIM (gauge) | If the pointer hardly moves and the gauge's number reads only -1 to 1 (the scale is -1 to 1, not -100 to 100): Minimum `-1` / Maximum `1` and Format `1.2` (A-SCALE) | SDK-CTLV, SDK-UNITS |
 | views 1,2 COCKPIT | If `$=2` does nothing: EXTERNAL (`$2,=3<`, hand-tested) also goes back to the cockpit from the external view; COCKPIT then becomes Empty. No K-event fallback: the view K-events are ignored (LR95-C2). | README 2.1.2; LR101-C2 |
 | views 1,3 EXTERNAL | none needed (hand test passed, LR101-C2) | LR101-C2 |
 | views 1,2 / 1,3 values | 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2). If CAMERA shows other numbers in a later sim version, the On Value and On/Off values change to them | SDK-CAMV; LR95-C2 |
@@ -337,10 +377,11 @@ tested; they are recorded in aircraft-mappings.md too.
 ## How to test
 
 Run [tests/manual-checklist.md](../tests/manual-checklist.md), section "Phase 2: Trim and Views pages
-(C172 G1000)", after the main page's import step, and for the trim gauge (3,4) the section "P3-4: Trim
-gauge (C172 G1000)". As on the main page, the important direction is the
+(C172 G1000)", after the main page's import step, for the trim gauge (3,4) the section "P3-4: Trim
+gauge (C172 G1000)", and for the aileron and rudder trim keys and gauges the section "P3-TRIM2: Aileron and
+rudder trim (C172 G1000)". As on the main page, the important direction is the
 reverse one: **move the trim wheel or change the view with the mouse or keyboard, and check that the
-readouts and the COCKPIT/EXTERNAL keys follow without being pressed.**
+trim gauges, the readouts and the COCKPIT/EXTERNAL keys follow without being pressed.**
 
 ## When it passes
 
