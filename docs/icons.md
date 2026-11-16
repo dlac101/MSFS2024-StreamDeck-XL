@@ -44,12 +44,12 @@ Then pack it for the Profile Manager (the main install route, section 2):
 python tools/package/build_icon_package.py
 ```
 
-It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping, today this one) is complete
-and matches the committed files, then writes `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp`: the
-icon profiles, their images, the committed profiles that have no icon version, and the Lua scripts. It
-refuses, writing nothing, when an icon build is missing or out of date (delete the `.local\icons` folder and
-rebuild as above) and when the output folder is not a git-ignored folder inside `.local\`. Personal use
-only, like everything in `.local\`.
+It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping: this one and the A32NX one,
+section 4) is complete and matches the committed files, then writes
+`.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp`: the icon profiles, their images, the committed
+profiles that have no icon version, and the Lua scripts. It refuses, writing nothing, when an icon build is
+missing or out of date (delete the `.local\icons` folder and rebuild as above) and when the output folder is
+not a git-ignored folder inside `.local\`. Personal use only, like everything in `.local\`.
 
 ## 2. Install with the Profile Manager (your own step)
 
@@ -108,6 +108,50 @@ About this step:
   **Remove old Profiles** checked (section 2). Without the package: delete the imported icon profile,
   replace the plugin's `Images\Guenseli-C172` folder with the new one (delete the old folder, then copy the
   new one), restart the app, import.
+
+## 4. A32NX icon build
+
+The FlyByWire A32NX profile has its own icon build, made the same way from its own mapping,
+`tools/profilegen/icons-a32nx.json`. Addresses, commands, titles and key positions are those of the committed
+`MSFS2024 A32NX` profile; only the key images differ. Not yet tested: see the checklist block
+"P4-ICONS: local icon build (A32NX)" in [tests/manual-checklist.md](../tests/manual-checklist.md).
+
+Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
+
+```text
+python tools/profilegen/generate.py --icons tools/profilegen/icons-a32nx.json
+python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-a32nx.json
+```
+
+It writes:
+
+- `.local\icons-a32nx\MSFS2024 A32NX Icons.streamDeckProfile`: the icon profile;
+- `.local\icons-a32nx\Images\Guenseli-A32NX\`: 36 PNG files, byte copies of the pack files used by PilotsDeck
+  keys.
+
+Its own output folder and image subfolder keep it apart from the C172 build, so both can be built and
+installed; the plugin's `Images\` folder then holds `Guenseli-C172\` and `Guenseli-A32NX\`. The icon package
+(section 1) needs both builds and refuses while one is missing or out of date: build both before you pack.
+Before a rebuild after a mapping change, delete `.local\icons-a32nx` (the generator never deletes).
+
+Install, import, remove and rebuild as in sections 2 and 3, with the A32NX names. Without the package: copy
+`.local\icons-a32nx\Images\Guenseli-A32NX` into the plugin's `Images\` folder and restart the Stream Deck app,
+then import `.local\icons-a32nx\MSFS2024 A32NX Icons.streamDeckProfile`. Keep only one of `MSFS2024 A32NX` and
+`MSFS2024 A32NX Icons` installed (the Profile Manager takes the second for a copy of the first, section 2).
+The A32NX profiles have no aircraft search string yet ([package.md](package.md)); once it is recorded, map the
+icon profile.
+
+What differs from the C172 build:
+
+- Most overhead pushbuttons, the autobrake keys and PARK set a background as well as their On and Off images.
+  PilotsDeck draws the On or Off image over the background (PilotsDeck README section 2.3), so the key shows a
+  blank pushbutton with its ON, OFF or MAN legend lit or dark as the key reads the cockpit. A value the key
+  does not know shows the blank pushbutton only (for example BRK LO while MED is armed) or, on the keys with a
+  Special State (PARK and 17 overhead pushbuttons, as in the plain profile), the plugin's Fault image over it.
+- Every readout has the same plain dark button face behind its value; a switch readout such as STROBE shows
+  its position as text, never as a switch picture.
+- ESS FEED keeps the plugin's own image: the pack has no ALTN legend for this pushbutton set.
+- The A32NX is not installed yet: the look test works without it; the sim check waits for it.
 
 ## How the images reach the keys
 

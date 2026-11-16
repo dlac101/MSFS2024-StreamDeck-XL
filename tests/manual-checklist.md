@@ -1119,3 +1119,48 @@ with the mouse and check that the key follows without a key being pressed.
 **Result for the worker**
 - [ ] Record each step's result, the log lines for any step that failed, the voltages, the EXT AVAIL, APU N,
   ALIGN and MODE SEL results, the IR order, the MSFS and A32NX versions, and every fallback or change.
+
+## P4-ICONS: local icon build (A32NX)
+
+Reference: [docs/icons.md](../docs/icons.md), section 4. A second A32NX profile, `MSFS2024 A32NX Icons`, with key
+images from the Guenseli icon pack. **Personal and private use only:** never commit, upload or share `.local/`,
+the icon profile, the icon package or an export of them. Never re-run the PilotsDeck installer for icons.
+Record: date, Stream Deck app version, PilotsDeck version (0.9.7 patched), MSFS 2024 and A32NX versions.
+
+**Build and install (no sim needed)**
+- [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-a32nx.json`, then
+  `python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-a32nx.json`: `RESULT: PASS`.
+- [ ] Install as docs/icons.md sections 2 and 4 say (the icon package, or the hand copy of
+  `.local\icons-a32nx\Images\Guenseli-A32NX`, 36 files, then a restart of the Stream Deck app), BEFORE you import
+  the profile or open any key's settings. Keep only one of `MSFS2024 A32NX` and `MSFS2024 A32NX Icons`.
+
+**Look test, page by page** (MSFS closed, or the A32NX flight fully loaded; a Wait image then means that key's
+file is missing: note the key)
+- [ ] Main: AP1, AP2, A/THR, LOC, APPR, FD, LS dark FCU buttons; WARN and CAUT master lights; PARK the park
+  brake panel with its handle; GND SPLR the armed legend; BRK LO, MED, MAX blank pushbuttons with an ON legend;
+  BEACON and SEAT BELT white rockers; the 13 readouts on a plain dark face; folders FCU (magenta), OVHD (green),
+  EFIS (amber), each with its title and each still opening its page.
+- [ ] FCU: knob images on SPD+/-, HDG+/-, ALT+/-, V/S+/-, the PULL keys and BARO+/-; the FCU buttons; nine
+  readouts. EFIS: BARO+/-, CHRONO, the EFIS buttons (FD, CSTR, WPT, VOR.D, NDB, ARPT, QNH, LS, STD), WARN/CAUT,
+  seven readouts. OVHD: BEACON, WING, RWY TURN, SEAT BELT rockers; BAT 1, BAT 2, BUS TIE, GEN 1, GEN 2, APU GEN
+  with an OFF legend; EXT PWR, APU MSTR, APU START, APU BLEED with an ON legend; 13 readouts; folder SYSTEMS.
+  SYSTEMS: fuel pump and centre tank keys with an OFF legend, MODE SEL with MAN, X FEED and the anti-ice and
+  PROBE HT keys with ON, BLEED 1/2, PACK 1/2, GALY CAB, COMML with OFF; ESS FEED unchanged; six readouts.
+- [ ] Each child page's back key (1,1) shows the green "out" folder icon and still goes back.
+- [ ] Every title readable on its icon, every readout value readable (note each key that is not; WARN, CAUT
+  and GND SPLR carry a legend under the title).
+- [ ] Taste: note any icon you would rather change (for example the WARN, CAUT and GND SPLR legends, the white
+  rockers, the folder colours, the knob images). Changes are mapping rows only.
+
+**Sim check (needs the A32NX installed; not yet possible)**
+- [ ] Cold and dark: BAT 1 and BAT 2 show the lit OFF legend; press each: the legend goes dark and the
+  overhead's BAT button agrees. AP1 lit and dark with the FCU. BRK MED: MED shows the lit ON legend, LO and
+  MAX the blank button only.
+
+**Remove**
+- [ ] Delete `MSFS2024 A32NX Icons` in Stream Deck Preferences > Profiles and the plugin's
+  `Images\Guenseli-A32NX` folder.
+
+**Result for the worker**
+- [ ] Record each page's look (Wait images, back keys, readability, taste changes) and the sim check when it
+  can run.

@@ -27,6 +27,7 @@ Radios page under More (MORE 1,8; NAV1, NAV2 and COM2 readouts that swap on a pr
 Systems page under More (MORE 2,2; alternator, avionics bus and standby battery switches, bus volts and amps, interior lights and a dimmer readout, fuel selector, fuel shutoff valve and fuel quantity; generated, not yet sim-tested): [docs/phase3-systems.md](docs/phase3-systems.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
 **Phase 4: FlyByWire A32NX profile (main, FCU and OVHD pages), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md).
+Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
 ## Layout
 
 ```text
