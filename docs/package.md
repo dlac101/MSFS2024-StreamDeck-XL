@@ -74,8 +74,10 @@ again works the same way.
 `python tools/package/build_icon_package.py` builds a second package from the local icon builds in the
 git-ignored `.local/` folder: the icon profiles in place of the plain profiles they copy, their images, the
 other committed profiles and the scripts, written only to `.local/package/`. It is for your own Profile
-Manager install, never for a release or an upload; build and install steps: [icons.md](icons.md). The
-public package above stays icon-free and unchanged.
+Manager install, never for a release or an upload; build and install steps: [icons.md](icons.md). It was
+installed with the Profile Manager on 2026-11-15 (both icon profiles imported, its images and scripts copied
+into the plugin folder); its look tests are not done yet. The public package above stays icon-free and
+unchanged.
 
 ## For maintainers: versions and releases
 

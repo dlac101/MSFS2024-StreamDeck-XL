@@ -425,22 +425,24 @@ HT-C, the long press on `RATE` (a way down first):
 
 Reference: [docs/icons.md](../docs/icons.md). A second profile, `MSFS2024 C172 G1000 Icons`, with key images
 from the Guenseli icon pack. **Personal and private use only:** never commit, upload or share `.local/`, the
-icon profile, or an export of it. The committed `MSFS2024 C172 G1000` profile is not changed and stays
-installed. Record: date, Stream Deck app version, PilotsDeck version, MSFS 2024 version (sim check only).
+icon profile, or an export of it. The committed `MSFS2024 C172 G1000` profile is not changed; keep only
+one of the two installed (docs/icons.md section 2). Record: date, Stream Deck app version, PilotsDeck
+version, MSFS 2024 version (sim check only).
 
 **Build and install (no sim needed)**
 - [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.json`.
-  It prints the profile path and the image folder (`.local\icons\Images\Guenseli-C172`, 23 files).
+  It prints the profile path and the image folder (`.local\icons\Images\Guenseli-C172`, 27 files).
 - [ ] Copy the folder `.local\icons\Images\Guenseli-C172` (File Explorer) into
   `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\` (result:
-  `...\Images\Guenseli-C172\*.png`, 23 files). This is your own hand step, the plugin's documented way to add
+  `...\Images\Guenseli-C172\*.png`, 27 files). This is your own hand step, the plugin's documented way to add
   images (PilotsDeck README 3.3); it is a file copy, not a settings edit, and touches none of the patched
   plugin's program files. **Never re-run the PilotsDeck installer to "fix" icons** (it would undo the
   patched build: #176, docs/installation.md).
 - [ ] Quit and restart the Stream Deck app (not as administrator). Do this BEFORE importing or opening any
   key's settings: a key whose image is missing gets its image field reset when its settings panel opens.
 - [ ] Import `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile` (double-click, pick the XL if asked).
-  It appears as `MSFS2024 C172 G1000 Icons` beside `MSFS2024 C172 G1000`. Switch the XL to it.
+  It appears as `MSFS2024 C172 G1000 Icons`; delete `MSFS2024 C172 G1000` if it is installed (keep only one,
+  docs/icons.md section 2). Switch the XL to it.
 
 **Look test, page by page (no sim needed)** (do it with MSFS closed, or after the flight has fully loaded,
 not while the sim loads. The plugin's Wait image (a dark square with three dots, the same image keys show
@@ -962,8 +964,8 @@ with the mouse and check that the key follows without a key being pressed.
 ## P5-PKG: package install (C172 G1000)
 
 Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds three profiles
-(`MSFS2024 C172 G1000`, `MSFS2024 C172 POC`, `MSFS2024 A32NX`) and three Lua scripts (`XL24-SIMRATE.lua`,
-`XL24-COMPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
+(`MSFS2024 C172 G1000`, `MSFS2024 C172 POC`, `MSFS2024 A32NX`) and four Lua scripts (`XL24-SIMRATE.lua`,
+`XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
 Record: date, Stream Deck app version, PilotsDeck version (0.9.7, patched build), MSFS 2024 version. Never
 re-run the PilotsDeck installer or update the plugin for this (docs/installation.md).
 
@@ -980,8 +982,9 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
   **Remove old Profiles** checked. Click **Install**, click each profile link and pick the XL, wait until it
   finishes.
 - [ ] The Stream Deck app lists each profile once (no "Copy" profile).
-- [ ] `Get-FileHash` of the plugin's `Scripts\XL24-COMPAD.lua`, `Scripts\XL24-SIMRATE.lua` and
-  `Scripts\XL24-A32NX.lua` equals the sha256 the build printed for the same `Scripts/` entry.
+- [ ] `Get-FileHash` of the plugin's `Scripts\XL24-COMPAD.lua`, `Scripts\XL24-SIMRATE.lua`,
+  `Scripts\XL24-XPDRPAD.lua` and `Scripts\XL24-A32NX.lua` equals the sha256 the build printed for the same
+  `Scripts/` entry.
 - [ ] The plugin's `Profiles\` folder holds the three `.streamDeckProfile` files and `DeviceInfo.json`, and no
   `_work` folder.
 
@@ -1012,6 +1015,9 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
 
 Reference: [docs/icons.md](../docs/icons.md), sections 1 to 3. Personal use only: never commit, upload or
 share `.local/` or the icon package. Never re-run the PilotsDeck installer or update the plugin for this.
+Installed once, on 2026-11-15: both icon profiles imported, the plain profiles removed, and the images and
+scripts in the plugin folder equal to the package's (the install and hash steps below); the look, mapping
+and second-install steps are still open.
 
 - [ ] After the icon build (docs/icons.md section 1), in the repo folder:
   `python tools/package/build_icon_package.py`. It ends with `package ...`, `sha256 ...` and `size ...`;
@@ -1246,7 +1252,7 @@ Record: date, Stream Deck app version, PilotsDeck version (0.9.7 patched), MSFS 
 - [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-a32nx.json`, then
   `python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-a32nx.json`: `RESULT: PASS`.
 - [ ] Install as docs/icons.md sections 2 and 4 say (the icon package, or the hand copy of
-  `.local\icons-a32nx\Images\Guenseli-A32NX`, 36 files, then a restart of the Stream Deck app), BEFORE you import
+  `.local\icons-a32nx\Images\Guenseli-A32NX`, 37 files, then a restart of the Stream Deck app), BEFORE you import
   the profile or open any key's settings. Keep only one of `MSFS2024 A32NX` and `MSFS2024 A32NX Icons`.
 
 **Look test, page by page** (MSFS closed, or the A32NX flight fully loaded; a Wait image then means that key's
