@@ -39,8 +39,7 @@ described in [installation.md](installation.md), don't re-run the installer or u
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`.
 2. Drop `MSFS2024-XL v<version>.ppp` on the arrow, or browse to it.
 3. Read the notes and the version it shows. If it reports profiles of the same name that are already
-   installed (`MSFS2024 C172 G1000`, `MSFS2024 C172 POC`, `MSFS2024 A32NX`), keep **Remove old Profiles**
-   checked.
+   installed (`MSFS2024 C172 G1000`, `MSFS2024 A32NX`), keep **Remove old Profiles** checked.
 4. Click **Install**. The Profile Manager stops and starts the Stream Deck app as needed and copies the Lua
    scripts into the plugin's `Scripts` folder (replacing older copies), so you no longer copy them by hand.
 5. It shows one link per profile: click each one and pick your Stream Deck XL. It goes on when every profile
@@ -68,6 +67,12 @@ Install the new `.ppp` the same way, with **Remove old Profiles** checked. The P
 profiles by name: the new profile takes the old one's place, the old one goes to the recycle bin, and its
 aircraft mapping moves to the new one. It never compares package versions, so installing the same version
 again works the same way.
+
+A profile that the new package doesn't hold is left as it is: the Profile Manager matches profiles by name,
+and `removefiles` can't remove a profile ("For maintainers" below). Earlier builds of this package also
+held the Phase 1 profile `MSFS2024 C172 POC` (the four-key test, [poc-c172.md](poc-c172.md)); the package
+no longer ships it. If you don't need it any more, delete it in the Stream Deck app (Preferences >
+Profiles).
 
 ## Local icon package (personal use)
 

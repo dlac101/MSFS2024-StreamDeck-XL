@@ -79,8 +79,8 @@ About this step:
 - Both routes are the plugin's own ways to add images: the Profile Manager copies a package's `Images/`
   folder, one subfolder deep, into the plugin's `Images\` folder and replaces files of the same name, and
   PilotsDeck README section 3.3 ("Custom Images": copy the image to the plugin's Images folder; image packs
-  can go in subfolders) describes the hand copy. It is your own step; no Claude session writes in the
-  plugin folder.
+  can go in subfolders) describes the hand copy. Either is done on this PC with the Profile Manager or File
+  Explorer; no tool in this repository writes in the plugin folder.
 - Either way it is a file copy into the plugin folder, not a settings edit. It touches none of the plugin's
   program files, so the locally patched PilotsDeck build stays as it is
   ([docs/installation.md](installation.md#known-issue-on-this-pc-pilotsdeck-exits-at-startup-worked-around-with-a-patched-build)).

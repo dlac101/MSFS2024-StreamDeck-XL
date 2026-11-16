@@ -2,7 +2,7 @@
   "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables are the reference; check.py compares them: docs/phase4-a32nx.md ('## Key table', '## Key table: fcu'), docs/phase4-a32nx-efis.md ('## Key table: efis'), docs/phase4-a32nx-overhead.md ('## Key table: ovhd', '## Key table: ovhdsys'; ovhdsys is a second-level page under ovhd), docs/phase4-a32nx-radios.md ('## Key table: radio', '## Key table: xpdr'; radio and xpdr are second-level pages under efis) and docs/phase4-a32nx-pedestal.md ('## Key table: ped'; ped is a second-level page under efis). 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
   "profile_name": "MSFS2024 A32NX",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile",
-  "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
+  "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
   "spec": "docs/phase4-a32nx.md",
   "grid": {
     "rows": 4,

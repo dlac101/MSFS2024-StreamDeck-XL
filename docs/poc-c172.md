@@ -1,5 +1,11 @@
 # Phase 1 proof of concept: four keys, Cessna 172 G1000
 
+**A record of Phase 1.** The package no longer ships the profile `MSFS2024 C172 POC`. Its export now lives
+at `tools/profilegen/MSFS2024 C172 POC.streamDeckProfile`, where the profile generator reads it as its format
+template (profile, page and key layout); the setup and export steps below record how it was made and tested
+(core test passed 2026-11-11). If an earlier install left the profile in the Stream Deck app, you can delete
+it ([package.md](package.md), "Update to a newer package").
+
 Goal: prove the full round trip (sim -> Stream Deck and Stream Deck -> sim) with four keys
 before building anything bigger. Each one checks a different part of the plugin:
 
@@ -102,8 +108,9 @@ that the key updates without being pressed.**
 
 ## When it passes
 
-1. Export the profile from the Stream Deck app (profile dropdown > Export) to
-   `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile`.
+1. Export the profile from the Stream Deck app (profile dropdown > Export) to your backup folder, not into
+   the repository. (In Phase 1 the export went to `pilotsdeck/MSFS2024-XL/_Package/Profiles/`; that file is
+   now the generator's copy in `tools/profilegen/`, see the note at the top.)
 2. Fill in the "Verified" column in aircraft-mappings.md with the date and sim version.
 3. Note the **aircraft string** shown in the Developer UI (Monitor view). Profile switching
    in Phase 4 matches on it.

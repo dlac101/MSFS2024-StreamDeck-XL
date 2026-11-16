@@ -36,7 +36,8 @@ Setup: cold and dark or parked, profile `MSFS2024 C172 POC` active.
 - [ ] With MSFS closed, keys show the plugin's idle preview, not a stale "on" state.
 
 **Profile round trip**
-- [ ] Exported profile saved to `pilotsdeck/MSFS2024-XL/_Package/Profiles/`.
+- [ ] Exported profile saved to your backup folder, not into the repository (the package no longer ships it,
+  and the generator's copy in `tools/profilegen/` stays unchanged).
 - [ ] Re-imported copy works the same as the original.
 
 ## Phase 2: main page (C172 G1000)
@@ -55,7 +56,8 @@ below, which one you used.
 - [ ] Double-click `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 G1000.streamDeckProfile` (or
   Preferences > Profiles > Import): the Stream Deck app imports it for the XL without an error, and the
   profile list shows `MSFS2024 C172 G1000` once. Select it. Record any message the app showed.
-- [ ] The Phase 1 profile `MSFS2024 C172 POC` is still there, unchanged.
+- [ ] Your other profiles (the Phase 1 profile `MSFS2024 C172 POC` too, if it is still installed) are
+  still there, unchanged.
 - [ ] The main page shows 26 PilotsDeck keys, 4 folder keys (`TRIM` 1,7, `VIEWS` 1,8, `CHECKLIST` 3,8,
   `MORE` 4,8) and 2 empty keys (3,7 and 4,7), as in the doc's Layout.
 
@@ -1005,9 +1007,9 @@ with the mouse and check that the key follows without a key being pressed.
 
 ## P5-PKG: package install (C172 G1000)
 
-Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds three profiles
-(`MSFS2024 C172 G1000`, `MSFS2024 C172 POC`, `MSFS2024 A32NX`) and four Lua scripts (`XL24-SIMRATE.lua`,
-`XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
+Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds two profiles
+(`MSFS2024 C172 G1000`, `MSFS2024 A32NX`) and four Lua scripts (`XL24-SIMRATE.lua`, `XL24-COMPAD.lua`,
+`XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
 Record: date, Stream Deck app version, PilotsDeck version (0.9.7, patched build), MSFS 2024 version. Never
 re-run the PilotsDeck installer or update the plugin for this (docs/installation.md).
 
@@ -1020,15 +1022,16 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
   `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`) and drop
   `pilotsdeck\MSFS2024-XL\_Releases\MSFS2024-XL v0.2.ppp` on the arrow. Check that the notes and version 0.2
   are shown.
-- [ ] If it lists `MSFS2024 C172 G1000`, `MSFS2024 C172 POC` or `MSFS2024 A32NX` as already installed, keep
-  **Remove old Profiles** checked. Click **Install**, click each profile link and pick the XL, wait until it
-  finishes.
+- [ ] If it lists `MSFS2024 C172 G1000` or `MSFS2024 A32NX` as already installed, keep **Remove old
+  Profiles** checked. Click **Install**, click each profile link and pick the XL, wait until it finishes.
 - [ ] The Stream Deck app lists each profile once (no "Copy" profile).
+- [ ] An earlier install's `MSFS2024 C172 POC` (the Phase 1 profile; this package no longer holds it) is left
+  as it is: delete it in the Stream Deck app (Preferences > Profiles) if you don't need it, or tick "none".
 - [ ] `Get-FileHash` of the plugin's `Scripts\XL24-COMPAD.lua`, `Scripts\XL24-SIMRATE.lua`,
   `Scripts\XL24-XPDRPAD.lua` and `Scripts\XL24-A32NX.lua` equals the sha256 the build printed for the same
   `Scripts/` entry.
-- [ ] The plugin's `Profiles\` folder holds the three `.streamDeckProfile` files and `DeviceInfo.json`, and no
-  `_work` folder.
+- [ ] The plugin's `Profiles\` folder holds the package's two `.streamDeckProfile` files, `DeviceInfo.json`,
+  and no `_work` folder (note any `MSFS2024 C172 POC.streamDeckProfile` an earlier install left there).
 
 **HT-PKG-2 Mapping (flight needed)**
 - [ ] Profile Mapping view: map `MSFS2024 C172 G1000` with the search string `asobo_c172sp_g1000`, Save

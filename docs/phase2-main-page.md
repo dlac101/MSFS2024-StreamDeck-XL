@@ -125,8 +125,9 @@ The profile is the file
    you import. Don't keep two profiles with this name: the Profile Manager finds profiles by name. After
    replacing a profile, check its aircraft mapping in the Profile Manager. (On 2026-11-11 no profile of
    this name was installed.)
-3. Leave the Phase 1 profile **`MSFS2024 C172 POC`** as it is. The new profile has its own copies of the
-   four verified keys.
+3. The Phase 1 profile **`MSFS2024 C172 POC`**, if it is still installed, can stay or go: the new profile
+   has its own copies of the four verified keys, and the package no longer ships it
+   ([poc-c172.md](poc-c172.md)).
 4. With the Stream Deck app running, **double-click the file** in Explorer (or in the Stream Deck app:
    Preferences > Profiles > Import). If the app asks which device, pick the **Stream Deck XL**. If the app
    asks to confirm, choose **Install**. Importing

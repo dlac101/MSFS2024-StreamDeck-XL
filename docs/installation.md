@@ -68,9 +68,12 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   In this repo those are the C172 G1000 PFD and MFD bezel keys
   ([phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md)), the autopilot page's `CRS+`, `CRS1` and `CRS-`
   presses ([phase3-autopilot.md](phase3-autopilot.md); the long presses of `CRS+` and `CRS-` are K-events),
-  and the A32NX radio page's RMP 1 keys (VHF1, VHF2, XFER and the MHz and kHz steps) and
-  transponder keypad (0 to 7, CLR) ([phase4-a32nx-radios.md](phase4-a32nx-radios.md)): without the module
-  they do nothing. No other key sends an H-event.
+  the A32NX radio page's RMP 1 keys (VHF1, VHF2, XFER and the MHz and kHz steps) and
+  transponder keypad (0 to 7, CLR) ([phase4-a32nx-radios.md](phase4-a32nx-radios.md)), and the A32NX
+  pedestal page's 16 ECAM control panel keys (ENG, BLEED, PRESS, ELEC, HYD, FUEL, APU, COND, DOOR, WHEEL,
+  F/CTL, CLR, STS, ALL, RCL and TO CONF, each a pressed-then-released H-event pair;
+  [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md)): without the module they do nothing. No other key
+  has an `H:` address (ENG MODE's calculator code holds one H-event, see the next item).
 - The other address kinds don't use the module: K-events go through SimConnect's event calls
   (`Plugin/Simulator/MSFS/ToolsMSFS.cs`, `WriteSingleKvar`), B-Vars through SimConnect's input-event calls,
   and L-Var reads and writes through PilotsDeck's SimConnect variable manager
@@ -80,8 +83,10 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   lines 551-569 at `11bdf1f`), which sends it to the module with no check that the module is connected
   (CFIT.SimConnectLib at `8c06162c`, `SimConnectLib/Modules/MobiFlight/MobiModule.cs`). The A32NX fuel
   MODE SEL key (`lua:XL24-A32NX:FUELMODE`, ovhdsys 1,8, [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md))
-  uses one, so it needs the module; the A32NX's other L-Var and `A32NX.*` event keys and the input-event
-  switches work without it.
+  and the pedestal page's ENG MODE key (`lua:XL24-A32NX:ENGMODE`, ped 4,3,
+  [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md)) use one, so they need the module (without it ENG
+  MODE's L-Var write still moves the selector, but the ignition code does not run); the A32NX's other L-Var
+  and `A32NX.*` event keys and the input-event switches work without it.
 - Check: after a flight has loaded, the plugin log shows "MobiFlight WASM Client Connection opened" (seen on
   this PC on 2026-11-14 with module 1.0.1, the latest release on MobiFlight's
   [releases page](https://github.com/MobiFlight/MobiFlight-WASM-Module/releases)).
