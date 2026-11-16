@@ -202,7 +202,7 @@ systems.cfg, which this unit did not open) are unknown. Readouts read SimVars: n
 | Magnetos, starter, mixture | The main page's rule: no engine command on the deck. |
 | The 30 circuit breakers and the 12 V power switch (IE 143-173) | A later unit (roadmap C.3). |
 | Alternate static air (IE 207) | Not lights, electrical or fuel. |
-| Fuel flow and pressure, oil, EGT, vacuum, gauges | Unit P3-5 (engine and fuel), which may reuse this page's addresses (A-12). |
+| Fuel flow, oil, EGT, vacuum, fuel gauges | On the engine and fuel page (MORE 2,3, P3-5, [phase3-engine-fuel.md](phase3-engine-fuel.md)), which reuses this page's bus volts, battery amps and fuel quantity addresses. |
 | Primer, glareshield, wing, logo or recognition light, external power | The 2024 C172 G1000 has no input event for them (A-9). |
 | Dimmer steps | No source says what potentiometer 5 dims or the scale of its set event (A-7). |
 | Icon pack images | Personal use only; in the local icon build ([icons.md](icons.md)). |

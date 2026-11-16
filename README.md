@@ -26,6 +26,7 @@ Transponder page under More (MORE 1,7; code pad by a Lua script, code and mode r
 Radios page under More (MORE 1,8; NAV1, NAV2 and COM2 readouts that swap on a press, MHz and kHz steps, station idents, COM1/COM2 mic select; generated, not yet sim-tested): [docs/phase3-radios.md](docs/phase3-radios.md).
 Systems page under More (MORE 2,2; alternator, avionics bus and standby battery switches, bus volts and amps, interior lights and a dimmer readout, fuel selector, fuel shutoff valve and fuel quantity; generated, not yet sim-tested): [docs/phase3-systems.md](docs/phase3-systems.md).
 Trim gauge on the Trim page (trim 3,4; a vertical bar with a pointer and the number; generated, not yet sim-tested): [docs/phase2-trim-views.md](docs/phase2-trim-views.md), design [docs/design-trim-gauge.md](docs/design-trim-gauge.md).
+Engine and fuel page under More (MORE 2,3; RPM, fuel flow, oil pressure and temperature, EGT and vacuum readouts, fuel left/right bar gauges, bus volts and battery amps, read only; generated, not yet sim-tested): [docs/phase3-engine-fuel.md](docs/phase3-engine-fuel.md).
 **Phase 4: FlyByWire A32NX profile (main, FCU, EFIS and OVHD pages, OVHD > SYSTEMS, and EFIS > RADIO, XPDR and PED), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md), [docs/phase4-a32nx-efis.md](docs/phase4-a32nx-efis.md), [docs/phase4-a32nx-overhead.md](docs/phase4-a32nx-overhead.md), [docs/phase4-a32nx-radios.md](docs/phase4-a32nx-radios.md), [docs/phase4-a32nx-pedestal.md](docs/phase4-a32nx-pedestal.md).
 Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
 ## Layout
@@ -45,6 +46,7 @@ docs/
   phase3-transponder.md Phase 3 Transponder page (MORE > XPDR): code pad, Lua script XL24-XPDRPAD.lua, mode keys, key-by-key reference (C172 G1000)
   phase3-radios.md      Phase 3 Radios page (MORE > RADIOS): NAV1, NAV2, COM2 readouts and steps, idents, mic select, key-by-key reference (C172 G1000)
   phase3-systems.md     Phase 3 Systems page (MORE > SYSTEMS): electrical switches and readouts, interior lights, fuel selector, valve and quantity, key-by-key reference (C172 G1000)
+  phase3-engine-fuel.md Phase 3 Engine and fuel page (MORE > ENGINE): EIS readouts and fuel gauges, key-by-key reference (C172 G1000)
   design-trim-gauge.md  design of the trim gauge on the Trim page, built in P3-4 (C172 G1000)
   phase4-a32nx.md       Phase 4 FlyByWire A32NX profile: main and FCU pages, Lua script XL24-A32NX.lua, import, key-by-key reference (the other A32NX pages: the docs below)
   phase4-a32nx-efis.md  Phase 4 A32NX EFIS page (main > EFIS): Captain EFIS control panel and glareshield lamps, key-by-key reference

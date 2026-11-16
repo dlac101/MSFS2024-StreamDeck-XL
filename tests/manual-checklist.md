@@ -898,6 +898,48 @@ loaded); if the new profile misbehaves, delete it and import the backup exported
 - [ ] Record each step's result, the numbers of step 4, the log lines for any step that failed, the sim
   version, and every fallback or change.
 
+## P3-5: Engine and fuel page (C172 G1000)
+
+Reference: [docs/phase3-engine-fuel.md](../docs/phase3-engine-fuel.md) (Key table, "What each key holds", T3
+and T9). The page is a new second-level page behind the new folder key MORE 2,3 `ENGINE`, in the same profile
+file as the main page; it needs no script and only reads SimVars. The More page now also holds 2,3: the older
+sections' MORE key lists predate it. Not yet tested in the app or the sim. Record: date, MSFS 2024 version,
+PilotsDeck version, and every fallback or changed value you used.
+
+**Reimport and layout (no sim needed)**
+- [ ] 1. Export a backup of the installed profile, then rebuild and import the icon profile or package as
+  [docs/icons.md](../docs/icons.md) says (or the plain profile, [docs/phase2-main-page.md](../docs/phase2-main-page.md),
+  "Import the profile"). MORE 2,3 `ENGINE` opens the engine page: back 1,1, `RPM` 1,2, `FFLOW` 1,3,
+  `OIL PRES` 1,4, `OIL TEMP` 1,5, `EGT` 1,6, `VAC` 1,7, the gauges `FUEL L` 2,2 and `FUEL R` 2,3, `BUS V` 3,2,
+  `BATT A` 3,3; everything else empty. The other pages look as before.
+- [ ] Select 2,2 `FUEL L` and compare its settings panel with the doc (T9): Display Gauge, Value tab Address
+  `(A:FUEL LEFT QUANTITY, Gallons)`, Minimum `0`, Maximum `26`; Gauge tab Draw Arc off, Orientation Right,
+  Size `58; 10`; Warning Range off; Text on, Format `1.0`; no command. Record every field that differs.
+- [ ] 2. No flight (sim at the main menu): every key on the page shows the Wait image (with the sim closed,
+  PilotsDeck shows a still preview).
+
+**In the sim (2024 C172 G1000, flight loaded, parked, cold and dark)**
+Way back: at the end, set the fuel and the switches back as they were when the flight loaded; if the new
+profile misbehaves, delete it and import the backup exported in step 1.
+- [ ] 3. Cold and dark: record every key against the MFD EIS (the EIS is dark: say whether the keys showing
+  sim values then suits you, **A-DARK**). FUEL L and FUEL R: the bar and the number against the EIS fuel gauges
+  and the systems page's FUEL L / FUEL R readouts (systems 4,2, 4,3). Set the fuel to full in the sim's fuel and
+  payload panel and record the numbers (**A-FUELRANGE**: is full `26`?; **A-FUELVAR**: do they read at all?).
+- [ ] 4. BAT on (main 1,1), then ALT on (systems 1,2): BUS V and BATT A against the EIS M BUS and M BATT,
+  sign included (**A-AMPS**). If they match E BUS or S BATT instead, record it (**A-IDX**).
+- [ ] 5. Start the engine; at idle, then at cruise power: RPM, FFLOW, OIL PRES, OIL TEMP, EGT and VAC against
+  the EIS (numbers and units: psi, deg F, gph, inHg; a key at `0` while the EIS moves: **A-UNITS**); BUS V and
+  BATT A again (alternator charging).
+- [ ] 6. Pressing any key changes nothing in the sim (a gauge key shows PilotsDeck's yellow alert sign for a
+  moment: expected). Nothing depends on the connected flight controls (Xbox Elite or T.16000M + TWCS): the keys
+  only read SimVars.
+- [ ] 7. Say whether the horizontal fuel bars suit (**A-BAR**) and whether RPM should stay repeated here
+  (**A-RPM**).
+
+**Result for the worker**
+- [ ] Record each step's result, the numbers of steps 3 to 5, the log lines for any step that failed, the sim
+  version, and every fallback or change.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD

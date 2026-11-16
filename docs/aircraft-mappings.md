@@ -387,6 +387,35 @@ line n of [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G100
 profile (the alternator and bus input events, the fuel selector read as junction options 1/2/3) is a lead
 only.
 
+### Phase 3 engine and fuel page
+
+For [phase3-engine-fuel.md](phase3-engine-fuel.md) (the second-level page behind MORE 2,3 `ENGINE`; positions
+below are on that page). Generated, not yet sim-tested: all rows are **Unverified** until the checklist section
+"P3-5: Engine and fuel page (C172 G1000)" passes. Every key only reads a SimVar (no input event is a readout:
+the aircraft's engine input events, IE 176-178, are controls). Open points (hand test): A-IDX (engine `1`, bus
+`1` = M BUS, battery `2` = M BATT), A-AMPS (BATT A's sign against the EIS), A-FUELVAR (the General fuel SimVars
+in a 2024 aircraft), A-FUELRANGE (the gauges' `0` to `26` gallons), A-UNITS (the unit strings convert).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Fuel flow (1,3 `FFLOW`) | `(A:ENG FUEL FLOW GPH:1, gallons per hour)`, Format `1.1` | gallons per hour (native); engine index 1 | (read only) | `(A:ENG FUEL FLOW PPH:1, pounds per hour)` (a weight rate, not gallons) | SDK-ENGV; SDK-UNITS; lead: TorontoWill | Unverified |
+| Oil pressure (1,4 `OIL PRES`) | `(A:GENERAL ENG OIL PRESSURE:1, psi)`, Format `1.0` | psf -> psi (A-UNITS) | (read only) | `(A:ENG OIL PRESSURE:1, psi)`; the native `psf` with a Scalar | SDK-ENGV; SDK-UNITS | Unverified |
+| Oil temperature (1,5 `OIL TEMP`) | `(A:GENERAL ENG OIL TEMPERATURE:1, fahrenheit)`, Format `1.0` | rankine -> deg F (A-UNITS) | (read only) | `(A:ENG OIL TEMPERATURE:1, fahrenheit)`; the native `rankine` with a Scalar | SDK-ENGV; SDK-UNITS | Unverified |
+| Exhaust gas temperature (1,6 `EGT`) | `(A:GENERAL ENG EXHAUST GAS TEMPERATURE:1, fahrenheit)`, Format `1.0` | rankine -> deg F (A-UNITS) | (read only) | `(A:ENG EXHAUST GAS TEMPERATURE:1, fahrenheit)`; the native `rankine` with a Scalar | SDK-ENGV; SDK-UNITS | Unverified |
+| Vacuum suction (1,7 `VAC`) | `(A:SUCTION PRESSURE, inHg)`, Format `1.1` | inches of mercury, no index | (read only) | none (the only vacuum value on SDK-SYSV) | SDK-SYSV; SDK-UNITS | Unverified |
+
+Reused reads (rows above in this file): RPM 1,2 = the main page's 1,2 (`GENERAL ENG RPM:1`, Format `1.0`); FUEL
+L 2,2 and FUEL R 2,3 read the systems page's `FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY` (systems 4,2, 4,3), here
+as Display Gauges from `0` to `26` gallons [GARMIN] with Format `1.0` (fallback `(A:FUELSYSTEM TANK QUANTITY:n,
+Gallons)`, the Maximum from `(A:FUELSYSTEM TANK CAPACITY:n, Gallons)`); BUS V 3,2 and BATT A 3,3 = systems 1,6
+and 1,7. All Unverified.
+
+Sources (read 2026-11-16; URLs in phase3-engine-fuel.md, "Sources"): SDK-ENGV / SDK-SYSV / SDK-FUELV / SDK-UNITS
+= MSFS 2024 SDK engine, system and fuel SimVars and SimVar units; GARMIN = Garmin G1000 Reference Manual, Cessna
+Nav III, Section 3 EIS (the real aircraft: the 172S fuel gauge full scale, 26 gallons per side); IE n = line n of
+[reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). TorontoWill's generic profile
+(the same fuel flow name, index and unit) is a lead only.
+
 ## FlyByWire A32NX (Phase 4 airliner)
 
 Installed with the FlyByWire Installer (`A:\FS2024 Stuff\FlyByWire-Installer-x64.exe`).
