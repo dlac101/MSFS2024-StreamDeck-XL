@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables are the reference; check.py compares them: docs/phase4-a32nx.md ('## Key table', '## Key table: fcu'), docs/phase4-a32nx-efis.md ('## Key table: efis'), docs/phase4-a32nx-overhead.md ('## Key table: ovhd', '## Key table: ovhdsys'; ovhdsys is a second-level page under ovhd) and docs/phase4-a32nx-radios.md ('## Key table: radio', '## Key table: xpdr'; radio and xpdr are second-level pages under efis). 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
+  "_about": "Pages and keys of the generated FlyByWire A32NX profile, in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title; 'title_size' where a title does not fit). The key tables are the reference; check.py compares them: docs/phase4-a32nx.md ('## Key table', '## Key table: fcu'), docs/phase4-a32nx-efis.md ('## Key table: efis'), docs/phase4-a32nx-overhead.md ('## Key table: ovhd', '## Key table: ovhdsys'; ovhdsys is a second-level page under ovhd), docs/phase4-a32nx-radios.md ('## Key table: radio', '## Key table: xpdr'; radio and xpdr are second-level pages under efis) and docs/phase4-a32nx-pedestal.md ('## Key table: ped'; ped is a second-level page under efis). 'phase1_keys' is empty: the A32NX main page holds none of the Phase 1 keys BAT, PARK and AP, so check.py's phase1 check has no position to compare here. Not yet sim-tested.",
   "profile_name": "MSFS2024 A32NX",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile",
   "phase1_export": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 C172 POC.streamDeckProfile",
@@ -1319,7 +1319,8 @@
         },
         {
           "pos": "3,6",
-          "empty": "Reserved (a later unit)"
+          "title": "PED",
+          "folder": "ped"
         },
         {
           "pos": "3,7",
@@ -2210,6 +2211,372 @@
         {
           "pos": "4,8",
           "empty": "Reserved (a later unit)"
+        }
+      ]
+    },
+    {
+      "id": "ped",
+      "parent": "efis",
+      "note": "Pedestal and ECAM: ECAM control panel, speed brake, GND SPLR, flaps, park brake, gear, LDG GEAR, autobrake state, ENG 1/2 masters, ENG MODE, rudder trim, A/SKID, brake pressure (P4-6)",
+      "spec": "docs/phase4-a32nx-pedestal.md",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "ENG",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_ENG_PRESSED:A32NX_ECP_ENG_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_ENG"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "BLEED",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_BLEED_PRESSED:A32NX_ECP_BLEED_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_BLEED"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "PRESS",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_PRESS_PRESSED:A32NX_ECP_PRESS_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_PRESS"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "ELEC",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_ELEC_PRESSED:A32NX_ECP_ELEC_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_ELEC"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "HYD",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_HYD_PRESSED:A32NX_ECP_HYD_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_HYD"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "FUEL",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_FUEL_PRESSED:A32NX_ECP_FUEL_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_FUEL"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "TO CONF",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_TO_CONF_TEST_PRESSED:A32NX_ECP_TO_CONF_TEST_RELEASED",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "CLR",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_CLR_1_PRESSED:A32NX_ECP_CLR_1_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_CLR_1"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "APU",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_APU_PRESSED:A32NX_ECP_APU_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_APU"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "COND",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_COND_PRESSED:A32NX_ECP_COND_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_COND"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "DOOR",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_DOOR_PRESSED:A32NX_ECP_DOOR_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_DOOR"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "WHEEL",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_BRAKES_PRESSED:A32NX_ECP_BRAKES_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_BRAKES"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "F/CTL",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_FLT_CTL_PRESSED:A32NX_ECP_FLT_CTL_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_FLT_CTL"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "ALL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_ALL_PRESSED:A32NX_ECP_ALL_RELEASED",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "STS",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_STS_PRESSED:A32NX_ECP_STS_RELEASED",
+            "Address": "L:A32NX_ECP_LIGHT_STS"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "RCL",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 8,
+            "AddressAction": "H:A32NX_ECP_RCL_PRESSED:A32NX_ECP_RCL_RELEASED",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "SPD BRK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:SPDBRK",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:SPOILERS_TOGGLE",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:SPOILERS_SET:8192"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "GND SPLR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:SPOILERS_ARM_TOGGLE",
+            "Address": "L:A32NX_SPOILERS_ARMED"
+          },
+          "title_size": 13
+        },
+        {
+          "pos": "3,4",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_FLAPS_HANDLE_INDEX",
+            "Format": "",
+            "ValueMappings": "0=UP:1=1:2=2:3=3:4=FULL",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "PARK",
+          "template": "p1:0,0",
+          "set": {
+            "ActionType": 3,
+            "Address": "L:A32NX_PARK_BRAKE_LEVER_POS",
+            "AddressAction": "L:A32NX_PARK_BRAKE_LEVER_POS",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "GEAR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:A32NX_GEAR_HANDLE_POSITION",
+            "Format": "",
+            "ValueMappings": "0=UP:1=DOWN",
+            "ActionType": 16,
+            "AddressAction": "K:GEAR_DOWN",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:GEAR_UP"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "LDG GEAR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:GEARIND",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "A/BRK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:ABRK",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "ENG 1",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FUELSYSTEM_VALVE_OPEN:1",
+            "Address": "(A:FUELSYSTEM VALVE SWITCH:1, Bool)",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FUELSYSTEM_VALVE_CLOSE:1"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "ENG 2",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FUELSYSTEM_VALVE_OPEN:2",
+            "Address": "(A:FUELSYSTEM VALVE SWITCH:2, Bool)",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FUELSYSTEM_VALVE_CLOSE:2"
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "ENG MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "L:XMLVAR_ENG_MODE_SEL",
+            "Format": "",
+            "ValueMappings": "0=CRANK:1=NORM:2=IGN",
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-A32NX:ENGMODE(1)",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-A32NX:ENGMODE(-1)"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "RUD L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_LEFT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "RUD TRIM",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:RUDTRIM",
+            "Format": "",
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_RESET"
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "RUD R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_RIGHT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "A/SKID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ANTISKID BRAKES ACTIVE, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "BRK PSI",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "lua:XL24-A32NX:BRKPSI",
+            "Format": ""
+          }
         }
       ]
     }

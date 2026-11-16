@@ -14,9 +14,9 @@ state; no key assumes its press worked.
 The profile is the file `pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 A32NX.streamDeckProfile`,
 generated in the repo by `tools/profilegen/generate.py` from `tools/profilegen/a32nx.json`. The tables below
 are the reference for what each key holds; `tools/profilegen/check.py tools/profilegen/a32nx.json` compares
-the profile with the "Key table" and "Key table: fcu" sections key by key (the OVHD, EFIS, RADIO and XPDR
-pages with the key tables of their own docs, "OVHD pages" below, [phase4-a32nx-efis.md](phase4-a32nx-efis.md)
-and [phase4-a32nx-radios.md](phase4-a32nx-radios.md)).
+the profile with the "Key table" and "Key table: fcu" sections key by key (the OVHD, EFIS, RADIO, XPDR and PED
+pages with the key tables of their own docs, "OVHD pages" below, [phase4-a32nx-efis.md](phase4-a32nx-efis.md),
+[phase4-a32nx-radios.md](phase4-a32nx-radios.md) and [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md)).
 
 Nothing on these pages uses keyboard bindings, vJoy or anything tied to a controller: the keys send
 SimConnect events (K-events, including FlyByWire's `A32NX.*` custom events), write L-Vars or one input event
@@ -210,6 +210,8 @@ the `()`).
 
 P4-4 added five functions for the RADIO and XPDR pages, `RMPACT`, `RMPSTBY`, `XPDRMODE`, `TCASMODE` and
 `TCASTRAF`: see [phase4-a32nx-radios.md](phase4-a32nx-radios.md), "The script".
+P4-6 added six functions for the PED page, `SPDBRK`, `GEARIND`, `ABRK`, `ENGMODE`, `RUDTRIM` and `BRKPSI`:
+see [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md), "The script".
 
 - All five readouts return an empty text when `L:A32NX_FCU_HEALTHY` is not 1 ("If the FCU is healthy in one or
   more channels", FBW-SIMVARS): with no A32NX loaded, or the FCU unpowered, the readout keys are blank, as the
@@ -262,9 +264,10 @@ That the events arrive is an inference until the sim test.
    `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua` into
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Scripts\`. Without it the readouts
    stay blank and the script keys do nothing (ND MODE / ND RNG, WARN / CAUT, the EFIS page's ADF/VOR keys,
-   MODE SEL, and the RADIO and XPDR pages' ACTIVE, STBY, MODE, TCAS and TRAFFIC). After any change to it in
-   the repo, install the new package or copy it again. The H-event keys of the RADIO and XPDR pages and MODE
-   SEL also need the MobiFlight WASM module
+   MODE SEL, the RADIO and XPDR pages' ACTIVE, STBY, MODE, TCAS and TRAFFIC, and the PED page's SPD BRK, LDG
+   GEAR, A/BRK, ENG MODE, RUD TRIM and BRK PSI). After any change to it in the repo, install the new package
+   or copy it again. The H-event keys of the RADIO and XPDR pages, MODE SEL, and the PED page's ECAM keys and
+   ENG MODE also need the MobiFlight WASM module
    ([troubleshooting.md](troubleshooting.md#the-mobiflight-wasm-module)).
 3. Back up your Stream Deck profiles ([installation.md](installation.md#back-up-existing-profiles)). A profile
    already named `MSFS2024 A32NX`: export it to the backup folder and delete it before you import (the
@@ -287,8 +290,9 @@ python tools/profilegen/check.py tools/profilegen/a32nx.json
 ```
 
 `check.py` compares the profile with this doc's two key tables and the key tables of
-[phase4-a32nx-efis.md](phase4-a32nx-efis.md), [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md) and
-[phase4-a32nx-radios.md](phase4-a32nx-radios.md), the Phase 1 export, the templates and a fresh build,
+[phase4-a32nx-efis.md](phase4-a32nx-efis.md), [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md),
+[phase4-a32nx-radios.md](phase4-a32nx-radios.md) and [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md)
+(PED), the Phase 1 export, the templates and a fresh build,
 and checks every `lua:` key against `XL24-A32NX.lua`. `--sources` adds the provenance check (as
 for the C172 profile, phase2-main-page.md). The data file sets `"phase1_keys": []`: the A32NX main page holds
 none of the Phase 1 keys (BAT, PARK, AP) that check.py's phase1 check compares on the C172 main page. A change

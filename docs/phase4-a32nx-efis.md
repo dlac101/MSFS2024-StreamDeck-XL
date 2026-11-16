@@ -51,14 +51,15 @@ brackets.
 |---|---|---|---|---|---|---|---|---|
 | **Row 1** | < back | BARO+ | FD | CSTR | WPT | VOR.D | NDB | ARPT |
 | **Row 2** | QNH | BARO | LS | ND MODE | ND RNG | ADF/VOR1 | ADF/VOR2 | CHRONO |
-| **Row 3** | STD | BARO- | hPa/inHg | RADIO > | XPDR > | | | AUTOLAND |
+| **Row 3** | STD | BARO- | hPa/inHg | RADIO > | XPDR > | PED > | | AUTOLAND |
 | **Row 4** | WARN | CAUT | [F/O EFIS] | [F/O EFIS] | [F/O EFIS] | [F/O EFIS] | [F/O EFIS] | [F/O EFIS] |
 
-21 keys, the 2 folder keys `RADIO` and `XPDR` (P4-4, [phase4-a32nx-radios.md](phase4-a32nx-radios.md)), the
-back key and 8 empty positions: 3,6 and 3,7 reserved for a later unit, 4,3 to 4,8 reserved for the First
-Officer's EFIS control panel (a later unit). 11 keys are new functions (CSTR, WPT, VOR.D, NDB,
-ARPT, QNH, STD, ADF/VOR1, ADF/VOR2, CHRONO, AUTOLAND); 10 repeat a P4-1 key (FD, LS, BARO+, BARO, BARO-,
-hPa/inHg, ND MODE, ND RNG, WARN, CAUT) with the same settings, so the whole panel is on one page.
+21 keys, the 3 folder keys `RADIO`, `XPDR` (P4-4, [phase4-a32nx-radios.md](phase4-a32nx-radios.md)) and `PED`
+(P4-6, [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md)), the back key and 7 empty positions: 3,7 reserved
+for a later unit, 4,3 to 4,8 reserved for the First Officer's EFIS control panel (a later unit). 11 keys are
+new functions (CSTR, WPT, VOR.D, NDB, ARPT, QNH, STD, ADF/VOR1, ADF/VOR2, CHRONO, AUTOLAND); 10 repeat a P4-1
+key (FD, LS, BARO+, BARO, BARO-, hPa/inHg, ND MODE, ND RNG, WARN, CAUT) with the same settings, so the whole
+panel is on one page.
 
 ## Key table: efis
 
@@ -91,7 +92,7 @@ Off value), `lua:` = Lua Function (14).
 | 3,3 | `hPa/inHg` | Display Value | K5 | `L:A32NX_FCU_EFIS_L_BARO_IS_INHG`, On `1` / Off `0` (inHg / hPa) [FBW-API, FBW-EFIS-XML] | `L:A32NX_FCU_EFIS_L_BARO_IS_INHG` [FBW-API, FBW-SIMVARS] | Mappings `0=hPa:1=inHg` |
 | 3,4 | `RADIO` | Folder | (Stream Deck) | Opens the child page **radio** | none | Folder; the page's keys: "Key table: radio" in [phase4-a32nx-radios.md](phase4-a32nx-radios.md) |
 | 3,5 | `XPDR` | Folder | (Stream Deck) | Opens the child page **xpdr** | none | Folder; the page's keys: "Key table: xpdr" in [phase4-a32nx-radios.md](phase4-a32nx-radios.md) |
-| 3,6 | | Empty | | | | Reserved (a later unit) |
+| 3,6 | `PED` | Folder | (Stream Deck) | Opens the child page **ped** | none | Folder; the page's keys: "Key table: ped" in [phase4-a32nx-pedestal.md](phase4-a32nx-pedestal.md) |
 | 3,7 | | Empty | | | | Reserved (a later unit) |
 | 3,8 | `AUTOLAND` | Display Value | K9 | none | `L:A32NX_AUTOPILOT_AUTOLAND_WARNING` [FBW-API, FBW-FCU-XML; FBW-SIMVARS lists it as deprecated] | Mappings `0=---:1=ON` |
 | 4,1 | `WARN` | Dynamic Button | K10 | `lua:XL24-A32NX:MWARN` (the script presses the MASTER WARN button: its push L-Var 1, 200 ms, 0) [FBW-INTERIOR, FBW-FWC; README 2.1.1 LUAFUNC, 3.5.1] | `L:A32NX_MASTER_WARNING` [FBW-API, FBW-FWC] | On/Off image |

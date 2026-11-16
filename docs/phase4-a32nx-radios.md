@@ -183,6 +183,9 @@ RADIO page:
 - **ACTIVE, STBY** show what RMP 1's two windows show, as `118.700`, from the script (`RMPACT`, `RMPSTBY`, see
   "The script"). They are blank when RMP 1 is switched off, its bus (DC ESS) is unpowered or it is in a NAV
   mode; ACTIVE shows `DATA` for VHF3 when VHF3 has no active frequency (FlyByWire sets VHF3 to data at start).
+  STBY stays blank when the standby frequency is 0 (VHF3 in data mode), where the cockpit's standby window
+  shows `DATA`: FlyByWire draws `DATA` in either window for any value not above 0 (`RadioPanelDisplay.tsx`),
+  but `RMPSTBY` returns an empty text for 0.
 - **COM1, COM2** show the active frequencies of the sim's radios 1 and 2 (what you hear), whatever RMP 1
   shows, as `118.700`.
 
@@ -223,12 +226,12 @@ ON, ALT RPTG), K7 (MODE, TCAS, TRAFFIC), K9 (STATE), K11 (COM1, COM2;
 | K15 code readout | Display Value (`p1:2,0`), as the C172 main page's XPDR key | Value Address (`A:`, Bco16), Decode BCD on, Format `4.0`; no command |
 
 PilotsDeck forms (README 2.1.1): an H-Var is "The Name of the H-Var with or without preceding `H:`", and
-H-Vars "trigger an Event but can't be read", so each H-event key reads another variable or none; command type 8 is
-the settings panel's H-Var type (PD-PI, as [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), "Sources"). An
-A-Var is read as `(A:Name:Index, Unit)`. Decode BCD (README 2.2.2): "If the Value is a binary coded decimal
-(BCD), the Plugin can decode it for you with that Checkbox!". The data file is `tools/profilegen/a32nx.json`,
-pages `radio` and `xpdr` (`"parent": "efis"`, `"spec": "docs/phase4-a32nx-radios.md"`), and the efis keys 3,4
-and 3,5.
+H-Vars "trigger an Event but can't be read", so each H-event key reads another variable or none; command type
+8 is the settings panel's H-Var type (PD-PI, as [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md),
+"Sources"). An A-Var is read as `(A:Name:Index, Unit)`. Decode BCD (README 2.2.2): "If the Value is a binary
+coded decimal (BCD), the Plugin can decode it for you with that Checkbox!". The data file is
+`tools/profilegen/a32nx.json`, pages `radio` and `xpdr` (`"parent": "efis"`,
+`"spec": "docs/phase4-a32nx-radios.md"`), and the efis keys 3,4 and 3,5.
 
 Title sizes ([navigation.md](navigation.md), "Rules"): Dynamic and Simple Buttons copied from the AP key draw
 their titles at 14 (VHF1, VHF2, IDENT, the knob, XFER and keypad keys); of the two copied from the BAT key,

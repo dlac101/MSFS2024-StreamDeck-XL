@@ -1241,6 +1241,100 @@ with the mouse and check that the key follows without a key being pressed.
   VHF2 selected, STATE in each mode, the IDENT time, the TCAS results, the MSFS and A32NX versions, and every
   fallback or change.
 
+## Phase 4: A32NX pedestal page (P4-6)
+
+Reference: [docs/phase4-a32nx-pedestal.md](../docs/phase4-a32nx-pedestal.md). The second-level page `ped`
+(efis 3,6 `PED`: the ECAM control panel, speed brake, flaps, park brake, gear, autobrake state, engine
+masters, ENG MODE, rudder trim, A/SKID and brake pressure) of the profile `MSFS2024 A32NX`, and the six new
+functions of `XL24-A32NX.lua` (`SPDBRK`, `GEARIND`, `ABRK`, `ENGMODE`, `RUDTRIM`, `BRKPSI`). Not yet tested in
+the app or the sim. This section replaces the P4-4 section's item "efis 3,6, 3,7 and 4,3 to 4,8 are empty"
+(3,6 is now the folder key `PED`). **Never long-press GEAR on the ground.** Record: date, MSFS 2024 version,
+A32NX version, PilotsDeck version, and every fallback or changed value you used.
+
+**Before you start**
+- [ ] The P4-1 section's "Before you start" and "Import" steps, with the regenerated
+  `MSFS2024 A32NX.streamDeckProfile` (or the icon profile) and the new `XL24-A32NX.lua` installed (the new
+  package with the Profile Manager, or the script copied into the plugin's Scripts folder; the old copy lacks
+  the six new functions).
+- [ ] The MobiFlight WASM module installed (docs/installation.md, "MobiFlight WASM module (which keys need
+  it)"); after the flight loads, the plugin log shows "MobiFlight WASM Client Connection opened". The 16 ECAM
+  keys and ENG MODE's code go through it.
+
+**Import (no sim needed)**
+- [ ] Main 4,8 `EFIS` opens the EFIS page; efis 3,6 `PED` opens the PED page; its back key (1,1) returns to
+  the EFIS page. The page matches the layout in the doc; efis 3,7 and 4,3 to 4,8 are empty.
+- [ ] Select `ENG`, `TO CONF`, `SPD BRK`, `GEAR`, `ENG 1`, `ENG MODE`, `RUD L` and `A/SKID` and compare their
+  settings panels with the doc's key table (command type, addresses, the H-Var sequence, On/Off values, long
+  press and Second Command, format, mappings). Record every field that differs.
+
+**ECAM control panel (cold and dark, then batteries and DC ESS on)**
+For every key: press it and check the cockpit control and the key; then work the control in the cockpit
+with the mouse and check that the key follows without a key being pressed.
+- [ ] ENG, BLEED, PRESS, ELEC, HYD, FUEL, APU, COND, DOOR, WHEEL, F/CTL, one after the other: the SD shows
+  that page and only that key is lit, as the cockpit's key. Press the lit key again (record what the SD does).
+- [ ] ALL: the SD steps through its pages (record one page or more per press). STS: the STATUS page, STS lit.
+- [ ] With a caution shown (for example a fuel pump off with the engines running, or as the aircraft gives
+  one): CLR lit; press CLR, the message clears; RCL recalls it.
+- [ ] TO CONF on the ground: the E/WD shows the T.O CONFIG result.
+- [ ] ANN LT on DIM: record what the lit ECAM keys show (no image is expected, ASSUMPTION A-16).
+- [ ] With the MobiFlight module stopped (or before it connects): the ECAM keys do nothing (record).
+
+**Speed brake, ground spoilers, flaps, park brake (on the ground)**
+- [ ] GND SPLR arms: SPD BRK shows `ARM`, the cockpit lever armed. SPD BRK long press: `50%`, the lever at
+  1/2, GND SPLR off. Press: `RET`; press again: `FULL`; press: `RET`. Move the lever with the mouse: SPD BRK
+  follows.
+- [ ] FLAPS on PED and on main show the same and step the same lever; PARK on PED and on main set and release
+  the same lever.
+
+**Gear (readout only on the ground: never long-press GEAR there)**
+- [ ] On the ground: GEAR `DOWN`, LDG GEAR `3 GRN`; with DC 2 off: LDG GEAR blank.
+- [ ] In flight after take-off: GEAR long press: GEAR `UP`, LDG GEAR `UNLK` then `UP`; GEAR press: `DOWN`,
+  LDG GEAR `3 GRN`.
+
+**Autobrake and brake pressure**
+- [ ] Main BRK LO, MED, MAX: A/BRK shows `LO`, `MED`, `MAX`, and `OFF` when disarmed. On a landing with
+  autobrake: `DECEL` while the DECEL light is on (record).
+- [ ] BRK PSI with PARK set (about `2.0 2.0` expected, record) and released (`0.0 0.0` expected, record); with
+  DC ESS off: blank.
+
+**Engines (cold start, APU bleed on)**
+- [ ] ENG MODE press: `NORM` -> `IGN`, the cockpit knob follows (record, ASSUMPTION A-8).
+- [ ] ENG 2 press: master ON, key lit, the engine starts; ENG 1 the same. ENG MODE long press back to `NORM`.
+- [ ] Shutdown: ENG 1 and ENG 2 **long press**: masters OFF, keys dark. A short press of a lit ENG key does
+  nothing harmful (record: ON stays ON).
+
+**Rudder trim, A/SKID**
+- [ ] RUD L three times: RUD TRIM `L 0.x`, the cockpit trim display alike (record the step and both values;
+  if RUD TRIM does not follow the display, the doc's "Fallbacks" names the other read); RUD R back; RUD
+  TRIM press: `0.0`. With DC 2 off: RUD TRIM blank.
+- [ ] Flip the cockpit A/SKID & N/W STRG switch: A/SKID follows (`ON`, `OFF`); a press of the key changes
+  nothing.
+
+**P4-1 to P4-4 regression**
+- [ ] Run "Phase 4: A32NX profile (P4-1)", "Phase 4: A32NX EFIS page (P4-2)", "Phase 4: A32NX overhead pages
+  (P4-3)" and "Phase 4: A32NX radio and transponder pages (P4-4)": unchanged (efis 3,6 is now a folder key).
+  Main GND SPLR, FLAPS and PARK and their PED copies show the same.
+
+**Icon look test (icon profile, no sim)**
+- [ ] The folder key efis 3,6, the back key and the 31 keys of the PED page show the images of their rows in
+  `tools/profilegen/icons-a32nx.json`; titles readable (record the ECAM and ENG key legends against their
+  titles).
+
+**Other aircraft**
+- [ ] Load the C172 G1000 and select `MSFS2024 A32NX` by hand: the ECAM keys dark, A/BRK `OFF`, SPD BRK `RET`,
+  GEAR `UP`, LDG GEAR, RUD TRIM and BRK PSI blank, ENG MODE `CRANK`; ENG 1, ENG 2 and A/SKID show the C172's
+  own values. **Do not press GEAR, ENG 1, ENG 2, SPD BRK, FLAPS, RUD L, RUD R, RUD TRIM or GND SPLR there**
+  (standard events: they move the C172's own controls where it has them). ENG MODE does nothing. Then switch
+  back to the C172 profile.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Result for the worker**
+- [ ] Record each step's result, the log lines for any step that failed, what a second press of a lit ECAM
+  key does, the ALL step, the DIM look, the brake pressures, the ENG MODE result, the rudder trim step, the
+  MSFS and A32NX versions, and every fallback or change.
+
 ## P4-ICONS: local icon build (A32NX)
 
 Reference: [docs/icons.md](../docs/icons.md), section 4. A second A32NX profile, `MSFS2024 A32NX Icons`, with key

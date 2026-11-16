@@ -3,6 +3,7 @@
 -- EFIS page keys (ADF/VOR steps, MASTER WARN/CAUT press): docs/phase4-a32nx-efis.md.
 -- OVHD systems page key (fuel MODE SEL press): docs/phase4-a32nx-overhead.md.
 -- RADIO and XPDR page keys: docs/phase4-a32nx-radios.md.
+-- PED page keys: docs/phase4-a32nx-pedestal.md.
 --
 -- Readout keys (Display Value) use SPD, HDG, ALT, VS and BARO as their Value Address
 -- ("lua:XL24-A32NX:SPD"); PilotsDeck runs them on every process cycle and shows the text they
@@ -300,4 +301,106 @@ end
 
 function TCASTRAF(step)
     step_selector(TCAS_TRAF, step, 0, 3)
+end
+
+-- PED page (P4-6): pedestal and ECAM readouts and the ENG MODE selector. docs/phase4-a32nx-pedestal.md.
+-- SPDBRK shows the speed brake lever (A32NX_SPOILERS_HANDLE_POSITION 0..1, A32NX_SPOILERS_ARMED);
+-- GEARIND the LDG GEAR panel as LGCIU 1 drives it (A32NX_Interior_Misc.xml, FBW_Airbus_LANDING_GEAR_Light_Template:
+-- downlocked = green, unlocked = red UNLK, DC 2 bus); ABRK the armed autobrake mode and DECEL; RUDTRIM the rudder
+-- trim display (L:A32NX_HYD_RUDDER_TRIM_FEEDBACK_ANGLE, degrees, negative = left; blank without DC 2, as the
+-- RTPI/instrument.tsx display); BRKPSI the triple brake
+-- indicator's left and right needles in 1000 psi (A320_NEO_INTERIOR.xml Airbus_BRK: value / 1000, DC ESS bus).
+-- ENGMODE moves the ENG MODE selector one position and runs the selector's own code (Airbus.xml,
+-- A32NX_ENGINE_MODE_SELECTOR_TEMPLATE), only when an A32NX fuel L-Var reads more than 0.
+local SPLR_POS    = "L:A32NX_SPOILERS_HANDLE_POSITION"        -- 0 retracted .. 1 full
+local SPLR_ARMED  = "L:A32NX_SPOILERS_ARMED"                  -- 1 = armed
+local GEAR_POWER  = "L:A32NX_ELEC_DC_2_BUS_IS_POWERED"        -- LDG GEAR panel's and rudder trim display's bus
+local GEAR_DN_N   = "L:A32NX_LGCIU_1_NOSE_GEAR_DOWNLOCKED"
+local GEAR_DN_L   = "L:A32NX_LGCIU_1_LEFT_GEAR_DOWNLOCKED"
+local GEAR_DN_R   = "L:A32NX_LGCIU_1_RIGHT_GEAR_DOWNLOCKED"
+local GEAR_UNLK_N = "L:A32NX_LGCIU_1_NOSE_GEAR_UNLOCKED"
+local GEAR_UNLK_L = "L:A32NX_LGCIU_1_LEFT_GEAR_UNLOCKED"
+local GEAR_UNLK_R = "L:A32NX_LGCIU_1_RIGHT_GEAR_UNLOCKED"
+local ABRK_MODE   = "L:A32NX_AUTOBRAKES_ARMED_MODE"           -- 0 off, 1 LO, 2 MED, 3 MAX
+local ABRK_DECEL  = "L:A32NX_AUTOBRAKES_DECEL_LIGHT"          -- 1 = DECEL light on
+local ENG_MODE    = "L:XMLVAR_ENG_MODE_SEL"                   -- 0 CRANK, 1 NORM, 2 IGN/START
+local RUD_TRIM    = "L:A32NX_HYD_RUDDER_TRIM_FEEDBACK_ANGLE"  -- degrees, negative = left
+local BRK_L       = "L:A32NX_HYD_BRAKE_ALTN_LEFT_PRESS"       -- psi
+local BRK_R       = "L:A32NX_HYD_BRAKE_ALTN_RIGHT_PRESS"      -- psi
+SimVar(SPLR_POS)
+SimVar(SPLR_ARMED)
+SimVar(GEAR_POWER)
+SimVar(GEAR_DN_N)
+SimVar(GEAR_DN_L)
+SimVar(GEAR_DN_R)
+SimVar(GEAR_UNLK_N)
+SimVar(GEAR_UNLK_L)
+SimVar(GEAR_UNLK_R)
+SimVar(ABRK_MODE)
+SimVar(ABRK_DECEL)
+SimVar(ENG_MODE)
+SimVar(RUD_TRIM)
+SimVar(BRK_L)
+SimVar(BRK_R)
+
+function SPDBRK()
+    if on(SPLR_ARMED) then return "ARM" end
+    local p = num(SPLR_POS)
+    if p < 0.01 then return "RET" end
+    if p > 0.99 then return "FULL" end
+    return string.format("%d%%", round(p * 100))
+end
+
+function GEARIND()
+    if not on(GEAR_POWER) then return "" end
+    if on(GEAR_UNLK_N) or on(GEAR_UNLK_L) or on(GEAR_UNLK_R) then return "UNLK" end
+    local n = 0
+    if on(GEAR_DN_N) then n = n + 1 end
+    if on(GEAR_DN_L) then n = n + 1 end
+    if on(GEAR_DN_R) then n = n + 1 end
+    if n == 0 then return "UP" end
+    return string.format("%d GRN", n)
+end
+
+function ABRK()
+    if on(ABRK_DECEL) then return "DECEL" end
+    local m = round(num(ABRK_MODE))
+    if m == 1 then return "LO" end
+    if m == 2 then return "MED" end
+    if m == 3 then return "MAX" end
+    return "OFF"
+end
+
+function RUDTRIM()
+    if not on(GEAR_POWER) then return "" end
+    local d = num(RUD_TRIM)
+    if math.abs(d) < 0.05 then return "0.0" end
+    if d < 0 then return string.format("L %.1f", -d) end
+    return string.format("R %.1f", d)
+end
+
+function BRKPSI()
+    if not on(RMP_POWER) then return "" end
+    return string.format("%.1f %.1f", num(BRK_L) / 1000, num(BRK_R) / 1000)
+end
+
+-- the selector's own code for each position (compared with ==, not used as a table key)
+local function eng_mode_code(v)
+    if v == 2 then
+        return "2 (>K:TURBINE_IGNITION_SWITCH_SET1) 2 (>K:TURBINE_IGNITION_SWITCH_SET2) " ..
+            "(>H:A320_Neo_EICAS_2_Ignition_Start)"
+    end
+    if v == 1 then return "1 (>K:TURBINE_IGNITION_SWITCH_SET1) 1 (>K:TURBINE_IGNITION_SWITCH_SET2)" end
+    return "0 (>K:TURBINE_IGNITION_SWITCH_SET)"
+end
+
+function ENGMODE(step)
+    if num(FUEL_TOTAL) <= 0 then return end
+    step = tonumber(step)
+    if step == nil then return end
+    local v = round(num(ENG_MODE)) + step
+    if v < 0 then v = 0 end
+    if v > 2 then v = 2 end
+    SimWrite(ENG_MODE, v)
+    SimCalculator(eng_mode_code(v))
 end
