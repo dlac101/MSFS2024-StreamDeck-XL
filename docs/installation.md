@@ -21,7 +21,7 @@ Admin account into the repo before they can be reviewed elsewhere.
 | PilotsDeck | 0.9.7 | "Latest Build" dev installer (`A:\FS2024 Stuff\PilotsDeck-Installer-latest.exe`), installed 2026-11-11. Latest stable is 0.9.1. |
 | Stream Deck app | 7.6.1 | PilotsDeck needs 7.4 or later |
 | .NET Desktop Runtime | 10.x | Installed by the PilotsDeck installer |
-| MobiFlight WASM module | 1.0.1 | Folder `mobiflight-event-module` in the Community folder: `package_version` in its `manifest.json`, read 2026-11-14. Installed by the PilotsDeck installer. The G1000 bezel keys need it (see "MobiFlight WASM module" below). |
+| MobiFlight WASM module | 1.0.1 | Folder `mobiflight-event-module` in the Community folder: `package_version` in its `manifest.json`, read 2026-11-14. Installed by the PilotsDeck installer. The H-event keys (the G1000 bezel keys, the autopilot page's CRS presses) and the A32NX fuel MODE SEL key need it (see "MobiFlight WASM module" below). |
 | FSUIPC7 | 7.5.9 | Optional for PilotsDeck on MSFS; free (unregistered) is enough |
 | MSFS 2024 | 1.9.24.0 | File version of `FlightSimulator2024.exe`, read 2026-11-11 |
 
@@ -61,7 +61,7 @@ Stream Deck app then disables it as "unstable". `log\startup.log` ends with
   `PilotsDeck.exe.0.9.7-original`: nothing is left to delete by hand
   (`Installer/Worker/WorkerInstallUpdate.cs` lines 45-69 at `11bdf1f`).
 
-## MobiFlight WASM module (the G1000 bezel keys need it)
+## MobiFlight WASM module (which keys need it)
 
 - PilotsDeck sends every H-event (`H:` address) through the MobiFlight WASM module, not through SimConnect
   (PilotsDeck source at `11bdf1f`, `Plugin/Simulator/MSFS/ToolsMSFS.cs` lines 163-184, `WriteSingleHvar`).

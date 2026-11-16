@@ -26,7 +26,7 @@ Transponder page under More (MORE 1,7; code pad by a Lua script, code and mode r
 Radios page under More (MORE 1,8; NAV1, NAV2 and COM2 readouts that swap on a press, MHz and kHz steps, station idents, COM1/COM2 mic select; generated, not yet sim-tested): [docs/phase3-radios.md](docs/phase3-radios.md).
 Systems page under More (MORE 2,2; alternator, avionics bus and standby battery switches, bus volts and amps, interior lights and a dimmer readout, fuel selector, fuel shutoff valve and fuel quantity; generated, not yet sim-tested): [docs/phase3-systems.md](docs/phase3-systems.md).
 Designed, not built: an elevator trim bar gauge on the Trim page ([docs/design-trim-gauge.md](docs/design-trim-gauge.md)).
-**Phase 4: FlyByWire A32NX profile (main, FCU and OVHD pages), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md).
+**Phase 4: FlyByWire A32NX profile (main, FCU, EFIS and OVHD pages, and OVHD > SYSTEMS), generated, not yet sim-tested** (the A32NX is not installed yet; the script `XL24-A32NX.lua` must be copied into the plugin's Scripts folder): [docs/phase4-a32nx.md](docs/phase4-a32nx.md), [docs/phase4-a32nx-efis.md](docs/phase4-a32nx-efis.md), [docs/phase4-a32nx-overhead.md](docs/phase4-a32nx-overhead.md).
 Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
 ## Layout
 

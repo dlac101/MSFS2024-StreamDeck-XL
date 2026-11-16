@@ -69,8 +69,8 @@ shows a yellow alert sign on the key for a moment (README 2.1).
 3. If the command was sent and the cockpit doesn't move, the address may be wrong for this aircraft or
    sim version. Check the page doc's "Fallbacks" and the key's row in
    [aircraft-mappings.md](aircraft-mappings.md): most rows are still "Unverified".
-4. If the key sends an H-event, the MobiFlight WASM module must be working
-   ([the MobiFlight WASM module](#the-mobiflight-wasm-module)).
+4. If the key sends an H-event or runs a script's `SimCalculator` call (the A32NX fuel MODE SEL key), the
+   MobiFlight WASM module must be working ([the MobiFlight WASM module](#the-mobiflight-wasm-module)).
 
 A key that lights or shows a value but doesn't follow the cockpit reads another variable than the cockpit
 control drives (example: the C172's battery switch drives an input event, not the standard battery SimVar,
@@ -85,7 +85,7 @@ These keys run a Lua script from the package; without it they do nothing (the pa
 | `XL24-SIMRATE.lua` | Sim rate `1X` | [phase2-sim-rate.md](phase2-sim-rate.md) |
 | `XL24-COMPAD.lua` | COM pad digits, CLR, ENT | [phase2-com1-pad.md](phase2-com1-pad.md) |
 | `XL24-XPDRPAD.lua` | Transponder pad digits, CLR, ENT | [phase3-transponder.md](phase3-transponder.md) |
-| `XL24-A32NX.lua` | A32NX FCU and baro readouts, ND MODE, ND RNG, WARN, CAUT, the EFIS page's script keys | [phase4-a32nx.md](phase4-a32nx.md), [phase4-a32nx-efis.md](phase4-a32nx-efis.md) |
+| `XL24-A32NX.lua` | A32NX FCU and baro readouts, ND MODE, ND RNG, WARN, CAUT, the EFIS page's script keys, the fuel MODE SEL key | [phase4-a32nx.md](phase4-a32nx.md), [phase4-a32nx-efis.md](phase4-a32nx-efis.md), [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md) |
 
 PilotsDeck logs two warnings for a missing script (`Plugin/Resources/ScriptManager.cs` at `11bdf1f`):
 `Script File '<file>' does not exist!` when a key that uses it is loaded, and
@@ -113,12 +113,14 @@ shows the Wait image in place of an image file it can't find, and logs nothing a
 level (`Plugin/Resources/Images/ManagedImage.cs` at `11bdf1f`).
 
 1. Check the plugin state first (above): while it is Waiting, every key shows this image.
-2. The usual cause here is the optional local icon build, whose images you copy by hand into the plugin's
-   `Images` folder ([icons.md](icons.md#2-install-the-images-your-own-hand-step-before-the-import)). In
+2. The usual cause here is the optional local icon build, whose images the local icon package (or a hand
+   copy) puts into the plugin's `Images` folder
+   ([icons.md](icons.md#2-install-with-the-profile-manager-your-own-step)). In
    File Explorer, check that `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Images\`
    holds it. Images must be PNG files and square (README 3.3).
 
-Fix: copy the missing images as icons.md says. Never re-run the PilotsDeck installer to fix images (see
+Fix: install the local icon package again (or copy the images by hand) and restart the Stream Deck app,
+as icons.md says. Never re-run the PilotsDeck installer to fix images (see
 [the patched plugin build](#the-patched-plugin-build-what-not-to-do)).
 
 ## The MobiFlight WASM module
@@ -139,8 +141,8 @@ code with no check that the module is connected). The other address kinds don't 
    `MobiFlight WASM Client Connection opened.` (plugin log on this PC, 2026-11-14).
 
 Fix, and why reinstalling the module is blocked on this PC: installation.md, "MobiFlight WASM module
-(the G1000 bezel keys need it)"
-([link](installation.md#mobiflight-wasm-module-the-g1000-bezel-keys-need-it)).
+(which keys need it)"
+([link](installation.md#mobiflight-wasm-module-which-keys-need-it)).
 
 ## The patched plugin build: what not to do
 
