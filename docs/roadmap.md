@@ -123,8 +123,9 @@ events), [reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt) (141 i
   `Profiles/` (three profiles: `MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`), `Scripts/`
   (four scripts: `XL24-SIMRATE.lua`, `XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`; empty
   `global/` and `image/`), an empty `Images/`.
-- `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000 and FlyByWire A32NX
-  (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the C172 G1000 mapping.
+- `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000, FlyByWire A32NX and
+  Cirrus Vision SF50 (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the
+  C172 G1000 and VisionJet mappings.
 - `tools/package/build_package.py` builds the package `MSFS2024-XL v0.2.ppp` from the committed work folder
   into the git-ignored `_Releases/` (reproducible; committed files only; no icons). Build and install steps:
   [package.md](package.md). The public package has not been installed with the Profile Manager or released
@@ -389,6 +390,18 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Variables: `K:AILERON_TRIM_LEFT`, `K:AILERON_TRIM_RIGHT`, `K:RUDDER_TRIM_LEFT`, `K:RUDDER_TRIM_RIGHT`,
   `(A:AILERON TRIM PCT, percent)` and `(A:RUDDER TRIM PCT, percent)` (MSFS 2024 SDK; listed Unverified).
 
+**P3-FUELCAP FUEL GAUGE SCALE** (committed; not re-planned)
+
+- Scope: the engine page's fuel gauges `FUEL L` 2,2 and `FUEL R` 2,3 checked against the sim's tank
+  capacity: they keep `0` to `26` gallons (the G1000 EIS scale), while scmon read the sim's tanks as `28`
+  gallons each, so a full tank sits at the bar's end; docs only, the profile is unchanged.
+- Files (as committed): M `docs/phase3-engine-fuel.md`; C none.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, tests/manual-checklist.md (one section), docs/aircraft-mappings.md (a section).
+- Variables: `(A:FUELSYSTEM TANK CAPACITY:1, Gallons)`, `(A:FUELSYSTEM TANK CAPACITY:2, Gallons)` and the
+  other fuel SimVars of the `docs/aircraft-mappings.md` section "Phase 3 fuel gauge scale (P3-FUELCAP)"
+  (MSFS 2024 SDK fuel variables; listed Unverified; no key reads them).
+
 **P3-6 STALE DATA AND DISCONNECT**
 
 - Scope: decide and build what every readout and state key shows with no sim, while loading, with a value
@@ -627,6 +640,16 @@ look-tested)
 - Shared tool code: no.
 - Shared docs: CHANGELOG.md, tests/manual-checklist.md.
 
+**P5-DOCS4 DOCS REFRESH AFTER THE VISIONJET PROFILE AND THE FUEL GAUGE SCALE** (committed; not re-planned)
+
+- Scope: the package's `aircraft` names the Cirrus Vision SF50 and its notes give the VisionJet profile's
+  search string; README's layout block names the VisionJet profile and its icon build and the profile built
+  from the research doc, and a status line names the VisionJet icon build; in this roadmap, the package
+  line (A.6), the P3-FUELCAP entry and the lane C queue.
+- Files: M `pilotsdeck/MSFS2024-XL/_Package/package.json` (`aircraft` and notes only), M `docs/roadmap.md`.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, README.md.
+
 **P5-4 OWN IMAGES**
 
 - Scope: a small set of project-made key images (on, off, fault, folder) that can be committed under MIT.
@@ -643,9 +666,9 @@ look-tested)
 
 | Lane | Queue |
 |---|---|
-| C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-6, P3-7, P3-8, P3-9 |
+| C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
 | A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, then a tools unit (the open tool fixes in section D), then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, then a tools unit (the open tool fixes in section D), then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
