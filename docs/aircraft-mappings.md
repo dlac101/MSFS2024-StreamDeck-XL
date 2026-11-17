@@ -427,14 +427,36 @@ in a 2024 aircraft), A-FUELRANGE (the gauges' `0` to `26` gallons), A-UNITS (the
 Reused reads (rows above in this file): RPM 1,2 = the main page's 1,2 (`GENERAL ENG RPM:1`, Format `1.0`); FUEL
 L 2,2 and FUEL R 2,3 read the systems page's `FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY` (systems 4,2, 4,3), here
 as Display Gauges from `0` to `26` gallons [GARMIN] with Format `1.0` (fallback `(A:FUELSYSTEM TANK QUANTITY:n,
-Gallons)`, the Maximum from `(A:FUELSYSTEM TANK CAPACITY:n, Gallons)`); BUS V 3,2 and BATT A 3,3 = systems 1,6
-and 1,7. All Unverified.
+Gallons)`; the scale against the sim's 28-gallon tanks: "Phase 3 fuel gauge scale (P3-FUELCAP)" below); BUS V 3,2
+and BATT A 3,3 = systems 1,6 and 1,7. All Unverified.
 
 Sources (read 2026-11-16; URLs in phase3-engine-fuel.md, "Sources"): SDK-ENGV / SDK-SYSV / SDK-FUELV / SDK-UNITS
 = MSFS 2024 SDK engine, system and fuel SimVars and SimVar units; GARMIN = Garmin G1000 Reference Manual, Cessna
 Nav III, Section 3 EIS (the real aircraft: the 172S fuel gauge full scale, 26 gallons per side); IE n = line n of
 [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt). TorontoWill's generic profile
 (the same fuel flow name, index and unit) is a lead only.
+
+### Phase 3 fuel gauge scale (P3-FUELCAP)
+
+For the engine page's FUEL L 2,2 and FUEL R 2,3 ([phase3-engine-fuel.md](phase3-engine-fuel.md), A-FUELRANGE).
+No key changed: the gauges keep `0` to `26` gallons (the G1000 EIS scale). The rows below are the tank SimVars
+behind that choice and the scmon watch list of the checklist section "P3-FUELCAP: Fuel gauge scale (C172 G1000)";
+no key reads them. All **Unverified**: the scmon values are observations (2026-11-16, sim version not
+read), not a passed test. Open points: A-TANKIDX (which index is the left tank), A-USABLE
+(whether the quantities count unusable fuel), A-SCALE (the scale).
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| Tank capacity, tanks 1 and 2 | `(A:FUELSYSTEM TANK CAPACITY:1, Gallons)`, `(A:FUELSYSTEM TANK CAPACITY:2, Gallons)` | gallons, "Total capacity"; scmon read `28` and `28` | (read only) | `FUEL LEFT CAPACITY` / `FUEL RIGHT CAPACITY` (General SimVars) | SDK-FUELV; SCMON | Unverified |
+| Tank usable capacity, tanks 1 and 2 (scmon watch only) | `(A:FUELSYSTEM TANK USABLE CAPACITY:1, Gallons)`, `:2` | gallons; 172S 26.5 per tank expected (CESSNA) | (read only) | none | SDK-FUELV | Unverified |
+| Tank quantity, tanks 1 and 2 (the gauges' fallback) | `(A:FUELSYSTEM TANK QUANTITY:1, Gallons)`, `:2` | gallons, "currently available"; scmon read 12.1, 12.9, 8.0, both tanks equal | (read only) | `FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY` (the gauges' reads) | SDK-FUELV; SCMON | Unverified |
+| Tank quantity with unusable fuel, tanks 1 and 2 (scmon watch only) | `(A:FUELSYSTEM TANK TOTAL QUANTITY:1, Gallons)`, `:2` | gallons, "including any unusable fuel" | (read only) | none | SDK-FUELV | Unverified |
+| Fuel capacity left / right (scmon watch only) | `(A:FUEL LEFT CAPACITY, Gallons)`, `(A:FUEL RIGHT CAPACITY, Gallons)` | gallons, General SimVars ("legacy") | (read only) | `FUELSYSTEM TANK CAPACITY:n` | SDK-FUELV | Unverified |
+| Unusable fuel, all tanks (scmon watch only) | `(A:UNUSABLE FUEL TOTAL QUANTITY, Gallons)` | gallons, General SimVar | (read only) | none | SDK-FUELV | Unverified |
+
+Sources (read 2026-11-16; URLs in phase3-engine-fuel.md, "Sources"): SDK-FUELV = MSFS 2024 SDK fuel SimVars;
+SCMON = the scmon run of 2026-11-16 with the 2024 C172 G1000 loaded; CESSNA = Textron Aviation's Skyhawk specifications
+(53 gallons usable), with a Boldmethod article as a lead (28 gallons per tank, 56 total).
 
 ## FlyByWire A32NX (Phase 4 airliner)
 

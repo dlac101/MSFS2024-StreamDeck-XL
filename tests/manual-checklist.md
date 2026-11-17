@@ -994,6 +994,38 @@ until both gauges read `0.0`; if the new profile misbehaves, delete it and impor
 - [ ] Record each step's result, the numbers of steps 3 to 5, the scmon output, the log lines for any step
   that failed, the sim version, and every fallback or change.
 
+## P3-FUELCAP: Fuel gauge scale (C172 G1000)
+
+Reference: [docs/phase3-engine-fuel.md](../docs/phase3-engine-fuel.md) (FUEL L 2,2 and FUEL R 2,3, A-FUELRANGE,
+A-FUELVAR, Fallbacks) and [docs/aircraft-mappings.md](../docs/aircraft-mappings.md), "Phase 3 fuel gauge scale
+(P3-FUELCAP)". P3-FUELCAP changed no key: the gauges keep `0` to `26` gallons (the G1000 EIS scale), while the
+sim's tanks read `28` gallons of capacity. This test shows what a full tank and a part load read. Run it after
+P3-5's steps 1 and 2 (the engine page installed). Record: date, MSFS 2024 version, PilotsDeck version.
+
+**In the sim (2024 C172 G1000, flight loaded, parked, engine off)**
+Way back: at the end, set the fuel load, BAT and the fuel selector back as they were when the flight loaded.
+- [ ] 1. BAT on (main 1,1), so the EIS shows fuel; fuel selector `BOTH` (systems 3,3). Open MORE 2,3 `ENGINE`.
+- [ ] 2. In the sim's fuel and payload menu, set both tanks full. Record FUEL L and FUEL R (the number and
+  whether the pointer sits at the bar's end), the EIS FUEL QTY L and R, and the systems page's FUEL L 4,2 and
+  FUEL R 4,3 (one decimal). Expected: about `26.5` (usable fuel) or `28` (**A-USABLE**); the pointer at the end;
+  FUEL L and FUEL R show whole gallons (Format `1.0`: `26` or `27` for about 26.5, `28` for 28).
+- [ ] 3. Set both tanks to about half, then the left tank fuller than the right if the menu allows it, then
+  both low (about 5 gallons). Record the same values each time. The gauge whose number follows the left tank
+  shows which read is left (**A-TANKIDX**, with step 5).
+- [ ] 4. Pressing a fuel gauge sends nothing (PilotsDeck's yellow alert sign for a moment: expected). Nothing
+  depends on the connected flight controls (Xbox Elite or T.16000M + TWCS): the gauges only read SimVars.
+- [ ] 5. With `tools/scmon` ([tools/scmon/README.md](../tools/scmon/README.md); a session in the Admin account sets
+  it up, with its `Vars` list edited to these 13 SimVars, all in `Gallons`: `FUEL LEFT QUANTITY`, `FUEL RIGHT
+  QUANTITY`, `FUEL LEFT CAPACITY`, `FUEL RIGHT CAPACITY`, `UNUSABLE FUEL TOTAL QUANTITY`, and for tanks 1 and 2
+  each `FUELSYSTEM TANK QUANTITY`, `FUELSYSTEM TANK TOTAL QUANTITY`, `FUELSYSTEM TANK CAPACITY`, `FUELSYSTEM
+  TANK USABLE CAPACITY` (`:1`, `:2`); 13 of its 16 slots): repeat steps 2 and 3 and save its output for the
+  worker. A SimConnect exception for a name means the aircraft does not have it: record it.
+- [ ] 6. Say whether the scale suits you: keep `0` to `26` (the EIS scale; a full tank pins at the end), or
+  `0` to `28` (the sim's capacity; the pointer reaches the end only at `28`) (**A-SCALE**).
+
+**Result for the worker**
+- [ ] Record each step's numbers, the scmon output, the sim version and the scale you want.
+
 ## Phase 4: A32NX profile (P4-1)
 
 Reference: [docs/phase4-a32nx.md](../docs/phase4-a32nx.md). The profile `MSFS2024 A32NX` (main, FCU and OVHD

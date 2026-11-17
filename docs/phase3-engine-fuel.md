@@ -4,7 +4,9 @@
 in the app or the sim yet. Every new name below is recorded as "Unverified" in
 [aircraft-mappings.md](aircraft-mappings.md) ("Phase 3 engine and fuel page") until the checks in
 [tests/manual-checklist.md](../tests/manual-checklist.md), section "P3-5: Engine and fuel page (C172 G1000)",
-pass.
+pass. The fuel gauges' scale against the sim's tank capacity (P3-FUELCAP) has its own checklist section,
+"P3-FUELCAP: Fuel gauge scale (C172 G1000)", and rows in aircraft-mappings.md ("Phase 3 fuel gauge scale
+(P3-FUELCAP)").
 
 Goal: the G1000 engine indication system (EIS) on the deck, read only, in the EIS order: RPM, fuel flow, oil
 pressure, oil temperature, EGT and vacuum as readouts, the fuel quantity left and right as two bar gauges, and
@@ -96,8 +98,10 @@ electrical readouts. Column 1 below the back key stays empty, as on the systems 
   gallons per side (26 gallons for the Models 172R and 172S).", GARMIN), with a yellow pointer and the number
   below the bar (Format `1.0`). They read the same SimVars as the systems page's FUEL L and FUEL R readouts
   (4,2, 4,3): `FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY`, "Current quantity in volume of _all_ the tanks on
-  the left side of the aircraft." (right the same), SDK-FUELV. A value above `26` draws at the end of the bar;
-  the number still shows the value.
+  the left side of the aircraft." (right the same), SDK-FUELV. A value above `26` draws the pointer at the end
+  of the bar (PilotsDeck limits the bar position to the range, PD-SRC); the number still shows the value. The
+  sim's tanks hold more than the scale: `FUELSYSTEM TANK CAPACITY:1` and `:2` read `28` gallons (A-FUELRANGE),
+  so a full tank in the sim is expected to pin the pointer at the end, as a full tank does on the real EIS.
 - **BUS V** (3,2) and **BATT A** (3,3) show the bus volts and the battery amps with the systems page's
   addresses and Formats (systems 1,6 and 1,7: `ELECTRICAL BUS VOLTAGE:1`, Format `2.1`; `ELECTRICAL BATTERY
   LOAD:2`, Format `1.1`). They are taken as the EIS M BUS and M BATT values (A-IDX, A-AMPS).
@@ -127,9 +131,19 @@ electrical readouts. Column 1 below the back key stays empty, as on the systems 
   for the most part (aircraft whose fuel is set up in the flight model's `[FUEL]` section) and that MSFS 2024
   aircraft should not use them. The 2024 C172 is expected to answer them anyway; the systems page's FUEL L/R
   read the same SimVars and are not sim-tested either. If they read `0` or wrong: `FUELSYSTEM TANK QUANTITY:n`,
-  on both pages.
-- **A-FUELRANGE: the gauge scale** `0` to `26` gallons (GARMIN, the real 172S EIS). The sim's tank capacity is
-  not readable here. If a full tank reads another number, the Maximum becomes that number.
+  on both pages. The `FUELSYSTEM TANK` SimVars do answer in this aircraft: scmon read `FUELSYSTEM TANK
+  QUANTITY:1` and `:2` as 12.1, then 12.9 and 8.0 gallons, always equal, on 2026-11-16 (SCMON; an observation,
+  not a key test). Which index is the left tank is open, since both read the same (A-TANKIDX, P3-FUELCAP).
+- **A-FUELRANGE: the gauge scale** `0` to `26` gallons (GARMIN, the real 172S EIS, which shows a full tank at
+  its 26-gallon end). The sim's tank capacity is readable as a SimVar: scmon read `FUELSYSTEM TANK CAPACITY:1`
+  and `:2` = `28` gallons on 2026-11-16 (SCMON; an observation, not a key test), the 172S's total per tank (28
+  gallons, of which 26.5 usable: CESSNA). The SDK calls this SimVar the tank's "Total capacity" and lists a
+  separate `FUELSYSTEM TANK USABLE CAPACITY` (SDK-FUELV). So a full tank is expected to read about `26.5`
+  (usable fuel) or `28` (with the unusable fuel): the pointer then sits at the bar's end and the number shows
+  the value in whole gallons (Format `1.0` rounds half to even: 26.5 shows `26`, 26.6 shows `27`; PD-SRC).
+  P3-FUELCAP kept the EIS scale (A-SCALE). If a full tank reads less than `26`, the
+  Maximum becomes that number; for a pointer that reaches the end only at the sim's capacity, the Maximum
+  becomes `28` (Fallbacks).
 - **A-UNITS: the unit strings** `gallons per hour`, `psi`, `fahrenheit`, `inHg` (SDK unit names, passed as
   published, README 2.1.1). If a key shows `0` while the EIS moves: the native unit (`rankine`, `psf`) with a
   Scalar, or the `ENG ...` variants (Fallbacks).
@@ -206,13 +220,15 @@ tested, and none is built.
 | OIL PRES, OIL TEMP, EGT show `0` while the EIS moves (A-UNITS) | the native unit (`psf`, `rankine`) with a Scalar | SDK-ENGV; SDK-UNITS |
 | FFLOW shows `0` while the engine runs | `(A:ENG FUEL FLOW PPH:1, pounds per hour)`: a weight rate (SDK-UNITS), not the EIS gallons; record the numbers against the EIS | SDK-ENGV; SDK-UNITS |
 | VAC shows `0` while the engine runs | none: `SUCTION PRESSURE` is the only vacuum value on SDK-SYSV (`PARTIAL PANEL VACUUM` is a fail flag); record it | SDK-SYSV |
-| FUEL L / FUEL R read `0` or wrong (A-FUELVAR) | `(A:FUELSYSTEM TANK QUANTITY:n, Gallons)`, n from the scmon check; the Maximum from `(A:FUELSYSTEM TANK CAPACITY:n, Gallons)` (`FUEL LEFT CAPACITY` / `FUEL RIGHT CAPACITY` are General SimVars like the reads that failed) | SDK-FUELV |
+| FUEL L / FUEL R read `0` or wrong (A-FUELVAR) | `(A:FUELSYSTEM TANK QUANTITY:n, Gallons)`, n from the scmon check (both tanks have read the same so far, so which index is left is open: A-TANKIDX); the Maximum stays `26` (`FUELSYSTEM TANK CAPACITY:1` and `:2` read `28`, the total per tank) | SDK-FUELV; SCMON |
+| A full tank reads more than `26` and the pointer should reach the end only at the sim's capacity (A-SCALE) | Maximum `28` on both gauges (the sim's `FUELSYSTEM TANK CAPACITY:1` and `:2`), set in `tools/profilegen/c172-g1000.json`, then regenerate; the EIS scale is then no longer matched | SDK-FUELV; SCMON |
 | BUS V or BATT A differ from the EIS (A-IDX, A-AMPS) | as the systems page: another index, `(A:ELECTRICAL MAIN BUS VOLTAGE:1, Volts)` (v1.00); BATT A index 1, Scalar `-1` or `(A:ELECTRICAL BUS AMPS:1, Amperes)` | SDK-ELECV |
 
 ## How to test
 
 Run [tests/manual-checklist.md](../tests/manual-checklist.md), section "P3-5: Engine and fuel page (C172
-G1000)": cold and dark, battery on, then engine running, each key against the MFD EIS.
+G1000)": cold and dark, battery on, then engine running, each key against the MFD EIS. Then section "P3-FUELCAP:
+Fuel gauge scale (C172 G1000)": full and part fuel loads against the EIS, with a scmon watch.
 
 ## When it passes
 
@@ -227,12 +243,15 @@ G1000)": cold and dark, battery on, then engine running, each key against the MF
 |---|---|
 | SDK-ENGV | MSFS 2024 SDK, SimVars "Aircraft Engine Variables", https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-engine-variables/ (Engine Index "a value between 1 and 16 that signals which of the engines on the aircraft is being targeted"; `ENG FUEL FLOW GPH` gallons per hour; `ENG FUEL FLOW PPH` pounds per hour; `GENERAL ENG OIL PRESSURE` psf; `GENERAL ENG OIL TEMPERATURE` and `GENERAL ENG EXHAUST GAS TEMPERATURE` rankine; `GENERAL ENG RPM` rpm; `ENG OIL PRESSURE`, `ENG OIL TEMPERATURE`, `ENG EXHAUST GAS TEMPERATURE`), read 2026-11-16 |
 | SDK-SYSV | MSFS 2024 SDK, SimVars "Aircraft System Variables", https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-system-variables/ (`SUCTION PRESSURE` "Vacuum system suction pressure.", inches of mercury, no index), read 2026-11-16 |
-| SDK-FUELV | MSFS 2024 SDK, SimVars "Aircraft Fuel Variables", https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-fuel-variables/ (`FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY` and `FUEL LEFT CAPACITY` / `FUEL RIGHT CAPACITY`, Gallons; the section note that the majority of these SimVars are only valid for legacy aircraft whose fuel is set up in the flight model's `[FUEL]` section, and that MSFS 2024 aircraft should not use them; `FUELSYSTEM TANK QUANTITY` and `FUELSYSTEM TANK CAPACITY` "Tank Name (or index)", Gallons), read 2026-11-16 |
+| SDK-FUELV | MSFS 2024 SDK, SimVars "Aircraft Fuel Variables", https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-fuel-variables/ (`FUEL LEFT QUANTITY` / `FUEL RIGHT QUANTITY` and `FUEL LEFT CAPACITY` / `FUEL RIGHT CAPACITY`, Gallons; the section note that the majority of these SimVars are only valid for legacy aircraft whose fuel is set up in the flight model's `[FUEL]` section, and that MSFS 2024 aircraft should not use them; `FUELSYSTEM TANK QUANTITY` and `FUELSYSTEM TANK CAPACITY` "Tank Name (or index)", Gallons), read 2026-11-16; reread 2026-11-16 for P3-FUELCAP: `FUELSYSTEM TANK CAPACITY` "Total capacity of the indexed fuel tank.", `FUELSYSTEM TANK USABLE CAPACITY` "Total *useable* capacity of the indexed fuel tank.", `FUELSYSTEM TANK QUANTITY` "Quantity of fuel currently available in the indexed fuel tank.", `FUELSYSTEM TANK TOTAL QUANTITY` "Total quantity of fuel available in the indexed fuel tank, including any unusable fuel.", all gallons; `FUEL TOTAL QUANTITY`: in a modular `[FUEL_SYSTEM]` aircraft "The value will not include any unuseable fuel." |
+| SDK-FUELCFG | MSFS 2024 SDK, "Modular Fuel System Information", https://docs.flightsimulator.com/msfs2024/retail/content-configuration/cfg-files/flight-model/modular-fuel-system-information/ (`Tank.N`: `Capacity` "The capacity of the fuel tank, in gallons."; `UnusableCapacity` "The part of the total capacity that cannot be used, in gallons."; tanks numbered from 1), read 2026-11-16 |
+| SCMON | `tools/scmon` run on 2026-11-16, 17:00:49 to 17:03:49 EST, with the 2024 C172 G1000 loaded (sim version not read): `FUELSYSTEM TANK CAPACITY:1` = `:2` = `28` gallons from 17:00:49.2; `FUELSYSTEM TANK QUANTITY:1` = `:2` = 12.1, from 17:02:27 12.9 and 8.0 (the user's fuel menu). SimVar observations, not a key test |
+| CESSNA | Textron Aviation, Cessna Skyhawk specifications, https://cessna.txtav.com/en/piston/cessna-skyhawk ("Usable Fuel Volume 53 gal (201 l)", both tanks), read 2026-11-16; lead: Boldmethod, "How aircraft fuel systems work: Cessna 172S" (each tank 28 gallons, 56 total, 53 usable) |
 | SDK-ELECV | MSFS 2024 SDK, SimVars "Aircraft Electrics Variables" (the systems page's source; URL in [phase3-systems.md](phase3-systems.md), "Sources") |
 | SDK-UNITS | MSFS 2024 SDK, "Simulation Variable Units", https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/simulation-variable-units/ (unit names `gallons per hour`, `pounds per hour`, `psi`, `fahrenheit`, `inHg`, `rpm`, `gallons`, `volts`, `amperes`), read 2026-11-16 |
 | README | PilotsDeck README, https://github.com/Fragtality/PilotsDeck/blob/master/README.md: 2.1.1 (A-Var `(Prefix:Name(:index), Unit)`, the unit "as published separated by a `,` from the Name"), 2.2.2 (Format), 2.3 (Display Gauge: Minimum and Maximum "of the configured Variable", "By Default this Action will render a Bar") |
 | PD-PI | The installed plugin's settings panel `Plugin\PI\pi-DisplayGauge.html` (fields `Scalar`, `MinimumValue`, `MaximumValue`, `DrawArc`, `GaugeSize`, `GaugeColor`, `UseColorSwitching`, `BarOrientation`, `Offset`, `IndicatorColor`, `CenterLine`, `DrawWarnRange`, `ShowText`, `Format`, `ValueMappings`), read 2026-11-16 |
-| PD-SRC | PilotsDeck source at commit 11bdf1f7daf4828f822c18919952fe5b66153e58, as on the trim gauge ([phase2-trim-views.md](phase2-trim-views.md), "Sources"): Orientation Right = `0`, the default bar and its text rectangle |
+| PD-SRC | PilotsDeck source at commit 11bdf1f7daf4828f822c18919952fe5b66153e58, as on the trim gauge ([phase2-trim-views.md](phase2-trim-views.md), "Sources"): Orientation Right = `0`, the default bar and its text rectangle; `Plugin/Plugin/Render/ToolsRender.cs` (`NormalizedRatio` and `Ratio`: the position on the bar is limited to 0 to 1 of the range, so a value above the Maximum draws at the end), `Plugin/Actions/Simple/ActionDisplayGauge.cs` (the text is the formatted value itself) and `Plugin/Actions/Simple/ValueState.cs` (`RoundValue`: Format `1.0` is `Math.Round(value, 0)`, .NET's default rounding half to even, shown without decimals) |
 | P1 | The Phase 1 export (`MSFS2024 C172 POC.streamDeckProfile`): key `p1:2,0` (Display Value) and its gauge field defaults |
 | GARMIN | Garmin G1000 Reference Manual, Cessna Nav III, Section 3 EIS, https://www.manualslib.com/manual/2328281/Garmin-G1000.html?page=37 and ?page=38 (labels RPM, FFLOW GPH, OIL PRES, OIL TEMP, EGT, VAC, FUEL QTY GAL L and R, M and E BUS VOLTS, M and S BATT AMPS; "When full, the indicator displays to 35 gallons per side (26 gallons for the Models 172R and 172S)."), the real aircraft, read 2026-11-16 |
 | IE | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt) (IE n = line n: 176 magneto, 177 throttle, 178 mixture; no readout) |
