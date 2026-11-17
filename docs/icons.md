@@ -1,11 +1,12 @@
-# Local icon builds (C172 G1000 and A32NX)
+# Local icon builds (C172 G1000, A32NX and VisionJet)
 
-A second copy of the C172 G1000 profile, and one of the A32NX profile (section 4), with key images from the
+A second copy of the C172 G1000 profile, one of the A32NX profile (section 4) and one of the VisionJet
+profile (section 5), with key images from the
 Guenseli icon pack (`A:\FS2024 Stuff\PilotsDeck\Icon Pack Guenseli_1_7_iUdcY`), built on this PC for your
 own use. Addresses, commands, indicators, titles and key positions are the same as in the committed
-profiles; only the key images differ. Both icon profiles were installed with the local icon package
-(sections 1 and 2) on 2026-11-15; their look tests and sim checks are not done yet: see the checklist
-blocks "P2-5: local icon build" and "P4-ICONS: local icon build (A32NX)" in
+profiles; only the key images differ. The C172 G1000 and A32NX icon profiles were installed with the local
+icon package (sections 1 and 2) on 2026-11-15; their look tests and sim checks are not done yet: see the
+checklist blocks "P2-5: local icon build" and "P4-ICONS: local icon build (A32NX)" in
 [tests/manual-checklist.md](../tests/manual-checklist.md).
 
 ## Licence: personal and private use only
@@ -13,16 +14,18 @@ blocks "P2-5: local icon build" and "P4-ICONS: local icon build (A32NX)" in
 The pack's `ReadMe.txt` allows personal and private use only and no public uploads without the author's
 permission. So:
 
-- The icon builds write only to `.local/icons/` and `.local/icons-a32nx/`, and the icon package only to
-  `.local/package/`, in the repo folder, which `.gitignore` ignores (`/.local/`). The generator and the
-  package build refuse to write anywhere git does not ignore.
+- The icon builds write only to `.local/icons/`, `.local/icons-a32nx/` and `.local/icons-visionjet-sf50/`,
+  and the icon package only to `.local/package/`, in the repo folder, which `.gitignore` ignores
+  (`/.local/`). The generator and the package build refuse to write anywhere git does not ignore.
 - Never commit, upload or share anything in `.local/`, the icon profile, or a profile exported from the
   Stream Deck app after you imported it (it carries the pack's folder images inside).
-- The repo holds only text: the key-to-icon mappings `tools/profilegen/icons-c172-g1000.json` and
-  `tools/profilegen/icons-a32nx.json` name pack-relative paths and their sha256, and the code that reads them.
+- The repo holds only text: the key-to-icon mappings `tools/profilegen/icons-c172-g1000.json`,
+  `tools/profilegen/icons-a32nx.json` and `tools/profilegen/icons-visionjet-sf50.json` name pack-relative
+  paths and their sha256, and the code that reads them.
 
-The committed profiles (`MSFS2024 C172 G1000.streamDeckProfile` and `MSFS2024 A32NX.streamDeckProfile` in
-`pilotsdeck/MSFS2024-XL/_Package/Profiles/`) stay as they are and have no pack images.
+The committed profiles (`MSFS2024 C172 G1000.streamDeckProfile`, `MSFS2024 A32NX.streamDeckProfile` and
+`MSFS2024 VisionJet.streamDeckProfile` in `pilotsdeck/MSFS2024-XL/_Package/Profiles/`) stay as they are and
+have no pack images.
 
 ## 1. Build (in the repo folder, no sim needed)
 
@@ -33,7 +36,7 @@ python tools/profilegen/generate.py --icons tools/profilegen/icons-c172-g1000.js
 It checks the mapping first (every pack file present with its recorded sha256), then writes:
 
 - `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile`: the icon profile;
-- `.local\icons\Images\Guenseli-C172\`: 27 PNG files, byte copies of the pack files used by PilotsDeck keys.
+- `.local\icons\Images\Guenseli-C172\`: 29 PNG files, byte copies of the pack files used by PilotsDeck keys.
 
 Run it again after a pull that changes the generator, the data file or the mapping. Two runs give the
 same bytes. To check the result: `python tools/profilegen/check_icons.py`.
@@ -47,8 +50,8 @@ Then pack it for the Profile Manager (the main install route, section 2):
 python tools/package/build_icon_package.py
 ```
 
-It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping: this one and the A32NX one,
-section 4) is complete and matches the committed files, then writes
+It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping: this one, the A32NX one
+(section 4) and the VisionJet one (section 5)) is complete and matches the committed files, then writes
 `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp`: the icon profiles, their images, the committed
 profiles that have no icon version, and the Lua scripts. It refuses, writing nothing, when an icon build is
 missing or out of date (delete the `.local\icons` folder and rebuild as above) and when the output folder is
@@ -130,12 +133,13 @@ python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-a32nx.js
 It writes:
 
 - `.local\icons-a32nx\MSFS2024 A32NX Icons.streamDeckProfile`: the icon profile;
-- `.local\icons-a32nx\Images\Guenseli-A32NX\`: 37 PNG files, byte copies of the pack files used by PilotsDeck
+- `.local\icons-a32nx\Images\Guenseli-A32NX\`: 44 PNG files, byte copies of the pack files used by PilotsDeck
   keys.
 
 Its own output folder and image subfolder keep it apart from the C172 build, so both can be built and
 installed; the plugin's `Images\` folder then holds `Guenseli-C172\` and `Guenseli-A32NX\`. The icon package
-(section 1) needs both builds and refuses while one is missing or out of date: build both before you pack.
+(section 1) needs every icon build (C172, A32NX and VisionJet) and refuses while one is missing or out of
+date: build them all before you pack.
 Before a rebuild after a mapping change, delete `.local\icons-a32nx` (the generator never deletes).
 
 Install, import, remove and rebuild as in sections 2 and 3, with the A32NX names. Without the package: copy
@@ -151,22 +155,58 @@ What differs from the C172 build:
   PilotsDeck draws the On or Off image over the background (PilotsDeck README section 2.3), so the key shows a
   blank pushbutton with its ON, OFF or MAN legend lit or dark as the key reads the cockpit. A value the key
   does not know shows the blank pushbutton only (for example BRK LO while MED is armed) or, on the keys with a
-  Special State (PARK and 17 overhead pushbuttons, as in the plain profile), the plugin's Fault image over it.
+  Special State (PARK on the main and pedestal pages and 17 overhead pushbuttons, as in the plain profile),
+  the plugin's Fault image over it. The pedestal page's ECAM control panel keys with a lamp do the same with
+  the pack's ECAM key face, its light lit or dark as the key reads the lamp.
 - Every readout has the same plain dark button face behind its value; a switch readout such as STROBE shows
   its position as text, never as a switch picture.
 - ESS FEED keeps the plugin's own image: the pack has no ALTN legend for this pushbutton set.
 - The A32NX is not installed yet: the look test works without it; the sim check waits for it.
 
+## 5. VisionJet icon build
+
+The VisionJet (Cirrus Vision SF50) profile has its own icon build, made the same way from its own mapping,
+`tools/profilegen/icons-visionjet-sf50.json`. Addresses, commands, titles and key positions are those of the
+committed `MSFS2024 VisionJet` profile; only the key images differ. Not yet installed or look-tested: see the
+checklist section "VisionJet SF50 profile (V-1)", "Icon look test", in
+[tests/manual-checklist.md](../tests/manual-checklist.md).
+
+Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
+
+```text
+python tools/profilegen/generate.py --icons tools/profilegen/icons-visionjet-sf50.json
+python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-visionjet-sf50.json
+```
+
+It writes:
+
+- `.local\icons-visionjet-sf50\MSFS2024 VisionJet Icons.streamDeckProfile`: the icon profile;
+- `.local\icons-visionjet-sf50\Images\Guenseli-SF50\`: 22 PNG files, byte copies of the pack files used by
+  PilotsDeck keys.
+
+Its own output folder and image subfolder keep it apart from the other builds; the plugin's `Images\`
+folder then holds `Guenseli-SF50\` as well. Before a rebuild after a mapping change, delete
+`.local\icons-visionjet-sf50` (the generator never deletes).
+
+Install, import, remove and rebuild as in sections 2 and 3, with the VisionJet names. Without the package:
+copy `.local\icons-visionjet-sf50\Images\Guenseli-SF50` into the plugin's `Images\` folder and restart the
+Stream Deck app, then import `.local\icons-visionjet-sf50\MSFS2024 VisionJet Icons.streamDeckProfile`. Keep
+only one of `MSFS2024 VisionJet` and `MSFS2024 VisionJet Icons` installed (the Profile Manager takes the
+second for a copy of the first, section 2). For automatic switching, map the icon profile with the
+VisionJet's search string `microsoft_sf50` ([visionjet-sf50.md](visionjet-sf50.md)).
+
 ## How the images reach the keys
 
 | Keys | Field the icon build sets | Where the image lives |
 |---|---|---|
-| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` (`Images\Guenseli-A32NX\` for the A32NX build) |
+| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` (`Images\Guenseli-A32NX\` and `Images\Guenseli-SF50\` for the A32NX and VisionJet builds) |
 | PilotsDeck Display Value readouts | `DefaultImage` (background; the live value is drawn over it) | same |
-| PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, PFD/MFD bezel keys, SLOWER/FASTER) | `DefaultImage` | same |
+| PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, AIL L/R, RUD L/R, PFD/MFD bezel keys, SLOWER/FASTER) | `DefaultImage` | same |
 | Folder keys and the back keys | the state's `Image` | embedded in the profile (that page's `Images/` folder in the file) |
 | COM Radio keys (COM1 on the main page and the COM pad; NAV1, NAV2 and COM2 on the radios page) | none: left as it is | |
 | The trim gauge (Display Gauge, trim 3,4) | none: left as it is; PilotsDeck draws the bar, pointer, center line and number, and no pack face is known to fit an upward bar ([design-trim-gauge.md](design-trim-gauge.md)) | |
+| The aileron and rudder trim gauges (Display Gauges, trim 2,7 `AIL TRIM` and 3,7 `RUD TRIM`) | none: left as they are; PilotsDeck draws the bar, pointer, center line and number, as on the trim gauge | |
+| The fuel gauges (Display Gauges, engine 2,2 `FUEL L` and 2,3 `FUEL R`) | none: left as they are; PilotsDeck draws the bar, pointer and number, and no pack face is known to fit a fuel bar ([phase3-engine-fuel.md](phase3-engine-fuel.md)) | |
 
 Sources (read at PilotsDeck commit 11bdf1f, the one the installed patched 0.9.7 was built from):
 
@@ -181,9 +221,10 @@ Sources (read at PilotsDeck commit 11bdf1f, the one the installed patched 0.9.7 
   page's `Images/` folder inside the profile (real saved profiles on this PC: the GSX Pro and Fenix A320
   example packages, and a folder key in the Stream Deck app's own profiles).
 
-Which pack file goes on which key, and why: `tools/profilegen/icons-c172-g1000.json` and
-`tools/profilegen/icons-a32nx.json` (one row per key, with a reason). To change an icon (C172 names below;
-the A32NX build is the same with its own names, section 4):
+Which pack file goes on which key, and why: `tools/profilegen/icons-c172-g1000.json`,
+`tools/profilegen/icons-a32nx.json` and `tools/profilegen/icons-visionjet-sf50.json` (one row per key, with a
+reason). To change an icon (C172 names below; the A32NX and VisionJet builds are the same with their own
+names, sections 4 and 5):
 
 1. Change that key's row (or add the pack file to `files` with its sha256), and remove from `files` any
    file no row uses any more.

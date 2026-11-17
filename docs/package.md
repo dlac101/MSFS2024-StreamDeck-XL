@@ -39,7 +39,8 @@ described in [installation.md](installation.md), don't re-run the installer or u
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`.
 2. Drop `MSFS2024-XL v<version>.ppp` on the arrow, or browse to it.
 3. Read the notes and the version it shows. If it reports profiles of the same name that are already
-   installed (`MSFS2024 C172 G1000`, `MSFS2024 A32NX`), keep **Remove old Profiles** checked.
+   installed (`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`), keep **Remove old Profiles**
+   checked.
 4. Click **Install**. The Profile Manager stops and starts the Stream Deck app as needed and copies the Lua
    scripts into the plugin's `Scripts` folder (replacing older copies), so you no longer copy them by hand.
 5. It shows one link per profile: click each one and pick your Stream Deck XL. It goes on when every profile
@@ -61,6 +62,9 @@ Cessna 172 Skyhawk G1000 ([aircraft-mappings.md](aircraft-mappings.md)). The `MS
 no search string yet: its aircraft string is recorded at the first A32NX flight (same file), so pick that
 profile on the Stream Deck by hand until then.
 
+The `MSFS2024 VisionJet` profile maps the same way with the search string `microsoft_sf50`
+([visionjet-sf50.md](visionjet-sf50.md)); not yet tested.
+
 ## Update to a newer package
 
 Install the new `.ppp` the same way, with **Remove old Profiles** checked. The Profile Manager matches
@@ -80,9 +84,9 @@ Profiles).
 git-ignored `.local/` folder: the icon profiles in place of the plain profiles they copy, their images, the
 other committed profiles and the scripts, written only to `.local/package/`. It is for your own Profile
 Manager install, never for a release or an upload; build and install steps: [icons.md](icons.md). It was
-installed with the Profile Manager on 2026-11-15 (both icon profiles imported, its images and scripts copied
-into the plugin folder); its look tests are not done yet. The public package above stays icon-free and
-unchanged.
+installed with the Profile Manager on 2026-11-15 (the C172 G1000 and A32NX icon profiles imported, its images
+and scripts copied into the plugin folder); its look tests are not done yet. The public package above stays
+icon-free and unchanged.
 
 ## For maintainers: versions and releases
 

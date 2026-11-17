@@ -1443,7 +1443,7 @@ Record: date, Stream Deck app version, PilotsDeck version (0.9.7 patched), MSFS 
 - [ ] In the repo folder: `python tools/profilegen/generate.py --icons tools/profilegen/icons-a32nx.json`, then
   `python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-a32nx.json`: `RESULT: PASS`.
 - [ ] Install as docs/icons.md sections 2 and 4 say (the icon package, or the hand copy of
-  `.local\icons-a32nx\Images\Guenseli-A32NX`, 37 files, then a restart of the Stream Deck app), BEFORE you import
+  `.local\icons-a32nx\Images\Guenseli-A32NX`, 44 files, then a restart of the Stream Deck app), BEFORE you import
   the profile or open any key's settings. Keep only one of `MSFS2024 A32NX` and `MSFS2024 A32NX Icons`.
 
 **Look test, page by page** (MSFS closed, or the A32NX flight fully loaded; a Wait image then means that key's
