@@ -11,7 +11,9 @@ and image copies it checks live in a git-ignored folder (default <repo>/.local/i
 check.py stays the check for the committed profile; this script never changes a file.
 
 Checks:
-  mapping  the JSON parses (no key twice); the pack's ReadMe.txt has the recorded sha256; every "files"
+  mapping  the JSON parses (no key twice) and every field has its type (strings; "files" an object of objects;
+           "keys" and "left_as_is" lists of objects; "pass" an int; "title" a string, or null on a back key),
+           else a FAIL naming the field; the pack's ReadMe.txt has the recorded sha256; every "files"
            entry exists in the pack with its recorded sha256, is a PNG of its recorded size, square, named
            like its pack file with only [A-Za-z0-9_.-] (no "@": PilotsDeck's image list skips those), and is
            used by some row; every "keys"/"left_as_is" row names a real key (a data-file key or a child
@@ -63,6 +65,38 @@ LEFT_ROW_FIELDS = {"page", "pos", "title", "reason"}
 TOP_FIELDS = {"_about", "pack_root", "pack_readme_sha256", "data", "profile_name", "out", "plugin_subfolder",
               "files", "keys", "left_as_is"}
 IMAGE_SETTINGS = ("DefaultImage", "OnImage", "OffImage")
+# The JSON type of every mapping field, as load_plan reads it ("_about" is free text; a back key's row has
+# "title" null: key_table gives a back key no title)
+TOP_TYPES = {"pack_root": (str,), "pack_readme_sha256": (str,), "data": (str,), "profile_name": (str,), "out": (str,),
+             "plugin_subfolder": (str,), "files": (dict,), "keys": (list,), "left_as_is": (list,)}
+FILE_TYPES = {"pack": (str,), "sha256": (str,), "size": (str,)}
+ROW_TYPES = {"page": (str,), "pos": (str,), "title": (str, type(None)), "pass": (int,), "default": (str,), "on": (str,),
+             "off": (str,), "image": (str,), "reason": (str,)}
+TYPE_WORDS = {dict: "an object", list: "a list", str: "a string", int: "an integer", float: "a number",
+              bool: "true/false", type(None): "null"}
+
+
+def type_errors(m):
+    """A message naming every mapping field of the wrong JSON type (true/false is not an integer)."""
+    def wrong(v, types):
+        return type(v) not in types
+
+    def msg(where, f, v, types):
+        return f"{where}field {f!r} must be {' or '.join(TYPE_WORDS[t] for t in types)}, got {TYPE_WORDS.get(type(v), type(v).__name__)}"
+    out = [msg("", f, m[f], t) for f, t in TOP_TYPES.items() if wrong(m[f], t)]
+    if type(m["files"]) is dict:
+        for local, e in m["files"].items():
+            if type(e) is not dict:
+                out.append(msg("", f"files {local}", e, (dict,)))
+                continue
+            out += [msg(f"files {local}: ", f, e[f], t) for f, t in FILE_TYPES.items() if f in e and wrong(e[f], t)]
+    for where in ("keys", "left_as_is"):
+        for i, row in enumerate(m[where] if type(m[where]) is list else []):
+            if type(row) is not dict:
+                out.append(msg("", f"{where}[{i}]", row, (dict,)))
+                continue
+            out += [msg(f"{where}[{i}]: ", f, row[f], t) for f, t in ROW_TYPES.items() if f in row and wrong(row[f], t)]
+    return out
 
 
 def no_dup_keys(pairs):
@@ -145,10 +179,15 @@ def load_plan(mapping_path, pack=None, data=None):
         m = json.loads(Path(mapping_path).read_text(encoding="utf-8"), object_pairs_hook=no_dup_keys)
     except (OSError, ValueError) as ex:
         return [f"mapping {mapping_path}: can't read: {ex}"], None
+    if type(m) is not dict:
+        return [f"mapping {mapping_path}: must be a JSON object, got {TYPE_WORDS.get(type(m), type(m).__name__)}"], None
     missing = sorted(TOP_FIELDS - {"_about"} - set(m))
     unknown = sorted(set(m) - TOP_FIELDS)
     if missing or unknown:
         return [f"mapping: missing field(s) {missing}, unknown field(s) {unknown}"], None
+    wrong = type_errors(m)
+    if wrong:
+        return [f"mapping: {w}" for w in wrong], None
     sub = m["plugin_subfolder"]
     if not (isinstance(sub, str) and NAME_RE.fullmatch(sub)) or sub.strip(".") == "":
         err(f"plugin_subfolder {sub!r}: use only [A-Za-z0-9_.-] (one folder level, no '@', not only dots)")
@@ -204,7 +243,7 @@ def load_plan(mapping_path, pack=None, data=None):
         committed_path = ROOT / spec["output"]
         cz, cj = read_zip(committed_path)
         table = key_table(spec, cj, cz.namelist())
-    except (OSError, ValueError, KeyError, zipfile.BadZipFile) as ex:
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as ex:
         errors.append(f"data file / committed profile not usable: {type(ex).__name__}: {ex}")
         return errors, None
     seen = {}

@@ -31,7 +31,9 @@ What it refuses (exit 1, nothing written), by rule:
   R7  a committed Lua file holding a CR or NUL byte
   R8  no profile to pack
   R9  an existing output file of the same version with different bytes
-      (bump versionpackage); same bytes: prints "unchanged"
+      (bump versionpackage); same bytes: prints "unchanged". It compares only
+      with the file in the output folder: a build into another folder, or
+      after that file is deleted, is not refused
   R10 --out-dir inside the work folder
 Exit 2: usage or environment error (unknown option, not this repo, git fails,
 the output folder cannot be read or written).
@@ -364,6 +366,7 @@ def main(argv=None):
         tmp = out_dir / f".{target.name}.tmp"
         try:
             out_dir.mkdir(parents=True, exist_ok=True)
+            tmp.unlink(missing_ok=True)  # never write through a leftover file or link of this name
             tmp.write_bytes(archive)
             os.replace(tmp, target)
         except OSError as exc:

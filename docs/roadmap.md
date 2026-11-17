@@ -93,7 +93,7 @@ The `Scripts/global/` and `Scripts/image/` folders are empty.
 | Tool | Path | Purpose |
 |---|---|---|
 | Profile generator | `tools/profilegen/generate.py` | Builds a profile from its data file (`c172-g1000.json` by default, `a32nx.json` for the A32NX, `visionjet-sf50.json` for the VisionJet), `templates.json` (real saved keys) and the Phase 1 export (`tools/profilegen/MSFS2024 C172 POC.streamDeckProfile`); same inputs give the same bytes; `--icons <mapping>` builds the local icon profile of that mapping |
-| Profile check | `tools/profilegen/check.py` | Compares the profile with each page doc's Key table, the templates and a fresh build; checks folders, back keys, title sizes and alignment, and every `lua:` key against its script |
+| Profile check | `tools/profilegen/check.py` | Compares the profile with each page doc's Key table (a Display Gauge's range and bar too), the templates and a fresh build; checks folders, back keys, title sizes and alignment, every `lua:` key against its script, and every key's addresses and every row's status cell in [aircraft-mappings.md](aircraft-mappings.md) |
 | Icon mapping check | `tools/profilegen/check_icons.py` | Checks a key-to-icon mapping (`icons-c172-g1000.json` by default, `icons-a32nx.json` or `icons-visionjet-sf50.json` with `--mapping`) and its local build |
 | Package build | `tools/package/build_package.py` | Builds the public package `MSFS2024-XL v<version>.ppp` from the committed work folder into the git-ignored `_Releases/` (reproducible; committed files only; no icons; [package.md](package.md)) |
 | Icon package build | `tools/package/build_icon_package.py` | Packs every local icon build (one per `icons-*.json` mapping), its images, the other committed profiles and the scripts into a Profile Manager package under the git-ignored `.local/package/`; refuses a missing or out-of-date build |
@@ -269,7 +269,7 @@ product call; "Project" = the project can decide.
 | 12 | More camera views by camera variable writes | A paid camera-only profile exists (C.2 item 3); two view keys exist, one passed a hand test | User (which views) |
 | 13 | Safe default profile for other aircraft | The plan's safe fallback (line 54) | User (whether to build) |
 | 14 | Committed own images (state colours, icons) | Readability without the personal-use pack | User |
-| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list open, for a tools unit) |
+| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list open, for P5-TOOLS2) |
 | 16 | `1X` key unlit at every rate but 1x | Today it shows no image at most rates (by design); cosmetic | User (after the look test) |
 | 17 | Folder title alignment for the remaining folders | Main page VIEWS, CHECKLIST and MORE are centred; the others are not | User (after the look test) |
 | 18 | Ground-service menu (GSX) | Needs a paid add-on; the plan wants no paid dependency for the baseline | User |
@@ -288,8 +288,8 @@ stands after every sim test):
 - `tools/profilegen/generate.py`: after a git error, do not also say the output path "is not git-ignored".
 - After each sim test: the page docs' status lines and per-key Verified marks in `docs/aircraft-mappings.md`.
 
-Still open, for a later tools unit (shared tool code, one lane at a time), found in the reviews of later
-units:
+Second list (shared tool code, one lane at a time), found in the reviews of later units (all five were done
+in P5-TOOLS):
 
 - `tools/profilegen/check.py`: no check reads `docs/aircraft-mappings.md`, so a key's variable or event that
   is missing there is not caught.
@@ -302,6 +302,16 @@ units:
   instead of a clean FAIL.
 - `tools/package/build_package.py`: remove a leftover temporary package file before writing it, as
   `build_icon_package.py` does, so the write never goes through a link planted at that path.
+
+Still open, for P5-TOOLS2 (shared tool code, one lane at a time):
+
+- `tools/profilegen/check.py`: no check reads `tests/manual-checklist.md`, so a checklist section that a doc
+  names in quotes ("the checklist section ...") can be renamed or removed unnoticed.
+- `tools/profilegen/check.py`: nothing checks that `README.md`'s layout block names every doc in `docs/`, or
+  that the work folder's `package.json` notes name every committed profile and script (the package build
+  prints a NOTE, not a failure).
+- `tools/profilegen/check.py`: a `B:` input event in `docs/aircraft-mappings.md` is not checked against the
+  aircraft's input event list in `docs/reference/`.
 
 Not ranked yet, from C and the plan: pages by flight phase (the Fenix A320 example's Gate, Taxi, Flight and
 Cruise folders), best added once the A32NX panels exist; and the plan's timer (concept layout 3,7, now the
@@ -650,6 +660,31 @@ look-tested)
 - Shared tool code: no.
 - Shared docs: CHANGELOG.md, README.md.
 
+**P5-TOOLS TOOL FIXES** (committed; not re-planned)
+
+- Scope: the second list of tool fixes in section D. `check.py` checks that every key's command and read
+  addresses are named in `docs/aircraft-mappings.md` and that each of its status cells is "Unverified", a
+  test with its date or a row no key uses; it compares a Display Gauge's range, orientation, center line and
+  arc with its Key table row; it gives a clean FAIL, not a traceback, on an unknown action kind, an
+  unreadable data file or Key table, and a `phase1_keys` entry that names no Phase 1 key. `check_icons.py`
+  gives a clean FAIL naming a wrongly typed mapping field. `build_package.py` removes a leftover temporary
+  package file before it writes. `docs/package.md` says that the same-version rule compares only with the
+  file in the output folder.
+- Files: M `tools/profilegen/check.py`, M `tools/profilegen/check_icons.py`, M
+  `tools/package/build_package.py`, M `docs/package.md`, M `docs/roadmap.md`.
+- Shared tool code: yes (`check.py`, `check_icons.py` and `build_package.py`; `generate.py` and
+  `templates.json` unchanged, every profile the same byte for byte).
+- Shared docs: CHANGELOG.md.
+
+**P5-TOOLS2 MORE DOC CHECKS**
+
+- Scope: the third list in section D: the checklist sections the docs name, README's layout block, the
+  package notes, and the `B:` input events in `docs/aircraft-mappings.md`.
+- Files: M `tools/profilegen/check.py` (or a new check script under `tools/`), M `docs/roadmap.md`.
+- Depends on: P5-TOOLS.
+- Shared tool code: yes.
+- Shared docs: CHANGELOG.md.
+
 **P5-4 OWN IMAGES**
 
 - Scope: a small set of project-made key images (on, off, fault, folder) that can be committed under MIT.
@@ -668,13 +703,13 @@ look-tested)
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
 | A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, then a tools unit (the open tool fixes in section D), then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, then P5-TOOLS2 (the tool checks still open in section D), then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
 - Lane A units change the A32NX data file and profile only, so they can run beside lane C units, apart from
   the shared docs (one added line or section each) and shared tool code.
-- Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, the tools unit, P5-4, P5-2 with a universal
+- Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-4, P5-2 with a universal
   profile) do not run at the same time as each other. P3-4 and P5-1 both change `check.py`.
 - P5-PKG, P5-3 and P5-2 (docs only) touch no page data and can run beside any lane C or lane A unit.
 - P5-1 can run beside page units that do not change the same tool files.

@@ -21,9 +21,11 @@ Checks:
            that back key; no page is unreachable; (with --sources or --fenix) the same form as the exported
            MSFS-Fenix320-XL profile, SKIP when that file can't be read
   doc      key by key against the "Key table" of the spec doc: action, title, command and read addresses,
-           On/Off values, long press, format, mappings, Decode BCD, Special State, folder keys; plus the
-           template tables' values the Key table doesn't list (Toggle Switch unchecked on K-event commands,
-           On/Off images, Special Image)
+           On/Off values, long press, format, mappings, Decode BCD, Special State, folder keys; on a Display
+           Gauge its range (`<min>` to `<max>`), its saved orientation (saved `<n>`, equal to the orientation
+           word's value), center line and arc; plus the template tables' values the Key table doesn't list
+           (Toggle Switch unchecked on K-event commands, On/Off images, Special Image); a row with an action
+           kind check.py doesn't know is a FAIL naming the row
   child    every child page whose data file entry names a doc ("spec") against that doc's table under the
            heading "## Key table: <page id>": all 32 positions listed, the back key row at back_key_pos,
            the page's keys and Empty positions as the table says, then key by key as "doc" above (folder
@@ -49,10 +51,16 @@ Checks:
            defined at top level in it (a line `function <Function>(`, not indented, not `local`), with no ':' after
            `lua:<Script>:` (PilotsDeck splits the address at every ':'), and whose whole address PilotsDeck's rxLuaFunc
            accepts (e.g. names of 2+ characters, ".lua" lower case, "(...)" not empty and last); prints the count
+  mappings every command and read address of every key in the profile is named, in backticks, in a table row
+           of docs/aircraft-mappings.md; every table row's "Verified" cell (the last column) is "Unverified...",
+           a test with its date ("Verified <YYYY-MM-DD>...", "<YYYY-MM-DD>, MSFS <version>...",
+           "does not work (<YYYY-MM-DD>...", or "does not work" in bold and/or capitalized with a date inside
+           its first parenthesis), or a row no key uses ("not on a key", "not tested...", "removed in ...")
   sources  (--sources) every template in templates.json still equals the real file it was copied from;
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
            profiles unchanged and A:\\FS2024 Stuff\\PilotsDeck)
-Exit code 0 when everything passes (a SKIP is not a failure).
+Exit code 0 when everything passes (a SKIP is not a failure), 1 on a FAIL (an unreadable data file, doc or
+profile too), 2 on a usage error.
 """
 import io
 import json
@@ -109,6 +117,23 @@ RULED_TITLE_SIZE_KINDS = {ACTION_UUIDS["Simple Button"], ACTION_UUIDS["Dynamic B
 # Allowed "title_align" values (P2-7 A-8, LR232-C5): the Elgato Stream Deck SDK manifest reference, State
 # "TitleAlignment": "bottom" | "middle" | "top" (https://docs.elgato.com/streamdeck/sdk/references/manifest)
 TITLE_ALIGNS = ("top", "middle", "bottom")
+# Every aircraft variable and event is recorded in this doc with its status (its intro: "Unverified" until a test
+# passes); the settings fields below hold a key's command and read addresses (the ones expected_from_row compares)
+MAPPINGS_DOC = "docs/aircraft-mappings.md"
+ADDRESS_FIELDS = ("AddressAction", "AddressActionLong", "Address", "AddressRadioActiv", "AddressRadioStandby")
+# The forms of the doc's "Verified" cells: "Unverified" (any note after it), a test with its date (the forms of its
+# tested rows: "2026-11-11, MSFS 1.9.24.0, both directions", "Verified 2026-11-11 (...)", "does not work
+# (2026-11-11, ...)", and "does not work" in bold and/or capitalized with the date inside its first parenthesis:
+# "**Does not work** in the SF50 (hand test 2026-11-16, ...)"), or a row no key uses ("not on a key", "not
+# tested, ...", "removed in ...")
+STATUS_FORMS = [re.compile(rx) for rx in (
+    r"Unverified\b.*", r"Verified \d{4}-\d{2}-\d{2}\b.*", r"\d{4}-\d{2}-\d{2}, MSFS \d+(?:\.\d+)+\b.*",
+    r"does not work \(\d{4}-\d{2}-\d{2}\b.*",
+    r"(?:\*\*[Dd]oes not work\*\*|Does not work)(?![\w*])[^(]*\([^()]*\b\d{4}-\d{2}-\d{2}\b.*",
+    r"not on a key", r"not tested\b.*", r"removed in \S.*")]
+# GaugeOrientation (PilotsDeck 11bdf1f7 Plugin/Actions/IAction.cs, cited in templates.json "display_gauge":
+# UP = -90, DOWN = 90, LEFT = 180, RIGHT = 0): the saved BarOrientation of the orientation a Display Gauge row names
+GAUGE_ORIENTATION = {"Up": -90, "Down": 90, "Left": 180, "Right": 0}
 
 failures = []
 skips = []
@@ -124,6 +149,14 @@ def check(cond, msg):
 def skip(msg):
     print("  SKIP " + msg)
     skips.append(msg)
+
+
+def finish():
+    """Print the RESULT line; return the exit code (0 PASS, 1 FAIL)."""
+    print()
+    result = "PASS" if not failures else f"FAIL ({len(failures)})"
+    print("RESULT:", result + (f", {len(skips)} SKIP" if skips else ""))
+    return 0 if not failures else 1
 
 
 def ctype(addr):
@@ -208,6 +241,39 @@ def parse_key_table(md, heading="## Key table"):
     return rows, dups
 
 
+def parse_mappings(md):
+    """(rows, names) of the doc's tables whose header's last cell is "Verified": rows = (line number, that row's
+    last cell), names = every text in backticks in those rows."""
+    rows, names = [], set()
+    state = None  # None outside a table; "rows" in a table with a Verified column; "other" in any other table
+    for n, line in enumerate(md.splitlines(), 1):
+        if not line.startswith("|"):
+            state = None
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if state is None:
+            state = "rows" if cells[-1] == "Verified" else "other"  # the header row
+        elif state == "rows" and not re.fullmatch(r"[\s|:-]*", line):  # not the separator row
+            rows.append((n, cells[-1]))
+            names.update(ticks(line))
+    return rows, names
+
+
+def expected_gauge(disp):
+    """What a Display Gauge row's Display cell says the bar fields hold."""
+    rng = re.search(r"`(-?\d+(?:\.\d+)?)` to `(-?\d+(?:\.\d+)?)`", disp)
+    saved = re.search(r"saved `(-?\d+)`", disp)
+    if not rng or not saved:
+        raise ValueError("a Display Gauge row's Display cell names its range (`<min>` to `<max>`) and its saved "
+                         "orientation (saved `<n>`)")
+    word = re.search(r"Orientation (Up|Down|Left|Right)\b", disp)
+    if word and GAUGE_ORIENTATION[word.group(1)] != int(saved.group(1)):
+        raise ValueError(f"Orientation {word.group(1)} is saved {GAUGE_ORIENTATION[word.group(1)]} (GaugeOrientation), "
+                         f"the row says saved `{saved.group(1)}`")
+    return {"MinimumValue": rng.group(1), "MaximumValue": rng.group(2), "BarOrientation": int(saved.group(1)),
+            "CenterLine": "center line" in disp, "DrawArc": re.search(r"\barc\b", disp) is not None}
+
+
 def expected_from_row(r):
     """What the doc's Key table row says the saved settings must hold."""
     e = {}
@@ -249,6 +315,8 @@ def expected_from_row(r):
         # T1, T2: On Image / Off Image; the On/Off States values are 1 / 0 unless the cell names others
         m = re.search(r"On/Off image: On `([^`]*)`, Off `([^`]*)`", disp)
         e.update(OnState=m.group(1) if m else "1", OffState=m.group(2) if m else "0", **ON_OFF_IMAGES)
+    if r["action"] == "Display Gauge":
+        e.update(expected_gauge(disp))
     return e
 
 
@@ -260,6 +328,10 @@ def check_keys(label, acts, rows, keys_by_pos, page_uuid):
         title = (ticks(r["title"]) or [""])[0]
         if r["action"] == "Empty":
             check(a is None, f"{label}{pos} Empty")
+            continue
+        if r["action"] not in ACTION_UUIDS and r["action"] != "Back":
+            check(False, f"{label}{pos} {title}: the Key table row names the action kind {r['action']!r}, which check.py "
+                         f"doesn't know ({', '.join([*ACTION_UUIDS, 'Back', 'Empty'])} expected)")
             continue
         if a is None:
             check(False, f"{label}{pos} {title}: no action at {k}")
@@ -294,12 +366,19 @@ def main():
     sources = "--sources" in args
     fenix = FENIX_DEFAULT if sources else None
     if "--fenix" in args:
+        if args.index("--fenix") + 1 >= len(args) or args[args.index("--fenix") + 1].startswith("--"):
+            print("usage: check.py [<data.json>] [--sources] [--fenix <MSFS-Fenix320-XL.streamDeckProfile>]: --fenix needs a path")
+            return 2
         fenix = args[args.index("--fenix") + 1]
     pos_args = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] != "--fenix")]
     data_path = Path(pos_args[0]) if pos_args else HERE / "c172-g1000.json"
-    data = json.loads(data_path.read_text(encoding="utf-8"))
-    templates = json.loads((HERE / "templates.json").read_text(encoding="utf-8"))
-    out_path = ROOT / data["output"]
+    try:
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        templates = json.loads((HERE / "templates.json").read_text(encoding="utf-8"))
+        out_path = ROOT / data["output"]
+    except (OSError, ValueError, KeyError, TypeError) as ex:
+        check(False, f"cannot read the data file {data_path} (or templates.json): {type(ex).__name__}: {ex}")
+        return finish()
 
     print("== zip: the profile opens, every JSON entry parses")
     try:
@@ -308,7 +387,7 @@ def main():
         check(True, f"{len(j)} JSON entries parse")
     except Exception as ex:  # noqa: BLE001
         check(False, f"cannot read {out_path}: {ex}")
-        return 1
+        return finish()
 
     print("== current: the profile on disk is what generate.py builds now (names, order, uncompressed content)")
     try:
@@ -331,7 +410,11 @@ def main():
     p1main = actions(p1pages[p1j[p1prof]["Pages"]["Pages"][0].upper()])
 
     print("== layout: main page against the doc's Key table")
-    rows, dups = parse_key_table((ROOT / data["spec"]).read_text(encoding="utf-8"))
+    try:
+        rows, dups = parse_key_table((ROOT / data["spec"]).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as ex:
+        check(False, f"cannot read the table '## Key table' in {data['spec']}: {type(ex).__name__}: {ex}")
+        rows, dups = {}, []
     check(len(rows) == 32, f"doc Key table has {len(rows)} rows (32 expected)")
     check(not dups, "doc Key table lists no position twice" + (f"  TWICE: {dups}" if dups else ""))
     configured = [p for p, r in rows.items() if r["action"] not in ("Empty", "Folder")]
@@ -511,7 +594,10 @@ def main():
 
     print("== phase1: BAT, PARK, AP against the Phase 1 export")
     for pos in data.get("phase1_keys", ["1,1", "1,4", "2,1"]):
-        key = keys_by_pos[pos]
+        key = keys_by_pos.get(pos)
+        if key is None or key.get("template", "")[3:] not in p1main:
+            check(False, f"{pos}: phase1_keys names no key of the main page built from a Phase 1 key ('p1:<key>' template)")
+            continue
         src = p1main[key["template"][3:]]
         a = acts[key_of(pos)]
         named = set(key.get("set", {}))
@@ -671,6 +757,24 @@ def main():
     print(f"  {len(calls)} lua: calls checked ({sum(w.startswith('data') for w, _, _ in calls)} in the data file, "
           f"{sum(w.startswith('profile') for w, _, _ in calls)} in the profile), scripts in {SCRIPTS_DIR}: {sorted(p.name for p in scripts.values())}")
 
+    print(f"== mappings: every key's addresses are named in {MAPPINGS_DOC}; every row's Verified cell has a known form")
+    try:
+        mrows, mnames = parse_mappings((ROOT / MAPPINGS_DOC).read_text(encoding="utf-8"))
+    except (OSError, ValueError) as ex:
+        check(False, f"cannot read {MAPPINGS_DOC}: {type(ex).__name__}: {ex}")
+        mrows, mnames = [], set()
+    used = [(f"{page_id(pid)} {int(k.split(',')[1]) + 1},{int(k.split(',')[0]) + 1} {a['States'][0].get('Title', '')}", f, v)
+            for pid, page in sorted(pages.items()) for k, a in sorted(actions(page).items())
+            for f, v in (((a.get("Settings") or {}).get("settingsModel") or {}).items())
+            if f in ADDRESS_FIELDS and isinstance(v, str) and v]
+    missing = [f"{where}: {f} {v}" for where, f, v in used if v not in mnames]
+    check(not missing, f"{len(used)} addresses ({len({v for _, _, v in used})} distinct) of the profile's keys are named in "
+          f"{MAPPINGS_DOC} (in backticks, in a table row)" + (f"  NOT NAMED {missing}" if missing else ""))
+    unknown = [f"line {n}: {s!r}" for n, s in mrows if not any(rx.fullmatch(s) for rx in STATUS_FORMS)]
+    check(not unknown, f"{len(mrows)} table rows in {MAPPINGS_DOC}: each Verified cell is Unverified, a test with its date "
+          "or a row no key uses" + (f"  UNKNOWN FORM {unknown} (a passed test names its date: 'Verified <YYYY-MM-DD> ...' "
+                                    "or '<YYYY-MM-DD>, MSFS <version>, ...')" if unknown else ""))
+
     if sources:
         print("== sources: templates.json against the real files")
         for name, t in templates.items():
@@ -688,10 +792,7 @@ def main():
                 continue
             check(actions(real).get(s["pos"]) == t["action"], f"{name}: equals {s['file']} {s.get('entry', '')} at {s['pos']}")
 
-    print()
-    result = "PASS" if not failures else f"FAIL ({len(failures)})"
-    print("RESULT:", result + (f", {len(skips)} SKIP" if skips else ""))
-    return 0 if not failures else 1
+    return finish()
 
 
 if __name__ == "__main__":

@@ -24,8 +24,10 @@ package's sha256. The version is `versionpackage` in `package.json`.
   package against its sha256.
 - It refuses, with the path and the rule, and writes nothing: uncommitted or untracked files in the work
   folder; any other file kind; an invalid `package.json`; a profile whose name differs from its file name or
-  that embeds an image; a package of the same version with different content (bump the version). Run
-  `python tools/package/build_package.py --help` or read the script's docstring for the full list.
+  that embeds an image; a package of the same version with different content in the output folder (bump the
+  version). It compares only with the file already in that folder: a build into another folder, or after that
+  file is deleted, is not refused. Run `python tools/package/build_package.py --help` or read the script's
+  docstring for the full list.
 - Don't use the Profile Manager's **Create Package** button for this repository: it rewrites `package.json`
   and packs the folder as it is on disk, including uncommitted changes and the `.gitkeep` files.
 
@@ -97,7 +99,8 @@ icon-free and unchanged.
   build script supports it.
 - A release: bump `versionpackage`, update `notes` and `aircraft` (the build prints a NOTE for each packed
   profile or script the notes don't name), commit, then build. Rebuilding an existing version with new
-  content is refused.
+  content is refused only while that version's `.ppp` is still in the output folder (`_Releases/` by
+  default), so keep each released `.ppp` there.
 - Never rename a profile (the manifest `Name` and the file name stay the same between versions): the
   Profile Manager uses the name to update the profile and keep its mapping.
 - When a script or image is renamed or dropped, add its old plugin path (`Scripts/<old>.lua`,
