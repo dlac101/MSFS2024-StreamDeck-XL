@@ -1584,3 +1584,71 @@ changed value you used.
 - [ ] Record each step's result, the log lines for any step that failed, the battery number, the B-var values,
   the flap number per detent, the keys the G3000 ignores, the MSFS version and SF50 preset, and every fallback
   or change.
+
+## VisionJet SF50 profile (V-2)
+
+Reference: [docs/visionjet-sf50.md](../docs/visionjet-sf50.md). V-2 grows the profile `MSFS2024 VisionJet` to
+14 pages and 180 keys: RECOG and ICE on main, BARO's long press, the trim page's rudder trim, FMS SPD, YD and
+MAN SPD on the autopilot page, and the new SYSTEMS (MORE 2,2) and ICE/ENV (MORE 2,4) pages. Run it after the
+V-1 section; V-1's step "4,2 (BCN), 1,3 and 4,7 are empty" now reads: only main 1,3 is empty. Not yet tested
+in the app or the sim. The values the SF50's input events take are working values: record what each key reads.
+**G1 keys** (BAT 2, GEN 1, GEN 2, ENG IPS, WING/STAB, main ICE, WSHLD, OXYGEN): a press switches on, a long
+press (half a second or more) switches off.
+
+**Before you start**
+- [ ] Import the new package (or the profile); the Profile Manager mapping from V-1 stays (same profile name).
+- [ ] After the flight loads, wait about 30 s before you judge a key: some SF50 B-vars read 0 until then (a
+  scmon capture, 2026-11-16).
+
+**Main page**
+- [ ] PARK (now the SF50's parking brake input event; V-1's `K:PARKING_BRAKES` failed in the SF50): with the
+  brake set, press: the brake releases and stays released; press again: it sets; work the handle with the
+  mouse: the key follows.
+- [ ] RECOG: press, the cockpit recognition light switch moves; flip it with the mouse: the key follows (it
+  uses an `_intercept` input event, as NAV LT).
+- [ ] ICE: press, the wing/stab ice protection comes on (ICE/ENV STRUCT shows `ON`); long press: off.
+- [ ] BARO: long press, the altimeter shows 29.92 / STD; a short press still does what V-1's BARO did.
+
+**Trim page**
+- [ ] RUD L and RUD R step the rudder trim and the RUD TRIM gauge follows; trim the SF50's rudder trim with
+  the mouse: the gauge follows. TRIM UP, TRIM DN and the TRIM gauge as before. No aileron trim key exists.
+
+**Autopilot page, in flight**
+- [ ] YD: press, the PFD yaw damper annunciation and the key agree; record if nothing happens.
+- [ ] FMS SPD and MAN SPD: press each, the speed reference changes on the PFD, that key lights and the other
+  goes dark (the two B-vars are exclusive and hold their state); record what you see.
+
+**Systems page (MORE > SYSTEMS)**
+- [ ] BAT 2, GEN 1, GEN 2: press = on, long press = off, each against the cockpit switch and the EIS; flip
+  each cockpit switch: the key follows. Record which battery and generator index each one moves.
+- [ ] BUS V and LOAD A against the EIS. ENG KNOB shows `RUN` with the engine running; STARTER shows `ON`
+  during a start; FUEL CTL shows a number per fuel control position (record each).
+
+**ICE/ENV page (MORE > ICE/ENV)**
+- [ ] ENG IPS, WING/STAB, WSHLD: press on, long press off; ENG AI, STRUCT and WSHLD SW in row 2 follow.
+- [ ] WSHLD HI, WING LT, DEFOG, AFT CTL, TEMP BKUP toggle; OXYGEN: press on, long press off.
+- [ ] BLEED, ECS DIS and the four knob readouts (TEMP FWD, TEMP AFT, FAN FWD, FAN AFT) show values as you work
+  the cockpit controls; record the numbers.
+
+**Working values (one by one, record the value read)**
+- [ ] Every G1 and T1 key above: the value the key reads with the cockpit control off and on, and whether a
+  long press on each G1 key really switches it off.
+
+**Guarded**
+- [ ] A short press never switches BAT 2, a generator, an ice protection switch or oxygen off. ENG KNOB,
+  STARTER, FUEL CTL, BLEED, ECS DIS and the knob readouts do nothing on a press.
+
+**Icon look test (optional local icon build, no sim)**
+- [ ] Build `MSFS2024 VisionJet Icons` with `tools/profilegen/icons-visionjet-sf50.json` (docs/icons.md),
+  import it: the 193 mapped or as-is keys show the mapped images, titles readable.
+
+**Other aircraft**
+- [ ] With the C172 loaded and `MSFS2024 VisionJet` picked by hand: the `sf50_` keys show nothing; PARK shows
+  the C172's parking brake, and a press should do nothing; WING LT (`lighting_wing_1`, not in the C172's list)
+  shows nothing there but may act on other aircraft. **Do not press YD, the BARO long press, the rudder trim
+  keys or WING LT there** (standard events and generic input events act on any aircraft that has them).
+
+**Result for the worker**
+- [ ] Record each step's result, the values each new B-var read per position, the battery and generator
+  indexes, whether the long presses switched off, the MSFS version and SF50 preset, and every fallback or
+  change.

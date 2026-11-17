@@ -102,12 +102,12 @@ levels.
 
 | Main page key | Child page | Holds now |
 |---|---|---|
-| 1,7 `TRIM` | trim | the C172's trim page as it was when this profile was built (elevator trim keys, TRIM and TRIM DEG readouts, trim gauge), without the C172's later aileron and rudder trim keys |
+| 1,7 `TRIM` | trim | the C172's current trim page (elevator trim keys and gauge, rudder trim keys and gauge) without its aileron trim keys (V-2) |
 | 1,8 `VIEWS` | views | the C172's views page as it is |
 | 3,7 `SIM RATE` | simrate | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
 | 3,8 `CHECKLIST` | checklist | back key only |
-| 4,8 `MORE` | more | back key and six folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,5 `COM PAD` > compad, 1,7 `XPDR` > xpdr and 1,8 `RADIOS` > radios (the C172's pages as they are), 1,6 `AUTOPILOT` > autopilot (the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts) |
+| 4,8 `MORE` | more | back key and eight folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,5 `COM PAD` > compad, 1,7 `XPDR` > xpdr and 1,8 `RADIOS` > radios (the C172's pages as they are), 1,6 `AUTOPILOT` > autopilot (the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD; V-2 adds FMS SPD, YD and MAN SPD), 2,2 `SYSTEMS` > systems (V-2: BAT 2, GEN 1 and GEN 2 guarded switches; bus volts, load, engine knob, starter and fuel control readouts), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts), 2,4 `ICE/ENV` > iceenv (V-2: ice protection, wing light, oxygen and ECS switches; ice protection, bleed air and ECS readouts) |
 
-MORE 1,2 and 1,3 (the C172's PFD and MFD pages) and 2,2 (SYSTEMS) are empty, reserved for the VisionJet's V-2
-(systems, ice and environment, GTC, PFD and MFD softkeys); main 1,3, 4,2 (no beacon in the SF50's input event
-list) and 4,7 are empty.
+MORE 1,2 and 1,3 (the C172's PFD and MFD pages) are empty: the SF50's PFD and MFD have no softkeys, and a GTC
+page is left for the VisionJet's V-3 (with the checklist wheel, the ECS and knob writes and windshield MAX);
+main 1,3 is empty (no fuel pump), main 4,2 is RECOG and 4,7 ICE (V-2).

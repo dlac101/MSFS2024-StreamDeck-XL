@@ -866,3 +866,60 @@ Aircraft string (PD-LOG, PilotsDeck20261116.log): the path of the preset's `airc
 | engine 3,2 `FUEL L` | `(A:FUEL LEFT QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
 | engine 3,3 `FUEL R` | `(A:FUEL RIGHT QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
 | engine 3,4 `FUEL TOT` | `(A:FUEL TOTAL QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+
+## Cirrus Vision SF50 (MSFS 2024 default, V-2)
+
+For [visionjet-sf50.md](visionjet-sf50.md), V-2: the keys V-2 adds to or changes in the profile `MSFS2024
+VisionJet` (14 pages, 180 keys). The V-1 rows above stay for every other key; where a key below has a V-1 row
+(main 1,4, 3,6 and the trim page), this section's row is the current one, and V-1's trim 3,2 `TRIM` and 3,3
+`TRIM DEG` rows are no longer keys of the profile. Names from the SF50's input event list
+([reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt), "IE-SF50 n" = line n), the MSFS SDK and the
+C172 trim page. Which value each SF50 input event takes per position, and which SimVar it drives, is not
+published: On/Off values, Mappings and Formats are working values until the sim check (V-2 A-2, A-21). G1 =
+press writes 1 (on), long press writes 0 (off) (PD-LONG, V-2 A-6). Generated, not yet sim-tested: every row is
+**Unverified** until the checklist section "VisionJet SF50 profile (V-2)" passes. Tags: the page doc's
+"Sources". "Verified by scmon capture 2026-11-16": the cockpit control showed these values in a `tools/scmon`
+capture (MSFS 2024, version not recorded; SCMON-SF50); the key's own press stays Unverified.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| main 1,4 `PARK` | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `B:sf50_handling_parking_brake`, On `1` / Off `0` | readout only (command none) | IE-SF50 117; README 2.1.1, 2.1.2; AM, SDK-GEARV; SCMON-SF50 | Unverified (key press); the cockpit handle moves the B-var 0/1 and `BRAKE PARKING POSITION` follows it: verified by scmon capture 2026-11-16 |
+| main 1,4 `PARK`, V-1's write | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | replaced by the B-var row above | AM; SCMON-SF50 | **Does not work** in the SF50 (hand test 2026-11-16, scmon capture; MSFS 2024, version not recorded): with the brake set, the SimVar went 1, 0, 1 within about 0.1 s and the B-var stayed 1 |
+| main 3,6 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | Main `K:BAROMETRIC`, Second (long press) `K:BAROMETRIC_STD_PRESSURE` | long press `B:autopilot_baro_1_sync` On `1` / Off `1` (IE-SF50 29); else no STD | SDK-INSTE; HH-MS; README 2.1; V-2 A-10; SDK-SYSV | Unverified |
+| main 4,2 `RECOG` | `B:sf50_lighting_recognition_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_recognition_lights_intercept`, On `1` / Off `0` | Empty | IE-SF50 132; README 2.1.1; weak, V-2 A-4 | Unverified (no change seen in two scmon runs, 2026-11-16) |
+| main 4,7 `ICE` (= iceenv 1,3) | `B:sf50_deice_wingstab` | B-var value (0/1 expected) | G1 `B:sf50_deice_wingstab` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); readout of `STRUCTURAL DEICE SWITCH` (A-2) | IE-SF50 78; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6, A-13 | Unverified (key press); 0 off / 1 on and `STRUCTURAL DEICE SWITCH` following it: verified by scmon capture 2026-11-16 |
+| trim 2,2 `TRIM UP` (the C172's key) | none (the gauge 3,4 shows the result) | - | `K:ELEV_TRIM_UP` | - | SDK-FCE | Unverified |
+| trim 3,4 `TRIM` gauge (the C172's key) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| trim 3,6 `RUD L` (the C172's key) | none (the gauge 3,7 shows the result) | - | `K:RUDDER_TRIM_LEFT` | `B:handling_ruddertrim_1` (IE-SF50 35) after the sim check | SDK-FCE; V-2 A-11 | Unverified |
+| trim 3,7 `RUD TRIM` gauge (the C172's key) | `(A:RUDDER TRIM PCT, percent)` | percent | none | - | SDK-CTLV, SDK20-CTLV, SDK-UNITS | Unverified |
+| trim 3,8 `RUD R` (the C172's key) | none (the gauge 3,7 shows the result) | - | `K:RUDDER_TRIM_RIGHT` | `B:handling_ruddertrim_1` (IE-SF50 35) after the sim check | SDK-FCE; V-2 A-11 | Unverified |
+| trim 4,2 `TRIM DN` (the C172's key) | none (the gauge 3,4 shows the result) | - | `K:ELEV_TRIM_DN` | - | SDK-FCE | Unverified |
+| autopilot 1,7 `FMS SPD` | `B:sf50_autopilot_fms_speed_mode` | B-var value (holds its state) | `B:sf50_autopilot_fms_speed_mode`, On `1` / Off `1` (every press writes 1) | Empty | IE-SF50 53; SF50-PKG; README 2.1.1; V-2 A-5 | Unverified (key press); exclusive with MAN SPD (1 and 0), each holds its state: verified by scmon capture 2026-11-16 |
+| autopilot 2,7 `YD` | `(A:AUTOPILOT YAW DAMPER, Bool)` | Bool | `K:YAW_DAMPER_TOGGLE` | readout only | SDK-APE; SDK-APV; SF50-FLT; weak, V-2 A-9 | Unverified |
+| autopilot 4,7 `MAN SPD` | `B:sf50_autopilot_man_speed_mode` | B-var value (holds its state) | `B:sf50_autopilot_man_speed_mode`, On `1` / Off `1` (every press writes 1) | Empty | IE-SF50 58; SF50-PKG; README 2.1.1; V-2 A-5 | Unverified (key press); exclusive with FMS SPD (1 and 0), each holds its state: verified by scmon capture 2026-11-16 |
+| systems 1,2 `BAT 2` | `B:sf50_electrical_battery_2_switch` | B-var value (0/1 expected) | G1 `B:sf50_electrical_battery_2_switch` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); Empty (A-2) | IE-SF50 81; PD-LONG; V-2 A-3, A-6 | Unverified (key press, battery index); 1 on / 0 off: verified by scmon capture 2026-11-16 (`ELECTRICAL MASTER BATTERY:1` to `:3` did not change) |
+| systems 1,3 `GEN 1` | `B:sf50_electrical_gen_1_switch` | B-var value (0/1 expected) | G1 `B:sf50_electrical_gen_1_switch` | as BAT 2 | IE-SF50 83; SF50-FLT; PD-LONG; V-2 A-3, A-6 | Unverified (key press, generator index); 1 on / 0 off: verified by scmon capture 2026-11-16 (`GENERAL ENG MASTER ALTERNATOR:1` and `:2` did not change) |
+| systems 1,4 `GEN 2` | `B:sf50_electrical_gen_2_switch` | B-var value (0/1 expected) | G1 `B:sf50_electrical_gen_2_switch` | as BAT 2 | IE-SF50 84; SF50-FLT; PD-LONG; V-2 A-3, A-6 | Unverified (key press, generator index); 1 on / 0 off: verified by scmon capture 2026-11-16 (`GENERAL ENG MASTER ALTERNATOR:1` and `:2` did not change) |
+| systems 1,6 `BUS V` | `(A:ELECTRICAL BUS VOLTAGE:1, Volts)`, Format `2.1` | Volts; bus index 1 on the SF50's named buses is open | none | another index | SDK-ELECV; phase3-systems.md | Unverified |
+| systems 1,8 `LOAD A` | `(A:ELECTRICAL TOTAL LOAD AMPS, Amperes)`, Format `1.1` | Amperes | none | - | SDK-ELECV; phase3-systems.md | Unverified |
+| systems 2,2 `ENG KNOB` | `B:sf50_engine_run_knob`, Mappings `0=STOP:1=RUN` | B-var value (0 STOP / 1 RUN expected) | none (guard) | Mappings from the sim check | IE-SF50 86; SF50-FLT; SF50-PKG; V-2 A-7, A-8 | Unverified (readout); 1 RUN / 0 STOP: verified by scmon capture 2026-11-16 |
+| systems 2,3 `STARTER` | `(A:GENERAL ENG STARTER:1, Bool)`, Mappings `0=OFF:1=ON` | Bool | none | - | SDK-ENGV | Unverified |
+| systems 2,4 `FUEL CTL` | `B:sf50_fuel_control_knob`, Format `1.0` | B-var value (positions unknown) | none (guard) | Mappings from the sim check | IE-SF50 114; SF50-FLT; SF50-PKG; V-2 A-7, A-8 | Unverified; 0, 1 and 2 (1 at the start) seen in the scmon capture 2026-11-16; which position each value is: open |
+| iceenv 1,2 `ENG IPS` | `B:sf50_deice_engine` | B-var value (0/1 expected) | G1 `B:sf50_deice_engine` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); readout of `ENG ANTI ICE:1` (A-2) | IE-SF50 74; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6 | Unverified (key press); 0 off / 1 on and `ENG ANTI ICE:1` following it: verified by scmon capture 2026-11-16 |
+| iceenv 1,3 `WING/STAB` | `B:sf50_deice_wingstab` | B-var value (0/1 expected) | G1 `B:sf50_deice_wingstab` | as main 4,7 | IE-SF50 78; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6 | Unverified (key press); 0 off / 1 on and `STRUCTURAL DEICE SWITCH` following it: verified by scmon capture 2026-11-16 |
+| iceenv 1,4 `WSHLD` | `B:sf50_deice_windshield` | B-var value (0/1 expected) | G1 `B:sf50_deice_windshield` | readout of the B-var (A-6); readout of `WINDSHIELD DEICE SWITCH` (A-2) | IE-SF50 76; SF50-PKG; PD-LONG; V-2 A-6 | Unverified (key press); 0 off / 1 on and `WINDSHIELD DEICE SWITCH` following it: verified by scmon capture 2026-11-16 |
+| iceenv 1,5 `WSHLD HI` | `B:sf50_deice_windshield_high` | B-var value (0/1 expected) | `B:sf50_deice_windshield_high`, On `1` / Off `0` | Empty | IE-SF50 77; SF50-PKG; README 2.1.1 | Unverified (key press); 0 / 1: verified by scmon capture 2026-11-16 |
+| iceenv 1,7 `WING LT` | `B:lighting_wing_1` | B-var value (0/1 expected) | `B:lighting_wing_1`, On `1` / Off `0` | Empty | IE-SF50 41; SF50-FLT; README 2.1.1; V-2 A-21 | Unverified |
+| iceenv 2,2 `ENG AI` | `(A:ENG ANTI ICE:1, Bool)`, Mappings `0=OFF:1=ON` | Bool | none | - | SDK-ENGV | Unverified (key); follows `B:sf50_deice_engine`: verified by scmon capture 2026-11-16 |
+| iceenv 2,3 `STRUCT` | `(A:STRUCTURAL DEICE SWITCH, Bool)`, Mappings `0=OFF:1=ON` | Bool | none | - | SDK-SYSV | Unverified (key); follows `B:sf50_deice_wingstab`: verified by scmon capture 2026-11-16 |
+| iceenv 2,4 `WSHLD SW` | `(A:WINDSHIELD DEICE SWITCH, Bool)`, Mappings `0=OFF:1=ON` | Bool | none | - | SDK-SYSV | Unverified (key); follows `B:sf50_deice_windshield`: verified by scmon capture 2026-11-16 |
+| iceenv 3,2 `OXYGEN` | `B:sf50_pressurization_oxygen_master` | B-var value (0/1 expected) | G1 `B:sf50_pressurization_oxygen_master` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); Empty (A-2) | IE-SF50 133; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6 | Unverified (key press); 0 / 1: verified by scmon capture 2026-11-16 |
+| iceenv 3,3 `BLEED` | `B:sf50_pressurization_switch_air_bleed`, Mappings `0=FRESH:1=BLEED` | B-var value (working value) | none (guard) | Mappings from the sim check | IE-SF50 134; SF50-FLT; SF50-PKG; V-2 A-7 | Unverified; 0 / 1 (1 at the start) seen in the scmon capture 2026-11-16; which value is FRESH or BLEED: open |
+| iceenv 3,4 `ECS DIS` | `B:sf50_cabin_ecs_disable`, Format `1.0` | B-var value | none (guard) | Mappings from the sim check | IE-SF50 66; SF50-PKG; V-2 A-7 | Unverified (no change seen in two scmon runs, 2026-11-16) |
+| iceenv 3,5 `DEFOG` | `B:sf50_cabin_ecs_defog` | B-var value (0/1 expected) | `B:sf50_cabin_ecs_defog`, On `1` / Off `0` | Empty | IE-SF50 65; SF50-PKG; README 2.1.1 | Unverified |
+| iceenv 3,6 `AFT CTL` | `B:sf50_cabin_ecs_aft_control` | B-var value (0/1 expected) | `B:sf50_cabin_ecs_aft_control`, On `1` / Off `0` | Empty | IE-SF50 64; SF50-PKG; README 2.1.1 | Unverified |
+| iceenv 3,7 `TEMP BKUP` | `B:sf50_cabin_ecs_temp_backup` | B-var value (0/1 expected) | `B:sf50_cabin_ecs_temp_backup`, On `1` / Off `0` | Empty | IE-SF50 69; SF50-PKG; README 2.1.1 | Unverified |
+| iceenv 4,2 `TEMP FWD` | `B:sf50_cabin_ecs_temp_knob_forward`, Format `1.0` | B-var value (flight file default 50) | none (knob steps unknown, V-3) | - | IE-SF50 71; SF50-FLT | Unverified |
+| iceenv 4,3 `TEMP AFT` | `B:sf50_cabin_ecs_temp_knob_aft`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 70; SF50-FLT | Unverified |
+| iceenv 4,4 `FAN FWD` | `B:sf50_cabin_ecs_fan_knob_forward`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 68 | Unverified |
+| iceenv 4,5 `FAN AFT` | `B:sf50_cabin_ecs_fan_knob_aft`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 67 | Unverified |

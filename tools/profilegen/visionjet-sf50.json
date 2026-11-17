@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars. The pages trim, views, simrate, vspeeds, compad, xpdr and radios are the C172 G1000 pages' keys as they are. The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios and engine (vspeeds, compad, autopilot, xpdr, radios and engine are second-level pages under more; checklist holds only its back key). 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested.",
+  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars (V-1); V-2 adds RECOG and ICE on main, FMS SPD and MAN SPD on autopilot and the systems and iceenv pages' switches from the same list, and PARK's command (the parking brake input event; the standard K-event failed in the SF50). The pages views, simrate, vspeeds, compad, xpdr and radios are the C172 G1000 pages' keys as they are; trim is the C172's trim page without its aileron trim keys (V-2). The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios, engine, systems and iceenv (vspeeds, compad, autopilot, xpdr, radios, engine, systems and iceenv are second-level pages under more; checklist holds only its back key). 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested.",
   "profile_name": "MSFS2024 VisionJet",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 VisionJet.streamDeckProfile",
   "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
@@ -36,13 +36,18 @@
         },
         {
           "pos": "1,3",
-          "empty": "Fuel pump: no SF50 source names one"
+          "empty": "Fuel pump: the SF50 has none (IE-SF50 and its flight files name none); the fuel control knob is on systems"
         },
         {
           "pos": "1,4",
           "title": "PARK",
-          "template": "p1:1,0",
-          "set": {}
+          "template": "p1:0,0",
+          "set": {
+            "Address": "(A:BRAKE PARKING POSITION, Bool)",
+            "AddressAction": "B:sf50_handling_parking_brake",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
         },
         {
           "pos": "1,5",
@@ -221,7 +226,10 @@
             "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
             "Format": "2.2",
             "ActionType": 16,
-            "AddressAction": "K:BAROMETRIC"
+            "AddressAction": "K:BAROMETRIC",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:BAROMETRIC_STD_PRESSURE"
           }
         },
         {
@@ -248,7 +256,14 @@
         },
         {
           "pos": "4,2",
-          "empty": "BCN: the SF50 input event list names no beacon light (A-5)"
+          "title": "RECOG",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_lighting_recognition_lights_intercept",
+            "AddressAction": "B:sf50_lighting_recognition_lights_intercept",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
         },
         {
           "pos": "4,3",
@@ -294,7 +309,21 @@
         },
         {
           "pos": "4,7",
-          "empty": "Anti-ice (reserved): the SF50 ice protection waits for its input event list (V-2)"
+          "title": "ICE",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_deice_wingstab",
+            "AddressAction": "B:sf50_deice_wingstab",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_deice_wingstab",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
         },
         {
           "pos": "4,8",
@@ -308,7 +337,7 @@
       "id": "trim",
       "parent": "main",
       "spec": "docs/visionjet-sf50.md",
-      "note": "Trim page as the C172's (V-1)",
+      "note": "Trim page as the C172's current trim page without aileron trim: elevator trim keys and gauge, rudder trim keys and gauge (V-2)",
       "keys": [
         {
           "pos": "2,2",
@@ -326,22 +355,8 @@
           }
         },
         {
-          "pos": "3,2",
-          "title": "TRIM",
-          "template": "p1:2,0",
-          "set": {
-            "Address": "(A:ELEVATOR TRIM PCT EX2, percent)",
-            "Format": "1.1"
-          }
-        },
-        {
-          "pos": "3,3",
-          "title": "TRIM DEG",
-          "template": "p1:2,0",
-          "set": {
-            "Address": "(A:ELEVATOR TRIM POSITION, degrees)",
-            "Format": "1.1"
-          }
+          "pos": "2,7",
+          "empty": "Aileron trim: the SF50 has none (IE-SF50 lists elevator and rudder trim only)"
         },
         {
           "pos": "3,4",
@@ -357,6 +372,49 @@
             "CenterLine": true,
             "IndicatorColor": "#ffcc00",
             "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "RUD L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_LEFT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "RUD TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:RUDDER TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "RUD R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:RUDDER_TRIM_RIGHT",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
           }
         },
         {
@@ -452,8 +510,16 @@
       "id": "more",
       "parent": "main",
       "spec": "docs/visionjet-sf50.md",
-      "note": "More: V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS, ENGINE (V-1)",
+      "note": "More: V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS, ENGINE (V-1); SYSTEMS, ICE/ENV (V-2)",
       "keys": [
+        {
+          "pos": "1,2",
+          "empty": "PFD softkeys: the SF50's PFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-3"
+        },
+        {
+          "pos": "1,3",
+          "empty": "MFD softkeys: the SF50's MFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-3"
+        },
         {
           "pos": "1,4",
           "title": "V-SPEEDS",
@@ -480,9 +546,21 @@
           "folder": "radios"
         },
         {
+          "pos": "2,2",
+          "title": "SYSTEMS",
+          "title_align": "middle",
+          "folder": "systems"
+        },
+        {
           "pos": "2,3",
           "title": "ENGINE",
           "folder": "engine"
+        },
+        {
+          "pos": "2,4",
+          "title": "ICE/ENV",
+          "title_align": "middle",
+          "folder": "iceenv"
         }
       ]
     },
@@ -857,7 +935,7 @@
       "id": "autopilot",
       "parent": "more",
       "spec": "docs/visionjet-sf50.md",
-      "note": "Autopilot with the autothrottle: G3000 course keys, HDG sync, VNV, LVL, A/T, TOGA and A/T MGD readouts (V-1)",
+      "note": "Autopilot with the autothrottle: G3000 course keys, HDG sync, VNV, LVL, A/T, TOGA and A/T MGD readouts (V-1); FMS SPD, YD and MAN SPD (V-2)",
       "keys": [
         {
           "pos": "1,2",
@@ -906,7 +984,16 @@
         },
         {
           "pos": "1,7",
-          "empty": "BC: no SF50 source gives a back-course key (V-2)"
+          "title": "FMS SPD",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_autopilot_fms_speed_mode",
+            "AddressAction": "B:sf50_autopilot_fms_speed_mode",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
         },
         {
           "pos": "1,8",
@@ -1011,7 +1098,12 @@
         },
         {
           "pos": "2,7",
-          "empty": "YD: no SF50 source gives a yaw damper key (V-2)"
+          "title": "YD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:YAW_DAMPER_TOGGLE",
+            "Address": "(A:AUTOPILOT YAW DAMPER, Bool)"
+          }
         },
         {
           "pos": "2,8",
@@ -1187,6 +1279,19 @@
             "AddressAction": "K:AP_SPD_VAR_DEC",
             "DefaultImage": "Images/Switch.png",
             "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "MAN SPD",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_autopilot_man_speed_mode",
+            "AddressAction": "B:sf50_autopilot_man_speed_mode",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
           }
         },
         {
@@ -1821,6 +1926,355 @@
           "set": {
             "Address": "(A:FUEL TOTAL QUANTITY, Gallons)",
             "Format": "1.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "systems",
+      "parent": "more",
+      "spec": "docs/visionjet-sf50.md",
+      "note": "Systems: BAT 2, GEN 1, GEN 2 guarded switches; bus volts, total load, engine run knob, starter and fuel control readouts (V-2)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "BAT 2",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_electrical_battery_2_switch",
+            "AddressAction": "B:sf50_electrical_battery_2_switch",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_electrical_battery_2_switch",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "GEN 1",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_electrical_gen_1_switch",
+            "AddressAction": "B:sf50_electrical_gen_1_switch",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_electrical_gen_1_switch",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "GEN 2",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_electrical_gen_2_switch",
+            "AddressAction": "B:sf50_electrical_gen_2_switch",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_electrical_gen_2_switch",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,5",
+          "empty": "IE-SF50 82 sf50_electrical_battery_generator_intercept: what it switches is unknown (V-3)"
+        },
+        {
+          "pos": "1,6",
+          "title": "BUS V",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL BUS VOLTAGE:1, Volts)",
+            "Format": "2.1"
+          }
+        },
+        {
+          "pos": "1,7",
+          "empty": "Battery amps: which battery index the SF50's switches drive is open (V-2 A-3)"
+        },
+        {
+          "pos": "1,8",
+          "title": "LOAD A",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL TOTAL LOAD AMPS, Amperes)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "ENG KNOB",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_engine_run_knob",
+            "Format": "",
+            "ValueMappings": "0=STOP:1=RUN",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "STARTER",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG STARTER:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "FUEL CTL",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_fuel_control_knob",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "iceenv",
+      "parent": "more",
+      "spec": "docs/visionjet-sf50.md",
+      "note": "Ice protection and environment: engine, wing/stab and windshield IPS, wing light, IPS readouts, oxygen, bleed, ECS toggles and knob readouts (V-2)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "ENG IPS",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_deice_engine",
+            "AddressAction": "B:sf50_deice_engine",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_deice_engine",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "WING/STAB",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_deice_wingstab",
+            "AddressAction": "B:sf50_deice_wingstab",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_deice_wingstab",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "WSHLD",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_deice_windshield",
+            "AddressAction": "B:sf50_deice_windshield",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_deice_windshield",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "WSHLD HI",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_deice_windshield_high",
+            "AddressAction": "B:sf50_deice_windshield_high",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,6",
+          "empty": "Windshield MAX: the cockpit button is held to dispense fluid (SF50-PKG); a key press can't hold it"
+        },
+        {
+          "pos": "1,7",
+          "title": "WING LT",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_wing_1",
+            "AddressAction": "B:lighting_wing_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "ENG AI",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ENG ANTI ICE:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "STRUCT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:STRUCTURAL DEICE SWITCH, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "WSHLD SW",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:WINDSHIELD DEICE SWITCH, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "OXYGEN",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_pressurization_oxygen_master",
+            "AddressAction": "B:sf50_pressurization_oxygen_master",
+            "SwitchOnState": "1",
+            "SwitchOffState": "1",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:sf50_pressurization_oxygen_master",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "BLEED",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_pressurization_switch_air_bleed",
+            "Format": "",
+            "ValueMappings": "0=FRESH:1=BLEED",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "ECS DIS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_disable",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "DEFOG",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_defog",
+            "AddressAction": "B:sf50_cabin_ecs_defog",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "AFT CTL",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_aft_control",
+            "AddressAction": "B:sf50_cabin_ecs_aft_control",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "TEMP BKUP",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_temp_backup",
+            "AddressAction": "B:sf50_cabin_ecs_temp_backup",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "TEMP FWD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_temp_knob_forward",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "TEMP AFT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_temp_knob_aft",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "FAN FWD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_fan_knob_forward",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "FAN AFT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:sf50_cabin_ecs_fan_knob_aft",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
           }
         }
       ]
