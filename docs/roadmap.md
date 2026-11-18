@@ -2,7 +2,7 @@
 
 Where the project stands, what the original plan still asks for, what other Stream Deck profiles for
 MSFS offer, and the planned work in units. Written 2026-11-14; sections A, B, C.3, D and E brought up to date
-with the P5-DOCS update and again with the P5-DOCS2 and P5-DOCS3 updates (section E.3) against the repo as
+with the P5-DOCS update and again with the P5-DOCS2 to P5-DOCS6 updates (section E.3) against the repo as
 committed then.
 
 Sections:
@@ -273,7 +273,7 @@ product call; "Project" = the project can decide.
 | 12 | More camera views by camera variable writes | A paid camera-only profile exists (C.2 item 3); two view keys exist, one passed a hand test | User (which views) |
 | 13 | Safe default profile for other aircraft | The plan's safe fallback (line 54) | User (whether to build) |
 | 14 | Committed own images (state colours, icons) | Readability without the personal-use pack | User |
-| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; two items open) |
+| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; eight items open) |
 | 16 | `1X` key unlit at every rate but 1x | Today it shows no image at most rates (by design); cosmetic | User (after the look test) |
 | 17 | Folder title alignment for the remaining folders | Main page VIEWS, CHECKLIST and MORE are centred; the others are not | User (after the look test) |
 | 18 | Ground-service menu (GSX) | Needs a paid add-on; the plan wants no paid dependency for the baseline | User |
@@ -325,17 +325,34 @@ Third list (shared tool code, one lane at a time; all four were done in P5-TOOLS
 Still open, for a later tools unit (shared tool code, one lane at a time):
 
 - `tools/profilegen/check_docs.py`: a Sources tag that a page doc's tables use is not checked against that
-  doc's "Sources" table; a rule needs one tag form in the docs first (today 56 of the 290 parts of the Source
-  cells in the 18 docs with a Sources table start with no tag of that table).
-- `tools/profilegen/check_docs.py`: a checklist section quote after "checklist block" (`docs/icons.md`),
-  after a "section" that goes on from a sentence naming the checklist (`docs/phase2-trim-views.md`,
-  `docs/phase3-engine-fuel.md`, `docs/phase4-a32nx.md`) or inside `tests/manual-checklist.md` itself is not
-  read; three of them name "P2-5: local icon build", not the heading "P2-5: local icon build (C172
-  G1000)", so those docs need that fix before a rule reads these forms.
+  doc's "Sources" table; a rule needs one tag form in the docs first (today 60 of the 288 parts, split at
+  ";", of the last-column Source cells in the 19 docs with a Sources table start with no tag of that table,
+  each Tag cell read as one tag), and it must read a Tag cell that names more than one tag (seven rows, in
+  `docs/phase2-g1000-vspeeds.md`, `docs/phase2-trim-views.md` and `docs/visionjet-sf50.md`, for example
+  "SDK-RADV, SDK-RADE"): 3 of the 60 parts start with the second tag of such a cell.
+- `tools/profilegen/check_docs.py`: a checklist section quote after a "section" that goes on from a sentence
+  naming the checklist (`docs/phase2-trim-views.md`, `docs/phase3-engine-fuel.md`, `docs/phase4-a32nx.md`),
+  after "the section" inside `tests/manual-checklist.md` or in its run lists (`Run "Phase 4: ..."` with no
+  "section" word) is not read (P5-DOCS6 fixed the three quotes that named "P2-5: local icon build").
+- `tools/profilegen/check.py`: its check of the templates a data file names passes over an empty
+  `"template"`, and the next step then stops with a `KeyError`; a `"template"` that is not a string (for
+  example `5`) stops it with an `AttributeError` from `generate.py`, which that check does not catch (no data
+  file has either today).
+- `tools/profilegen/check.py`: a page entry in a data file without `"id"` or `"keys"` stops it with a
+  `KeyError` traceback instead of a clean FAIL.
+- `tools/profilegen/check_docs.py`: the input event check reads code spans line by line, so a span that
+  wraps across lines in `docs/aircraft-mappings.md` (three today, none with a `B:` name) is not read, and a
+  `B:` span after it on that line can be paired wrongly (a false PASS only).
+- `tools/profilegen/check_docs.py`: the reference number check reads every file as raw bytes, so a number
+  inside a profile's compressed entries or in a UTF-16 file is not seen (no tracked UTF-16 file today).
+- `tools/profilegen/check_docs.py` and `tools/package/build_package.py`: the notes checks are substring
+  tests, so a script `A32NX.lua` would pass as part of `XL24-A32NX.lua`; a whole-name match would close it.
+- `tools/profilegen/check.py` and `check_docs.py`: with the output piped and no `PYTHONIOENCODING`, a FAIL
+  text that holds a character outside the console's code page ends in a `UnicodeEncodeError` traceback.
 
 Not ranked yet, from C and the plan: pages by flight phase (the Fenix A320 example's Gate, Taxi, Flight and
 Cruise folders), best added once the A32NX panels exist; and the plan's timer (concept layout 3,7, now the
-SIM RATE folder), which needs a free key and a way to count time (to be found by the unit's brief writer).
+SIM RATE folder), which needs a free key and a way to count time (to be found by the unit).
 
 ## E. Units
 
@@ -356,7 +373,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
   as - / readout / +.
 - Note: the selected heading readout can start from `(A:AUTOPILOT HEADING LOCK DIR, Degrees)`, already listed
   Unverified in `docs/aircraft-mappings.md` (MSFS 2024 SDK, autopilot variables). Other names: to be found by
-  the unit's brief writer.
+  the unit.
 - Files (as ruled): M `tools/profilegen/c172-g1000.json`, M the G1000 profile, C `docs/phase3-autopilot.md`,
   the five shared docs; a Lua script only if a readout or step needs one. Shared tool code: only under a
   lock, if the build needs it.
@@ -368,8 +385,8 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
   XPDR readout reads `(A:TRANSPONDER CODE:1, Bco16)` (already listed, SDK radio variables). Proposed split if
   it passes about 40 keys: P3-2 = transponder pad page, P3-2b = NAV1/NAV2/COM2 radio page, in that order
   (the pad reuses a proven pattern; the radio page needs the most new names).
-- Files: M `tools/profilegen/c172-g1000.json`, M the G1000 profile, C a page doc per page (named in the
-  brief), maybe C a Lua script under `pilotsdeck/MSFS2024-XL/_Package/Scripts/` for the code pad.
+- Files: M `tools/profilegen/c172-g1000.json`, M the G1000 profile, C a page doc per page (named by the
+  unit), maybe C a Lua script under `pilotsdeck/MSFS2024-XL/_Package/Scripts/` for the code pad.
 - Size: M (one or two pages). Depends on: P3-1 (same data file). Shared tool code: none expected.
 
 **P3-3 SYSTEMS: lights, electrical and fuel state** (committed: the systems page; not re-planned)
@@ -377,9 +394,9 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Scope: a page for the switches the main page does not hold (for example avionics, alternator, interior
   lights, fuel selector) with state read from the sim, and fuel readouts.
 - Note: the battery uses an input event in this aircraft, not the standard SimVar (see
-  `docs/aircraft-mappings.md`): the brief writer checks `docs/reference/InputEvents-C172-G1000.txt` first for
+  `docs/aircraft-mappings.md`): the unit checks `docs/reference/InputEvents-C172-G1000.txt` first for
   every switch.
-- Files: M `tools/profilegen/c172-g1000.json`, M the G1000 profile, C a page doc (named in the brief).
+- Files: M `tools/profilegen/c172-g1000.json`, M the G1000 profile, C a page doc (named by the unit).
 - Size: M. Depends on: P3-2 (same data file). Shared tool code: none expected.
 
 **P3-4 TRIM GAUGE** (committed; not re-planned)
@@ -404,7 +421,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Depends on: P3-4 (gauge template).
 - Shared tool code: no (P3-4 added the gauge template).
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer (MSFS 2024 SDK engine and fuel variables).
+- Variables: to be found by the unit (MSFS 2024 SDK engine and fuel variables).
 
 **P3-TRIM2 AILERON AND RUDDER TRIM** (committed; not re-planned)
 
@@ -443,8 +460,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Depends on: P3-1 to P3-5 built (it covers their keys).
 - Shared tool code: likely yes.
 - Shared docs: tests/manual-checklist.md, CHANGELOG.md.
-- Variables: none new; PilotsDeck behaviour from its README and source, to be found by the unit's brief
-  writer.
+- Variables: none new; PilotsDeck behaviour from its README and source, to be found by the unit.
 
 **P3-7 VIEWS page, more cameras**
 
@@ -457,7 +473,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Shared docs: all five.
 - Variables: `(A:CAMERA VIEW TYPE AND INDEX:0, Enum)` and `(A:CAMERA VIEW TYPE AND INDEX:1, number)`
   (MSFS 2024 SDK camera variables; the SDK marks them settable; listed Unverified as readouts). Which values
-  select which view: to be found by the unit's brief writer.
+  select which view: to be found by the unit.
 
 **P3-8 CHECKLIST page**
 
@@ -468,7 +484,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Depends on: P3-3 (most switches it shows); the user's call on content (F.3).
 - Shared tool code: no.
 - Shared docs: all five.
-- Variables: reused from earlier pages; new ones to be found by the unit's brief writer.
+- Variables: reused from earlier pages; new ones to be found by the unit.
 
 **P3-9 SMALL C172 FIXES**
 
@@ -495,7 +511,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Depends on: P4-1.
 - Shared tool code: no, if P4-1 made the generator take a second aircraft.
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer (FlyByWire flight deck API docs, HubHop).
+- Variables: to be found by the unit (FlyByWire flight deck API docs, HubHop).
 
 **P4-3 A32NX overhead: lights, electrics, fuel pumps, APU** (committed: the OVHD page and its SYSTEMS page;
 not re-planned)
@@ -506,7 +522,7 @@ not re-planned)
 - Depends on: P4-1.
 - Shared tool code: no.
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer.
+- Variables: to be found by the unit.
 
 **P4-ICONS A32NX LOCAL ICON BUILD** (committed; installed with the local icon package on 2026-11-15, not yet
 look-tested)
@@ -527,7 +543,7 @@ look-tested)
 - Depends on: P4-1; the COM pad pattern.
 - Shared tool code: no (a new script is not shared code, but check.py checks it).
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer.
+- Variables: to be found by the unit.
 
 **P4-5 A32NX MCDU keyboard**
 
@@ -537,7 +553,7 @@ look-tested)
 - Depends on: P4-1; the user's call (F.2).
 - Shared tool code: no.
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer.
+- Variables: to be found by the unit.
 
 **P4-6 A32NX pedestal and ECAM** (committed; not re-planned)
 
@@ -547,18 +563,22 @@ look-tested)
 - Depends on: P4-1.
 - Shared tool code: no.
 - Shared docs: all five.
-- Variables: to be found by the unit's brief writer.
+- Variables: to be found by the unit.
 
 **V-1 VISION JET PROFILE** (committed; not re-planned)
 
 - Scope: a profile for the Cirrus Vision SF50 that comes with MSFS 2024, built from the research doc
   [visionjet-g2-research.md](visionjet-g2-research.md) (its draft layout and open questions).
-- Files: to be fixed by the unit's brief writer (a new data file and profile, as P4-1 made for the A32NX).
+- Files (as committed): C `tools/profilegen/visionjet-sf50.json`, C
+  `tools/profilegen/icons-visionjet-sf50.json`, C `docs/visionjet-sf50.md`, C
+  `docs/reference/InputEvents-SF50.txt`, C the VisionJet profile, M `docs/visionjet-g2-research.md`.
 - Depends on: V-0.
-- Shared tool code: to be found by the unit's brief writer; a new data file names
-  `tools/profilegen/MSFS2024 C172 POC.streamDeckProfile` as its `phase1_export`.
+- Shared tool code: no; the data file names `tools/profilegen/MSFS2024 C172 POC.streamDeckProfile` as its
+  `phase1_export`.
 - Shared docs: all five.
-- Variables: the research doc's candidates, each confirmed for MSFS 2024 by the unit's brief writer.
+- Variables: the SF50's input events ([reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt)) and
+  the names of the `docs/aircraft-mappings.md` section "Cirrus Vision SF50 (MSFS 2024 default, V-1)" (most
+  from the MSFS 2024 SDK, each with its source there; listed Unverified).
 
 **V-2 VISION JET SECOND UNIT** (committed; not re-planned)
 
@@ -577,6 +597,37 @@ look-tested)
 - Variables: the SF50's input events ([reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt)),
   `K:BAROMETRIC_STD_PRESSURE`, `K:YAW_DAMPER_TOGGLE` and the SimVars of the `docs/aircraft-mappings.md`
   section "Cirrus Vision SF50 (MSFS 2024 default, V-2)" (MSFS 2024 SDK; listed Unverified).
+
+**V-3 VISION JET HOLD TO REPEAT** (committed; not re-planned)
+
+- Scope: hold to repeat on the VisionJet step keys: the autopilot HDG, CRS, ALT, VS and SPD keys, the radios
+  MHZ and KHZ keys, the trim keys and the new BARO+ and BARO- keys (28 keys) are Simple Buttons with Hold
+  Switch on that run the new script `XL24-SF50.lua` at key down and key up; it sends one step at once, then
+  repeats faster the longer the key is held, and stops on release, at the key's step cap or after 20 s. The
+  radios page gets a BARO column (the altimeter setting, BARO+ and BARO- by `K:KOHLSMAN_INC` /
+  `K:KOHLSMAN_DEC`), systems `FUEL CTL` shows LEFT, AUTO or RIGHT (an inference until the sim check), and
+  the profile keeps its 14 pages and grows to 183 keys. The GTC page, the checklist wheel, the ECS and knob
+  writes, windshield MAX and battery amps are left for V-4.
+- Files (as committed): M `tools/profilegen/visionjet-sf50.json`, M
+  `tools/profilegen/icons-visionjet-sf50.json`, M `docs/visionjet-sf50.md`, M the VisionJet profile, C
+  `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SF50.lua`.
+- Depends on: V-2.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, README.md, tests/manual-checklist.md (one section), docs/aircraft-mappings.md
+  (a section), docs/navigation.md.
+- Variables: `K:KOHLSMAN_INC`, `K:KOHLSMAN_DEC` and the names of the `docs/aircraft-mappings.md` section
+  "Cirrus Vision SF50 (MSFS 2024 default, V-3)" (most from the MSFS 2024 SDK, each with its source there;
+  listed Unverified).
+
+**CJ-0 CITATION CJ4 RESEARCH** (committed; not re-planned)
+
+- Scope: research for a profile of the Cessna Citation CJ4 that comes with MSFS 2024: 141 candidate variable
+  and event names with their sources (every one Unverified), leads from other Stream Deck profiles, a draft
+  layout of 20 pages for a profile `MSFS2024 CJ4` with hold to repeat on its step keys, four sim steps for
+  the user and six open questions ([cj4-research.md](cj4-research.md)); nothing built or sim-tested.
+- Files: C `docs/cj4-research.md`.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, README.md (its layout block).
 
 ### E.3 Lane R: roadmap and release (after P5-PKG)
 
@@ -728,7 +779,7 @@ look-tested)
 - Shared docs: CHANGELOG.md, README.md, tests/manual-checklist.md, docs/aircraft-mappings.md,
   docs/navigation.md.
 
-**P5-TOOLS2 MORE DOC CHECKS**
+**P5-TOOLS2 MORE DOC CHECKS** (committed; not re-planned)
 
 - Scope: the third list in section D. A new `tools/profilegen/check_docs.py` checks that the checklist
   sections the docs name in quotes are headings of `tests/manual-checklist.md`, that README's layout block
@@ -741,7 +792,7 @@ look-tested)
   key's key-up command in `docs/aircraft-mappings.md` too; `check_icons.py` runs under `python -I`;
   `build_package.py` gives its own error, not a traceback, on a folder at its temporary path. The
   `package.json` notes, A.3, A.6 and `docs/troubleshooting.md` name V-3's script `XL24-SF50.lua`.
-- Files: C `tools/profilegen/check_docs.py`, M `tools/profilegen/check.py`, M
+- Files (as committed): C `tools/profilegen/check_docs.py`, M `tools/profilegen/check.py`, M
   `tools/profilegen/check_icons.py`, M `tools/package/build_package.py`, M `tools/profilegen/generate.py` and
   `tools/profilegen/templates.json` (comments and a note only), M `docs/package.md`, M `docs/roadmap.md`, M
   `docs/troubleshooting.md`, M `pilotsdeck/MSFS2024-XL/_Package/package.json` (notes only).
@@ -749,6 +800,19 @@ look-tested)
 - Shared tool code: yes (`generate.py` and `templates.json` in comments and a note only; every profile the
   same byte for byte).
 - Shared docs: CHANGELOG.md.
+
+**P5-DOCS6 DOCS CLEAN-UP AFTER THE THIRD VISIONJET UNIT AND THE DOC CHECKS** (committed; not re-planned)
+
+- Scope: the checklist's result headings read "Results to record", and the lines that named internal work
+  roles name the unit, its ruling or the results instead, with no status, test date or sim version changed;
+  the checklist section quotes in `docs/icons.md` and the checklist name the exact headings, in forms
+  `check_docs.py` reads, and `docs/icons.md` points the VisionJet look test at the V-1, V-2 and V-3
+  sections; in this roadmap, the V-1 entry in its committed form, the V-3, CJ-0 and P5-DOCS6 entries,
+  P5-TOOLS2 as committed, both queues, the lane A files and the tool items still open (section D).
+- Files: M `docs/roadmap.md`, M `docs/icons.md`, M `docs/visionjet-sf50.md`, M `docs/phase2-sim-rate.md`,
+  M `docs/phase3-autopilot.md`, M `docs/phase3-transponder.md`.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, tests/manual-checklist.md, docs/aircraft-mappings.md.
 
 **P5-4 OWN IMAGES**
 
@@ -767,13 +831,14 @@ look-tested)
 | Lane | Queue |
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
-| A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, V-3, CJ-0, P4-5 (the MCDU keyboard last, F.2) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
-- Lane A units change the A32NX data file and profile only, so they can run beside lane C units, apart from
-  the shared docs (one added line or section each) and shared tool code.
+- Lane A units change only their own aircraft's files (the A32NX or VisionJet data file, icon mapping, script
+  and profile, or a research doc), so they can run beside lane C units, apart from the shared docs (one added
+  line or section each) and shared tool code.
 - Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-4, P5-2 with a universal
   profile) do not run at the same time as each other. P3-4 and P5-1 both change `check.py`.
 - P5-PKG, P5-3 and P5-2 (docs only) touch no page data and can run beside any lane C or lane A unit.

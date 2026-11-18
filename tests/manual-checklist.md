@@ -164,7 +164,7 @@ below, which one you used.
 - [ ] All of the above works flying with the Xbox Elite controller.
 - [ ] All of the above works flying with the T.16000M + TWCS.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record which keys passed Sim -> Stream Deck, which passed Stream Deck -> sim, every fallback used,
   every On/Off value or index that changed, and the altimeter index seen.
 
@@ -232,7 +232,7 @@ value you used.
 - [ ] The trim and view keys work the same with the Xbox Elite controller and with the T.16000M + TWCS
   connected (no key needs a binding on either).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record which trim and view keys passed each direction, the presses per trim step, the trim wheel
   direction, the camera numbers seen, what `COCKPIT` and `EXTERNAL` did, and every fallback or value change.
 
@@ -308,7 +308,7 @@ version, and every fallback or changed value you used.
 - [ ] The G1000 and V-speeds keys work the same with the Xbox Elite controller and with the T.16000M + TWCS
   connected (no key needs a binding on either).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record which bezel keys worked (PFD and MFD separately), the knob directions, what `CLR HOLD` and
   `RNG PUSH` did, every V-speeds number (and `VFE` at each flap position), whether the MobiFlight WASM line
   was in the log, and every fallback or value change.
@@ -341,7 +341,7 @@ HT-C, the long press on `RATE` (a way down first):
   in the log = the long press is broken in this build (report it; the new `SLOWER` key is the way down). The
   log shows `K:SIM_RATE_DECR` but the rate stays = the sim ignores DECR: stop here and report it (the
   stepping script has no way down then).
-- [ ] Send the results of HT-C (each `RATE` value, the log lines) to the coordinator.
+- [ ] Record the results of HT-C (each `RATE` value, the log lines) with the other results.
 
 **Install the script (no sim needed)**
 - [ ] Copy `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SIMRATE.lua` into
@@ -361,9 +361,9 @@ HT-C, the long press on `RATE` (a way down first):
   XL if asked), select `MSFS2024 C172 G1000`. Check its aircraft mapping in the Profile Manager.
 - [ ] **If you test with the local icon build** (`MSFS2024 C172 G1000 Icons`, as on 2026-11-12): it must be
   rebuilt from the new data first, or it still holds the old keys (and no `FASTER`). Delete
-  the `.local\icons` folder, rebuild, and import it as in the section "P2-5: local icon build" and
-  [docs/icons.md](../docs/icons.md) (delete the old `MSFS2024 C172 G1000 Icons` profiles and their copies
-  first). The checks below apply to it the same way.
+  the `.local\icons` folder, rebuild, and import it as in the checklist section "P2-5: local icon build
+  (C172 G1000)" and [docs/icons.md](../docs/icons.md) (delete the old `MSFS2024 C172 G1000 Icons` profiles
+  and their copies first). The checks below apply to it the same way.
 - [ ] The main page looks as before (3,7 is the folder `SIM RATE`; 4,7 is empty). The other pages look as
   before.
 
@@ -418,7 +418,7 @@ HT-C, the long press on `RATE` (a way down first):
 - [ ] The sim rate keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected
   (no key needs a binding on either).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record HT-C's results, each key's result in both directions, the script stop cases and their
   `lua.log` lines, what the keys show while paused, the 8x / 0.5x observations, the sim version, and every
   fallback or value change.
@@ -477,7 +477,7 @@ while the sim loads) then means that key's file is not in the plugin's Images fo
 - [ ] Delete `MSFS2024 C172 G1000 Icons` in Stream Deck Preferences > Profiles, and delete
   `...\Images\Guenseli-C172` from the plugin's Images folder. The committed profile is untouched throughout.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each page's look (the keys with a "wait" image, A-3 back keys, A-5 sharpness, A-8 readability,
   A-6 changes you want) and the sim check results.
 
@@ -497,7 +497,7 @@ its title alignment. No sim needed. Record: date, Stream Deck app version.
   sizes, and now has the middle titles on VIEWS, CHECKLIST and MORE that you had set by hand.
 - [ ] Delete `.local\icons`, then rebuild: `python tools/profilegen/generate.py --icons
   tools/profilegen/icons-c172-g1000.json` (docs/icons.md section 1). The 23 images are unchanged: the plugin's
-  `Images\Guenseli-C172` folder stays as it is. (Or import the early profile whose path the worker gives you.)
+  `Images\Guenseli-C172` folder stays as it is.
 - [ ] Import `.local\icons\MSFS2024 C172 G1000 Icons.streamDeckProfile`, switch the XL to it, then check each
   page: main, Trim, Views, More, PFD, MFD, V-speeds, Sim rate.
   - [ ] Titles at 14 are readable.
@@ -571,7 +571,7 @@ the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback
 **Controller independence**
 - [ ] The pad works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the spacing mode, the 8.33 result
   if tried, what `STBY ID` showed, the sim version, and every fallback or change.
 
@@ -654,7 +654,7 @@ Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or chang
 **Controller independence**
 - [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the real steps (HDG, CRS, ALT short and long, VS, SPD), the ALT long-press
   outcome (step or set), the VNV three answers, whether FLC took the current IAS, armed versus active for
   NAV/APR, the sim version, and every fallback or change.
@@ -715,7 +715,7 @@ or the sim. Record: date, MSFS 2024 version, PilotsDeck version, and every fallb
 **Controller independence**
 - [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, what `MODE` showed on the ground, for step 4 what the PFD's mode display
   and `MODE` showed for each key, the log lines for any step that failed, the sim version, and every fallback
   or change.
@@ -777,7 +777,7 @@ mouse), and press the MIC key that was lit before.
 **Controller independence**
 - [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, for step 2 which frequency changed and by how much for each radio, the log
   lines for any step that failed, the sim version, and every fallback or change.
 
@@ -853,7 +853,7 @@ fuel selector on BOTH and the fuel shutoff valve open (fuel on) at the end.
 - [ ] The page works the same with the Xbox Elite controller and with the T.16000M + TWCS connected: every
   key is an input event or a SimVar read.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the scmon values of the fuel selector (and of any other input event
   checked), which light each light key drove, the log lines for any step that failed, the sim version, and
   every fallback or change.
@@ -896,7 +896,7 @@ loaded); if the new profile misbehaves, delete it and import the backup exported
   SimVar.
 - [ ] 7. Say whether to keep the gauge at 3,4 or move it to 3,2 in place of the percent readout (**A-POS**).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the numbers of step 4, the log lines for any step that failed, the sim
   version, and every fallback or change.
 
@@ -938,7 +938,7 @@ profile misbehaves, delete it and import the backup exported in step 1.
 - [ ] 7. Say whether the horizontal fuel bars suit (**A-BAR**) and whether RPM should stay repeated here
   (**A-RPM**).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the numbers of steps 3 to 5, the log lines for any step that failed, the sim
   version, and every fallback or change.
 
@@ -985,12 +985,12 @@ until both gauges read `0.0`; if the new profile misbehaves, delete it and impor
   it up, with its `Vars` list edited to these 11 SimVars: `AILERON TRIM PCT` and `RUDDER TRIM PCT`, each in
   `percent over 100` and in `percent`; `AILERON TRIM PCT EX1` and `RUDDER TRIM PCT EX1` in `percent over 100`;
   `AILERON TRIM` and `RUDDER TRIM` in `degrees`; `AILERON TRIM DISABLED` and `RUDDER TRIM DISABLED` in `Bool`;
-  `ELEVATOR TRIM PCT EX2` in `percent over 100`): repeat steps 4 and 5 and save its output for the worker (it
+  `ELEVATOR TRIM PCT EX2` in `percent over 100`): repeat steps 4 and 5 and save its output with the results (it
   settles A-UNIT, A-STEP and A-SIGN; a DISABLED value of 1 explains a key that moves nothing).
 - [ ] 8. Say whether the page layout suits (**A-POS2**) and, if a pair does nothing in the C172, whether to
   drop it.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the numbers of steps 3 to 5, the scmon output, the log lines for any step
   that failed, the sim version, and every fallback or change.
 
@@ -1018,12 +1018,12 @@ Way back: at the end, set the fuel load, BAT and the fuel selector back as they 
   it up, with its `Vars` list edited to these 13 SimVars, all in `Gallons`: `FUEL LEFT QUANTITY`, `FUEL RIGHT
   QUANTITY`, `FUEL LEFT CAPACITY`, `FUEL RIGHT CAPACITY`, `UNUSABLE FUEL TOTAL QUANTITY`, and for tanks 1 and 2
   each `FUELSYSTEM TANK QUANTITY`, `FUELSYSTEM TANK TOTAL QUANTITY`, `FUELSYSTEM TANK CAPACITY`, `FUELSYSTEM
-  TANK USABLE CAPACITY` (`:1`, `:2`); 13 of its 16 slots): repeat steps 2 and 3 and save its output for the
-  worker. A SimConnect exception for a name means the aircraft does not have it: record it.
+  TANK USABLE CAPACITY` (`:1`, `:2`); 13 of its 16 slots): repeat steps 2 and 3 and save its output with
+  the results. A SimConnect exception for a name means the aircraft does not have it: record it.
 - [ ] 6. Say whether the scale suits you: keep `0` to `26` (the EIS scale; a full tank pins at the end), or
   `0` to `28` (the sim's capacity; the pointer reaches the end only at `28`) (**A-SCALE**).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's numbers, the scmon output, the sim version and the scale you want.
 
 ## Phase 4: A32NX profile (P4-1)
@@ -1085,7 +1085,7 @@ with the mouse and check that the key follows without a key being pressed.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the aircraft string, the input
   events found, the MSFS and A32NX versions, and every fallback or change.
 
@@ -1162,8 +1162,8 @@ and second-install steps are still open.
 - [ ] For each `Images/Guenseli-C172/...` and `Scripts/...` entry the build printed, `Get-FileHash` of the
   same file in the plugin's `Images\Guenseli-C172\` or `Scripts\` folder equals the printed sha256.
 - [ ] Restart the Stream Deck app. With MSFS closed (or the flight fully loaded), switch the XL to
-  `MSFS2024 C172 G1000 Icons`: the keys show the pack images as in the section "P2-5: local icon build", and
-  no key shows the Wait image (dark square, three dots).
+  `MSFS2024 C172 G1000 Icons`: the keys show the pack images as in the checklist section "P2-5: local icon
+  build (C172 G1000)", and no key shows the Wait image (dark square, three dots).
 - [ ] Map `MSFS2024 C172 G1000 Icons` with `asobo_c172sp_g1000` (docs/package.md) and load a C172 G1000
   flight: the XL switches to it. Install the same package again with Remove old Profiles checked: one icon
   profile, the mapping kept.
@@ -1229,7 +1229,7 @@ with the mouse and check that the key follows without a key being pressed.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the ADF/VOR values, the CHRONO and
   AUTOLAND results, the MSFS and A32NX versions, and every fallback or change.
 
@@ -1295,7 +1295,7 @@ with the mouse and check that the key follows without a key being pressed.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the voltages, the EXT AVAIL, APU N,
   ALIGN and MODE SEL results, the IR order, the MSFS and A32NX versions, and every fallback or change.
 
@@ -1367,7 +1367,7 @@ with the mouse and check that the key follows without a key being pressed.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the kHz step, what VHF1 shows with
   VHF2 selected, STATE in each mode, the IDENT time, the TCAS results, the MSFS and A32NX versions, and every
   fallback or change.
@@ -1461,7 +1461,7 @@ with the mouse and check that the key follows without a key being pressed.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, what a second press of a lit ECAM
   key does, the ALL step, the DIM look, the brake pressures, the ENG MODE result, the rudder trim step, the
   MSFS and A32NX versions, and every fallback or change.
@@ -1507,7 +1507,7 @@ file is missing: note the key)
 - [ ] Delete `MSFS2024 A32NX Icons` in Stream Deck Preferences > Profiles and the plugin's
   `Images\Guenseli-A32NX` folder.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each page's look (Wait images, back keys, readability, taste changes) and the sim check when it
   can run.
 
@@ -1582,7 +1582,7 @@ changed value you used.
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the log lines for any step that failed, the battery number, the B-var values,
   the flap number per detent, the keys the G3000 ignores, the MSFS version and SF50 preset, and every fallback
   or change.
@@ -1650,7 +1650,7 @@ press (half a second or more) switches off.
   shows nothing there but may act on other aircraft. **Do not press YD, the BARO long press, the rudder trim
   keys or WING LT there** (standard events and generic input events act on any aircraft that has them).
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result, the values each new B-var read per position, the battery and generator
   indexes, whether the long presses switched off, the MSFS version and SF50 preset, and every fallback or
   change.
@@ -1709,7 +1709,7 @@ section. Not yet tested in the app or the sim. Hold times run from key down.
   radios and trim (standard events); hold one briefly and check that it stops on release. CRS needs the G3000
   and does nothing there.
 
-**Result for the worker**
+**Results to record**
 - [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-3 rows), the step per press
   of ALT and BARO, whether the PFD baro followed, the repeat feel (too slow, right, too fast), the MSFS
   version and SF50 preset, and every fallback or change.

@@ -292,7 +292,7 @@ HDG BUG readout below.
 | AP NAV mode (1,5 `NAV`) | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | `B:as1000_autopilot_navigation_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 27 | Unverified |
 | AP approach mode (1,6 `APR`) | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | `B:as1000_autopilot_approach_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 17 | Unverified |
 | AP back course mode (1,7 `BC`) | `(A:AUTOPILOT BACKCOURSE HOLD, Bool)` | Bool | `K:AP_BC_HOLD` | `B:as1000_autopilot_backcourse_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 19 | Unverified |
-| AP vertical navigation (1,8 `VNV`) | `L:XMLVAR_VNAVButtonValue` (L-Var read; **weak source**: a general-path SDK template page and a pre-2024 profile, no 2024 source, A-6) | 0/1 assumed | `B:as1000_autopilot_vertical_navigation_pfd`, On `1` / Off `0` (command type 13) | write: an L-Var toggle of `L:XMLVAR_VNAVButtonValue` (needs a ruling and a TOOLS LOCK), else Empty; read: the B-Var itself, else no state; every second press only: the Reset Switch (`UseLvarReset`, README 2.1.2) | IE 29; SDK-APT; lead: Jiblet's C172 G1000 profile; README 2.1.1 | Unverified |
+| AP vertical navigation (1,8 `VNV`) | `L:XMLVAR_VNAVButtonValue` (L-Var read; **weak source**: a general-path SDK template page and a pre-2024 profile, no 2024 source, A-6) | 0/1 assumed | `B:as1000_autopilot_vertical_navigation_pfd`, On `1` / Off `0` (command type 13) | write: an L-Var toggle of `L:XMLVAR_VNAVButtonValue` (needs a ruling and a `check.py` change), else Empty; read: the B-Var itself, else no state; every second press only: the Reset Switch (`UseLvarReset`, README 2.1.2) | IE 29; SDK-APT; lead: Jiblet's C172 G1000 profile; README 2.1.1 | Unverified |
 | AP altitude mode (2,1 `ALT`) | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | `K:AP_PANEL_ALTITUDE_HOLD`, then `B:as1000_autopilot_altitude_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 13 | Unverified |
 | AP vertical speed mode (3,1 `VS`) | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | `K:AP_PANEL_VS_HOLD`, then `B:as1000_autopilot_verticalspeed_pfd` | SDK-APV; SDK-APE; SDK-APT; IE 33 | Unverified |
 | AP FLC mode (4,1 `FLC`) | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` (does not set the speed target to IAS as the cockpit button does, A-9) | `B:as1000_autopilot_flightlevelchange_pfd`, or a Lua script with `K:AP_SPD_VAR_SET` (ruling needed) | SDK-APV; SDK-APE; SDK-APT; IE 23 | Unverified |
@@ -322,7 +322,7 @@ section "P3-2: Transponder page (C172 G1000)" passes. The 2024 C172 G1000 has **
 (IE: only the breaker `B:electrical_breaker_btn_breaker_xpndr`, IE 172), so every key uses SDK K-events or
 SimVars. The XPDR readout (1,2) repeats the main page's "Transponder code (3,2)" row (same address, a second
 key). STBY / ON / ALT write an A-Var (command type 12): the SDK has no transponder mode event, the SDK marks
-`TRANSPONDER STATE` settable (SDK-RADV, rechecked 2026-11-14), and the coordinator's P3-2 ruling A-4 allows
+`TRANSPONDER STATE` settable (SDK-RADV, rechecked 2026-11-14), and the P3-2 ruling A-4 allows
 this write for these three keys only; a key that changes the SimVar but not the PFD's XPDR mode display fails
 the hand test (repair: the three keys go Empty, the PFD softkeys set the mode).
 

@@ -6,7 +6,7 @@ Guenseli icon pack (`A:\FS2024 Stuff\PilotsDeck\Icon Pack Guenseli_1_7_iUdcY`), 
 own use. Addresses, commands, indicators, titles and key positions are the same as in the committed
 profiles; only the key images differ. The C172 G1000 and A32NX icon profiles were installed with the local
 icon package (sections 1 and 2) on 2026-11-15; their look tests and sim checks are not done yet: see the
-checklist blocks "P2-5: local icon build" and "P4-ICONS: local icon build (A32NX)" in
+checklist sections "P2-5: local icon build (C172 G1000)" and "P4-ICONS: local icon build (A32NX)" in
 [tests/manual-checklist.md](../tests/manual-checklist.md).
 
 ## Licence: personal and private use only
@@ -120,7 +120,7 @@ About this step:
 The FlyByWire A32NX profile has its own icon build, made the same way from its own mapping,
 `tools/profilegen/icons-a32nx.json`. Addresses, commands, titles and key positions are those of the committed
 `MSFS2024 A32NX` profile; only the key images differ. Installed with the local icon package on 2026-11-15;
-not yet look-tested: see the checklist block "P4-ICONS: local icon build (A32NX)" in
+not yet look-tested: see the checklist section "P4-ICONS: local icon build (A32NX)" in
 [tests/manual-checklist.md](../tests/manual-checklist.md).
 
 Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
@@ -168,8 +168,8 @@ What differs from the C172 build:
 The VisionJet (Cirrus Vision SF50) profile has its own icon build, made the same way from its own mapping,
 `tools/profilegen/icons-visionjet-sf50.json`. Addresses, commands, titles and key positions are those of the
 committed `MSFS2024 VisionJet` profile; only the key images differ. Not yet installed or look-tested: see the
-checklist section "VisionJet SF50 profile (V-1)", "Icon look test", in
-[tests/manual-checklist.md](../tests/manual-checklist.md).
+step "Icon look test" in the checklist sections "VisionJet SF50 profile (V-1)", "VisionJet SF50 profile (V-2)"
+and "VisionJet SF50 profile (V-3)" in [tests/manual-checklist.md](../tests/manual-checklist.md).
 
 Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
 

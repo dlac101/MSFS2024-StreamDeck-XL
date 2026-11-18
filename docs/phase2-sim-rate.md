@@ -237,7 +237,7 @@ Command Address `K:SIM_RATE_INCR`, Title `FASTER` (simrate 1,5).
 | `K:SIM_RATE` | "Selects the simulation rate. Use the PLUS and MINUS events to increment/decrement the value": a select mode plus a second event; `K:SIM_RATE_INCR` / `_DECR` step the rate directly. | SDK-MISCE |
 | Pause (`K:PAUSE_TOGGLE`, `K:PAUSE_ON`, `K:PAUSE_OFF`, `K:PAUSE_SET`) | Not asked for. | SDK-MISCE |
 | Writing `SIMULATION RATE` directly (an E-Var / A-Var write) | The SDK marks it get/set, but this page uses no A-Var or E-Var write for the sim rate (P2-6 route ruling). | SDK-ENVV; P2-6 route ruling |
-| A Toggle Switch form (press again = back to 1x) | No real saved key with Toggle Switch on and a K-event command exists on this PC, so there is no example to copy. | brief scan (P2-6 research) |
+| A Toggle Switch form (press again = back to 1x) | No real saved key with Toggle Switch on and a K-event command exists on this PC, so there is no example to copy. | P2-6 research scan |
 
 ## Sources
 

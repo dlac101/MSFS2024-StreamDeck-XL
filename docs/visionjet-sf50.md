@@ -1091,10 +1091,10 @@ of ALT and BARO+/-, whether the G3000 PFD's baro follows BARO+/-, and the word F
 | V-3 A-n | The ASSUMPTIONS of V-3, ruled 2026-11-17: A-1 the V-3 / V-4 split, A-2 Hold Switch and a script loop (the step cap and the 20 s limit always end it), A-3 the long press burst fallback, A-4 speed profiles, A-5 the CRS and ALT long presses go (the user's answer), A-6 repeat only on benign steps, A-7 BARO+/- by `KOHLSMAN_INC` / `_DEC`, A-8 FUEL CTL Mappings, A-9 no tool change, A-10 events only, A-11 README, A-12 no aircraft check, A-13 sim answers later as a repair, A-14 weak sources |
 | SCMON-SF50 | A `tools/scmon` capture with the SF50 loaded (2026-11-16, MSFS 2024, version not recorded): a local copy of the tool that also read the SF50's B-vars through PilotsDeck's local API (read only) while the user worked the cockpit controls with the mouse. The values each B-var took are in [aircraft-mappings.md](aircraft-mappings.md), "Cirrus Vision SF50 (MSFS 2024 default, V-2)". With the brake set, `K:PARKING_BRAKES` from the deck moved `BRAKE PARKING POSITION` from 1 to 0 and back to 1 within about 0.1 s while `B:sf50_handling_parking_brake` stayed 1; the cockpit handle moved the B-var between 0 and 1 and the SimVar followed it |
 
-V-2 rechecked at their pages on 2026-11-16 (the brief writer): SDK-APE (`YAW_DAMPER_TOGGLE` "Toggles yaw
+V-2 rechecked at their pages on 2026-11-16: SDK-APE (`YAW_DAMPER_TOGGLE` "Toggles yaw
 damper on/off"), SDK-APV (`AUTOPILOT YAW DAMPER` "Yaw damper active"), SDK-SYSV (`STRUCTURAL DEICE SWITCH`,
 `WINDSHIELD DEICE SWITCH`), SDK-ENGV (`ENG ANTI ICE`, `GENERAL ENG STARTER`), README (2.1, 2.1.1, 2.1.2).
-V-3 rechecked at their pages on 2026-11-17 (the brief writer): SDK-APE (`HEADING_BUG_INC` "Increments heading
+V-3 rechecked at their pages on 2026-11-17: SDK-APE (`HEADING_BUG_INC` "Increments heading
 hold reference bug", `_DEC`, `AP_ALT_VAR_INC` "Increments the reference altitude.", `AP_VS_VAR_INC`,
 `AP_SPD_VAR_INC` and their `_DEC` forms; no step sizes), SDK-INSTE (`KOHLSMAN_INC` "Increments altimeter
 setting.", `KOHLSMAN_DEC`, no parameter).

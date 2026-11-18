@@ -209,8 +209,8 @@ tested. Each is a data-file change (then regenerate); none needs a script.
 | NAV, APR, BC | press does nothing | `B:as1000_autopilot_navigation_pfd`, `..._approach_pfd`, `..._backcourse_pfd` | IE 27, 17, 19 |
 | ALT | press does nothing | `K:AP_PANEL_ALTITUDE_HOLD`, then `B:as1000_autopilot_altitude_pfd` | SDK-APE; IE 13 |
 | VS | press does nothing | `K:AP_PANEL_VS_HOLD`, then `B:as1000_autopilot_verticalspeed_pfd` | SDK-APE, SDK-APT; IE 33 |
-| FLC | the speed target stays at an old value | a Lua script (FLC on, then `K:AP_SPD_VAR_SET` to the current IAS), or `B:as1000_autopilot_flightlevelchange_pfd`; either needs a coordinator ruling (A-9, A-12) | SDK-APE, SDK-APT; IE 23 |
-| VNV | the press does nothing | an L-Var write toggling `L:XMLVAR_VNAVButtonValue` (what the cockpit code does); needs a ruling and a `check.py` change under a TOOLS LOCK (A-6, A-11); else VNV becomes Empty | SDK-APT |
+| FLC | the speed target stays at an old value | a Lua script (FLC on, then `K:AP_SPD_VAR_SET` to the current IAS), or `B:as1000_autopilot_flightlevelchange_pfd`; either needs a ruling (A-9, A-12) | SDK-APE, SDK-APT; IE 23 |
+| VNV | the press does nothing | an L-Var write toggling `L:XMLVAR_VNAVButtonValue` (what the cockpit code does); needs a ruling and a `check.py` change (shared tool code, one lane at a time; A-6, A-11); else VNV becomes Empty | SDK-APT |
 | VNV | the press works but the key never lights | read the B-Var `B:as1000_autopilot_vertical_navigation_pfd` itself (README: only some B-Vars have a value), else no state (Simple Button) | README 2.1.1; IE 29 |
 | VNV | only every second press works (the input event keeps the 1 of the first press, so the next press writes 0) | the Reset Switch: "UseLvarReset": true in the key's set (PilotsDeck writes On 1, then Off 0 100 ms later; settings panel "Reset Switch to Off Position after pressed") | README 2.1.2; Plugin/PI/pi-SwitchDisplay.html |
 | HDG BUG readout | differs from the PFD's HDG box | add the index: `(A:AUTOPILOT HEADING LOCK DIR:1, Degrees)` | SDK-APV (slots) |
