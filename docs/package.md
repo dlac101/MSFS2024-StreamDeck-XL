@@ -95,12 +95,13 @@ icon-free and unchanged.
 - The version lives only in `package.json` `versionpackage`, as `MAJOR.MINOR`. Each release bumps MINOR;
   1.0 is for a complete C172 G1000 profile.
 - A newly committed profile or script in the work folder is packed by the next build without any change to
-  `package.json` or the script. A file of another kind (another folder, `Extras/`) is refused until the
-  build script supports it.
-- A release: bump `versionpackage`, update `notes` and `aircraft` (the build prints a NOTE for each packed
-  profile or script the notes don't name), commit, then build. Rebuilding an existing version with new
-  content is refused only while that version's `.ppp` is still in the output folder (`_Releases/` by
-  default), so keep each released `.ppp` there.
+  the build script; its name belongs in the `package.json` notes (`python tools/profilegen/check_docs.py`
+  fails until they name it). A file of another kind (another folder, `Extras/`) is refused until the build
+  script supports it.
+- A release: bump `versionpackage`, update `notes` and `aircraft` (the build prints a NOTE, and
+  `check_docs.py` a FAIL, for each packed profile or script the notes don't name), commit, then build.
+  Rebuilding an existing version with new content is refused only while that version's `.ppp` is still in
+  the output folder (`_Releases/` by default), so keep each released `.ppp` there.
 - Never rename a profile (the manifest `Name` and the file name stay the same between versions): the
   Profile Manager uses the name to update the profile and keep its mapping.
 - When a script or image is renamed or dropped, add its old plugin path (`Scripts/<old>.lua`,

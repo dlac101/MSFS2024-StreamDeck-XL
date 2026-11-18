@@ -23,7 +23,9 @@ Checks:
   doc      key by key against the "Key table" of the spec doc: action, title, command and read addresses,
            On/Off values, long press, format, mappings, Decode BCD, Special State, folder keys; on a Display
            Gauge its range (`<min>` to `<max>`), its saved orientation (saved `<n>`, equal to the orientation
-           word's value), center line and arc; plus the template tables' values the Key table doesn't list
+           word's value), center line and arc (each only as an item of its own in the Display cell, whose items
+           are split at commas and semicolons outside parentheses and backticks: "center line", "arc ...", so
+           "no center line" is no center line); plus the template tables' values the Key table doesn't list
            (Toggle Switch unchecked on K-event commands, On/Off images, Special Image); a row with an action
            kind check.py doesn't know is a FAIL naming the row
   child    every child page whose data file entry names a doc ("spec") against that doc's table under the
@@ -36,8 +38,8 @@ Checks:
   phase1   "phase1_keys" (default BAT 1,1, PARK 1,4, AP 2,1; [] = none): settings equal the Phase 1 export's apart from the fields the data file names;
            States equal apart from FontSize, which is the expected title size (see size), and apart from
            TitleAlignment only on keys with a "title_align" (see align)
-  size     title sizes: generate.py's rule constants are the ruled 10 -> 14 (LR210-C4); every key entry field
-           is in generate.KEY_FIELDS; every "title_size" sits on a PilotsDeck key, is an int in
+  size     title sizes: generate.py's rule constants are 10 -> 14 (docs/navigation.md "Rules"); every key entry
+           field is in generate.KEY_FIELDS; every "title_size" sits on a PilotsDeck key, is an int in
            generate.TITLE_SIZES and not redundant; every PilotsDeck key's FontSize is its title_size, else 14
            where its template says 10 on a Simple or Dynamic Button, else the template's size (readout keys,
            COM Radio and Display Value, keep theirs); folder and back keys 12; prints the size counts and the
@@ -60,7 +62,8 @@ Checks:
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
            profiles unchanged and A:\\FS2024 Stuff\\PilotsDeck)
 Exit code 0 when everything passes (a SKIP is not a failure), 1 on a FAIL (an unreadable data file, doc or
-profile too), 2 on a usage error.
+profile, a data file without a key check.py reads, or a template or "states_from" that names no template, too),
+2 on a usage error. The repository-wide doc checks are in check_docs.py.
 """
 import io
 import json
@@ -104,23 +107,27 @@ KVAR = TYPE_BY_PREFIX["K:"]
 ON_OFF_IMAGES = {"OnImage": "Images/KorryOnBlueTop.png", "OffImage": "Images/KorryOffWhiteBottom.png"}
 SPECIAL_IMAGE = "Images/Fault.png"
 FOLDER_TITLE_SIZE = 12  # folder and back keys keep their templates' FontSize (templates.json "folder", "back")
-# The ruled title size change (P2-7, LR210-C4: the user reads titles at 14, not 10); generate.py's constants must
-# equal these (R-1, LR231-C5)
+# The title size change of P2-7 (the user reads titles at 14, not 10; docs/navigation.md "Rules"); generate.py's
+# constants must equal these
 RULED_TITLE_SIZE_FROM = 10
 RULED_TITLE_SIZE_TO = 14
-# The key kinds that get 10 -> 14 (LR231-C5 R-2 (a)), stated here on its own and not read from generate.py:
+# The key kinds that get 10 -> 14 (docs/navigation.md "Rules"), stated here on its own and not read from generate.py:
 # Simple Button and Dynamic Button draw no text (PilotsDeck 11bdf1f7 Plugin/Actions/Simple/ActionSwitch.cs and
 # ActionSwitchDisplay.cs: no DrawText or GetFont); Display Value (ActionDisplayText.cs) and COM Radio
 # (ActionDisplayRadio.cs) draw their values with GetFont(), the title font when FontInherit is set
 # (ActionBaseSimple.cs), so they keep their template size.
 RULED_TITLE_SIZE_KINDS = {ACTION_UUIDS["Simple Button"], ACTION_UUIDS["Dynamic Button"]}
-# Allowed "title_align" values (P2-7 A-8, LR232-C5): the Elgato Stream Deck SDK manifest reference, State
+# Allowed "title_align" values (P2-7, docs/navigation.md "Rules"): the Elgato Stream Deck SDK manifest reference, State
 # "TitleAlignment": "bottom" | "middle" | "top" (https://docs.elgato.com/streamdeck/sdk/references/manifest)
 TITLE_ALIGNS = ("top", "middle", "bottom")
 # Every aircraft variable and event is recorded in this doc with its status (its intro: "Unverified" until a test
-# passes); the settings fields below hold a key's command and read addresses (the ones expected_from_row compares)
+# passes); the settings fields below hold a key's command and read addresses (the ones expected_from_row compares,
+# and AddressActionOff, the alternate command a Hold Switch key sends on release, docs/visionjet-sf50.md)
 MAPPINGS_DOC = "docs/aircraft-mappings.md"
-ADDRESS_FIELDS = ("AddressAction", "AddressActionLong", "Address", "AddressRadioActiv", "AddressRadioStandby")
+ADDRESS_FIELDS = ("AddressAction", "AddressActionLong", "AddressActionOff", "Address", "AddressRadioActiv",
+                  "AddressRadioStandby")
+# The data file keys check.py reads (besides "output"; "phase1_keys" is optional)
+DATA_KEYS = ("profile_name", "spec", "phase1_export", "pages", "grid", "back_key_pos")
 # The forms of the doc's "Verified" cells: "Unverified" (any note after it), a test with its date (the forms of its
 # tested rows: "2026-11-11, MSFS 1.9.24.0, both directions", "Verified 2026-11-11 (...)", "does not work
 # (2026-11-11, ...)", and "does not work" in bold and/or capitalized with the date inside its first parenthesis:
@@ -259,8 +266,25 @@ def parse_mappings(md):
     return rows, names
 
 
+def cell_items(text):
+    """The items of a table cell: split at commas and semicolons outside parentheses and backticks."""
+    items, cur, depth, tick = [], "", 0, False
+    for ch in text:
+        if ch == "`":
+            tick = not tick
+        elif not tick and ch in "()":
+            depth = depth + 1 if ch == "(" else max(depth - 1, 0)
+        if ch in ",;" and not tick and depth == 0:
+            items.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    return items + [cur.strip()]
+
+
 def expected_gauge(disp):
-    """What a Display Gauge row's Display cell says the bar fields hold."""
+    """What a Display Gauge row's Display cell says the bar fields hold ("center line" and "arc ..." only as items
+    of their own, so "no center line" or "no arc" reads as False)."""
     rng = re.search(r"`(-?\d+(?:\.\d+)?)` to `(-?\d+(?:\.\d+)?)`", disp)
     saved = re.search(r"saved `(-?\d+)`", disp)
     if not rng or not saved:
@@ -270,8 +294,9 @@ def expected_gauge(disp):
     if word and GAUGE_ORIENTATION[word.group(1)] != int(saved.group(1)):
         raise ValueError(f"Orientation {word.group(1)} is saved {GAUGE_ORIENTATION[word.group(1)]} (GaugeOrientation), "
                          f"the row says saved `{saved.group(1)}`")
+    items = cell_items(disp)
     return {"MinimumValue": rng.group(1), "MaximumValue": rng.group(2), "BarOrientation": int(saved.group(1)),
-            "CenterLine": "center line" in disp, "DrawArc": re.search(r"\barc\b", disp) is not None}
+            "CenterLine": "center line" in items, "DrawArc": any(re.fullmatch(r"arc\b.*", i) for i in items)}
 
 
 def expected_from_row(r):
@@ -378,6 +403,10 @@ def main():
         out_path = ROOT / data["output"]
     except (OSError, ValueError, KeyError, TypeError) as ex:
         check(False, f"cannot read the data file {data_path} (or templates.json): {type(ex).__name__}: {ex}")
+        return finish()
+    missing_keys = [k for k in DATA_KEYS if k not in data]
+    if missing_keys:
+        check(False, f"the data file {data_path} has no {missing_keys} (check.py reads {', '.join(DATA_KEYS)})")
         return finish()
 
     print("== zip: the profile opens, every JSON entry parses")
@@ -556,6 +585,18 @@ def main():
 
     print("== template: every PilotsDeck key differs from its template only in the fields the data file names")
     resolve = generate.load_templates(generate.Phase1(ROOT / data["phase1_export"]))
+    unknown_templates = []
+    for page in data["pages"]:
+        for key in page["keys"]:
+            for f in ("template", "states_from"):
+                if key.get(f):
+                    try:
+                        resolve(key[f])
+                    except KeyError as ex:
+                        unknown_templates.append(f"{page['id']} {key.get('pos')} {f} {key[f]!r} ({type(ex).__name__}: {ex})")
+    if unknown_templates:  # the steps below resolve them again
+        check(False, f"templates the data file names that templates.json or the Phase 1 export does not hold: {unknown_templates}")
+        return finish()
     for page in data["pages"]:
         page_acts = actions(pages[generate.uid(data["profile_name"], "page", page["id"]).upper()])
         for key in page["keys"]:
@@ -595,7 +636,7 @@ def main():
     print("== phase1: BAT, PARK, AP against the Phase 1 export")
     for pos in data.get("phase1_keys", ["1,1", "1,4", "2,1"]):
         key = keys_by_pos.get(pos)
-        if key is None or key.get("template", "")[3:] not in p1main:
+        if key is None or not key.get("template", "").startswith("p1:") or key["template"][3:] not in p1main:
             check(False, f"{pos}: phase1_keys names no key of the main page built from a Phase 1 key ('p1:<key>' template)")
             continue
         src = p1main[key["template"][3:]]
@@ -619,7 +660,7 @@ def main():
 
     print("== size: title sizes (States FontSize)")
     check(generate.TITLE_SIZE_FROM == RULED_TITLE_SIZE_FROM and generate.TITLE_SIZE_TO == RULED_TITLE_SIZE_TO,
-          f"generate.py's title size rule is the ruled {RULED_TITLE_SIZE_FROM} -> {RULED_TITLE_SIZE_TO} (LR210-C4)" +
+          f"generate.py's title size rule is {RULED_TITLE_SIZE_FROM} -> {RULED_TITLE_SIZE_TO} (docs/navigation.md \"Rules\")" +
           (f"  FOUND TITLE_SIZE_FROM {generate.TITLE_SIZE_FROM!r} -> TITLE_SIZE_TO {generate.TITLE_SIZE_TO!r}"
            if (generate.TITLE_SIZE_FROM, generate.TITLE_SIZE_TO) != (RULED_TITLE_SIZE_FROM, RULED_TITLE_SIZE_TO) else ""))
     sizes = {}  # FontSize -> number of keys, over every page of the profile

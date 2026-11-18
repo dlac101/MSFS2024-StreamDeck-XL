@@ -25,7 +25,7 @@ What it does:
   KEY_FIELDS is refused.
 - Title alignment (States TitleAlignment): every key keeps its template's alignment. A key's optional
   "title_align" ("top", "middle" or "bottom") sets it on every state of a folder key or an ordinary key (main
-  VIEWS, CHECKLIST, MORE: "middle", P2-7 A-8, LR232-C5); it is refused on empty entries, when it is not one of
+  VIEWS, CHECKLIST, MORE: "middle", docs/navigation.md "Rules"); it is refused on empty entries, when it is not one of
   those three strings, and where it equals the template's alignment.
 - The output is byte-identical for the same inputs: fixed entry order and timestamps, UUIDs derived
   from the profile name and page/key ids (uuid5), JSON written the way the Stream Deck app writes it
@@ -63,18 +63,18 @@ ROOT = HERE.parents[1]
 NAMESPACE = uuid.uuid5(uuid.NAMESPACE_URL, "msfs2024-streamdeck-xl/tools/profilegen")
 ZIP_DATE = (2026, 11, 11, 0, 0, 0)  # fixed timestamp for every zip entry
 OPENCHILD = "com.elgato.streamdeck.profile.openchild"
-# Title size (States FontSize; P2-7, LR210-C4): a template state at 10 becomes 14 on the kinds in
+# Title size (States FontSize; P2-7, docs/navigation.md "Rules"): a template state at 10 becomes 14 on the kinds in
 # TITLE_SIZE_KINDS, any other size or kind keeps its size; a key's "title_size" overrides it with one of TITLE_SIZES
 TITLE_SIZE_FROM = 10
 TITLE_SIZE_TO = 14
 TITLE_SIZES = (10, 11, 12, 13, 14, 15)
-# Only Simple Buttons and Dynamic Buttons get the 10 -> 14 rule (LR231-C5 R-2 (a)): they draw no text of their
+# Only Simple Buttons and Dynamic Buttons get the 10 -> 14 rule (docs/navigation.md "Rules"): they draw no text of their
 # own (PilotsDeck 11bdf1f7 Plugin/Actions/Simple/ActionSwitch.cs and ActionSwitchDisplay.cs: no DrawText or
 # GetFont), so only the Stream Deck app's title uses the size. COM Radio (ActionDisplayRadio.cs) and Display
 # Value (ActionDisplayText.cs) draw their values with GetFont(), which returns the title font when FontInherit
 # is set (ActionBaseSimple.cs), so they keep their template size.
 TITLE_SIZE_KINDS = ("com.extension.pilotsdeck.action.switch", "com.extension.pilotsdeck.action.switch.display")
-# Title alignment (States TitleAlignment; P2-7 A-8, LR232-C5): the values of the Elgato Stream Deck SDK manifest
+# Title alignment (States TitleAlignment; P2-7, docs/navigation.md "Rules"): the values of the Elgato Stream Deck SDK manifest
 # reference, State "TitleAlignment": "bottom" | "middle" | "top" (https://docs.elgato.com/streamdeck/sdk/references/manifest),
 # and the field and value of the user's own saved edit (ProfilesV3 B83EB496-78B3-46DF-896E-8B9F656B713E.sdProfile,
 # main 1,8 / 3,8 / 4,8 folder keys: States[0].TitleAlignment "bottom" -> "middle")

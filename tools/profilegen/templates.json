@@ -304,7 +304,7 @@
       "kind": "ProfilesV3",
       "file": "%APPDATA%/Elgato/StreamDeck/ProfilesV3/5CFD6707-1DA1-41C0-9FE9-3B84184E1367.sdProfile/Profiles/1FA3B762-6445-4CBC-953D-326F021FFAF4/manifest.json",
       "pos": "2,0",
-      "note": "Dynamic Button with an A-Var command (ActionType 12, PilotsDeck 0.9.7, BUILD_VERSION 11): the views page's EXTERNAL key, set by the user by hand in the Stream Deck app (Command type A-Var, Command Address (A:CAMERA STATE, Enum), On Value $2,=3<) in the imported P2-3 profile, which the app named 'MSFS2024 C172 G1000 copy'; sim-tested 2026-11-11 (LR101-C2). Manifest sha256 c8174d8e8ed5b30a2cb8af1545fedf0d3a1aacb0dd3ee28532ea0403f5e006b0 when copied."
+      "note": "Dynamic Button with an A-Var command (ActionType 12, PilotsDeck 0.9.7, BUILD_VERSION 11): the views page's EXTERNAL key, set by the user by hand in the Stream Deck app (Command type A-Var, Command Address (A:CAMERA STATE, Enum), On Value $2,=3<) in the imported P2-3 profile, which the app named 'MSFS2024 C172 G1000 copy'; sim-tested 2026-11-11 (EXTERNAL hand test 2026-11-11, docs/phase2-trim-views.md). Manifest sha256 c8174d8e8ed5b30a2cb8af1545fedf0d3a1aacb0dd3ee28532ea0403f5e006b0 when copied."
     },
     "action": {
       "ActionID": "81a534d8-d9c0-46c6-ab10-16c6e1a9d8d7",

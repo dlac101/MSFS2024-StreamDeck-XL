@@ -86,6 +86,7 @@ These keys run a Lua script from the package; without it they do nothing (the pa
 | `XL24-COMPAD.lua` | COM pad digits, CLR, ENT | [phase2-com1-pad.md](phase2-com1-pad.md) |
 | `XL24-XPDRPAD.lua` | Transponder pad digits, CLR, ENT | [phase3-transponder.md](phase3-transponder.md) |
 | `XL24-A32NX.lua` | A32NX FCU and baro readouts, ND MODE, ND RNG, WARN, CAUT, the EFIS page's script keys, the fuel MODE SEL key, the radio page's ACTIVE and STBY windows, the xpdr page's MODE, TCAS and TRAFFIC keys | [phase4-a32nx.md](phase4-a32nx.md), [phase4-a32nx-efis.md](phase4-a32nx-efis.md), [phase4-a32nx-overhead.md](phase4-a32nx-overhead.md), [phase4-a32nx-radios.md](phase4-a32nx-radios.md) |
+| `XL24-SF50.lua` | VisionJet step keys that repeat while held: autopilot HDG, CRS, ALT, VS and SPD, radios MHZ, KHZ and BARO, trim TRIM UP, TRIM DN, RUD L and RUD R | [visionjet-sf50.md](visionjet-sf50.md) |
 
 PilotsDeck logs two warnings for a missing script (`Plugin/Resources/ScriptManager.cs` at `11bdf1f`):
 `Script File '<file>' does not exist!` when a key that uses it is loaded, and

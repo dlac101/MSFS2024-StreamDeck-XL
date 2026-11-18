@@ -83,8 +83,9 @@ no key has a dial (the XL has none).
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua` | compad keys | Collects typed digits, then sets COM1 standby (long ENT also swaps) |
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-XPDRPAD.lua` | xpdr pad keys | Collects four typed digits (0-7), then sets the transponder code (`K:XPNDR_SET`) |
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua` | A32NX FCU and baro readouts, ND MODE, ND RNG, the EFIS ADF/VOR keys, WARN, CAUT, the fuel MODE SEL key (ovhdsys 1,8), the radio page's ACTIVE and STBY windows, the xpdr page's MODE, TCAS and TRAFFIC keys, the ped page's SPD BRK, LDG GEAR, A/BRK, ENG MODE, RUD TRIM and BRK PSI keys | FCU and baro readout text (blank when the FCU is not healthy), ND mode and range steps, navaid selector steps, master warning and caution presses, the MODE SEL press (`FUELMODE`, by `SimCalculator`: needs the MobiFlight WASM module, [installation.md](installation.md#mobiflight-wasm-module-which-keys-need-it)), the RMP 1 window text (`RMPACT`, `RMPSTBY`), the transponder mode and TCAS selector steps (`XPDRMODE`, `TCASMODE`, `TCASTRAF`), the pedestal page's speed brake, gear, autobrake, rudder trim and brake pressure text (`SPDBRK`, `GEARIND`, `ABRK`, `RUDTRIM`, `BRKPSI`) and the ENG MODE selector step (`ENGMODE`, by `SimCalculator`: needs the MobiFlight WASM module) |
+| `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SF50.lua` | VisionJet step keys: autopilot HDG, CRS, ALT, VS and SPD, radios MHZ, KHZ and BARO, trim TRIM UP, TRIM DN, RUD L and RUD R | Hold to repeat: sends a key's event at key down, then again while the key is held (`HOLD`, `RELEASE`; [visionjet-sf50.md](visionjet-sf50.md)) |
 
-All four are standard scripts. The package copies them into the plugin's Scripts folder
+All five are standard scripts. The package copies them into the plugin's Scripts folder
 ([package.md](package.md), "Install"); copying one by hand is the fallback (each page doc's install step).
 The `Scripts/global/` and `Scripts/image/` folders are empty.
 
@@ -94,6 +95,7 @@ The `Scripts/global/` and `Scripts/image/` folders are empty.
 |---|---|---|
 | Profile generator | `tools/profilegen/generate.py` | Builds a profile from its data file (`c172-g1000.json` by default, `a32nx.json` for the A32NX, `visionjet-sf50.json` for the VisionJet), `templates.json` (real saved keys) and the Phase 1 export (`tools/profilegen/MSFS2024 C172 POC.streamDeckProfile`); same inputs give the same bytes; `--icons <mapping>` builds the local icon profile of that mapping |
 | Profile check | `tools/profilegen/check.py` | Compares the profile with each page doc's Key table (a Display Gauge's range and bar too), the templates and a fresh build; checks folders, back keys, title sizes and alignment, every `lua:` key against its script, and every key's addresses and every row's status cell in [aircraft-mappings.md](aircraft-mappings.md) |
+| Doc check | `tools/profilegen/check_docs.py` | Checks the docs against each other and the tracked files: the checklist sections the docs name, README's layout block, the package notes, the `B:` input events in [aircraft-mappings.md](aircraft-mappings.md) against the lists in [reference/](reference/), and that no tracked file outside `docs/chain/` cites an internal reference number |
 | Icon mapping check | `tools/profilegen/check_icons.py` | Checks a key-to-icon mapping (`icons-c172-g1000.json` by default, `icons-a32nx.json` or `icons-visionjet-sf50.json` with `--mapping`) and its local build |
 | Package build | `tools/package/build_package.py` | Builds the public package `MSFS2024-XL v<version>.ppp` from the committed work folder into the git-ignored `_Releases/` (reproducible; committed files only; no icons; [package.md](package.md)) |
 | Icon package build | `tools/package/build_icon_package.py` | Packs every local icon build (one per `icons-*.json` mapping), its images, the other committed profiles and the scripts into a Profile Manager package under the git-ignored `.local/package/`; refuses a missing or out-of-date build |
@@ -121,8 +123,8 @@ events), [reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt) (141 i
 
 - `pilotsdeck/MSFS2024-XL/_Package/` is a PilotsDeck Profile Manager work folder: `package.json`,
   `Profiles/` (three profiles: `MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`), `Scripts/`
-  (four scripts: `XL24-SIMRATE.lua`, `XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`; empty
-  `global/` and `image/`), an empty `Images/`.
+  (five scripts: `XL24-SIMRATE.lua`, `XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`,
+  `XL24-SF50.lua`; empty `global/` and `image/`), an empty `Images/`.
 - `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000, FlyByWire A32NX and
   Cirrus Vision SF50 (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the
   C172 G1000 and VisionJet mappings.
@@ -271,7 +273,7 @@ product call; "Project" = the project can decide.
 | 12 | More camera views by camera variable writes | A paid camera-only profile exists (C.2 item 3); two view keys exist, one passed a hand test | User (which views) |
 | 13 | Safe default profile for other aircraft | The plan's safe fallback (line 54) | User (whether to build) |
 | 14 | Committed own images (state colours, icons) | Readability without the personal-use pack | User |
-| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list open, for P5-TOOLS2) |
+| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; two items open) |
 | 16 | `1X` key unlit at every rate but 1x | Today it shows no image at most rates (by design); cosmetic | User (after the look test) |
 | 17 | Folder title alignment for the remaining folders | Main page VIEWS, CHECKLIST and MORE are centred; the others are not | User (after the look test) |
 | 18 | Ground-service menu (GSX) | Needs a paid add-on; the plan wants no paid dependency for the baseline | User |
@@ -305,7 +307,8 @@ in P5-TOOLS):
 - `tools/package/build_package.py`: remove a leftover temporary package file before writing it, as
   `build_icon_package.py` does, so the write never goes through a link planted at that path.
 
-Still open, for P5-TOOLS2 (shared tool code, one lane at a time):
+Third list (shared tool code, one lane at a time; all four were done in P5-TOOLS2, the doc checks in the new
+`tools/profilegen/check_docs.py`):
 
 - `tools/profilegen/check.py`: no check reads `tests/manual-checklist.md`, so a checklist section that a doc
   names in quotes ("the checklist section ...") can be renamed or removed unnoticed.
@@ -318,6 +321,17 @@ Still open, for P5-TOOLS2 (shared tool code, one lane at a time):
   message and a template note still cite internal reference numbers instead of the public sources they
   stand for (the docs no longer do since P5-DOCS5); replace each, and add a check that no tracked file
   outside `docs/chain/` cites one.
+
+Still open, for a later tools unit (shared tool code, one lane at a time):
+
+- `tools/profilegen/check_docs.py`: a Sources tag that a page doc's tables use is not checked against that
+  doc's "Sources" table; a rule needs one tag form in the docs first (today 56 of the 290 parts of the Source
+  cells in the 18 docs with a Sources table start with no tag of that table).
+- `tools/profilegen/check_docs.py`: a checklist section quote after "checklist block" (`docs/icons.md`),
+  after a "section" that goes on from a sentence naming the checklist (`docs/phase2-trim-views.md`,
+  `docs/phase3-engine-fuel.md`, `docs/phase4-a32nx.md`) or inside `tests/manual-checklist.md` itself is not
+  read; three of them name "P2-5: local icon build", not the heading "P2-5: local icon build (C172
+  G1000)", so those docs need that fix before a rule reads these forms.
 
 Not ranked yet, from C and the plan: pages by flight phase (the Fenix A320 example's Gate, Taxi, Flight and
 Cruise folders), best added once the A32NX panels exist; and the plan's timer (concept layout 3,7, now the
@@ -716,14 +730,24 @@ look-tested)
 
 **P5-TOOLS2 MORE DOC CHECKS**
 
-- Scope: the third list in section D: the checklist sections the docs name, README's layout block, the
-  package notes, the `B:` input events in `docs/aircraft-mappings.md`, and the reference numbers in tool
-  comments and messages.
-- Files: M `tools/profilegen/check.py` (or a new check script under `tools/`), M
-  `tools/profilegen/generate.py` and `tools/profilegen/templates.json` (comments and a note only), M
-  `docs/roadmap.md`.
-- Depends on: P5-TOOLS.
-- Shared tool code: yes.
+- Scope: the third list in section D. A new `tools/profilegen/check_docs.py` checks that the checklist
+  sections the docs name in quotes are headings of `tests/manual-checklist.md`, that README's layout block
+  lists every doc in `docs/`, that the work folder's `package.json` notes name every committed profile and
+  script, that every `B:` input event in `docs/aircraft-mappings.md` is in its aircraft's list in
+  `docs/reference/` (the A32NX has none), and that no tracked file outside `docs/chain/` cites an internal
+  reference number. Tool comments, a `check.py` message and a template note cite the public sources
+  instead. `check.py` gives a clean FAIL on a data file without a key it reads or on a template that does
+  not exist, reads a Display Gauge's center line and arc only as items of their own, and checks a hold
+  key's key-up command in `docs/aircraft-mappings.md` too; `check_icons.py` runs under `python -I`;
+  `build_package.py` gives its own error, not a traceback, on a folder at its temporary path. The
+  `package.json` notes, A.3, A.6 and `docs/troubleshooting.md` name V-3's script `XL24-SF50.lua`.
+- Files: C `tools/profilegen/check_docs.py`, M `tools/profilegen/check.py`, M
+  `tools/profilegen/check_icons.py`, M `tools/package/build_package.py`, M `tools/profilegen/generate.py` and
+  `tools/profilegen/templates.json` (comments and a note only), M `docs/package.md`, M `docs/roadmap.md`, M
+  `docs/troubleshooting.md`, M `pilotsdeck/MSFS2024-XL/_Package/package.json` (notes only).
+- Depends on: P5-TOOLS, V-3.
+- Shared tool code: yes (`generate.py` and `templates.json` in comments and a note only; every profile the
+  same byte for byte).
 - Shared docs: CHANGELOG.md.
 
 **P5-4 OWN IMAGES**
@@ -744,7 +768,7 @@ look-tested)
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
 | A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, then P5-TOOLS2 (the tool checks still open in section D), then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.

@@ -373,7 +373,7 @@ def main(argv=None):
             print(f"ERROR: cannot write {target}: {exc}", file=sys.stderr)
             return 2
         finally:
-            if tmp.exists():
+            if tmp.is_file() or tmp.is_symlink():  # a directory stays: the ERROR names it
                 tmp.unlink()
     print(f"package {target}")
     print(f"sha256 {hashlib.sha256(archive).hexdigest()}")

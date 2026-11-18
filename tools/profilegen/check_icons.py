@@ -11,8 +11,9 @@ and image copies it checks live in a git-ignored folder (default <repo>/.local/i
 check.py stays the check for the committed profile; this script never changes a file.
 
 Checks:
-  mapping  the JSON parses (no key twice) and every field has its type (strings; "files" an object of objects;
-           "keys" and "left_as_is" lists of objects; "pass" an int; "title" a string, or null on a back key),
+  mapping  the JSON parses (no key twice) and every field but "_about" (free text) has its type (strings; "files"
+           an object of objects; "keys" and "left_as_is" lists of objects; "pass" an int; "title" a string, or
+           null on a back key),
            else a FAIL naming the field; the pack's ReadMe.txt has the recorded sha256; every "files"
            entry exists in the pack with its recorded sha256, is a PNG of its recorded size, square, named
            like its pack file with only [A-Za-z0-9_.-] (no "@": PilotsDeck's image list skips those), and is
@@ -43,6 +44,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(HERE))  # generate.py sits next to this file (also under python -I, which leaves it off sys.path)
 sys.dont_write_bytecode = True  # importing generate.py must not leave a __pycache__ folder in the repo
 import generate  # noqa: E402  (uid, doc_pos_to_key, state_image_name, build)
 
