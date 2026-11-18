@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars (V-1); V-2 adds RECOG and ICE on main, FMS SPD and MAN SPD on autopilot and the systems and iceenv pages' switches from the same list, and PARK's command (the parking brake input event; the standard K-event failed in the SF50). The pages views, simrate, vspeeds, compad, xpdr and radios are the C172 G1000 pages' keys as they are; trim is the C172's trim page without its aileron trim keys (V-2). The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios, engine, systems and iceenv (vspeeds, compad, autopilot, xpdr, radios, engine, systems and iceenv are second-level pages under more; checklist holds only its back key). 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested.",
+  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars (V-1); V-2 adds RECOG and ICE on main, FMS SPD and MAN SPD on autopilot and the systems and iceenv pages' switches from the same list, and PARK's command (the parking brake input event; the standard K-event failed in the SF50). The pages views, simrate, vspeeds, compad and xpdr are the C172 G1000 pages' keys as they are; radios is the C172's radios page with hold to repeat and a BARO column (V-3); trim is the C172's trim page without its aileron trim keys (V-2). The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios, engine, systems and iceenv (vspeeds, compad, autopilot, xpdr, radios, engine, systems and iceenv are second-level pages under more; checklist holds only its back key). 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested. V-3 adds hold to repeat on the step keys of autopilot, radios and trim (a Simple Button with Hold Switch on: key down runs lua:XL24-SF50:HOLD(code), key up lua:XL24-SF50:RELEASE(code); the script Scripts/XL24-SF50.lua sends the events, docs/visionjet-sf50.md 'Hold to repeat'), a BARO column on radios (1,8 readout, 2,8 BARO+, 3,8 BARO-) and the FUEL CTL readout's LEFT/AUTO/RIGHT mappings.",
   "profile_name": "MSFS2024 VisionJet",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 VisionJet.streamDeckProfile",
   "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
@@ -337,7 +337,7 @@
       "id": "trim",
       "parent": "main",
       "spec": "docs/visionjet-sf50.md",
-      "note": "Trim page as the C172's current trim page without aileron trim: elevator trim keys and gauge, rudder trim keys and gauge (V-2)",
+      "note": "Trim page as the C172's current trim page without aileron trim: elevator trim keys and gauge, rudder trim keys and gauge (V-2); hold to repeat on the trim keys, capped at 8 s (V-3)",
       "keys": [
         {
           "pos": "2,2",
@@ -348,10 +348,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:ELEV_TRIM_UP",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(25)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(25)",
+            "HoldSwitch": true
           }
         },
         {
@@ -383,10 +385,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:RUDDER_TRIM_LEFT",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(27)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(27)",
+            "HoldSwitch": true
           }
         },
         {
@@ -411,10 +415,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:RUDDER_TRIM_RIGHT",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(28)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(28)",
+            "HoldSwitch": true
           }
         },
         {
@@ -426,10 +432,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:ELEV_TRIM_DN",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(26)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(26)",
+            "HoldSwitch": true
           }
         }
       ]
@@ -935,7 +943,7 @@
       "id": "autopilot",
       "parent": "more",
       "spec": "docs/visionjet-sf50.md",
-      "note": "Autopilot with the autothrottle: G3000 course keys, HDG sync, VNV, LVL, A/T, TOGA and A/T MGD readouts (V-1); FMS SPD, YD and MAN SPD (V-2)",
+      "note": "Autopilot with the autothrottle: G3000 course keys, HDG sync, VNV, LVL, A/T, TOGA and A/T MGD readouts (V-1); FMS SPD, YD and MAN SPD (V-2); hold to repeat on the HDG, CRS, ALT, VS and SPD step keys (V-3)",
       "keys": [
         {
           "pos": "1,2",
@@ -1024,10 +1032,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:HEADING_BUG_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(1)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(1)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1039,13 +1049,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 8,
-            "AddressAction": "H:AS3000_PFD_1_CRS_INC",
             "DefaultImage": "Images/Switch.png",
             "DrawBox": false,
-            "HasLongPress": true,
-            "ActionTypeLong": 16,
-            "AddressActionLong": "K:VOR1_OBI_FAST_INC"
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(3)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(3)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1057,13 +1066,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_ALT_VAR_INC",
             "DefaultImage": "Images/Switch.png",
             "DrawBox": false,
-            "HasLongPress": true,
-            "ActionTypeLong": 16,
-            "AddressActionLong": "K:AP_ALT_VAR_INC:1000"
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(5)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(5)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1075,10 +1083,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_VS_VAR_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(7)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(7)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1090,10 +1100,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_SPD_VAR_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(9)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(9)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1209,10 +1221,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:HEADING_BUG_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(2)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(2)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1224,13 +1238,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 8,
-            "AddressAction": "H:AS3000_PFD_1_CRS_DEC",
             "DefaultImage": "Images/Switch.png",
             "DrawBox": false,
-            "HasLongPress": true,
-            "ActionTypeLong": 16,
-            "AddressActionLong": "K:VOR1_OBI_FAST_DEC"
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(4)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(4)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1242,13 +1255,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_ALT_VAR_DEC",
             "DefaultImage": "Images/Switch.png",
             "DrawBox": false,
-            "HasLongPress": true,
-            "ActionTypeLong": 16,
-            "AddressActionLong": "K:AP_ALT_VAR_DEC:1000"
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(6)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(6)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1260,10 +1272,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_VS_VAR_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(8)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(8)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1275,10 +1289,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:AP_SPD_VAR_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(10)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(10)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1574,7 +1590,7 @@
       "id": "radios",
       "parent": "more",
       "spec": "docs/visionjet-sf50.md",
-      "note": "NAV1, NAV2, COM2 as the C172's (V-1)",
+      "note": "NAV1, NAV2, COM2 as the C172's (V-1); hold to repeat on the MHZ and KHZ keys and a BARO column (V-3)",
       "keys": [
         {
           "pos": "1,2",
@@ -1640,6 +1656,15 @@
           }
         },
         {
+          "pos": "1,8",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
+            "Format": "2.2"
+          }
+        },
+        {
           "pos": "2,2",
           "title": "MHZ+",
           "template": "simple_button",
@@ -1648,10 +1673,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV1_RADIO_WHOLE_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(13)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(13)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1663,10 +1690,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV1_RADIO_FRACT_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(14)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(14)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1678,10 +1707,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV2_RADIO_WHOLE_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(15)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(15)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1693,10 +1724,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV2_RADIO_FRACT_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(16)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(16)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1708,10 +1741,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:COM2_RADIO_WHOLE_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(17)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(17)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1723,10 +1758,29 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:COM2_RADIO_FRACT_INC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(18)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(18)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "BARO+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(11)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(11)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1738,10 +1792,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV1_RADIO_WHOLE_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(19)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(19)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1753,10 +1809,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV1_RADIO_FRACT_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(20)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(20)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1768,10 +1826,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV2_RADIO_WHOLE_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(21)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(21)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1783,10 +1843,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:NAV2_RADIO_FRACT_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(22)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(22)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1798,10 +1860,12 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:COM2_RADIO_WHOLE_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(23)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(23)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1813,10 +1877,29 @@
             "LinkedTitle": true
           },
           "set": {
-            "ActionType": 16,
-            "AddressAction": "K:COM2_RADIO_FRACT_DEC",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(24)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(24)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "BARO-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SF50:HOLD(12)",
+            "AddressActionOff": "lua:XL24-SF50:RELEASE(12)",
+            "HoldSwitch": true
           }
         },
         {
@@ -1934,7 +2017,7 @@
       "id": "systems",
       "parent": "more",
       "spec": "docs/visionjet-sf50.md",
-      "note": "Systems: BAT 2, GEN 1, GEN 2 guarded switches; bus volts, total load, engine run knob, starter and fuel control readouts (V-2)",
+      "note": "Systems: BAT 2, GEN 1, GEN 2 guarded switches; bus volts, total load, engine run knob, starter and fuel control readouts (V-2); fuel control readout shows LEFT/AUTO/RIGHT (V-3)",
       "keys": [
         {
           "pos": "1,2",
@@ -2043,8 +2126,9 @@
           "template": "p1:2,0",
           "set": {
             "Address": "B:sf50_fuel_control_knob",
-            "Format": "1.0",
-            "DoNotRequestBvar": false
+            "Format": "",
+            "DoNotRequestBvar": false,
+            "ValueMappings": "0=LEFT:1=AUTO:2=RIGHT"
           }
         }
       ]

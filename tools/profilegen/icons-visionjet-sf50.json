@@ -1,5 +1,5 @@
 {
-  "_about": "Key-to-icon mapping for the LOCAL icon build of the MSFS 2024 default Cirrus Vision SF50 profile (docs/icons.md; personal use only, never committed: the icon profile and the images are written to the git-ignored .local/ folder). Names and sha256 only, in the form of icons-a32nx.json. Rows of keys copied from the C172 G1000 profile are icons-c172-g1000.json's rows for the same page, position and title; the new keys (main N1, the autopilot A/T, LVL, TOGA and A/T MGD keys, MORE ENGINE and the engine page) use pack files that the C172 and A32NX mappings already name. V-2 rows: main RECOG and ICE, the trim page's rudder trim keys (the C172's rows; the TRIM and TRIM DEG rows are gone), the autopilot FMS SPD, YD and MAN SPD keys, MORE SYSTEMS (the C172's row) and ICE/ENV (6-OVHD.png, as icons-a32nx.json), and the systems and iceenv pages; the new files Arrow_L.png, Arrow_R.png and 6-OVHD.png come with their sha256 from the C172 and A32NX mappings. Not yet look-tested.",
+  "_about": "Key-to-icon mapping for the LOCAL icon build of the MSFS 2024 default Cirrus Vision SF50 profile (docs/icons.md; personal use only, never committed: the icon profile and the images are written to the git-ignored .local/ folder). Names and sha256 only, in the form of icons-a32nx.json. Rows of keys copied from the C172 G1000 profile are icons-c172-g1000.json's rows for the same page, position and title; the new keys (main N1, the autopilot A/T, LVL, TOGA and A/T MGD keys, MORE ENGINE and the engine page) use pack files that the C172 and A32NX mappings already name. V-2 rows: main RECOG and ICE, the trim page's rudder trim keys (the C172's rows; the TRIM and TRIM DEG rows are gone), the autopilot FMS SPD, YD and MAN SPD keys, MORE SYSTEMS (the C172's row) and ICE/ENV (6-OVHD.png, as icons-a32nx.json), and the systems and iceenv pages; the new files Arrow_L.png, Arrow_R.png and 6-OVHD.png come with their sha256 from the C172 and A32NX mappings. Not yet look-tested. V-3 rows: the radios page's BARO column (BARO readout, BARO+ and BARO-, with pack files the mapping already names); the step keys that now hold to repeat keep their rows.",
   "pack_root": "A:/FS2024 Stuff/PilotsDeck/Icon Pack Guenseli_1_7_iUdcY",
   "pack_readme_sha256": "015a544924866720dee95c1e8fa56f6eca9aa867599f73cf1f0ac86eb3f54e1b",
   "data": "tools/profilegen/visionjet-sf50.json",
@@ -1407,6 +1407,30 @@
       "on": "G1000_Button_new_on.png",
       "off": "G1000_Button_new_off.png",
       "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "radios",
+      "pos": "1,8",
+      "title": "BARO",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
+      "pos": "2,8",
+      "title": "BARO+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT+)"
+    },
+    {
+      "page": "radios",
+      "pos": "3,8",
+      "title": "BARO-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT-)"
     },
     {
       "page": "engine",

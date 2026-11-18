@@ -925,3 +925,50 @@ capture (MSFS 2024, version not recorded; SCMON-SF50); the key's own press stays
 | iceenv 4,3 `TEMP AFT` | `B:sf50_cabin_ecs_temp_knob_aft`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 70; SF50-FLT | Unverified |
 | iceenv 4,4 `FAN FWD` | `B:sf50_cabin_ecs_fan_knob_forward`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 68 | Unverified |
 | iceenv 4,5 `FAN AFT` | `B:sf50_cabin_ecs_fan_knob_aft`, Format `1.0` | B-var value | none (V-3) | - | IE-SF50 67 | Unverified |
+
+## Cirrus Vision SF50 (MSFS 2024 default, V-3)
+
+For [visionjet-sf50.md](visionjet-sf50.md), V-3: the keys V-3 adds to or changes in the profile `MSFS2024
+VisionJet` (14 pages, 183 keys). The V-1 and V-2 rows above stay for every other key; where a key below has
+a V-1 or V-2 row (the autopilot, radios and trim step keys, systems 2,4), this section's row is the current
+one, and the V-1 long press rows of autopilot CRS+/CRS- (`K:VOR1_OBI_FAST_INC` / `_DEC`) and ALT+/ALT-
+(`K:AP_ALT_VAR_INC:1000` / `_DEC:1000`) are no longer keys of the profile (V-3 A-5). Hold to repeat: key down
+runs `lua:XL24-SF50:HOLD(n)`, key up `lua:XL24-SF50:RELEASE(n)` (Hold Switch, command type Lua Function),
+and the script `XL24-SF50.lua` sends the event of code n once at key down, then repeats it while the key is
+held, up to the step cap or 20 s (the page doc's "Hold to repeat": speed profiles and caps). The step per
+event is the aircraft's own. Generated, not yet sim-tested: every row is **Unverified** until the checklist
+section "VisionJet SF50 profile (V-3)" passes. Tags: the page doc's "Sources". The ECS knob writes that the
+V-2 rows leave for "V-3" are left for V-4.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| autopilot 2,2 `HDG+` hold to repeat (code 1; fast, cap 360) | none | - | `lua:XL24-SF50:HOLD(1)` key down, `lua:XL24-SF50:RELEASE(1)` key up; the script sends `K:HEADING_BUG_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,2 `HDG-` hold to repeat (code 2; fast, cap 360) | none | - | `lua:XL24-SF50:HOLD(2)` key down, `lua:XL24-SF50:RELEASE(2)` key up; the script sends `K:HEADING_BUG_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,3 `CRS+` hold to repeat (code 3; fast, cap 360) | none | - | `lua:XL24-SF50:HOLD(3)` key down, `lua:XL24-SF50:RELEASE(3)` key up; the script sends `H:AS3000_PFD_1_CRS_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; WT-G3000H; SF50-PKG; weak, V-1 A-15 | Unverified |
+| autopilot 4,3 `CRS-` hold to repeat (code 4; fast, cap 360) | none | - | `lua:XL24-SF50:HOLD(4)` key down, `lua:XL24-SF50:RELEASE(4)` key up; the script sends `H:AS3000_PFD_1_CRS_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; WT-G3000H; SF50-PKG; weak, V-1 A-15 | Unverified |
+| autopilot 2,4 `ALT+` hold to repeat (code 5; alt, cap 400) | none | - | `lua:XL24-SF50:HOLD(5)` key down, `lua:XL24-SF50:RELEASE(5)` key up; the script sends `K:AP_ALT_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,4 `ALT-` hold to repeat (code 6; alt, cap 400) | none | - | `lua:XL24-SF50:HOLD(6)` key down, `lua:XL24-SF50:RELEASE(6)` key up; the script sends `K:AP_ALT_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,5 `VS+` hold to repeat (code 7; slow, cap 40) | none | - | `lua:XL24-SF50:HOLD(7)` key down, `lua:XL24-SF50:RELEASE(7)` key up; the script sends `K:AP_VS_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,5 `VS-` hold to repeat (code 8; slow, cap 40) | none | - | `lua:XL24-SF50:HOLD(8)` key down, `lua:XL24-SF50:RELEASE(8)` key up; the script sends `K:AP_VS_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,6 `SPD+` hold to repeat (code 9; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(9)` key down, `lua:XL24-SF50:RELEASE(9)` key up; the script sends `K:AP_SPD_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,6 `SPD-` hold to repeat (code 10; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(10)` key down, `lua:XL24-SF50:RELEASE(10)` key up; the script sends `K:AP_SPD_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| radios 2,8 `BARO+` hold to repeat (code 11; baro, cap 200) | none (1,8 `BARO` shows it) | - | `lua:XL24-SF50:HOLD(11)` key down, `lua:XL24-SF50:RELEASE(11)` key up; the script sends `K:KOHLSMAN_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-INSTE; weak on the G3000, V-3 A-7 | Unverified |
+| radios 3,8 `BARO-` hold to repeat (code 12; baro, cap 200) | none (1,8 `BARO` shows it) | - | `lua:XL24-SF50:HOLD(12)` key down, `lua:XL24-SF50:RELEASE(12)` key up; the script sends `K:KOHLSMAN_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-INSTE; weak on the G3000, V-3 A-7 | Unverified |
+| radios 2,2 `MHZ+` (NAV1) hold to repeat (code 13; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(13)` key down, `lua:XL24-SF50:RELEASE(13)` key up; the script sends `K:NAV1_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,3 `KHZ+` (NAV1) hold to repeat (code 14; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(14)` key down, `lua:XL24-SF50:RELEASE(14)` key up; the script sends `K:NAV1_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,4 `MHZ+` (NAV2) hold to repeat (code 15; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(15)` key down, `lua:XL24-SF50:RELEASE(15)` key up; the script sends `K:NAV2_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,5 `KHZ+` (NAV2) hold to repeat (code 16; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(16)` key down, `lua:XL24-SF50:RELEASE(16)` key up; the script sends `K:NAV2_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,6 `MHZ+` (COM2) hold to repeat (code 17; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(17)` key down, `lua:XL24-SF50:RELEASE(17)` key up; the script sends `K:COM2_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,7 `KHZ+` (COM2) hold to repeat (code 18; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(18)` key down, `lua:XL24-SF50:RELEASE(18)` key up; the script sends `K:COM2_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,2 `MHZ-` (NAV1) hold to repeat (code 19; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(19)` key down, `lua:XL24-SF50:RELEASE(19)` key up; the script sends `K:NAV1_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,3 `KHZ-` (NAV1) hold to repeat (code 20; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(20)` key down, `lua:XL24-SF50:RELEASE(20)` key up; the script sends `K:NAV1_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,4 `MHZ-` (NAV2) hold to repeat (code 21; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(21)` key down, `lua:XL24-SF50:RELEASE(21)` key up; the script sends `K:NAV2_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,5 `KHZ-` (NAV2) hold to repeat (code 22; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(22)` key down, `lua:XL24-SF50:RELEASE(22)` key up; the script sends `K:NAV2_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,6 `MHZ-` (COM2) hold to repeat (code 23; slow, cap 30) | none | - | `lua:XL24-SF50:HOLD(23)` key down, `lua:XL24-SF50:RELEASE(23)` key up; the script sends `K:COM2_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,7 `KHZ-` (COM2) hold to repeat (code 24; fast, cap 200) | none | - | `lua:XL24-SF50:HOLD(24)` key down, `lua:XL24-SF50:RELEASE(24)` key up; the script sends `K:COM2_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| trim 2,2 `TRIM UP` hold to repeat (code 25; trim, cap 160 (8 s)) | none | - | `lua:XL24-SF50:HOLD(25)` key down, `lua:XL24-SF50:RELEASE(25)` key up; the script sends `K:ELEV_TRIM_UP` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 4,2 `TRIM DN` hold to repeat (code 26; trim, cap 160 (8 s)) | none | - | `lua:XL24-SF50:HOLD(26)` key down, `lua:XL24-SF50:RELEASE(26)` key up; the script sends `K:ELEV_TRIM_DN` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 3,6 `RUD L` hold to repeat (code 27; trim, cap 160 (8 s)) | none | - | `lua:XL24-SF50:HOLD(27)` key down, `lua:XL24-SF50:RELEASE(27)` key up; the script sends `K:RUDDER_TRIM_LEFT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 3,8 `RUD R` hold to repeat (code 28; trim, cap 160 (8 s)) | none | - | `lua:XL24-SF50:HOLD(28)` key down, `lua:XL24-SF50:RELEASE(28)` key up; the script sends `K:RUDDER_TRIM_RIGHT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| radios 1,8 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)`, Format `2.2` | inHg | none | - | SDK-SYSV (main 3,6's read) | Unverified |
+| systems 2,4 `FUEL CTL` | `B:sf50_fuel_control_knob`, Mappings `0=LEFT:1=AUTO:2=RIGHT` | B-var value (0, 1, 2) | none (guard) | the raw value (Format `1.0`, V-2) | IE-SF50 114; SF50-CHK; SF50-FLT; SCMON-SF50; V-3 A-8 (an inference) | Unverified |

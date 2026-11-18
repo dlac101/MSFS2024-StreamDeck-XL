@@ -1,18 +1,19 @@
 # VisionJet SF50 profile (MSFS 2024 default Cirrus Vision SF50)
 
-**Status: generated (V-1 and V-2), not yet sim-tested; 14 pages, 180 keys.** The profile `MSFS2024 VisionJet`
+**Status: generated (V-1 to V-3), not yet sim-tested; 14 pages, 183 keys.** The profile `MSFS2024 VisionJet`
 is built by the generator, but nothing on it has been tried in the app or the sim yet. Every name below is
 recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md) ("Cirrus Vision SF50 (MSFS 2024
-default, V-1)" and "(MSFS 2024 default, V-2)") until the checks in
-[tests/manual-checklist.md](../tests/manual-checklist.md), sections "VisionJet SF50 profile (V-1)" and
-"VisionJet SF50 profile (V-2)", pass.
+default, V-1)", "(MSFS 2024 default, V-2)" and "(MSFS 2024 default, V-3)") until the checks in
+[tests/manual-checklist.md](../tests/manual-checklist.md), sections "VisionJet SF50 profile (V-1)",
+"VisionJet SF50 profile (V-2)" and "VisionJet SF50 profile (V-3)", pass.
 
 Goal: a first useful profile for the Cirrus Vision SF50 (VisionJet) that comes with MSFS 2024 (folder
 `microsoft_sf50`, presets `sf50_executive`, `sf50_family` and `sf50_complete`; not FlightFX's add-on). It uses
 the C172 G1000 profile's grid and folder positions where the function applies ([navigation.md](navigation.md),
 "Pages": "a later aircraft uses this grid and these folder positions where the function applies"): 12 pages,
 146 keys in V-1; V-2 adds the systems and ICE/ENV pages and keys on main, trim, autopilot and more: 14 pages,
-180 keys. Every readout and lit key shows the sim's own value; no key assumes its press worked.
+180 keys; V-3 adds hold to repeat on the step keys and a BARO column on radios: 14 pages, 183 keys. Every
+readout and lit key shows the sim's own value; no key assumes its press worked.
 
 **Built with the SF50's input event list (track A).** The user loaded the SF50 with PilotsDeck running on
 2026-11-16, and PilotsDeck wrote its `InputEvents.txt`; the copy is
@@ -24,7 +25,9 @@ light (V-2 puts RECOG at 4,2) and no taxi light (TAXI keeps the standard K-event
 Research and the candidate names: [visionjet-g2-research.md](visionjet-g2-research.md). The data file is
 `tools/profilegen/visionjet-sf50.json`; the key tables below are the reference, and
 `python tools/profilegen/check.py tools/profilegen/visionjet-sf50.json` compares the profile with them key by
-key. No Lua script is new: the sim rate, COM pad and transponder pages call the C172's scripts as they are.
+key. The sim rate, COM pad and transponder pages call the C172's scripts as they are. V-3 adds this
+profile's own script `XL24-SF50.lua` (in the package's `Scripts` folder): it runs hold to repeat ("Hold to
+repeat").
 
 Nothing in this profile uses keyboard bindings, vJoy or anything tied to a controller: the keys send the
 aircraft's own input events (B-vars), standard SimConnect events, G3000 H-events (through the MobiFlight WASM
@@ -61,6 +64,15 @@ controller and the T.16000M + TWCS.
   30 s after the profile loaded. V-1's PARK failed: with the brake set, `K:PARKING_BRAKES` from the deck
   moved `BRAKE PARKING POSITION` to 0 and back to 1 within about 0.1 s while `B:sf50_handling_parking_brake`
   stayed 1, so PARK now writes that input event (V-2). No other deck key was tested.
+- **SF50 checklist** (SF50-CHK, V-3, read by search only): the SF50's own checklist names the fuel control
+  switch's three positions ("CHECK LEFT/AUTO/RIGHT", line 1448) and says to press and hold the windshield MAX
+  switch until fluid exits the spray bar (line 4163). It names no variable. With SF50-FLT's AUTO = 1 and the
+  values 0, 1 and 2 that SCMON-SF50 saw, V-3 shows FUEL CTL as `LEFT`, `AUTO` or `RIGHT` (an inference until
+  the sim check, V-3 A-8).
+- **Plugin log, the V-1 keys in flight** (PD-LOG2, leads only): on 2026-11-16 the user pressed HDG+ 6 times
+  and HDG- 16 times about 0.2 s apart, ALT+ 24 times and its long press once, CRS+ and its long press once:
+  the case for hold to repeat. The log does not say whether the bugs moved. No V-2 systems, ICE/ENV, FMS SPD,
+  MAN SPD, YD or BARO STD command was sent yet.
 
 ## Where the pages sit
 
@@ -69,7 +81,7 @@ The main page has no back key. Every child page has its back key at 1,1; at most
 
 | Opened by | Page | Level | Holds |
 |---|---|---|---|
-| main 1,7 `TRIM` | trim | 1 | the C172's current trim page (elevator and rudder trim) without its aileron trim keys (V-2) |
+| main 1,7 `TRIM` | trim | 1 | the C172's current trim page (elevator and rudder trim) without its aileron trim keys (V-2); the trim keys hold to repeat (V-3) |
 | main 1,8 `VIEWS` | views | 1 | the C172's views page as it is |
 | main 3,7 `SIM RATE` | simrate | 1 | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
 | main 3,8 `CHECKLIST` | checklist | 1 | the back key only (Phase 5) |
@@ -78,13 +90,13 @@ The main page has no back key. Every child page has its back key at 1,1; at most
 | more 1,5 `COM PAD` | compad | 2 | the C172's COM1 pad as it is (`XL24-COMPAD.lua`) |
 | more 1,6 `AUTOPILOT` | autopilot | 2 | the C172's autopilot page with the SF50's changes (G3000, autothrottle) |
 | more 1,7 `XPDR` | xpdr | 2 | the C172's transponder page as it is (`XL24-XPDRPAD.lua`) |
-| more 1,8 `RADIOS` | radios | 2 | the C172's radios page as it is |
+| more 1,8 `RADIOS` | radios | 2 | the C172's radios page with hold to repeat on its step keys, plus a BARO column (V-3) |
 | more 2,2 `SYSTEMS` | systems | 2 | battery 2 and generator switches, electrical, engine knob, starter and fuel control readouts (V-2) |
 | more 2,3 `ENGINE` | engine | 2 | engine and fuel readouts (new) |
 | more 2,4 `ICE/ENV` | iceenv | 2 | ice protection, wing light, oxygen, bleed air and ECS (V-2) |
 
 MORE 1,2 and 1,3 (the C172's PFD and MFD bezel pages) stay empty: the SF50's PFD and MFD have no softkeys, and
-the GTC page is V-3 ("Not on these pages").
+the GTC page is V-4 ("Not on these pages").
 
 ## Layouts
 
@@ -154,8 +166,17 @@ Rows 3 and 4 are empty.
 | **Row 3** | - | OXYGEN | BLEED | ECS DIS | DEFOG | AFT CTL | TEMP BKUP | - |
 | **Row 4** | - | TEMP FWD | TEMP AFT | FAN FWD | FAN AFT | - | - | - |
 
-The pages views, simrate, vspeeds, compad, xpdr and radios have the C172's layouts, and trim the C172's
-without its aileron trim keys:
+**radios** (V-3: the C172's radios page plus the BARO column)
+
+| | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 | Col 6 | Col 7 | Col 8 |
+|---|---|---|---|---|---|---|---|---|
+| **Row 1** | < back | NAV1 | NAV1 ID | NAV2 | NAV2 ID | COM2 | COM2 ID | BARO |
+| **Row 2** | - | MHZ+ | KHZ+ | MHZ+ | KHZ+ | MHZ+ | KHZ+ | BARO+ |
+| **Row 3** | - | MHZ- | KHZ- | MHZ- | KHZ- | MHZ- | KHZ- | BARO- |
+| **Row 4** | - | - | - | - | - | MIC1 | MIC2 | - |
+
+The pages views, simrate, vspeeds, compad and xpdr have the C172's layouts, radios the C172's plus its BARO
+column, and trim the C172's without its aileron trim keys:
 [phase2-trim-views.md](phase2-trim-views.md), [phase2-sim-rate.md](phase2-sim-rate.md),
 [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), [phase2-com1-pad.md](phase2-com1-pad.md),
 [phase3-transponder.md](phase3-transponder.md) and [phase3-radios.md](phase3-radios.md).
@@ -208,7 +229,8 @@ with the rudder trim gauge, without the C172's aileron trim keys (the SF50 has n
 elevator and rudder trim only). The rows are those of the "Key table: trim" in
 [phase2-trim-views.md](phase2-trim-views.md) at 18b36eae with 2,6 to 2,8 Empty. V-1's TRIM and TRIM DEG
 readouts (3,2, 3,3) are gone, as on the C172. The rudder trim keys send the standard K-events, not the SF50's
-own `B:handling_ruddertrim_1` (IE-SF50 35; fallback, V-2 A-11).
+own `B:handling_ruddertrim_1` (IE-SF50 35; fallback, V-2 A-11). V-3: the four trim keys hold to repeat (H1),
+at most 8 s per hold ("Hold to repeat").
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
@@ -221,7 +243,7 @@ own `B:handling_ruddertrim_1` (IE-SF50 35; fallback, V-2 A-11).
 | 1,7 | | Empty | | | | |
 | 1,8 | | Empty | | | | |
 | 2,1 | | Empty | | | | |
-| 2,2 | `TRIM UP` | Simple Button | T5 | `K:ELEV_TRIM_UP` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
+| 2,2 | `TRIM UP` | Simple Button | H1 | `lua:XL24-SF50:HOLD(25)` key down, `lua:XL24-SF50:RELEASE(25)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:ELEV_TRIM_UP` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
 | 2,3 | | Empty | | | | |
 | 2,4 | | Empty | | | | |
 | 2,5 | | Empty | | | | |
@@ -233,11 +255,11 @@ own `B:handling_ruddertrim_1` (IE-SF50 35; fallback, V-2 A-11).
 | 3,3 | | Empty | | | | |
 | 3,4 | `TRIM` | Display Gauge | T9 | none | `(A:ELEVATOR TRIM PCT EX2, percent)` [SDK-CTLV, SDK-UNITS] | Format `1.0`; vertical bar, values up (Orientation Up, saved `-90`), `-100` to `100`, center line, pointer |
 | 3,5 | | Empty | | | | |
-| 3,6 | `RUD L` | Simple Button | T5 | `K:RUDDER_TRIM_LEFT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
+| 3,6 | `RUD L` | Simple Button | H1 | `lua:XL24-SF50:HOLD(27)` key down, `lua:XL24-SF50:RELEASE(27)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:RUDDER_TRIM_LEFT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
 | 3,7 | `RUD TRIM` | Display Gauge | T9 | none | `(A:RUDDER TRIM PCT, percent)` [SDK-CTLV, SDK20-CTLV, SDK-UNITS] | Format `1.1`; horizontal bar, values right (Orientation Right, saved `0`), `-100` to `100`, center line, pointer |
-| 3,8 | `RUD R` | Simple Button | T5 | `K:RUDDER_TRIM_RIGHT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
+| 3,8 | `RUD R` | Simple Button | H1 | `lua:XL24-SF50:HOLD(28)` key down, `lua:XL24-SF50:RELEASE(28)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:RUDDER_TRIM_RIGHT` [SDK-FCE] | none (the gauge 3,7 shows the result) | fixed image |
 | 4,1 | | Empty | | | | |
-| 4,2 | `TRIM DN` | Simple Button | T5 | `K:ELEV_TRIM_DN` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
+| 4,2 | `TRIM DN` | Simple Button | H1 | `lua:XL24-SF50:HOLD(26)` key down, `lua:XL24-SF50:RELEASE(26)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:ELEV_TRIM_DN` [SDK-FCE] | none (the gauge 3,4 shows the result) | fixed image |
 | 4,3 | | Empty | | | | |
 | 4,4 | | Empty | | | | |
 | 4,5 | | Empty | | | | |
@@ -290,8 +312,8 @@ The C172's views page ([phase2-trim-views.md](phase2-trim-views.md)); rows as th
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
 | 1,1 | | Back | (Stream Deck) | Returns to the main page | none | Back key |
-| 1,2 | | Empty | | | | PFD softkeys: the SF50's PFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-3 |
-| 1,3 | | Empty | | | | MFD softkeys: the SF50's MFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-3 |
+| 1,2 | | Empty | | | | PFD softkeys: the SF50's PFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-4 |
+| 1,3 | | Empty | | | | MFD softkeys: the SF50's MFD has none (IE-SF50 lists softkeys only on the GTCs); GTC page: V-4 |
 | 1,4 | `V-SPEEDS` | Folder | (Stream Deck) | Opens the child page **vspeeds** | none | Folder; the page's keys: "Key table: vspeeds" below |
 | 1,5 | `COM PAD` | Folder | (Stream Deck) | Opens the child page **compad** | none | Folder; the page's keys: "Key table: compad" below |
 | 1,6 | `AUTOPILOT` | Folder | (Stream Deck) | Opens the child page **autopilot** | none | Folder; the page's keys: "Key table: autopilot" below |
@@ -443,7 +465,8 @@ The C172's COM1 pad ([phase2-com1-pad.md](phase2-com1-pad.md)); rows as that doc
 ## Key table: autopilot
 
 The C172's autopilot page ([phase3-autopilot.md](phase3-autopilot.md)) with the SF50's changes at 1,7, 1,8,
-2,3, 2,7, 2,8, 3,2, 3,3, 3,7, 3,8, 4,3 and 4,8; the other rows as that doc's "Key table: autopilot".
+2,3, 2,7, 2,8, 3,2, 3,3, 3,7, 3,8, 4,3 and 4,8; the other rows as that doc's "Key table: autopilot". V-3: the
+step keys 2,2 to 2,6 and 4,2 to 4,6 hold to repeat (H1, "Hold to repeat"); CRS and ALT lost their long press.
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
@@ -456,11 +479,11 @@ The C172's autopilot page ([phase3-autopilot.md](phase3-autopilot.md)) with the 
 | 1,7 | `FMS SPD` | Dynamic Button | T1-set | `B:sf50_autopilot_fms_speed_mode`, On `1` / Off `1` [IE-SF50 53; README 2.1.1; V-2 A-5] | `B:sf50_autopilot_fms_speed_mode` [IE-SF50 53] | On/Off image, Special State |
 | 1,8 | `VNV` | Dynamic Button | T1 | `B:sf50_autopilot_vnav_mode`, On `1` / Off `0` [IE-SF50 62; README 2.1.1; V-1 A-5] | `L:XMLVAR_VNAVButtonValue` [HH-MS; SDK-APT] | On/Off image, Special State |
 | 2,1 | `ALT` | Dynamic Button | T2 | `K:AP_ALT_HOLD` [SDK-APE; SDK-APT] | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` [SDK-APV] | On/Off image |
-| 2,2 | `HDG+` | Simple Button | T5 | `K:HEADING_BUG_INC` [SDK-APE] | none | fixed image |
-| 2,3 | `CRS+` | Simple Button | T5 | Main `H:AS3000_PFD_1_CRS_INC` [WT-G3000H; SF50-PKG; weak, V-1 A-15], Second (long press) `K:VOR1_OBI_FAST_INC` [SDK-RADE; README 2.1] | none | fixed image |
-| 2,4 | `ALT+` | Simple Button | T5 | Main `K:AP_ALT_VAR_INC` [SDK-APE], Second (long press) `K:AP_ALT_VAR_INC:1000` [SDK-APE; SDK-AS1000; README 2.1.1, 2.1; A-4] | none | fixed image |
-| 2,5 | `VS+` | Simple Button | T5 | `K:AP_VS_VAR_INC` [SDK-APE] | none | fixed image |
-| 2,6 | `SPD+` | Simple Button | T5 | `K:AP_SPD_VAR_INC` [SDK-APE] | none | fixed image |
+| 2,2 | `HDG+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(1)` key down, `lua:XL24-SF50:RELEASE(1)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:HEADING_BUG_INC` [SDK-APE] | none | fixed image |
+| 2,3 | `CRS+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(3)` key down, `lua:XL24-SF50:RELEASE(3)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `H:AS3000_PFD_1_CRS_INC` [WT-G3000H; SF50-PKG; weak, V-1 A-15] | none | fixed image |
+| 2,4 | `ALT+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(5)` key down, `lua:XL24-SF50:RELEASE(5)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_ALT_VAR_INC` [SDK-APE] | none | fixed image |
+| 2,5 | `VS+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(7)` key down, `lua:XL24-SF50:RELEASE(7)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_VS_VAR_INC` [SDK-APE] | none | fixed image |
+| 2,6 | `SPD+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(9)` key down, `lua:XL24-SF50:RELEASE(9)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_SPD_VAR_INC` [SDK-APE] | none | fixed image |
 | 2,7 | `YD` | Dynamic Button | T2 | `K:YAW_DAMPER_TOGGLE` [SDK-APE; weak, V-2 A-9] | `(A:AUTOPILOT YAW DAMPER, Bool)` [SDK-APV] | On/Off image |
 | 2,8 | `A/T` | Dynamic Button | T2 | `K:AUTO_THROTTLE_ARM` [SDK-APE; FORUM-24; V-1 A-15] | `(A:AUTOPILOT THROTTLE ARM, Bool)` [SDK-APV] | On/Off image |
 | 3,1 | `VS` | Dynamic Button | T2 | `K:AP_VS_HOLD` [SDK-APE] | `(A:AUTOPILOT VERTICAL HOLD, Bool)` [SDK-APV] | On/Off image |
@@ -472,11 +495,11 @@ The C172's autopilot page ([phase3-autopilot.md](phase3-autopilot.md)) with the 
 | 3,7 | `LVL` | Dynamic Button | T2 | `K:AP_WING_LEVELER` [SDK-APE; V-1 A-15] | `(A:AUTOPILOT WING LEVELER, Bool)` [SDK-APV] | On/Off image |
 | 3,8 | `TOGA` | Display Value | T3 | none | `L:WT_TOGA_ACTIVE` [HH-MS; weak, V-1 A-15] | Mappings `0=OFF:1=TO/GA` |
 | 4,1 | `FLC` | Dynamic Button | T2 | `K:FLIGHT_LEVEL_CHANGE` [SDK-APE; SDK-APT; A-9] | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` [SDK-APV] | On/Off image |
-| 4,2 | `HDG-` | Simple Button | T5 | `K:HEADING_BUG_DEC` [SDK-APE] | none | fixed image |
-| 4,3 | `CRS-` | Simple Button | T5 | Main `H:AS3000_PFD_1_CRS_DEC` [WT-G3000H; SF50-PKG; weak, V-1 A-15], Second (long press) `K:VOR1_OBI_FAST_DEC` [SDK-RADE; README 2.1] | none | fixed image |
-| 4,4 | `ALT-` | Simple Button | T5 | Main `K:AP_ALT_VAR_DEC` [SDK-APE], Second (long press) `K:AP_ALT_VAR_DEC:1000` [SDK-APE; SDK-AS1000; README 2.1.1, 2.1; A-4] | none | fixed image |
-| 4,5 | `VS-` | Simple Button | T5 | `K:AP_VS_VAR_DEC` [SDK-APE] | none | fixed image |
-| 4,6 | `SPD-` | Simple Button | T5 | `K:AP_SPD_VAR_DEC` [SDK-APE] | none | fixed image |
+| 4,2 | `HDG-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(2)` key down, `lua:XL24-SF50:RELEASE(2)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:HEADING_BUG_DEC` [SDK-APE] | none | fixed image |
+| 4,3 | `CRS-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(4)` key down, `lua:XL24-SF50:RELEASE(4)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `H:AS3000_PFD_1_CRS_DEC` [WT-G3000H; SF50-PKG; weak, V-1 A-15] | none | fixed image |
+| 4,4 | `ALT-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(6)` key down, `lua:XL24-SF50:RELEASE(6)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_ALT_VAR_DEC` [SDK-APE] | none | fixed image |
+| 4,5 | `VS-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(8)` key down, `lua:XL24-SF50:RELEASE(8)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_VS_VAR_DEC` [SDK-APE] | none | fixed image |
+| 4,6 | `SPD-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(10)` key down, `lua:XL24-SF50:RELEASE(10)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_SPD_VAR_DEC` [SDK-APE] | none | fixed image |
 | 4,7 | `MAN SPD` | Dynamic Button | T1-set | `B:sf50_autopilot_man_speed_mode`, On `1` / Off `1` [IE-SF50 58; README 2.1.1; V-2 A-5] | `B:sf50_autopilot_man_speed_mode` [IE-SF50 58] | On/Off image, Special State |
 | 4,8 | `A/T MGD` | Display Value | T3 | none | `(A:AUTOPILOT MANAGED THROTTLE ACTIVE, Bool)` [SDK-APV] | Mappings `0=OFF:1=ON` |
 
@@ -522,7 +545,9 @@ xpdr".
 
 ## Key table: radios
 
-The C172's radios page ([phase3-radios.md](phase3-radios.md)); rows as that doc's "Key table: radios".
+The C172's radios page ([phase3-radios.md](phase3-radios.md)); rows as that doc's "Key table: radios",
+except V-3's: the step keys hold to repeat (H1, "Hold to repeat"), and the BARO column is new: 1,8 shows the
+altimeter setting (main 3,6's read), 2,8 and 3,8 step it.
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
@@ -533,23 +558,23 @@ The C172's radios page ([phase3-radios.md](phase3-radios.md)); rows as that doc'
 | 1,5 | `NAV2 ID` | Display Value | T3 | none | `(A:NAV IDENT:2, String)` [SDK-RADV] | the station ident as text; Format empty |
 | 1,6 | `COM2` | COM Radio | T4 | `K:COM2_RADIO_SWAP` [SDK-RADE] | Active `(A:COM ACTIVE FREQUENCY:2, MHz)`, Standby `(A:COM STANDBY FREQUENCY:2, MHz)` [SDK-RADV] | Format `3` |
 | 1,7 | `COM2 ID` | Display Value | T3 | none | `(A:COM ACTIVE FREQ IDENT:2, String)` [SDK-RADV] | the station ident as text; Format empty |
-| 1,8 | | Empty | | | | |
+| 1,8 | `BARO` | Display Value | T3 | none | `(A:KOHLSMAN SETTING HG:1, inHg)` [SDK-SYSV] | Format `2.2` |
 | 2,1 | | Empty | | | | |
-| 2,2 | `MHZ+` | Simple Button | T5 | `K:NAV1_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
-| 2,3 | `KHZ+` | Simple Button | T5 | `K:NAV1_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
-| 2,4 | `MHZ+` | Simple Button | T5 | `K:NAV2_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
-| 2,5 | `KHZ+` | Simple Button | T5 | `K:NAV2_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
-| 2,6 | `MHZ+` | Simple Button | T5 | `K:COM2_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
-| 2,7 | `KHZ+` | Simple Button | T5 | `K:COM2_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
-| 2,8 | | Empty | | | | |
+| 2,2 | `MHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(13)` key down, `lua:XL24-SF50:RELEASE(13)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV1_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
+| 2,3 | `KHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(14)` key down, `lua:XL24-SF50:RELEASE(14)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV1_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
+| 2,4 | `MHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(15)` key down, `lua:XL24-SF50:RELEASE(15)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV2_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
+| 2,5 | `KHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(16)` key down, `lua:XL24-SF50:RELEASE(16)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV2_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
+| 2,6 | `MHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(17)` key down, `lua:XL24-SF50:RELEASE(17)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:COM2_RADIO_WHOLE_INC` [SDK-RADE] | none | fixed image |
+| 2,7 | `KHZ+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(18)` key down, `lua:XL24-SF50:RELEASE(18)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:COM2_RADIO_FRACT_INC` [SDK-RADE] | none | fixed image |
+| 2,8 | `BARO+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(11)` key down, `lua:XL24-SF50:RELEASE(11)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:KOHLSMAN_INC` [SDK-INSTE; weak, V-3 A-7] | none (1,8 shows the result) | fixed image |
 | 3,1 | | Empty | | | | |
-| 3,2 | `MHZ-` | Simple Button | T5 | `K:NAV1_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
-| 3,3 | `KHZ-` | Simple Button | T5 | `K:NAV1_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
-| 3,4 | `MHZ-` | Simple Button | T5 | `K:NAV2_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
-| 3,5 | `KHZ-` | Simple Button | T5 | `K:NAV2_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
-| 3,6 | `MHZ-` | Simple Button | T5 | `K:COM2_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
-| 3,7 | `KHZ-` | Simple Button | T5 | `K:COM2_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
-| 3,8 | | Empty | | | | |
+| 3,2 | `MHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(19)` key down, `lua:XL24-SF50:RELEASE(19)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV1_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
+| 3,3 | `KHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(20)` key down, `lua:XL24-SF50:RELEASE(20)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV1_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
+| 3,4 | `MHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(21)` key down, `lua:XL24-SF50:RELEASE(21)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV2_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
+| 3,5 | `KHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(22)` key down, `lua:XL24-SF50:RELEASE(22)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:NAV2_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
+| 3,6 | `MHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(23)` key down, `lua:XL24-SF50:RELEASE(23)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:COM2_RADIO_WHOLE_DEC` [SDK-RADE] | none | fixed image |
+| 3,7 | `KHZ-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(24)` key down, `lua:XL24-SF50:RELEASE(24)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:COM2_RADIO_FRACT_DEC` [SDK-RADE] | none | fixed image |
+| 3,8 | `BARO-` | Simple Button | H1 | `lua:XL24-SF50:HOLD(12)` key down, `lua:XL24-SF50:RELEASE(12)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:KOHLSMAN_DEC` [SDK-INSTE; weak, V-3 A-7] | none (1,8 shows the result) | fixed image |
 | 4,1 | | Empty | | | | |
 | 4,2 | | Empty | | | | |
 | 4,3 | | Empty | | | | |
@@ -608,14 +633,14 @@ starter and the fuel control knob (no write: V-2 A-7, A-8).
 | 1,2 | `BAT 2` | Dynamic Button | G1 | Main `B:sf50_electrical_battery_2_switch`, Second (long press) `B:sf50_electrical_battery_2_switch`: a press writes 1 (on), a long press 0 (off) [IE-SF50 81; README 2.1, 2.1.1; PD-LONG; V-2 A-6] | `B:sf50_electrical_battery_2_switch` [IE-SF50 81] | On/Off image, Special State |
 | 1,3 | `GEN 1` | Dynamic Button | G1 | Main `B:sf50_electrical_gen_1_switch`, Second (long press) `B:sf50_electrical_gen_1_switch`: a press writes 1 (on), a long press 0 (off) [IE-SF50 83; README 2.1, 2.1.1; PD-LONG; V-2 A-6] | `B:sf50_electrical_gen_1_switch` [IE-SF50 83] | On/Off image, Special State |
 | 1,4 | `GEN 2` | Dynamic Button | G1 | Main `B:sf50_electrical_gen_2_switch`, Second (long press) `B:sf50_electrical_gen_2_switch`: a press writes 1 (on), a long press 0 (off) [IE-SF50 84; README 2.1, 2.1.1; PD-LONG; V-2 A-6] | `B:sf50_electrical_gen_2_switch` [IE-SF50 84] | On/Off image, Special State |
-| 1,5 | | Empty | | | | IE-SF50 82 `sf50_electrical_battery_generator_intercept`: what it switches is unknown (V-3) |
+| 1,5 | | Empty | | | | IE-SF50 82 `sf50_electrical_battery_generator_intercept`: what it switches is unknown (V-4) |
 | 1,6 | `BUS V` | Display Value | T3 | none | `(A:ELECTRICAL BUS VOLTAGE:1, Volts)` [SDK-ELECV; phase3-systems.md] | Format `2.1` |
 | 1,7 | | Empty | | | | Battery amps: which battery index the SF50's switches drive is open (V-2 A-3) |
 | 1,8 | `LOAD A` | Display Value | T3 | none | `(A:ELECTRICAL TOTAL LOAD AMPS, Amperes)` [SDK-ELECV; phase3-systems.md] | Format `1.1` |
 | 2,1 | | Empty | | | | |
 | 2,2 | `ENG KNOB` | Display Value | T3 | none | `B:sf50_engine_run_knob` [IE-SF50 86; SF50-FLT] | Mappings `0=STOP:1=RUN` |
 | 2,3 | `STARTER` | Display Value | T3 | none | `(A:GENERAL ENG STARTER:1, Bool)` [SDK-ENGV] | Mappings `0=OFF:1=ON` |
-| 2,4 | `FUEL CTL` | Display Value | T3 | none | `B:sf50_fuel_control_knob` [IE-SF50 114; SF50-FLT] | Format `1.0` |
+| 2,4 | `FUEL CTL` | Display Value | T3 | none | `B:sf50_fuel_control_knob` [IE-SF50 114; SF50-FLT; Mappings: SF50-CHK, SCMON-SF50, V-3 A-8] | Mappings `0=LEFT:1=AUTO:2=RIGHT` |
 | 2,5 | | Empty | | | | |
 | 2,6 | | Empty | | | | |
 | 2,7 | | Empty | | | | |
@@ -699,18 +724,21 @@ four ECS knobs (no write: V-2 A-7).
 - **Autopilot page:** the C172's mode keys, steps and readouts, plus the SF50's: VNV (the SF50's VNAV input
   event, lit from the VNAV button L-Var), A/T (arms the autothrottle, lit while armed), LVL (the wing leveler
   mode), TOGA (`TO/GA` while the go-around mode is on) and A/T MGD (`ON` while the autothrottle drives). CRS+,
-  CRS- and CRS1 send the G3000 PFD 1 course knob's H-events (long press on CRS+/CRS-: the 10 degree standard
-  step); HDG BUG syncs the heading bug with the G3000's own H-event. V-2: FMS SPD and MAN SPD press the SF50's
+  CRS- and CRS1 send the G3000 PFD 1 course knob's H-events; HDG BUG syncs the heading bug with the G3000's
+  own H-event. V-2: FMS SPD and MAN SPD press the SF50's
   FMS and manual speed mode buttons (every press writes 1), each lit from its own B-var: the two B-vars are
   exclusive and each holds its state (SCMON-SF50), so the active mode's key is lit. YD toggles the yaw damper
-  by the standard event, lit from `AUTOPILOT YAW DAMPER`.
+  by the standard event, lit from `AUTOPILOT YAW DAMPER`. V-3: the HDG, CRS, ALT, VS and SPD step keys
+  repeat while held ("Hold to repeat"); the long presses of CRS+/CRS- (the 10 degree step) and ALT+/ALT-
+  (1,000 ft) are gone.
 - **Trim page (V-2):** TRIM UP and TRIM DN step the elevator trim, RUD L and RUD R the rudder trim, by the
-  standard events; the TRIM and RUD TRIM gauges show the trim positions from -100 to 100 percent.
+  standard events; the TRIM and RUD TRIM gauges show the trim positions from -100 to 100 percent. V-3: the
+  four keys repeat while held, at most 8 s per hold.
 - **Systems page (V-2):** BAT 2, GEN 1 and GEN 2 switch the second battery and the generators by the SF50's
   input events, guarded: a press writes 1 (on), a long press 0 (off), and the key is lit from the B-var. BUS V
   shows bus 1's volts, LOAD A the total electrical load. ENG KNOB shows the engine run knob (`STOP` or `RUN`),
-  STARTER whether the starter runs, FUEL CTL the fuel control knob's raw value; these three do nothing on a
-  press.
+  STARTER whether the starter runs, FUEL CTL the fuel control switch (`LEFT`, `AUTO` or `RIGHT`, V-3); these
+  three do nothing on a press.
 - **ICE/ENV page (V-2):** ENG IPS, WING/STAB, WSHLD and OXYGEN are guarded like BAT 2; WSHLD HI, WING LT,
   DEFOG, AFT CTL and TEMP BKUP are plain toggles (On `1` / Off `0`). Row 2 shows the sim's own ice protection
   SimVars (`ON` or `OFF`) beside the switches, so a B-var that does not move the sim's system shows. BLEED
@@ -720,6 +748,8 @@ four ECS knobs (no write: V-2 A-7).
   in gallons.
 - **Copied pages:** views, sim rate, V-speeds, COM pad, transponder and radios work as on the C172
   (their docs above); they use standard events, SimVars and the C172's Lua scripts, nothing C172-specific.
+  V-3: the radios step keys repeat while held, and the BARO column shows the altimeter setting (1,8) and
+  steps it (BARO+ 2,8, BARO- 3,8, by the standard baro events).
 
 ## Which route each key uses
 
@@ -731,7 +761,7 @@ standard event and SimVar (BCN: empty when the list has no beacon).
 
 | Key | Matches in the list | Built |
 |---|---|---|
-| main 1,1 `BAT` | IE-SF50 80 `B:sf50_electrical_battery_1_switch`, 81 `B:sf50_electrical_battery_2_switch`, 82 `B:sf50_electrical_battery_generator_intercept` | IE-SF50 80 (battery 1, the lowest index); 81 is V-2's systems BAT 2, 82 left for V-3 |
+| main 1,1 `BAT` | IE-SF50 80 `B:sf50_electrical_battery_1_switch`, 81 `B:sf50_electrical_battery_2_switch`, 82 `B:sf50_electrical_battery_generator_intercept` | IE-SF50 80 (battery 1, the lowest index); 81 is V-2's systems BAT 2, 82 left for V-4 |
 | main 4,1 `NAV LT` | IE-SF50 130 `B:sf50_lighting_nav_lights_intercept` | IE-SF50 130 (weak: an `_intercept` input event, V-1 A-15) |
 | main 4,2 `BCN` (V-1) | none | Empty in V-1 (the SF50's flight files name no beacon either); RECOG since V-2 |
 | main 4,3 `STRB` | IE-SF50 40 `B:lighting_strobe_1` | IE-SF50 40 |
@@ -767,7 +797,7 @@ V-2's keys use the list's SF50 input events where it has the control, the standa
 | iceenv 3,3 `BLEED` | 134 `B:sf50_pressurization_switch_air_bleed` | T3 readout (V-2 A-7) |
 | iceenv 3,4 `ECS DIS` | 66 `B:sf50_cabin_ecs_disable` | T3 readout (V-2 A-7) |
 | iceenv 3,5 `DEFOG`, 3,6 `AFT CTL`, 3,7 `TEMP BKUP` | 65, 64, 69 `B:sf50_cabin_ecs_defog`, `_aft_control`, `_temp_backup` | T1 |
-| iceenv 4,2 to 4,5 (ECS knobs) | 71, 70, 68, 67 `B:sf50_cabin_ecs_temp_knob_forward`, `_temp_knob_aft`, `_fan_knob_forward`, `_fan_knob_aft` | T3 readouts (knob steps unknown, V-3) |
+| iceenv 4,2 to 4,5 (ECS knobs) | 71, 70, 68, 67 `B:sf50_cabin_ecs_temp_knob_forward`, `_temp_knob_aft`, `_fan_knob_forward`, `_fan_knob_aft` | T3 readouts (knob steps unknown, V-4) |
 | systems 1,2 `BAT 2` | 81 `B:sf50_electrical_battery_2_switch` | G1 |
 | systems 1,3 `GEN 1`, 1,4 `GEN 2` | 83, 84 `B:sf50_electrical_gen_1_switch`, `_gen_2_switch` | G1 |
 | systems 2,2 `ENG KNOB` | 86 `B:sf50_engine_run_knob` | T3 readout (V-2 A-7, A-8) |
@@ -776,6 +806,69 @@ V-2's keys use the list's SF50 input events where it has the control, the standa
 | autopilot 2,7 `YD` | none (the list has no yaw damper control) | T2 `K:YAW_DAMPER_TOGGLE` (weak, V-2 A-9) |
 | main 3,6 `BARO` long press | none used (29 `B:autopilot_baro_1_sync` is the fallback) | `K:BAROMETRIC_STD_PRESSURE` (V-2 A-10) |
 | trim 3,6 `RUD L`, 3,8 `RUD R` | none used (35 `B:handling_ruddertrim_1` is the fallback) | T5 K-events as the C172 (V-2 A-11) |
+
+V-3's step keys (H1) send the same events as before, now from the script `XL24-SF50.lua`: key down runs
+`lua:XL24-SF50:HOLD(n)`, key up `lua:XL24-SF50:RELEASE(n)`, and the script's key table gives the event for
+the code n. The new BARO+ and BARO- send the standard baro events; the SF50's own baro knob input event
+(IE-SF50 28 `B:autopilot_baro_1`) is not used, its values are unknown (V-3 A-7).
+
+| Codes | Keys | Event the script sends |
+|---|---|---|
+| 1, 2 | autopilot 2,2 `HDG+`, 4,2 `HDG-` | `K:HEADING_BUG_INC`, `K:HEADING_BUG_DEC` (SDK-APE) |
+| 3, 4 | autopilot 2,3 `CRS+`, 4,3 `CRS-` | `H:AS3000_PFD_1_CRS_INC`, `H:AS3000_PFD_1_CRS_DEC` (WT-G3000H; weak, V-1 A-15) |
+| 5, 6 | autopilot 2,4 `ALT+`, 4,4 `ALT-` | `K:AP_ALT_VAR_INC`, `K:AP_ALT_VAR_DEC` (SDK-APE) |
+| 7, 8 | autopilot 2,5 `VS+`, 4,5 `VS-` | `K:AP_VS_VAR_INC`, `K:AP_VS_VAR_DEC` (SDK-APE) |
+| 9, 10 | autopilot 2,6 `SPD+`, 4,6 `SPD-` | `K:AP_SPD_VAR_INC`, `K:AP_SPD_VAR_DEC` (SDK-APE) |
+| 11, 12 | radios 2,8 `BARO+`, 3,8 `BARO-` | `K:KOHLSMAN_INC`, `K:KOHLSMAN_DEC` (SDK-INSTE; weak on the G3000, V-3 A-7) |
+| 13 to 18 | radios 2,2 to 2,7 (NAV1, NAV2, COM2 `MHZ+` / `KHZ+`) | `K:NAV1_RADIO_WHOLE_INC`, `K:NAV1_RADIO_FRACT_INC`, `K:NAV2_RADIO_WHOLE_INC`, `K:NAV2_RADIO_FRACT_INC`, `K:COM2_RADIO_WHOLE_INC`, `K:COM2_RADIO_FRACT_INC` (SDK-RADE) |
+| 19 to 24 | radios 3,2 to 3,7 (NAV1, NAV2, COM2 `MHZ-` / `KHZ-`) | the same six with `_DEC` (SDK-RADE) |
+| 25, 26 | trim 2,2 `TRIM UP`, 4,2 `TRIM DN` | `K:ELEV_TRIM_UP`, `K:ELEV_TRIM_DN` (SDK-FCE) |
+| 27, 28 | trim 3,6 `RUD L`, 3,8 `RUD R` | `K:RUDDER_TRIM_LEFT`, `K:RUDDER_TRIM_RIGHT` (SDK-FCE) |
+
+## Hold to repeat
+
+V-3, at the user's request: the step keys repeat while held, so a long bug, frequency or trim change is one
+press instead of many. PilotsDeck has no repeat for keys (PD-HOLD): a key sends its command once, and a long
+press (half a second or more) sends a second command once; its only repeat setting, `TickDelay`, is for the
+dials of the Stream Deck +, and the Stream Deck app tells a plugin only key down and key up (ELG-SDK). So the
+repeat runs in this profile's own script, `Scripts/XL24-SF50.lua`, with no change to the repo's tools.
+
+**How it works.** Each step key is a Simple Button with **Hold Switch** on and the command type Lua Function:
+key down runs `lua:XL24-SF50:HOLD(n)`, key up `lua:XL24-SF50:RELEASE(n)` (README 2.1.2: with Hold Switch "The
+normal Command will be sent on KeyDown and the alternate Command on KeyUp"). n is the key's code in the
+script's key table ("Which route each key uses"). PilotsDeck runs each Lua call on its own task, and `Sleep`
+pauses only that task (PD-HOLD; README 3.5: "The execution won't block anything."), so HOLD can wait in a
+loop while RELEASE runs. `XL24-SIMRATE.lua` already waits in a loop with `Sleep` on this PC (PD-LOG2); two
+calls of one script at once are a hand test (V-3 A-14). The times below count 50 ms sleeps, so the real
+times can run a little longer, and the sim itself may speed up repeated trim events (SDK-FCE).
+
+- **A short press** sends one step at key down, as the key did before.
+- **Held**, the key waits its delay, then sends more steps, faster the longer it is held (table below).
+- **It stops** at key up (within about 50 ms), at the key's step cap, or after about 20 s held, whichever
+  comes first. If a key up never reaches the script (for example when the page changes while the key is
+  held), the repeat runs on after the release until the cap or the 20 s limit ends it (trim: about 8 s); the
+  next press of that key resyncs its count. Change pages only with no step key held.
+- **No long press any more on CRS and ALT** (V-3 A-5): CRS+/CRS- had the long press `K:VOR1_OBI_FAST_INC` /
+  `_DEC` and ALT+/ALT- `K:AP_ALT_VAR_INC:1000` / `_DEC:1000`. A key with Hold Switch can't have a long press
+  command (README 2.1.2), so they are gone; holding CRS or ALT speeds up instead.
+- The step keys show fixed images; the readouts beside them (autopilot row 3, radios row 1, the trim gauges)
+  show the sim's values, so a step the aircraft ignores shows as a readout that does not move.
+- The script writes no variable and sends only the events of its key table (K-events and the G3000 CRS
+  H-events, V-3 A-10); it does not check which aircraft is loaded (V-3 A-12).
+
+| Profile | Keys | Delay | Then (from the end of the delay) | Cap per hold (the first step counts) |
+|---|---|---|---|---|
+| fast | HDG, CRS, SPD, the KHZ keys | 400 ms | 10 steps/s to 1.5 s, 20/s to 3 s, then 60/s (3 per 50 ms) | HDG, CRS 360; SPD, KHZ 200 |
+| alt | ALT | 400 ms | 10/s to 1.5 s, then 20/s | 400 |
+| slow | VS, the MHZ keys | 400 ms | 6.7/s (one per 150 ms) | VS 40, MHZ 30 |
+| baro | BARO+, BARO- | 400 ms | 10/s to 2 s, then 20/s | 200 |
+| trim | TRIM UP, TRIM DN, RUD L, RUD R | 250 ms | 20/s, no speed-up | 160 (8 s) |
+
+For HDG with 1 degree steps: held 1 s about 8 degrees, 3 s about 40, 4.3 s about 100; the 360 cap comes at
+about 8.6 s. These are working values (V-3 A-4): if the repeat is too slow or too fast, only the script's
+`PROFILES` and `KEYS` tables change. Fallbacks (V-3 A-2, A-3; not built): a global script with `RunInterval`
+that sends the repeats while an internal variable says a key is held; else no repeat and a long press that
+sends a five-step burst ("Fallbacks").
 
 ## Guarded keys
 
@@ -793,6 +886,10 @@ V-2's keys use the list's SF50 input events where it has the control, the standa
 - Plain toggles (benign): WSHLD HI, WING LT, RECOG, DEFOG, AFT CTL, TEMP BKUP.
 - BAT and A/T are plain toggles, as their cockpit switches: press them in flight only on purpose (V-1's BAT
   stays a toggle, V-2 A-8).
+- **Hold to repeat only on benign steps (V-3 A-6):** the reference bugs (HDG, CRS, ALT, VS, SPD), the radio
+  steps, BARO+/- and the trim keys, each capped and stopped on release; trim repeats like a held trim switch,
+  at most 8 s per hold. Never repeat: FLAPS, the sim rate keys, gear, the AP mode keys, the B-var switches,
+  the G1 keys, the COM and XPDR pads, PARK.
 
 ## What each key holds
 
@@ -803,9 +900,10 @@ real saved key with only the listed fields changed (the generator does this).
 |---|---|---|
 | T1 B-Var switch | Dynamic Button, the Phase 1 BAT key (`p1:0,0`): Command Address and Value Address a `B:` input event, On `1` / Off `0`, Special State on | main 1,1, 4,1, 4,3, 4,4, 4,6; autopilot 1,8 (Value Address the L-Var); V-2: main 1,4 (Value Address the brake SimVar), 4,2; iceenv 1,5, 1,7, 3,5 to 3,7 |
 | T2 K-event mode | Dynamic Button, the Phase 1 AP key (`p1:3,0`): Command Address a `K:` event, Value Address a SimVar | main row 2, 4,5; autopilot 2,7 (V-2), 2,8, 3,7 and the C172's mode keys |
-| T3 Display Value | the Phase 1 RPM key (`p1:2,0`): Value Address, Format, Mappings; command none or a press command | main 1,2, 1,5, 1,6, 3,2, 3,5, 3,6; autopilot 3,2, 3,3, 3,8, 4,8; engine; V-2: systems 1,6, 1,8, 2,3; iceenv row 2 |
+| T3 Display Value | the Phase 1 RPM key (`p1:2,0`): Value Address, Format, Mappings; command none or a press command | main 1,2, 1,5, 1,6, 3,2, 3,5, 3,6; autopilot 3,2, 3,3, 3,8, 4,8; engine; V-2: systems 1,6, 1,8, 2,3; iceenv row 2; V-3: radios 1,8 |
 | T4 COM Radio | `com_radio` (templates.json) | main 3,1 and the copied pages' radio keys |
-| T5 Simple Button | `simple_button` with the AP key's states | main 3,3, 3,4; autopilot 2,3, 4,3 and the step keys; trim 2,2, 4,2, 3,6, 3,8 |
+| T5 Simple Button | `simple_button` with the AP key's states | main 3,3, 3,4 (until V-3 also the autopilot, radios and trim step keys, now H1) |
+| H1 hold to repeat (V-3) | as T5, with the command type Lua Function (14), Command `lua:XL24-SF50:HOLD(n)`, alternate command (`AddressActionOff`) `lua:XL24-SF50:RELEASE(n)`, Hold Switch on and no long press (README 2.1.1, 2.1.2; the saved `simple_button` template holds `HoldSwitch` and `AddressActionOff`) | autopilot 2,2 to 2,6, 4,2 to 4,6; radios 2,2 to 2,8, 3,2 to 3,8; trim 2,2, 4,2, 3,6, 3,8 |
 | T1-set (V-2) | as T1, with On `1` / Off `1`: every press writes 1 (the C172 fuel selector form, [phase3-systems.md](phase3-systems.md)) | autopilot 1,7, 4,7 |
 | G1 guard (V-2) | as T1-set, plus a long press: Long Press on, Second Command type B-Var (13), the same `B:` address, Long On `0` / Off `0` (`SwitchOnStateLong` / `SwitchOffStateLong`, PD-LONG), so a long press writes 0 | main 4,7; systems 1,2 to 1,4; iceenv 1,2 to 1,4, 3,2 |
 | T3 with a B-var read (V-2) | as T3, with "Run as Command" unchecked (saved `DoNotRequestBvar: false`, the A32NX NAV LOGO form) so the B-var is read as a value | systems 2,2, 2,4; iceenv 3,3, 3,4, row 4 |
@@ -830,12 +928,13 @@ mapping does not switch, pick the profile by hand in the Stream Deck app.
 
 ## The MobiFlight WASM module
 
-The four `H:` commands (autopilot CRS+, CRS-, CRS1 and the HDG BUG press) go through the MobiFlight WASM
+The four `H:` commands (autopilot CRS+ and CRS-, which the script sends since V-3, CRS1 and the HDG BUG
+press) go through the MobiFlight WASM
 module: "PilotsDeck sends every H-event and all calculator code through the MobiFlight WASM module"
 ([troubleshooting.md](troubleshooting.md#the-mobiflight-wasm-module)). It is installed on this PC
 ([installation.md](installation.md)); those docs do not list these keys yet (V-1 A-20). Without the module
-those four presses do nothing; their readouts, the long presses of CRS+ and CRS- and every other key do not
-need it.
+those four commands do nothing; their readouts and every other key do not need it (CRS+ and CRS- have no
+long press since V-3).
 
 ## What the keys show when the SF50 isn't there
 
@@ -858,13 +957,18 @@ need it.
   (`K:BAROMETRIC_STD_PRESSURE`) and the rudder trim keys (`K:RUDDER_TRIM_LEFT` / `_RIGHT`) are standard
   events and act on any aircraft: do not press them in another aircraft. The SimVar readouts (bus volts, load,
   starter, ice protection, yaw damper, rudder trim) show that aircraft's own values.
+- V-3: the step keys (HDG, CRS, ALT, VS, SPD, the radio MHZ and KHZ keys, BARO+/-, the trim keys) send
+  standard events from the script and act on any aircraft, one step per press and repeating while held, as
+  their V-2 forms did once per press; CRS needs the G3000 and does nothing elsewhere. The script does not
+  check the aircraft (V-3 A-12). Radios 1,8 BARO shows that aircraft's altimeter setting.
 - If the SF50 ignores a standard event, the key's read stays where it was and the key stays dark: the hand
   test records it.
 
 ## Not on these pages, and why
 
-V-2 added the systems and ICE/ENV pages, RECOG, ICE, BARO STD, FMS SPD, MAN SPD, YD and the rudder trim keys.
-Left for a later unit, **V-3** (V-2 A-1, A-12), because the values they take are not known yet:
+V-2 added the systems and ICE/ENV pages, RECOG, ICE, BARO STD, FMS SPD, MAN SPD, YD and the rudder trim keys;
+V-3 hold to repeat, the BARO column and FUEL CTL's words. Left for a later unit, **V-4** (V-2 A-1, A-12; V-3
+A-1), because the values they take are not known yet (sim checks first):
 
 - **The GTC page** (proposed at MORE 1,2): the SF50's touch controllers take input events (IE-SF50 3 to 26),
   not the WT G3000 H-events of the research doc, and the knob values per step are unknown.
@@ -872,8 +976,9 @@ Left for a later unit, **V-3** (V-2 A-1, A-12), because the values they take are
 - **Writes for the ECS knobs, the fuel control and the engine run knob** (their positions; one key per
   position after the sim check, V-2 A-7): V-2 shows them as readouts.
 - **IE-SF50 82** `sf50_electrical_battery_generator_intercept` (systems 1,5): what it switches is unknown.
-- **Windshield MAX** (ICE/ENV 1,6): the cockpit button is held to dispense fluid (SF50-PKG); a key press can't
-  hold it.
+- **Windshield MAX** (ICE/ENV 1,6): the cockpit button is held to dispense fluid (SF50-PKG, SF50-CHK line
+  4163); which input event it drives and its values are unknown. A key with Hold Switch could hold it (README
+  2.1.2: the On value at key down, the Off value at key up).
 - **Battery amps** (systems 1,7): which battery index the SF50's switches drive is open (V-2 A-3).
 
 Never on these pages:
@@ -898,7 +1003,7 @@ aircraft-mappings.md says "does not work".
 | TAXI (V-1 A-15) | The K-event changes nothing or not the cockpit switch | Empty (the list has no taxi light) | |
 | PARK (V-2) | The B-var write does not move the brake, or the key does not follow the handle | Readout only (command none), the read as now; `K:PARKING_BRAKES` failed in the SF50 (SCMON-SF50) | IE-SF50 117 |
 | VNV (V-1 A-9) | The B-var press does nothing | The L-Var write `L:XMLVAR_VNAVButtonValue`, On `1` / Off `0`; else readout only, Mappings `0=OFF:1=ON` | HH-MS |
-| CRS+, CRS-, CRS1 (V-1 A-15) | The H-event does nothing (the SF50 has no PFD bezel knob) | The long press K-events stay; CRS1 a readout | WT-G3000H |
+| CRS+, CRS-, CRS1 (V-1 A-15) | The H-event does nothing (the SF50 has no PFD bezel knob) | CRS+/CRS- go back to V-2's form with the long press `K:VOR1_OBI_FAST_INC` / `_DEC`; CRS1 a readout | WT-G3000H; SDK-RADE |
 | HDG BUG (V-1 A-15) | The press does not sync the bug | `K:AP_HDG_CURRENT_HDG_SET`, as the C172 | SDK-APE |
 | TOGA (V-1 A-15) | The readout never shows `TO/GA` | `(A:AUTOPILOT TAKEOFF POWER ACTIVE, Bool)` | SDK-APV |
 | A/T (V-1 A-8) | A stronger guard is wanted | Readout only (command none) | |
@@ -910,9 +1015,15 @@ aircraft-mappings.md says "does not work".
 | FMS SPD, MAN SPD (V-2 A-5) | The write does nothing (the B-vars hold their state, SCMON-SF50) | Empty | IE-SF50 53, 58 |
 | YD (V-2 A-9) | `K:YAW_DAMPER_TOGGLE` does nothing | Readout only (command none) | SDK-APE |
 | RUD L, RUD R (V-2 A-11) | The K-events do not move the SF50's rudder trim | `B:handling_ruddertrim_1` after the sim check's values | IE-SF50 35 |
-| Systems 1,7 (V-2 A-3) | After the sim check names the battery index | `BATT A` `(A:ELECTRICAL BATTERY LOAD:<n>, Amperes)`, Format `1.1` | SDK-ELECV |
+| Systems 1,7 (V-2 A-3; V-4) | After the sim check names the battery index | `BATT A` `(A:ELECTRICAL BATTERY LOAD:<n>, Amperes)`, Format `1.1` | SDK-ELECV |
 | Main ICE (V-2 A-13) | A folder is wanted instead of the key | Main 4,7 opens iceenv and MORE 2,4 stays Empty | |
-| ENG KNOB, BLEED, ECS DIS, FUEL CTL, knobs (V-2 A-7) | The Mappings or numbers are wrong | Mappings from the sim check; one key per position in V-3 | SF50-FLT |
+| ENG KNOB, BLEED, ECS DIS, FUEL CTL, knobs (V-2 A-7; V-3 A-8) | The Mappings or numbers are wrong (FUEL CTL's `0=LEFT:1=AUTO:2=RIGHT` is an inference) | Mappings from the sim check; one key per position in V-4 | SF50-FLT; SF50-CHK |
+| Hold to repeat (V-3 A-2) | The keys do not repeat, or a repeat runs on after release | R1 (not built): the keys keep Hold Switch, HOLD and RELEASE only set an internal `X:` variable, and a global script (`Scripts/global/`, `RunInterval`) sends the repeats; if that fails too: the row below | PD-HOLD |
+| Hold to repeat (V-3 A-3) | No route repeats | The step keys go back to their V-2 form plus a long press that sends a five-step burst (not built) | PD-HOLD |
+| Repeat speed (V-3 A-4) | Too slow or too fast | Only the script's `PROFILES` and `KEYS` values change | |
+| CRS and ALT long press (V-3 A-5) | The user wants the long presses back | CRS+/CRS- and ALT+/ALT- without hold to repeat, as V-2 | |
+| Trim repeat (V-3 A-6) | Repeating trim is not wanted | The four trim keys go back to V-2's one-step keys | |
+| BARO+, BARO- (V-3 A-7) | `K:KOHLSMAN_INC` / `_DEC` do nothing on the G3000 | `H:AS3000_PFD_1_BARO_INC` / `_DEC` in the script's key table (not rechecked); else the column is Empty | WT-G3000H |
 | FLAPS (V-1 A-15) | The number per detent is unclear | Mappings after the test | |
 | Views, XPDR (V-1 A-14) | The A-Var writes do nothing on the SF50 | Those five keys become their readouts (command none) | |
 
@@ -921,8 +1032,8 @@ Celsius, IGN under the FADEC, the C172's V-speed SimVars on a jet, and the COM p
 
 ## How to test
 
-Run [tests/manual-checklist.md](../tests/manual-checklist.md), sections "VisionJet SF50 profile (V-1)" and
-"VisionJet SF50 profile (V-2)". As on
+Run [tests/manual-checklist.md](../tests/manual-checklist.md), sections "VisionJet SF50 profile (V-1)",
+"VisionJet SF50 profile (V-2)" and "VisionJet SF50 profile (V-3)". As on
 the other profiles, check both directions: press a key and watch the cockpit, then **work the control in the
 cockpit with the mouse and check that the key follows without a key being pressed.** Never press GEAR or TOGA
 expecting an action (they are readouts). Record which battery BAT moves, the value each B-var reads, the flap
@@ -930,15 +1041,17 @@ number per detent, and every key the G3000 ignores. V-2: record the value each n
 position, whether a long press switches each G1 key off, and which battery and generator index BAT 2, GEN 1
 and GEN 2 move. Some SF50 B-vars read 0 for up to about 30 s after the profile loads (SCMON-SF50): wait until
 the keys show the cockpit state before you judge them. PARK (V-2) writes the parking brake input event: press
-it with the brake set and with it released, and work the handle with the mouse.
+it with the brake set and with it released, and work the handle with the mouse. V-3: hold each step key for
+1, 3 and 10 s and check that the repeat stops at once on release and never runs on; record the step per press
+of ALT and BARO+/-, whether the G3000 PFD's baro follows BARO+/-, and the word FUEL CTL shows per position.
 
 ## When it passes
 
 1. Any change found in the test goes into `tools/profilegen/visionjet-sf50.json` and this doc; then the
    profile is regenerated (not exported from the app) and imported again.
 2. Fill in the "Verified" column of the rows in aircraft-mappings.md ("Cirrus Vision SF50 (MSFS 2024 default,
-   V-1)" and "(MSFS 2024 default, V-2)") with the date, sim version and SF50 preset, for each function that
-   passed; mark a row "does not work" where a key failed.
+   V-1)", "(MSFS 2024 default, V-2)" and "(MSFS 2024 default, V-3)") with the date, sim version and SF50
+   preset, for each function that passed; mark a row "does not work" where a key failed.
 
 ## Sources
 
@@ -971,11 +1084,20 @@ it with the brake set and with it released, and work the handle with the mouse.
 | SDK-ELECV | The SDK electrical variables page as [phase3-systems.md](phase3-systems.md), "Sources" (`ELECTRICAL BUS VOLTAGE`, `ELECTRICAL TOTAL LOAD AMPS`) |
 | SDK-FLT | https://docs.flightsimulator.com/msfs2024/retail/content-configuration/flt-files/flt-file-properties/ (`[LocalVars_EX1.N]` "can be used to define and initialise scoped local variables", with the "L:1" identifier), read 2026-11-16 |
 | SF50-FLT | The SF50's flight files in `content\minimal.fsarchive` of SF50-PKG (read by search only, 2026-11-16): `[LocalVars_EX1.0]` positions and meanings (`SF50_Engine_Run_Knob_Position`, `SF50_Fuel_Control_Switch_Position`, `SF50_Engine_IP_Switch_Position`, `SF50_WingStab_IP_Switch_Position`, `SF50_Oxygen_Master_Switch_Position`, `SF50_Bleed_Air_Switch_State`, `SF50_Ecs_Temp_Knob_Forward_Position`), `[AutoPilot.0]` `YawDamper`, `[Switches.0]` `WingLights` |
+| PD-HOLD | PilotsDeck README at commit 11bdf1f (https://raw.githubusercontent.com/Fragtality/PilotsDeck/11bdf1f/README.md), read 2026-11-17 (V-3): 2.1 (a Second Command when pressed 500 ms or longer, sent once), 2.1.2 (Hold Switch: the normal command on key down, the alternate command on key up; with Hold Switch no long press command), 3.5 (standard scripts in `Scripts`, their state kept while loaded), 3.5.1 (`SimCommand`, `Sleep`, `Log`), 3.5.2 (global scripts, `RunInterval`), 4.1 (`TickDelay` only between encoder ticks); and its source at 11bdf1f7daf4828f822c18919952fe5b66153e58: `Plugin/Actions/Simple/ActionBaseSimple.cs` 534 to 536, 549, 563 to 566 (a holdable command at key down, its key-up form at key up, nothing repeats), `Plugin/Simulator/SimCommand.cs` 77 to 82, 94 to 97 (a Lua Function is holdable), `Plugin/Simulator/ConnectorNone.cs` 45 to 48 (each Lua call on its own task), `Plugin/Resources/Scripts/ManagedScript.cs` 359 (`SimCommand` queues the event), 406 (`Sleep` is `Thread.Sleep`) |
+| ELG-SDK | Elgato Stream Deck SDK, plugin WebSocket events, https://docs.elgato.com/streamdeck/sdk/references/websocket/plugin/ (keyDown, keyUp; dial events for the Stream Deck +; no key-held event), read 2026-11-17 (V-3) |
+| SF50-CHK | The SF50's own checklist in SF50-PKG, `content\html_ui\airplanes\microsoft_sf50\checklist\checklist.xml` (read by search only, 2026-11-17, V-3): line 1448 (fuel control switch "CHECK LEFT/AUTO/RIGHT"), line 4163 (windshield IPS MAX switch, press and hold); no variable names |
+| PD-LOG2 | The plugin logs `PilotsDeck20261116.log` and `PilotsDeck20261117.log` (read only, searched, 2026-11-17, V-3): the V-1 keys sent in the SF50 on 2026-11-16 (HDG+ 6 and HDG- 16 times about 0.2 s apart, 20:29:10 to 20:29:21; ALT+ 24 times and its long press once, 22:53:13 to 22:53:21; CRS+ and its long press once); `lua:xl24-simrate:SET(1)` then `K:SIM_RATE_DECR` twice about 0.1 s apart (20261117.log lines 120 to 123). Leads only, never a test pass |
+| V-3 A-n | The ASSUMPTIONS of V-3, ruled 2026-11-17: A-1 the V-3 / V-4 split, A-2 Hold Switch and a script loop (the step cap and the 20 s limit always end it), A-3 the long press burst fallback, A-4 speed profiles, A-5 the CRS and ALT long presses go (the user's answer), A-6 repeat only on benign steps, A-7 BARO+/- by `KOHLSMAN_INC` / `_DEC`, A-8 FUEL CTL Mappings, A-9 no tool change, A-10 events only, A-11 README, A-12 no aircraft check, A-13 sim answers later as a repair, A-14 weak sources |
 | SCMON-SF50 | A `tools/scmon` capture with the SF50 loaded (2026-11-16, MSFS 2024, version not recorded): a local copy of the tool that also read the SF50's B-vars through PilotsDeck's local API (read only) while the user worked the cockpit controls with the mouse. The values each B-var took are in [aircraft-mappings.md](aircraft-mappings.md), "Cirrus Vision SF50 (MSFS 2024 default, V-2)". With the brake set, `K:PARKING_BRAKES` from the deck moved `BRAKE PARKING POSITION` from 1 to 0 and back to 1 within about 0.1 s while `B:sf50_handling_parking_brake` stayed 1; the cockpit handle moved the B-var between 0 and 1 and the SimVar followed it |
 
 V-2 rechecked at their pages on 2026-11-16 (the brief writer): SDK-APE (`YAW_DAMPER_TOGGLE` "Toggles yaw
 damper on/off"), SDK-APV (`AUTOPILOT YAW DAMPER` "Yaw damper active"), SDK-SYSV (`STRUCTURAL DEICE SWITCH`,
 `WINDSHIELD DEICE SWITCH`), SDK-ENGV (`ENG ANTI ICE`, `GENERAL ENG STARTER`), README (2.1, 2.1.1, 2.1.2).
+V-3 rechecked at their pages on 2026-11-17 (the brief writer): SDK-APE (`HEADING_BUG_INC` "Increments heading
+hold reference bug", `_DEC`, `AP_ALT_VAR_INC` "Increments the reference altitude.", `AP_VS_VAR_INC`,
+`AP_SPD_VAR_INC` and their `_DEC` forms; no step sizes), SDK-INSTE (`KOHLSMAN_INC` "Increments altimeter
+setting.", `KOHLSMAN_DEC`, no parameter).
 
 Tags of the rows copied from the C172 docs, as those docs define them (each doc's "Sources"):
 

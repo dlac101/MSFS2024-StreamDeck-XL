@@ -1092,8 +1092,9 @@ with the mouse and check that the key follows without a key being pressed.
 ## P5-PKG: package install (C172 G1000)
 
 Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds three profiles
-(`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`) and four Lua scripts (`XL24-SIMRATE.lua`,
-`XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
+(`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`) and five Lua scripts (`XL24-SIMRATE.lua`,
+`XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`, `XL24-SF50.lua`). Not yet tested with the Profile
+Manager.
 Record: date, Stream Deck app version, PilotsDeck version (0.9.7, patched build), MSFS 2024 version. Never
 re-run the PilotsDeck installer or update the plugin for this (docs/installation.md).
 
@@ -1653,3 +1654,62 @@ press (half a second or more) switches off.
 - [ ] Record each step's result, the values each new B-var read per position, the battery and generator
   indexes, whether the long presses switched off, the MSFS version and SF50 preset, and every fallback or
   change.
+
+## VisionJet SF50 profile (V-3)
+
+Reference: [docs/visionjet-sf50.md](../docs/visionjet-sf50.md), "Hold to repeat". V-3 keeps the profile
+`MSFS2024 VisionJet` at 14 pages and grows it to 183 keys: the step keys of the autopilot, radios and trim
+pages repeat while held (the new script `XL24-SF50.lua`), radios gets a BARO column (1,8 readout, 2,8 BARO+,
+3,8 BARO-) and FUEL CTL shows words. CRS+/CRS- and ALT+/ALT- have no long press any more. Run it after the V-2
+section. Not yet tested in the app or the sim. Hold times run from key down.
+
+**Before you start**
+- [ ] Import the new package (or the profile and `XL24-SF50.lua` into the plugin's Scripts folder); the
+  Profile Manager mapping stays (same profile name). Load the SF50 and wait about 30 s.
+
+**Autopilot page, hold to repeat**
+- [ ] HDG+ / HDG-: a short press moves the heading bug one step (HDG BUG 3,2 follows). Hold 1 s: a few
+  degrees; hold 3 s: about 40; hold 10 s: well over 100 (it stops by itself at 360 steps or 20 s). On release
+  it **stops at once and never runs on**. Turn the cockpit heading knob with the mouse: HDG BUG follows.
+- [ ] The same short press and 1, 3 and 10 s holds on CRS+/CRS- (CRS1 3,3), ALT+/ALT- (ALT SEL 3,4; record
+  the step per press), VS+/VS- (VS TGT 3,5; it stops by 40 steps) and SPD+/SPD- (FLC SPD 3,6). A long press on
+  CRS or ALT does nothing extra any more.
+
+**Radios page**
+- [ ] MHZ+/-, KHZ+/- on NAV1, NAV2 and COM2: a short press steps once; holds of 1, 3 and 10 s; each stops on
+  release (watch the standby frequency in the NAV1, NAV2 and COM2 keys).
+- [ ] BARO+ / BARO-: a short press steps once (BARO 1,8 and main BARO follow; record whether the G3000 PFD's
+  baro moves), the same holds; turn the cockpit baro knob with the mouse: BARO 1,8 follows.
+
+**Trim page**
+- [ ] TRIM UP, TRIM DN, RUD L, RUD R: a short press steps once; hold 1 s and 3 s: the gauges move steadily and
+  stop on release; a 10 s hold stops by itself at about 8 s.
+
+**Never runs on**
+- [ ] Press and release a step key very fast ten times: no extra steps after the last release; then hold that
+  key 3 s: it still repeats (record it if it does not). Hold two step keys at once: each stops on its own
+  release.
+- [ ] On the ground: hold HDG+ and press the back key (1,1) with another finger, then release both. Record
+  whether the heading bug stops at once or runs on until its cap (360 steps, about 9 s); go back to the
+  autopilot page and check that HDG+ works normally again.
+
+**Systems page**
+- [ ] FUEL CTL (2,4): turn the cockpit fuel control switch to LEFT, AUTO and RIGHT: the key shows the same
+  word (record the raw value if a word is wrong).
+
+**Unchanged keys**
+- [ ] FLAPS, SIM RATE, the AP mode keys and the G1 keys work as before; none repeats when held.
+
+**Icon look test (optional local icon build, no sim)**
+- [ ] Build `MSFS2024 VisionJet Icons` with `tools/profilegen/icons-visionjet-sf50.json` (docs/icons.md),
+  import it: the 196 mapped or as-is keys show the mapped images; the BARO column is readable.
+
+**Other aircraft**
+- [ ] With the C172 loaded and `MSFS2024 VisionJet` picked by hand: the step keys act on the C172's bugs,
+  radios and trim (standard events); hold one briefly and check that it stops on release. CRS needs the G3000
+  and does nothing there.
+
+**Result for the worker**
+- [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-3 rows), the step per press
+  of ALT and BARO, whether the PFD baro followed, the repeat feel (too slow, right, too fast), the MSFS
+  version and SF50 preset, and every fallback or change.
