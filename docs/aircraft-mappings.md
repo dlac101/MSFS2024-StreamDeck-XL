@@ -90,7 +90,7 @@ under https://docs.flightsimulator.com/msfs2024/retail/programming-apis/):
 For [phase2-trim-views.md](phase2-trim-views.md) (the child pages behind main page keys 1,7 `TRIM` and
 1,8 `VIEWS`; positions below are on those pages). Rows are **Unverified** until the Phase 2 trim and
 views checks pass, unless the Verified column says otherwise. The view K-events were tested in the sim on
-2026-11-11 (LR95-C2): the plugin sent them and MSFS 2024 ignored them, so their keys are Empty; the rows
+2026-11-11: the plugin sent them and MSFS 2024 ignored them, so their keys are Empty; the rows
 stay as a record ("does not work" for the five that were pressed, "not tested" for the rest).
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
@@ -102,18 +102,18 @@ stay as a record ("does not work" for the five that were pressed, "not tested" f
 | Yoke trim switch (not on a key) | `B:handling_elevatortrim_yoke` exists | unknown | not used | | IE 183 | Unverified (not used) |
 | Trim disconnect (not on a key) | `B:handling_trim_disconnect` exists | unknown | not used | | IE 185 | Unverified (not used) |
 | Cockpit view (views 1,2) | `(A:CAMERA STATE, Enum)`, On `2` (cockpit) / Off `3` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$=2` (always writes 2), Off Value empty | EXTERNAL (views 1,3) also returns to the cockpit from the external view | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Unverified |
-| External (chase) view (views 1,3) | `(A:CAMERA STATE, Enum)`, On `3` / Off `2` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$2,=3<` (2 -> 3, 3 -> 2, other -> 3), Off Value empty | none | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Verified 2026-11-11 (LR101-C2: the user's hand test of this key; plugin log wrote 3, 2, 3, camera state followed); sim version with the follow-up |
-| Cockpit view by K-event (was views 1,2; not on the page) | none | | `K:VIEW_VIRTUAL_COCKPIT_FORWARD` | `K:VIEW_COCKPIT_FORWARD`: not tested, left out with the K-event view family (LR95-C2) | SDK-VCE | does not work (2026-11-11, LR95-C2) |
-| External view by K-event (was views 1,3; not on the page) | none | | `K:CHASE_VIEW_TOGGLE` | `K:VIEW_MODE` (see below) | SDK-VCE | does not work (2026-11-11, LR95-C2) |
-| Camera state readout (views 1,4) | `(A:CAMERA STATE, Enum)` | Enum (2 Cockpit, 3 Chase Plane Drone, 4 Fixed On Plane, 5 Environment 6DOF, 7 Showcase, 8 Drone Plane); 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2) | A-Var write, values 2 and 3, by views 1,2 and 1,3 (rows above); SDK-CAMV marks it settable | none | SDK-CAMV; SDK-UNITS | Unverified |
+| External (chase) view (views 1,3) | `(A:CAMERA STATE, Enum)`, On `3` / Off `2` | Enum | `(A:CAMERA STATE, Enum)` A-Var write (command type 12), On Value `$2,=3<` (2 -> 3, 3 -> 2, other -> 3), Off Value empty | none | SDK-CAMV; README 2.1.1, 2.1.2; SDK-UNITS | Verified 2026-11-11 (the user's hand test of this key; plugin log wrote 3, 2, 3, camera state followed); sim version with the follow-up |
+| Cockpit view by K-event (was views 1,2; not on the page) | none | | `K:VIEW_VIRTUAL_COCKPIT_FORWARD` | `K:VIEW_COCKPIT_FORWARD`: not tested, left out with the K-event view family | SDK-VCE | does not work (2026-11-11, views sim test) |
+| External view by K-event (was views 1,3; not on the page) | none | | `K:CHASE_VIEW_TOGGLE` | `K:VIEW_MODE` (see below) | SDK-VCE | does not work (2026-11-11, views sim test) |
+| Camera state readout (views 1,4) | `(A:CAMERA STATE, Enum)` | Enum (2 Cockpit, 3 Chase Plane Drone, 4 Fixed On Plane, 5 Environment 6DOF, 7 Showcase, 8 Drone Plane); 2 = cockpit, 3 = external, seen in the sim 2026-11-11 | A-Var write, values 2 and 3, by views 1,2 and 1,3 (rows above); SDK-CAMV marks it settable | none | SDK-CAMV; SDK-UNITS | Unverified |
 | View type readout (views 1,5) | `(A:CAMERA VIEW TYPE AND INDEX:0, Enum)` | Enum (0 default, 1 Pilot View, 2 Instruments, 3 Quickview, 4 Quickview External, 5 View) | (read only here; the SimVar is settable) | none | SDK-CAMV; SDK-UNITS | Unverified |
 | View option readout (views 1,6) | `(A:CAMERA VIEW TYPE AND INDEX:1, number)` | number | (read only here; the SimVar is settable) | none | SDK-CAMV; SDK-UNITS | Unverified |
-| Previous / next view category (was views 2,1 / 2,2; now Empty) | none | | `K:VIEW_MODE_REV` / `K:VIEW_MODE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
-| Previous / next view in the category (was views 2,3 / 2,4; now Empty) | none | | `K:PREV_SUB_VIEW` / `K:NEXT_SUB_VIEW` | none | SDK-VCE | does not work (2026-11-11, LR95-C2) |
-| View reset (was views 2,5; now Empty) | none | | `K:VIEW_RESET` | none | SDK-VCE | does not work (2026-11-11, LR95-C2) |
-| Zoom out / in (was views 2,6 / 2,7; now Empty) | none | | `K:ZOOM_MINUS` / `K:ZOOM_PLUS` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
-| Previous view toggle (was views 2,8; now Empty) | none | | `K:VIEW_PREVIOUS_TOGGLE` | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
-| Camera select 1 to 9, 0 (was views 3,1 to 3,8, 4,1, 4,2; now Empty) | none | | `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9`, `K:VIEW_CAMERA_SELECT_0` (which view each selects is not documented) | none | SDK-VCE | not tested, left out with the K-event view family (LR95-C2) |
+| Previous / next view category (was views 2,1 / 2,2; now Empty) | none | | `K:VIEW_MODE_REV` / `K:VIEW_MODE` | none | SDK-VCE | not tested, left out with the K-event view family |
+| Previous / next view in the category (was views 2,3 / 2,4; now Empty) | none | | `K:PREV_SUB_VIEW` / `K:NEXT_SUB_VIEW` | none | SDK-VCE | does not work (2026-11-11, views sim test) |
+| View reset (was views 2,5; now Empty) | none | | `K:VIEW_RESET` | none | SDK-VCE | does not work (2026-11-11, views sim test) |
+| Zoom out / in (was views 2,6 / 2,7; now Empty) | none | | `K:ZOOM_MINUS` / `K:ZOOM_PLUS` | none | SDK-VCE | not tested, left out with the K-event view family |
+| Previous view toggle (was views 2,8; now Empty) | none | | `K:VIEW_PREVIOUS_TOGGLE` | none | SDK-VCE | not tested, left out with the K-event view family |
+| Camera select 1 to 9, 0 (was views 3,1 to 3,8, 4,1, 4,2; now Empty) | none | | `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9`, `K:VIEW_CAMERA_SELECT_0` (which view each selects is not documented) | none | SDK-VCE | not tested, left out with the K-event view family |
 
 The trim gauge (trim 3,4, P3-4, Display Gauge) reads `(A:ELEVATOR TRIM PCT EX2, percent)` (the row "Elevator trim position, percent" above), Minimum -100 / Maximum 100; Unverified.
 
@@ -128,7 +128,7 @@ On the trim page ([phase2-trim-views.md](phase2-trim-views.md)). The 2024 C172 G
 rudder trim control (no such input event, IE), so the keys send the sim's generic trim K-events. All rows are
 **Unverified** until the checklist section "P3-TRIM2: Aileron and rudder trim (C172 G1000)" passes; whether
 the C172's flight model honours the events is open (the user's keyboard J / L, bound to aileron trim left /
-right, "seem to work in C172", LR742-C16; U / O, rudder trim, not yet tried, LR743-C16).
+right, "seem to work in C172"; U / O, rudder trim, not yet tried; the user's report, 2026-11-15).
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
@@ -204,13 +204,13 @@ Sources as above, plus:
   PilotsDeck (BUILD_VERSION 7, no Plugin block), imported 2026-11-11 02:35 when the Stream Deck app wrote the
   0.9.7.0 Plugin block; command type 8 with `H:AS1000_MFD_*` addresses. They show the address form only and
   were never pressed on this PC. Command type 8 itself: the installed `pi-Common.js` line 215 and the source
-  `SimCommand.cs` (`HVAR = 8`), on the 0.9.7 template `simple_button` (see the page doc; ruling LR144-C4)
+  `SimCommand.cs` (`HVAR = 8`), on the 0.9.7 template `simple_button` (see the page doc; the P2-4 ruling, route C)
 
 ### Phase 2 sim rate page
 
 For [phase2-sim-rate.md](phase2-sim-rate.md) (the child page behind main page key 3,7 `SIM RATE`; positions
-below are on that page). First sim test 2026-11-12 (LR259-C5, LR263-C5; sim version not recorded); repaired
-in P2-6R, not yet sim-tested again; new layout on the user's word (LR298-C5): 1,2 `1X`, 1,3 `SLOWER`, 1,4 `RATE`,
+below are on that page). First sim test 2026-11-12 (sim version not recorded); repaired
+in P2-6R, not yet sim-tested again; new layout on the user's word (2026-11-13): 1,2 `1X`, 1,3 `SLOWER`, 1,4 `RATE`,
 1,5 `FASTER`. All rows are **Unverified** until the hand test HT-C and the Phase 2 sim rate checks pass.
 The sim rate is not tied to the C172: the events and the variable act on the sim; they are listed here
 because every event the project uses goes in this file. If an event does nothing in the sim test, its row is
@@ -218,12 +218,12 @@ marked "does not work" and stays.
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
-| Sim rate readout (simrate 1,4, `RATE`; also the read of 1,2 `1X` and of the script `XL24-SIMRATE.lua`) | `(A:SIMULATION RATE, number)` (the environment variable `SIMULATION RATE`; PilotsDeck reads `A:` and `E:` alike), Format `1.2` | Number: 0.0625 to 128, powers of two, 1 = real time | (read only here; the SDK marks it get/set, but no A-Var or E-Var write for the sim rate, LR153-C4) | `(E:SIMULATION RATE, number)` (the same request) | SDK-ENVV; PD-SRC (TypeMatching.cs, SubManager.cs); README 2.1.1 | Unverified |
-| Set sim rate 1x (simrate 1,2 `1X`) | `(A:SIMULATION RATE, number)`: On `1` / Off `2` (no image at any other rate, PD-SRC ActionSwitchDisplay.cs) | | `lua:XL24-SIMRATE:SET(1)` (command type 14, Lua Function): the script steps the rate with `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`, one event at a time against the read rate, until it is 1x (at most 8 steps per press; stops when the rate stays or passes 1x) | SLOWER, FASTER and RATE | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; PD-SRC (ConnectorNone.cs, ManagedScript.cs, ScriptManager.cs); PD-PI line 196; LR153-C4, LR277-C5, LR298-C5 | Unverified |
-| Set sim rate 2x, 4x (the P2-6R build's simrate 1,3 `2X`, 1,4 `4X`) | `(A:SIMULATION RATE, number)`: 2X On `2` / Off `1`, 4X On `4` / Off `1` | | `lua:XL24-SIMRATE:SET(2)`, `lua:XL24-SIMRATE:SET(4)` (command type 14) | | README 2.1.1 LUAFUNC; LR277-C5 | removed in P2-6R (LR298-C5): the user's layout has no 2X or 4X key; never sim-tested |
-| Set sim rate by `K:SIM_RATE_SET` (the first build of 1X/2X/4X, replaced in P2-6R) | as above | | `K:SIM_RATE_SET:1`, `K:SIM_RATE_SET:2`, `K:SIM_RATE_SET:4` (K-event with one parameter, command type 16; the SDK doesn't define the parameter) | the x256 scale (`K:SIM_RATE_SET:256` = 1x; a lead from the FSUIPC offset 0x0C1A, never tried: its hand test went with the 2X key, LR298-C5) | SDK-MISCE; README 2.1.1; PD-SRC (ToolsMSFS.cs); PD-PI line 195; LR161-C4 | does not work (2026-11-12, LR259-C5, LR263-C5; sim version not recorded): sent with no error (plugin log), the rate did not change |
-| Sim rate one step up (simrate 1,4 `RATE`, press; also sent by the script) | readout as above | | `K:SIM_RATE_INCR` | FASTER (1,5) | SDK-MISCE | Unverified; worked in the sim 2026-11-12 (LR263-C5); sim version not recorded |
-| Sim rate one step up (simrate 1,5 `FASTER`, press) | none (RATE shows the result) | | `K:SIM_RATE_INCR` | RATE press | SDK-MISCE; LR298-C5 | Unverified |
+| Sim rate readout (simrate 1,4, `RATE`; also the read of 1,2 `1X` and of the script `XL24-SIMRATE.lua`) | `(A:SIMULATION RATE, number)` (the environment variable `SIMULATION RATE`; PilotsDeck reads `A:` and `E:` alike), Format `1.2` | Number: 0.0625 to 128, powers of two, 1 = real time | (read only here; the SDK marks it get/set, but no A-Var or E-Var write for the sim rate, P2-6 route ruling) | `(E:SIMULATION RATE, number)` (the same request) | SDK-ENVV; PD-SRC (TypeMatching.cs, SubManager.cs); README 2.1.1 | Unverified |
+| Set sim rate 1x (simrate 1,2 `1X`) | `(A:SIMULATION RATE, number)`: On `1` / Off `2` (no image at any other rate, PD-SRC ActionSwitchDisplay.cs) | | `lua:XL24-SIMRATE:SET(1)` (command type 14, Lua Function): the script steps the rate with `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`, one event at a time against the read rate, until it is 1x (at most 8 steps per press; stops when the rate stays or passes 1x) | SLOWER, FASTER and RATE | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; PD-SRC (ConnectorNone.cs, ManagedScript.cs, ScriptManager.cs); PD-PI line 196; P2-6 route ruling, P2-6R rulings, user layout 2026-11-13 | Unverified |
+| Set sim rate 2x, 4x (the P2-6R build's simrate 1,3 `2X`, 1,4 `4X`) | `(A:SIMULATION RATE, number)`: 2X On `2` / Off `1`, 4X On `4` / Off `1` | | `lua:XL24-SIMRATE:SET(2)`, `lua:XL24-SIMRATE:SET(4)` (command type 14) | | README 2.1.1 LUAFUNC; P2-6R rulings | removed in P2-6R: the user's layout (2026-11-13) has no 2X or 4X key; never sim-tested |
+| Set sim rate by `K:SIM_RATE_SET` (the first build of 1X/2X/4X, replaced in P2-6R) | as above | | `K:SIM_RATE_SET:1`, `K:SIM_RATE_SET:2`, `K:SIM_RATE_SET:4` (K-event with one parameter, command type 16; the SDK doesn't define the parameter) | the x256 scale (`K:SIM_RATE_SET:256` = 1x; a lead from the FSUIPC offset 0x0C1A, never tried: its hand test went with the 2X key, user layout 2026-11-13) | SDK-MISCE; README 2.1.1; PD-SRC (ToolsMSFS.cs); PD-PI line 195; P2-6 build ruling | does not work (2026-11-12, sim test; sim version not recorded): sent with no error (plugin log), the rate did not change |
+| Sim rate one step up (simrate 1,4 `RATE`, press; also sent by the script) | readout as above | | `K:SIM_RATE_INCR` | FASTER (1,5) | SDK-MISCE | Unverified; worked in the sim 2026-11-12; sim version not recorded |
+| Sim rate one step up (simrate 1,5 `FASTER`, press) | none (RATE shows the result) | | `K:SIM_RATE_INCR` | RATE press | SDK-MISCE; user layout 2026-11-13 | Unverified |
 | Sim rate one step down (simrate 1,4 `RATE`, long press: hold at least 0.5 s; also sent by the script) | readout as above | | `K:SIM_RATE_DECR` (Second command, `HasLongPress`) | SLOWER (1,3) | SDK-MISCE; README 2.1; PD-SRC (ActionBaseSimple.cs, ActionCommand.cs, AppConfiguration.cs) | Unverified; not fired 2026-11-12: holds 0.06-0.25 s < 500 ms (plugin log, no "Build Long Command") |
 | Sim rate one step down (simrate 1,3 `SLOWER`, press) | none (RATE shows the result) | | `K:SIM_RATE_DECR` | RATE long press | SDK-MISCE | Unverified |
 
@@ -241,9 +241,11 @@ Sources as above (SDK-MISCE, "Sim Rate" section: `SIM_RATE_SET` "[0] Value", "Se
 - README 2.1 (Second command ">= 500ms"), 2.1.1 LUAFUNC, 3.5.1 (the script functions)
 - The plugin log `PilotsDeck20261112.log` (read only, searched): the K:SIM_RATE_SET sends with no error; RATE
   "Key TimeDiff" 0.06 to 0.25 s; no "Build Long Command"
-- LR161-C4, LR153-C4: the coordinator's rulings in the chain ledger (2026-11-12); LR259-C5, LR263-C5: the user's
-  sim test reports (2026-11-12); LR277-C5: the P2-6R rulings (Lua stepping, SLOWER, `K:SIM_RATE_INCR` stays
-  Unverified without a sim version); LR298-C5: the user's layout (1X, SLOWER, RATE, FASTER; 2X and 4X removed)
+- P2-6 build ruling, P2-6 route ruling: the project's rulings for this page (2026-11-12); sim test 2026-11-12:
+  the user's sim test reports; P2-6R rulings: the repair's rulings (2026-11-13: Lua stepping, SLOWER,
+  `K:SIM_RATE_INCR` stays Unverified without a sim version); user layout 2026-11-13: the user's layout (1X,
+  SLOWER, RATE, FASTER; 2X and 4X removed); all but the P2-6R rulings as
+  [phase2-sim-rate.md](phase2-sim-rate.md), "Sources"
 - PD-SRC `Plugin/Actions/Simple/ActionSwitchDisplay.cs` (`Refresh()`: no On/Off image when the value matches neither
   On nor Off and Special State is off)
 
@@ -772,7 +774,7 @@ Aircraft string (PD-LOG, PilotsDeck20261116.log): the path of the preset's `airc
 | vspeeds 2,2 `CRUISE` (the C172's key) | `(A:DESIGN SPEED VC, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
 | vspeeds 2,4 `VNE` (the C172's key) | `(A:REFERENCE SPEED MAX IAS, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
 | vspeeds 2,5 `VFE` (the C172's key) | `(A:FLAPS CURRENT SPEED LIMITATION, knots)` | knots | none | - | SDK-CTLV, SDK-UNITS | Unverified |
-| simrate 1,2 `1X` (the C172's key) | `(A:SIMULATION RATE, number)` | number | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) | - | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; LR153-C4; SDK-ENVV, PD-SRC | Unverified |
+| simrate 1,2 `1X` (the C172's key) | `(A:SIMULATION RATE, number)` | number | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) | - | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; P2-6 route ruling; SDK-ENVV, PD-SRC | Unverified |
 | simrate 1,3 `SLOWER` (the C172's key) | none | - | `K:SIM_RATE_DECR` | - | SDK-MISCE | Unverified |
 | simrate 1,4 `RATE` (the C172's key) | `(A:SIMULATION RATE, number)` | number | Main `K:SIM_RATE_INCR`, Second (long press) `K:SIM_RATE_DECR` | - | SDK-MISCE, README 2.1; SDK-ENVV, PD-SRC | Unverified |
 | simrate 1,5 `FASTER` (the C172's key) | none | - | `K:SIM_RATE_INCR` | - | SDK-MISCE | Unverified |

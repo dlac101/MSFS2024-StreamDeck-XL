@@ -1,7 +1,7 @@
 # Phase 2: Trim and Views pages, Cessna 172 G1000
 
 **Status: partly tested.** An early import was tried in the sim on 2026-11-11: the view K-events did
-nothing (LR95-C2) and are off the page now; the EXTERNAL key's A-Var write passed a hand test (LR101-C2).
+nothing and are off the page now; the EXTERNAL key's A-Var write passed a hand test.
 Every other new name below is recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md)
 until the Phase 2 trim and views checks pass. The trim gauge (3,4, P3-4) is generated, not yet
 sim-tested. The aileron and rudder trim keys and gauges (P3-TRIM2) are generated, not yet sim-tested;
@@ -31,8 +31,9 @@ The C172 G1000's input events list an elevator trim wheel, a yoke trim switch an
 no rudder or aileron trim (IE 182, 183, 185; nothing else with "trim" in the list), so the aircraft has no
 cockpit aileron or rudder trim control. The aileron and rudder trim keys send the sim's generic trim
 K-events instead, the events behind the sim's own control bindings "aileron trim left / right" and "rudder
-trim left / right" (the user's keyboard J / L, bound to aileron trim, "seem to work in C172", LR742-C16; U / O
-are bound to rudder trim, not yet tried, LR743-C16). Whether the 2024 C172's flight model honours them is open until
+trim left / right" (the user's keyboard J / L, bound to aileron trim, "seem to work in C172"; U / O are
+bound to rudder trim, not yet tried; user report 2026-11-15). Whether the 2024 C172's flight model
+honours them is open until
 the sim test. The trim keys send SimConnect events: no keyboard binding, no vJoy, nothing tied to the
 connected flight controls.
 
@@ -150,7 +151,7 @@ use the K-events; if the 2024 C172 ignores one, the gauge does not move and the 
 
 | Function | Why not | Source |
 |---|---|---|
-| `TRIM` readout (was 3,2) and `TRIM DEG` (was 3,3) | Taken off in P3-TRIM2: the gauge 3,4 shows the same trim position and its number (LR853-C19 for TRIM DEG; LR911-C21, the user's "Yes, remove 3,2", for 3,2). `ELEVATOR TRIM POSITION` stays in aircraft-mappings.md as a fallback lead. | LR853-C19, LR911-C21 |
+| `TRIM` readout (was 3,2) and `TRIM DEG` (was 3,3) | Taken off in P3-TRIM2: the gauge 3,4 shows the same trim position and its number (the P3-TRIM2 ruling of 2026-11-16 for TRIM DEG; the user's answer of 2026-11-16, "Yes, remove 3,2", for 3,2). `ELEVATOR TRIM POSITION` stays in aircraft-mappings.md as a fallback lead. | P3-TRIM2 ruling, user answer 2026-11-16 |
 | Aileron and rudder trim set and reset (`K:AILERON_TRIM_SET`, `K:RUDDER_TRIM_SET`, `K:RUDDER_TRIM_RESET`), trim disabled (`K:AILERON_TRIM_DISABLED_SET`, `K:RUDDER_TRIM_DISABLED_SET`, ...) | Not asked for; a centring key could come later, after the left/right keys pass the sim test. | SDK-FCE |
 | Yoke trim switch (electric trim) | Input event `B:handling_elevatortrim_yoke` exists; its values are unknown. | IE 183 |
 | Trim disconnect | Input event `B:handling_trim_disconnect` exists; its values are unknown. | IE 185 |
@@ -163,21 +164,21 @@ a controller profile.** (The installed MSFS-Fenix320-XL profile's view page uses
 view keys; this page doesn't.) The aircraft lists no camera input events.
 
 **The view K-events don't work in MSFS 2024.** The first build had 20 view keys, each sending a K-event
-from the SDK's "View And Camera Events" page (SDK-VCE). In the sim test of 2026-11-11 (LR95-C2) the plugin
+from the SDK's "View And Camera Events" page (SDK-VCE). In the sim test of 2026-11-11 the plugin
 sent every press (plugin log, no error) and the camera did not change. So those keys are Empty now, and
 the events are listed under "Not on this page".
 
 **COCKPIT and EXTERNAL write the camera SimVar instead.** They write `CAMERA STATE`, which the MSFS 2024
 SDK marks settable (SDK-CAMV), as an A-Var command: PilotsDeck command type 12, "A-Var" (README 2.1.1
 lists AVAR as a command type, "make sure the A-Var is writeable"; PD-SRC `SimCommand.cs`: AVAR = 12; the
-installed plugin's settings panel accepts type 12, PD-PI). The rule for this page (LR99-C2): an A-Var write
+installed plugin's settings panel accepts type 12, PD-PI). The rule for this page: an A-Var write
 to a SimVar the MSFS 2024 SDK marks settable is allowed here; it needs no controller and has a named
 source. The key settings are a copy of the user's own saved EXTERNAL key (T6), which passed a hand test in
-the sim on 2026-11-11 (LR101-C2: the plugin wrote 3, 2, 3 and the camera state followed).
+the sim on 2026-11-11 (the plugin wrote 3, 2, 3 and the camera state followed).
 
 **Indicator.** The MSFS 2024 SDK documents readable camera SimVars (SDK-CAMV): `CAMERA STATE` (2 =
 Cockpit, 3 = Chase Plane Drone, ...; in the sim, 2 = cockpit, 3 = external, seen in the sim 2026-11-11
-(LR95-C2)) and `CAMERA VIEW TYPE AND INDEX` (index 0 = the view type: 1 = Pilot View, 2 = Instruments,
+(views sim test)) and `CAMERA VIEW TYPE AND INDEX` (index 0 = the view type: 1 = Pilot View, 2 = Instruments,
 3 = Quickview, ...; index 1 = the option number within that type). So:
 - **COCKPIT** and **EXTERNAL** are Dynamic Buttons that read `CAMERA STATE`: On image when their camera is
   active, Off image when the other one is. For any other camera state (drone, showcase, ...) PilotsDeck
@@ -239,7 +240,7 @@ Cockpit, 3 = Chase Plane Drone, ...; in the sim, 2 = cockpit, 3 = external, seen
 | Key | Command | What it writes (README 2.1.2, Value Manipulations in the On Value) | Tested |
 |---|---|---|---|
 | COCKPIT | A-Var `(A:CAMERA STATE, Enum)`, On Value `$=2`, Off Value empty | Always writes 2 (cockpit). | Not yet: the Phase 2 checklist tests it. |
-| EXTERNAL | A-Var `(A:CAMERA STATE, Enum)`, On Value `$2,=3<`, Off Value empty | Toggles: 2 (cockpit) -> 3 (external), 3 -> 2, any other state -> 3. | Hand test passed 2026-11-11 (LR101-C2): log "Running Command (Type: AVAR ...)" with values 3, 2, 3 and "Received Camera State" 3, 2, 3. |
+| EXTERNAL | A-Var `(A:CAMERA STATE, Enum)`, On Value `$2,=3<`, Off Value empty | Toggles: 2 (cockpit) -> 3 (external), 3 -> 2, any other state -> 3. | Hand test passed 2026-11-11: log "Running Command (Type: AVAR ...)" with values 3, 2, 3 and "Received Camera State" 3, 2, 3. |
 
 Both keys read `CAMERA STATE` for their image, so the image shows whether a press really changed the camera.
 Values other than 2 and 3 (4 Fixed On Plane, 5 Environment, 7 Showcase, 8 Drone Plane, SDK-CAMV) are not
@@ -249,7 +250,7 @@ written by any key: untested.
 On Plane, 5 Environment 6DOF, 7 Showcase, 8 Drone Plane. Any other state shows as its number (SDK-CAMV
 lists 1 to 33; some "belong to legacy systems"). SDK-CAMV is not consistent about 3: its state table says
 "Chase Plane Drone", its `CHASE CAMERA HEADLOOK` entry calls state 3 the external/chase camera. Settled
-in the sim: 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2); `CAMERA` keeps the label
+in the sim: 2 = cockpit, 3 = external, seen in the sim 2026-11-11; `CAMERA` keeps the label
 `CHASE` for 3. `VIEW` maps the view types of
 `CAMERA VIEW TYPE AND INDEX:0` (0 "Unknown / default", 1 "Pilot View", 2 "Instruments", 3 "Quickview",
 4 "Quickview External", 5 "View"). `VIEW NO` shows `CAMERA VIEW TYPE AND INDEX:1`, the option within the
@@ -259,11 +260,11 @@ type; SDK-CAMV says the Pilot View options are 1, 2, 4 and 5 (Close, Pilot, Land
 
 | Function | Why not | Source |
 |---|---|---|
-| The view K-events of the first build: `K:VIEW_VIRTUAL_COCKPIT_FORWARD` (was COCKPIT), `K:CHASE_VIEW_TOGGLE` (was EXTERNAL), `K:PREV_SUB_VIEW`, `K:NEXT_SUB_VIEW`, `K:VIEW_RESET` | Sent by the plugin, ignored by MSFS 2024 (sim test 2026-11-11, LR95-C2). | SDK-VCE; LR95-C2 |
-| `K:VIEW_MODE`, `K:VIEW_MODE_REV` (categories), `K:ZOOM_MINUS`, `K:ZOOM_PLUS`, `K:VIEW_PREVIOUS_TOGGLE` (last view), `K:VIEW_CAMERA_SELECT_0`, `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9` (custom cameras); `K:VIEW_COCKPIT_FORWARD` (was COCKPIT's fallback) | Not tested, left out with the K-event view family (LR95-C2). | SDK-VCE; LR95-C2 |
-| Pilot view options (Close, Pilot, Landing, Copilot), instrument views by number | No K-event selects them. The SDK documents writing `CAMERA VIEW TYPE AND INDEX` (settable) for this; an A-Var write is allowed on this page (LR99-C2) but this one is not built or tested: a later unit. | SDK-CAMV |
+| The view K-events of the first build: `K:VIEW_VIRTUAL_COCKPIT_FORWARD` (was COCKPIT), `K:CHASE_VIEW_TOGGLE` (was EXTERNAL), `K:PREV_SUB_VIEW`, `K:NEXT_SUB_VIEW`, `K:VIEW_RESET` | Sent by the plugin, ignored by MSFS 2024 (sim test 2026-11-11). | SDK-VCE; views sim test 2026-11-11 |
+| `K:VIEW_MODE`, `K:VIEW_MODE_REV` (categories), `K:ZOOM_MINUS`, `K:ZOOM_PLUS`, `K:VIEW_PREVIOUS_TOGGLE` (last view), `K:VIEW_CAMERA_SELECT_0`, `K:VIEW_CAMERA_SELECT_1`, `K:VIEW_CAMERA_SELECT_2`, `K:VIEW_CAMERA_SELECT_3`, `K:VIEW_CAMERA_SELECT_4`, `K:VIEW_CAMERA_SELECT_5`, `K:VIEW_CAMERA_SELECT_6`, `K:VIEW_CAMERA_SELECT_7`, `K:VIEW_CAMERA_SELECT_8`, `K:VIEW_CAMERA_SELECT_9` (custom cameras); `K:VIEW_COCKPIT_FORWARD` (was COCKPIT's fallback) | Not tested, left out with the K-event view family. | SDK-VCE; views sim test 2026-11-11 |
+| Pilot view options (Close, Pilot, Landing, Copilot), instrument views by number | No K-event selects them. The SDK documents writing `CAMERA VIEW TYPE AND INDEX` (settable) for this; an A-Var write is allowed on this page but this one is not built or tested: a later unit. | SDK-CAMV |
 | Drone, showcase, fixed cameras directly | Only by writing other `CAMERA STATE` values (settable; untested): a later unit. | SDK-CAMV |
-| Look left / right / rear (`K:VIEW_LEFT`, `K:VIEW_RIGHT`, `K:VIEW_REAR`, ...) | Listed and not marked obsolete ("Sets view direction to the left." etc.). Never on the page and not tested; they are K-events of the view family that MSFS 2024 ignored (LR95-C2). | SDK-VCE |
+| Look left / right / rear (`K:VIEW_LEFT`, `K:VIEW_RIGHT`, `K:VIEW_REAR`, ...) | Listed and not marked obsolete ("Sets view direction to the left." etc.). Never on the page and not tested; they are K-events of the view family that MSFS 2024 ignored (views sim test 2026-11-11). | SDK-VCE |
 | `K:CHASE_VIEW`, `K:CHASE_VIEW_NEXT`, `K:CHASE_VIEW_PREV`, `K:VIEW_TYPE`, `K:VIEW_TYPE_REV`, `K:TOGGLE_PADLOCK` | Marked "Deprecated, do not use". | SDK-VCE |
 
 ## Sources
@@ -274,14 +275,14 @@ type; SDK-CAMV says the Pilot View options are 1, 2, 4 and 5 (Close, Pilot, Land
 | SDK-FCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/aircraft-flight-control-events/ (Elevator trim events; Ailerons and Rudder: the trim events) |
 | SDK-CTLV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/aircraft-simvars/aircraft-control-variables/ (Elevator: trim SimVars; Ailerons and Rudder: `AILERON TRIM PCT`, `RUDDER TRIM PCT`, "between -1 and 1", index N/A, settable) |
 | SDK20-CTLV | The MSFS 2020 SDK's control variables, https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Aircraft_SimVars/Aircraft_Control_Variables.htm: `AILERON TRIM PCT` and `RUDDER TRIM PCT` in "Percent Over 100" (the unit the 2024 page lists as "Float") |
-| LR742-C16, LR743-C16 | The user's words in the project's chain ledger (2026-11-15): keyboard J / L, bound to aileron trim left / right, "seem to work in C172"; U / O are bound to rudder trim left / right |
+| User report 2026-11-15 | The user's words (2026-11-15): keyboard J / L, bound to aileron trim left / right, "seem to work in C172"; U / O are bound to rudder trim left / right |
 | SDK-UNITS | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/simulation-variable-units/ (`percent`, `degrees`, `Enum`, `number`) |
 | SDK-VCE | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/key-events/view-and-camera-events/ |
 | SDK-CAMV | https://docs.flightsimulator.com/msfs2024/retail/programming-apis/simvars/camera-variables/ |
 | IE n | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt), line n (identical to the plugin's live `InputEvents.txt` on 2026-11-11) |
 | PD-SRC | PilotsDeck source, https://github.com/Fragtality/PilotsDeck/blob/11bdf1f7daf4828f822c18919952fe5b66153e58/Plugin/Actions/Simple/ActionSwitchDisplay.cs (which image a Dynamic Button shows); `Plugin/Simulator/SimCommand.cs` in the same commit (command type AVAR = 12); `Plugin/Actions/Simple/ActionDisplayGauge.cs` (how a Display Gauge draws its bar and text, a new bar's text rectangle), `Plugin/Plugin/Render/RenderBar.cs` (bar size, center line, pointer) and `Plugin/Actions/IAction.cs` (`GaugeOrientation`: Up = -90, Down = 90, Left = 180, Right = 0) in the same commit |
 | PD-PI | The installed plugin's settings panel, `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\Plugin\PI\js\pi-Common.js` line 221 (command type 12, "Avar"); `Plugin\PI\pi-DisplayGauge.html` (the Display Gauge field names by tab; Orientation saved as a number) |
-| LR95-C2, LR101-C2 | Sim test rows in the project's chain ledger (2026-11-11): the view K-events did nothing; the EXTERNAL A-Var key worked |
+| Views sim test 2026-11-11, EXTERNAL hand test 2026-11-11 | The sim test of this page and the hand test of its EXTERNAL key (2026-11-11): the view K-events did nothing; the EXTERNAL A-Var key worked |
 
 Address syntax is the README's section 2.1.1 (A: SimVars with index and unit in brackets, K: events; an
 A: SimVar can also be a command, AVAR, which writes it).
@@ -301,7 +302,7 @@ has none since P3-TRIM2).
 
 **T6 Dynamic Button with an A-Var command** (new; template `avar_dynamic_button` in
 `tools/profilegen/templates.json`): a verbatim copy of the user's own saved EXTERNAL key, set by hand in
-the Stream Deck app and sim-tested (LR101-C2). Source, read only: the imported profile the app named
+the Stream Deck app and sim-tested (hand test 2026-11-11). Source, read only: the imported profile the app named
 `MSFS2024 C172 G1000 copy`,
 `%APPDATA%\Elgato\StreamDeck\ProfilesV3\5CFD6707-1DA1-41C0-9FE9-3B84184E1367.sdProfile\Profiles\1FA3B762-6445-4CBC-953D-326F021FFAF4\manifest.json`
 (sha256 c8174d8e... when copied), action `2,0`. Commands tab Command Type A-Var (12), On Value as below, Off
@@ -370,9 +371,9 @@ tested; they are recorded in aircraft-mappings.md too.
 | trim 2,7 / 3,7 gauges, variable | If `... TRIM PCT` reads `0` while the trim moves: `(A:AILERON TRIM, degrees)` / `(A:RUDDER TRIM, degrees)` ("Angle deflection", radians native), Minimum / Maximum from a `tools/scmon` run at the trim limits | SDK-CTLV, SDK-UNITS |
 | trim 2,2 / 4,2 | Input event `B:handling_elevatortrim_wheel`: values unknown, needs a `tools/scmon` session first | IE 182 |
 | trim 3,4 TRIM (gauge) | If the pointer hardly moves and the gauge's number reads only -1 to 1 (the scale is -1 to 1, not -100 to 100): Minimum `-1` / Maximum `1` and Format `1.2` (A-SCALE) | SDK-CTLV, SDK-UNITS |
-| views 1,2 COCKPIT | If `$=2` does nothing: EXTERNAL (`$2,=3<`, hand-tested) also goes back to the cockpit from the external view; COCKPIT then becomes Empty. No K-event fallback: the view K-events are ignored (LR95-C2). | README 2.1.2; LR101-C2 |
-| views 1,3 EXTERNAL | none needed (hand test passed, LR101-C2) | LR101-C2 |
-| views 1,2 / 1,3 values | 2 = cockpit, 3 = external, seen in the sim 2026-11-11 (LR95-C2). If CAMERA shows other numbers in a later sim version, the On Value and On/Off values change to them | SDK-CAMV; LR95-C2 |
+| views 1,2 COCKPIT | If `$=2` does nothing: EXTERNAL (`$2,=3<`, hand-tested) also goes back to the cockpit from the external view; COCKPIT then becomes Empty. No K-event fallback: the view K-events are ignored (views sim test 2026-11-11). | README 2.1.2; EXTERNAL hand test 2026-11-11 |
+| views 1,3 EXTERNAL | none needed (hand test passed 2026-11-11) | EXTERNAL hand test 2026-11-11 |
+| views 1,2 / 1,3 values | 2 = cockpit, 3 = external, seen in the sim 2026-11-11. If CAMERA shows other numbers in a later sim version, the On Value and On/Off values change to them | SDK-CAMV; views sim test 2026-11-11 |
 
 ## How to test
 

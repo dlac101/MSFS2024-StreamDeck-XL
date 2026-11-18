@@ -181,7 +181,7 @@ python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-visionje
 It writes:
 
 - `.local\icons-visionjet-sf50\MSFS2024 VisionJet Icons.streamDeckProfile`: the icon profile;
-- `.local\icons-visionjet-sf50\Images\Guenseli-SF50\`: 22 PNG files, byte copies of the pack files used by
+- `.local\icons-visionjet-sf50\Images\Guenseli-SF50\`: 24 PNG files, byte copies of the pack files used by
   PilotsDeck keys.
 
 Its own output folder and image subfolder keep it apart from the other builds; the plugin's `Images\`

@@ -369,7 +369,7 @@ The C172's sim rate page ([phase2-sim-rate.md](phase2-sim-rate.md)); rows as tha
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
 | 1,1 | | Back | (Stream Deck) | Returns to the main page | none | Back key |
-| 1,2 | `1X` | Dynamic Button | T2 | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) [README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; LR153-C4] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | On/Off image: On `1`, Off `2` |
+| 1,2 | `1X` | Dynamic Button | T2 | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) [README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; P2-6 route ruling] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | On/Off image: On `1`, Off `2` |
 | 1,3 | `SLOWER` | Simple Button | T5 | `K:SIM_RATE_DECR` [SDK-MISCE] | none | fixed image |
 | 1,4 | `RATE` | Display Value | T3 | Main `K:SIM_RATE_INCR`, Second (long press) `K:SIM_RATE_DECR` [SDK-MISCE, README 2.1] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | Format `1.2` |
 | 1,5 | `FASTER` | Simple Button | T5 | `K:SIM_RATE_INCR` [SDK-MISCE] | none | fixed image |
@@ -984,6 +984,6 @@ Tags of the rows copied from the C172 docs, as those docs define them (each doc'
 | SDK-APT, SDK-AS1000, SDK-MISCE, SDK-CAMV, SDK-FMV, SDK-ENVV, SDK20-CTLV | The SDK pages named in [phase3-autopilot.md](phase3-autopilot.md), [phase2-sim-rate.md](phase2-sim-rate.md), [phase2-main-page.md](phase2-main-page.md), [phase2-trim-views.md](phase2-trim-views.md) and [phase2-g1000-vspeeds.md](phase2-g1000-vspeeds.md), "Sources" |
 | AM | [aircraft-mappings.md](aircraft-mappings.md): verified on the 2024 C172 (2026-11-11), not on the SF50 |
 | IE n (no "SF50") | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt), line n: the C172's list, not the SF50's |
-| PD-SRC, LR153-C4 | As [phase2-sim-rate.md](phase2-sim-rate.md) and [phase2-com1-pad.md](phase2-com1-pad.md), "Sources" |
+| PD-SRC, P2-6 route ruling | As [phase2-sim-rate.md](phase2-sim-rate.md) and [phase2-com1-pad.md](phase2-com1-pad.md), "Sources" |
 | JIBLET, FORUM | As [phase3-autopilot.md](phase3-autopilot.md), "Sources" (leads only) |
 | A-4, A-5, A-6, A-9 (in copied autopilot rows) | [phase3-autopilot.md](phase3-autopilot.md), "Open points" |

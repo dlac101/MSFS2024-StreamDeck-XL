@@ -32,6 +32,7 @@ Engine and fuel page under More (MORE 2,3; RPM, fuel flow, oil pressure and temp
 Optional local icon build of the A32NX profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 4.
 **VisionJet SF50 profile (MSFS 2024 default Cirrus Vision SF50; main page, TRIM, VIEWS, SIM RATE, CHECKLIST and MORE with V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS, SYSTEMS, ENGINE and ICE/ENV), generated, not yet sim-tested** (built with the SF50's input event list; map it to the aircraft in the Profile Manager with `microsoft_sf50`): [docs/visionjet-sf50.md](docs/visionjet-sf50.md).
 Optional local icon build of the VisionJet profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 5.
+
 ## Layout
 
 ```text

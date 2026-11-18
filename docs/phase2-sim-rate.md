@@ -2,9 +2,9 @@
 
 **Status: repaired (P2-6R), not yet sim-tested.** The first sim test (2026-11-12) found two faults: the
 1X/2X/4X keys (`K:SIM_RATE_SET:1/2/4`) did not change the rate ("the simrate buttons arent changing sim
-rate in game", LR259-C5), and `RATE` stepped the rate up to 128x but never back down ("rate button worked,
-took me all the way to 128x but never back down", LR263-C5). After that the user asked for a new layout
-(LR298-C5): a faster and a slower key, the RATE readout, and "a dedicated 1x button, to try to return to
+rate in game"), and `RATE` stepped the rate up to 128x but never back down ("rate button worked,
+took me all the way to 128x but never back down"). After that the user asked for a new layout
+(2026-11-13): a faster and a slower key, the RATE readout, and "a dedicated 1x button, to try to return to
 normal speed in one press, if possible". This version, left to right:
 
 - **1X** (1,2) runs a Lua script, `XL24-SIMRATE.lua`, that steps the rate with `K:SIM_RATE_INCR` /
@@ -17,17 +17,17 @@ normal speed in one press, if possible". This version, left to right:
   **Hold RATE a full second** to step down.
 - **FASTER** (1,5): one press = one step up (`K:SIM_RATE_INCR`).
 - The **2X** and **4X** keys are removed (the user lists only faster, slower, rate and 1x,
-  LR298-C5). 1,6 is empty.
+  2026-11-13). 1,6 is empty.
 
 The first checks are the hand test **HT-C** at the start of the checklist section "Phase 2: Sim rate page
-(C172 G1000)" (HT-A, the step size, is answered by the user's report: steps of x2 up to 128x, LR298-C5).
+(C172 G1000)" (HT-A, the step size, is answered by the user's report: steps of x2 up to 128x, 2026-11-13).
 Every name below is recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md) until the sim
 rate checks pass.
 
 Goal: a **1X** key that sets the simulation rate back to **1x (normal)** in one press, lit only when the
 sim's actual rate (read from the sim) is 1x, **SLOWER** and **FASTER** keys that step the rate down and up,
 and a **RATE** readout that also steps the rate up and down. The user first asked for "2x, 4x, normal" as
-easy toggles (P2-6); the layout above is the user's own after the first sim test (LR298-C5). The keys sit on
+easy toggles (P2-6); the layout above is the user's own (2026-11-13), after the first sim test. The keys sit on
 a child page **simrate**, opened by the main page's folder key `SIM RATE` at 3,7 (that position was reserved
 for a timer; see [navigation.md](navigation.md), "Pages", the note on reserved positions below the table).
 
@@ -79,7 +79,7 @@ command type **Lua Function** (saved as `14`; PD-SRC `SimCommand.cs`, PD-PI line
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
 | 1,1 | | Back | (Stream Deck) | Returns to the main page | none | Back key |
-| 1,2 | `1X` | Dynamic Button | T2 | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) [README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; LR153-C4] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | On/Off image: On `1`, Off `2` |
+| 1,2 | `1X` | Dynamic Button | T2 | `lua:XL24-SIMRATE:SET(1)` (steps `K:SIM_RATE_INCR` / `K:SIM_RATE_DECR`) [README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; P2-6 route ruling] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | On/Off image: On `1`, Off `2` |
 | 1,3 | `SLOWER` | Simple Button | T5 | `K:SIM_RATE_DECR` [SDK-MISCE] | none | fixed image |
 | 1,4 | `RATE` | Display Value | T3 | Main `K:SIM_RATE_INCR`, Second (long press) `K:SIM_RATE_DECR` [SDK-MISCE, README 2.1] | `(A:SIMULATION RATE, number)` [SDK-ENVV, PD-SRC] | Format `1.2` |
 | 1,5 | `FASTER` | Simple Button | T5 | `K:SIM_RATE_INCR` [SDK-MISCE] | none | fixed image |
@@ -119,7 +119,7 @@ command type **Lua Function** (saved as `14`; PD-SRC `SimCommand.cs`, PD-PI line
   1x), waits until the read rate changes, and repeats until the rate is 1x. Both events take no parameter
   ("Increase the simulation rate ...", "Decreases the simulation rate ...", SDK-MISCE). Each step is one
   step of the sim's own rate series: the sim steps by **x2** up to 128x (the user's report, "constantly
-  doubling from 2x till then", LR298-C5; SDK-ENVV lists the rates 0.0625, 0.125, ... 128), so 128x to 1x
+  doubling from 2x till then", 2026-11-13; SDK-ENVV lists the rates 0.0625, 0.125, ... 128), so 128x to 1x
   is 7 steps and the slowest rate, 0.0625x, to 1x is 4. Limits (the script never runs away):
   - at most **8 events per press** (128x to 1x is 7 steps of x2);
   - the next event only after the read rate changed; if it doesn't change within **2 s**, the script stops;
@@ -129,7 +129,8 @@ command type **Lua Function** (saved as `14`; PD-SRC `SimCommand.cs`, PD-PI line
   - each stop writes one line to the plugin's `lua.log` (`XL24-SIMRATE: ... stopped`).
 - **SLOWER** sends `K:SIM_RATE_DECR` on every press: one step down, no hold needed, no script. It is the
   safe way down (press it until RATE shows `1.00`, or press 1X). It is a Simple Button with a fixed
-  image, like the main page's ATC key (T5), the form of the sim-tested TRIM UP/DN keys (LR97-C2).
+  image, like the main page's ATC key (T5), the form of the sim-tested TRIM UP/DN keys (trim keys sim test
+  2026-11-11).
 - **RATE** shows the sim's rate with two decimals (Format `1.2`: `1.00`, `2.00`, `0.50`, `0.06` for
   0.0625). A press sends `K:SIM_RATE_INCR` ("Increase the simulation rate"), a long press
   `K:SIM_RATE_DECR` ("Decreases the simulation rate") (SDK-MISCE). **Hold RATE a full second** for the
@@ -147,7 +148,7 @@ command type **Lua Function** (saved as `14`; PD-SRC `SimCommand.cs`, PD-PI line
   form `(A:SIMULATION RATE, number)`: README 2.1.1 names `E:` for environment variables; PilotsDeck treats
   `A:` and `E:` alike (PD-SRC `TypeMatching.cs`, one pattern for both) and subscribes the variable by its
   bare name (PD-SRC `SubManager.cs`), so it is the same request as `(E:SIMULATION RATE, number)`, and
-  `E:` is the fallback (LR161-C4, A-6). 1X lights because the sim reports 1x, not because it was pressed
+  `E:` is the fallback (P2-6 build ruling, A-6). 1X lights because the sim reports 1x, not because it was pressed
   or because the script ran. The script reads the same variable (README 3.5.1 `SimVar`, `SimRead`).
   SLOWER and FASTER read nothing: RATE shows what they did.
 
@@ -230,12 +231,12 @@ Command Address `K:SIM_RATE_INCR`, Title `FASTER` (simrate 1,5).
 
 | Function | Why not | Source |
 |---|---|---|
-| `2X` and `4X` keys (`lua:XL24-SIMRATE:SET(2)`, `SET(4)`; the P2-6R build, before that `K:SIM_RATE_SET:2/4`) | Removed in P2-6R: the user's layout lists only a faster and a slower key, the rate readout and a 1x key. FASTER and SLOWER reach every rate in steps of x2. | LR298-C5 |
-| `K:SIM_RATE_SET:1/2/4` (the first build of 1X/2X/4X) | Does not work as sent: every press was logged as sent with no error, and the rate did not change (2026-11-12, LR259-C5). Why is not known: the sim may ignore the event, the value may be scaled, or the parameter may not arrive. | plugin log 2026-11-12; SDK-MISCE; PD-SRC `ToolsMSFS.cs` |
-| `K:SIM_RATE_SET` with the x256 scale (`:256` = 1x) | Untested, a lead only (the FSUIPC offset 0x0C1A stores the rate x256). Not tried: the hand test for it was dropped with the 2X key in P2-6R; 1X steps instead. | lead only (FSUIPC offset; a saved reference profile, not copied); LR298-C5 |
+| `2X` and `4X` keys (`lua:XL24-SIMRATE:SET(2)`, `SET(4)`; the P2-6R build, before that `K:SIM_RATE_SET:2/4`) | Removed in P2-6R: the user's layout lists only a faster and a slower key, the rate readout and a 1x key. FASTER and SLOWER reach every rate in steps of x2. | User layout 2026-11-13 |
+| `K:SIM_RATE_SET:1/2/4` (the first build of 1X/2X/4X) | Does not work as sent: every press was logged as sent with no error, and the rate did not change (2026-11-12, sim test). Why is not known: the sim may ignore the event, the value may be scaled, or the parameter may not arrive. | plugin log 2026-11-12; SDK-MISCE; PD-SRC `ToolsMSFS.cs` |
+| `K:SIM_RATE_SET` with the x256 scale (`:256` = 1x) | Untested, a lead only (the FSUIPC offset 0x0C1A stores the rate x256). Not tried: the hand test for it was dropped with the 2X key in P2-6R; 1X steps instead. | lead only (FSUIPC offset; a saved reference profile, not copied); user layout 2026-11-13 |
 | `K:SIM_RATE` | "Selects the simulation rate. Use the PLUS and MINUS events to increment/decrement the value": a select mode plus a second event; `K:SIM_RATE_INCR` / `_DECR` step the rate directly. | SDK-MISCE |
 | Pause (`K:PAUSE_TOGGLE`, `K:PAUSE_ON`, `K:PAUSE_OFF`, `K:PAUSE_SET`) | Not asked for. | SDK-MISCE |
-| Writing `SIMULATION RATE` directly (an E-Var / A-Var write) | The SDK marks it get/set, but this page uses no A-Var or E-Var write for the sim rate (LR153-C4). | SDK-ENVV; LR153-C4 |
+| Writing `SIMULATION RATE` directly (an E-Var / A-Var write) | The SDK marks it get/set, but this page uses no A-Var or E-Var write for the sim rate (P2-6 route ruling). | SDK-ENVV; P2-6 route ruling |
 | A Toggle Switch form (press again = back to 1x) | No real saved key with Toggle Switch on and a K-event command exists on this PC, so there is no example to copy. | brief scan (P2-6 research) |
 
 ## Sources
@@ -250,12 +251,12 @@ Command Address `K:SIM_RATE_INCR`, Title `FASTER` (simrate 1,5).
 | PD-LUA | PilotsDeck's Lua engine is NeoLua: PD-SRC `Plugin/Plugin.csproj` `<PackageReference Include="NeoLua" Version="1.3.20-beta.1" />` (commit 11bdf1f7). NeoLua's own source declares `pcall` in its global table: `NeoLua/LuaGlobal.cs` at tag v1.3.19 (the newest tag, https://github.com/neolithos/neolua/tags), line 517 `[LuaMember("pcall")]`, https://raw.githubusercontent.com/neolithos/neolua/v1.3.19/NeoLua/LuaGlobal.cs. The installed build carries it: the installed `PilotsDeck.exe` (0.9.7 local build, sha256 909f7af7...) holds NeoLua (`Neo.Lua.dll`) and the Lua base functions `pcall`, `tonumber`, `tostring` and others (byte search, read only, 2026-11-13) |
 | REF-FNX | The Fenix XL reference profile installed in ProfilesV3, key 6,3: a Dynamic Button with command type 14 `lua:FNX-A320:INIT_AIRCRAFT` and a read Address. A lead for the saved form only, not copied. |
 | LOG | The plugin log `PilotsDeck20261112.log` (read only, searched): the first build's 1X/2X/4X presses as "Running Command (Type: KVAR \| Address: K:SIM_RATE_SET:2 ...)" with no error; RATE "Key TimeDiff" 0.06 to 0.25 s; no "Build Long Command" |
-| S7 leads | Not confirmed, recorded only: AVSIM topic 673460 (the set event broken in MSFS 2024, step instead); simFlight topic 91807 (FSUIPC offset 0x0C1A, rate x256); MSFS forum topic 768093 (one step may be x4 in MSFS 2024; the user's report says x2, LR298-C5) |
-| LR161-C4 | The coordinator's ruling in the project's chain ledger (2026-11-12): build 1X/2X/4X on `K:SIM_RATE_SET:1/2/4`, Unverified (the first build; replaced in P2-6R). |
-| LR97-C2 | The trim keys' sim test (2026-11-11): the K-Var command type (16) works from the deck (`K:ELEV_TRIM_UP` / `_DN`). |
-| LR153-C4 | The coordinator's ruling: no A-Var or E-Var write for the sim rate; K-events from the SDK; every indicator reads the rate; stepping with the increment/decrement events against the read rate (Lua allowed) as a named ASSUMPTION, ruled for P2-6R in LR277-C5. |
-| LR259-C5, LR263-C5 | The user's sim test reports (2026-11-12): 1X/2X/4X did not change the rate; RATE went up to 128x but never back down. |
-| LR298-C5 | The user's layout for this page (2026-11-13): faster, slower, the rate readout and a dedicated 1x key; the sim steps by x2 up to 128x and "also supports very slow rates". Rulings: SLOWER stays, 2X and 4X removed, FASTER added. |
+| S7 leads | Not confirmed, recorded only: AVSIM topic 673460 (the set event broken in MSFS 2024, step instead); simFlight topic 91807 (FSUIPC offset 0x0C1A, rate x256); MSFS forum topic 768093 (one step may be x4 in MSFS 2024; the user's report says x2, user layout 2026-11-13) |
+| P2-6 build ruling | The project's ruling for the first build (2026-11-12): build 1X/2X/4X on `K:SIM_RATE_SET:1/2/4`, Unverified (the first build; replaced in P2-6R). |
+| Trim keys sim test 2026-11-11 | The trim keys' sim test (2026-11-11): the K-Var command type (16) works from the deck (`K:ELEV_TRIM_UP` / `_DN`). |
+| P2-6 route ruling | The project's ruling on the route (2026-11-12): no A-Var or E-Var write for the sim rate; K-events from the SDK; every indicator reads the rate; stepping with the increment/decrement events against the read rate (Lua allowed) as a named ASSUMPTION, ruled for P2-6R in the P2-6R rulings (2026-11-13). |
+| Sim test 2026-11-12 | The user's sim test reports (2026-11-12): 1X/2X/4X did not change the rate; RATE went up to 128x but never back down. |
+| User layout 2026-11-13 | The user's layout for this page (2026-11-13): faster, slower, the rate readout and a dedicated 1x key; the sim steps by x2 up to 128x and "also supports very slow rates". Rulings: SLOWER stays, 2X and 4X removed, FASTER added. |
 
 ## Fallbacks
 
@@ -266,7 +267,7 @@ tested; they are recorded in aircraft-mappings.md too. The repair after the test
 |---|---|---|
 | 1X: the script does nothing or stops at once, RATE, SLOWER and FASTER work | RATE, SLOWER and FASTER only; 1X stays as a readout until a repair. Check `lua.log` and that the script is installed first. | this page |
 | All rate keys: the read shows nothing, `0` or a stuck value while the rate visibly changes | `(E:SIMULATION RATE, number)` in the Value Address and in the script (the same request per PD-SRC, so if it fails too, report it). The script needs the read: without it, it stops at once ("no rate read"). | README 2.1.1; SDK-ENVV |
-| All: the sim ignores `K:SIM_RATE_DECR` (log shows the sends, nothing changes) | None left under LR153-C4 (no E-Var write, no FSUIPC offset); use the sim's own sim rate controls and report it: the coordinator decides. | LR153-C4 |
+| All: the sim ignores `K:SIM_RATE_DECR` (log shows the sends, nothing changes) | None left under the P2-6 route ruling (no E-Var write, no FSUIPC offset); use the sim's own sim rate controls and report it: the repair after the test decides. | P2-6 route ruling |
 
 ## How to test
 

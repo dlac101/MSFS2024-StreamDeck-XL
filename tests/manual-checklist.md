@@ -196,7 +196,7 @@ value you used.
 - [ ] Flight loaded, sitting in the cockpit: record what `CAMERA`, `VIEW` and `VIEW NO` show (expected
   `COCKPIT`, `PILOT`, a number). Switch to the external view (with the sim's own key or menu, not the deck)
   and record the three again (expected `CHASE` for `CAMERA`: 2 = cockpit, 3 = external, seen in the sim
-  2026-11-11 (LR95-C2)). If the cockpit or external camera shows another number than `2` / `3`, record it:
+  2026-11-11). If the cockpit or external camera shows another number than `2` / `3`, record it:
   the On Value and On/Off values of `COCKPIT` and `EXTERNAL` change to it.
 - [ ] Trim neutral (if you don't know, leave it as loaded): record what `TRIM` and `TRIM DEG` show. If
   `TRIM` shows nothing or stays `0.0` while `TRIM DEG` moves in the steps below, use the TRIM fallback in the
@@ -224,7 +224,7 @@ value you used.
   `EXTERNAL` Off, `CAMERA` shows `COCKPIT`. Press it again in the cockpit: nothing changes (it always writes 2).
 - [ ] `EXTERNAL` (from the cockpit): the sim camera changes to the external view; `EXTERNAL` shows On,
   `COCKPIT` Off, `CAMERA` shows `CHASE`. Press again: the camera goes back to the cockpit and the key states
-  follow (hand-tested 2026-11-11, LR101-C2; check it again on the generated key).
+  follow (hand-tested 2026-11-11; check it again on the generated key).
 - [ ] If `COCKPIT` or `EXTERNAL` does nothing: record it. It becomes Empty and its row in
   aircraft-mappings.md is marked "does not work" (the row stays).
 
@@ -319,7 +319,7 @@ Reference: [docs/phase2-sim-rate.md](../docs/phase2-sim-rate.md). The page is in
 the main page, behind `SIM RATE` (main page 3,7), and its `1X` key needs the script `XL24-SIMRATE.lua`.
 Repaired after the first sim test (P2-6R, not yet sim-tested): on 2026-11-12 `1X`/`2X`/`4X`
 (`K:SIM_RATE_SET`) did nothing and `RATE` never stepped down (no press was held 0.5 s). The page now has
-the user's layout (LR298-C5): `1X` 1,2, `SLOWER` 1,3, `RATE` 1,4, `FASTER` 1,5; the 2X and 4X keys are
+the user's layout (2026-11-13): `1X` 1,2, `SLOWER` 1,3, `RATE` 1,4, `FASTER` 1,5; the 2X and 4X keys are
 gone. Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
 
 **Safety first.** If the rate ever runs away (very high or very low), set it back to 1x with the sim's own
@@ -327,7 +327,7 @@ sim rate controls (your bindings, Controls > Miscellaneous > "Sim rate"), then r
 
 **The hand test HT-C (in the profile you have now, before the import below)**
 
-HT-A (the step size) is answered by the user's report: the sim steps by x2 up to 128x (LR298-C5). Nothing
+HT-A (the step size) is answered by the user's report: the sim steps by x2 up to 128x (2026-11-13). Nothing
 to run for it. HT-C needs no new profile: run it on the sim rate page of the profile you use now (your
 local `MSFS2024 C172 G1000 Icons` build). On the ground, parked. Write down what `RATE` shows after every
 step.
@@ -1091,9 +1091,9 @@ with the mouse and check that the key follows without a key being pressed.
 
 ## P5-PKG: package install (C172 G1000)
 
-Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds two profiles
-(`MSFS2024 C172 G1000`, `MSFS2024 A32NX`) and four Lua scripts (`XL24-SIMRATE.lua`, `XL24-COMPAD.lua`,
-`XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
+Reference: [docs/package.md](../docs/package.md). The package `MSFS2024-XL v0.2.ppp` holds three profiles
+(`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`) and four Lua scripts (`XL24-SIMRATE.lua`,
+`XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`, `XL24-A32NX.lua`). Not yet tested with the Profile Manager.
 Record: date, Stream Deck app version, PilotsDeck version (0.9.7, patched build), MSFS 2024 version. Never
 re-run the PilotsDeck installer or update the plugin for this (docs/installation.md).
 
@@ -1106,15 +1106,16 @@ re-run the PilotsDeck installer or update the plugin for this (docs/installation
   `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`) and drop
   `pilotsdeck\MSFS2024-XL\_Releases\MSFS2024-XL v0.2.ppp` on the arrow. Check that the notes and version 0.2
   are shown.
-- [ ] If it lists `MSFS2024 C172 G1000` or `MSFS2024 A32NX` as already installed, keep **Remove old
-  Profiles** checked. Click **Install**, click each profile link and pick the XL, wait until it finishes.
+- [ ] If it lists `MSFS2024 C172 G1000`, `MSFS2024 A32NX` or `MSFS2024 VisionJet` as already installed,
+  keep **Remove old Profiles** checked. Click **Install**, click each profile link and pick the XL, wait
+  until it finishes.
 - [ ] The Stream Deck app lists each profile once (no "Copy" profile).
 - [ ] An earlier install's `MSFS2024 C172 POC` (the Phase 1 profile; this package no longer holds it) is left
   as it is: delete it in the Stream Deck app (Preferences > Profiles) if you don't need it, or tick "none".
 - [ ] `Get-FileHash` of the plugin's `Scripts\XL24-COMPAD.lua`, `Scripts\XL24-SIMRATE.lua`,
   `Scripts\XL24-XPDRPAD.lua` and `Scripts\XL24-A32NX.lua` equals the sha256 the build printed for the same
   `Scripts/` entry.
-- [ ] The plugin's `Profiles\` folder holds the package's two `.streamDeckProfile` files, `DeviceInfo.json`,
+- [ ] The plugin's `Profiles\` folder holds the package's three `.streamDeckProfile` files, `DeviceInfo.json`,
   and no `_work` folder (note any `MSFS2024 C172 POC.streamDeckProfile` an earlier install left there).
 
 **HT-PKG-2 Mapping (flight needed)**

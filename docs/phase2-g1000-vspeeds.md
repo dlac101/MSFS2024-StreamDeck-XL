@@ -124,8 +124,8 @@ event name the G1000's own cockpit buttons fire, PilotsDeck command type **HVAR*
   `Plugin/Simulator/SimCommand.cs`, `HVAR = 8`). T7 is the main page's T5 Simple Button (template
   `simple_button`, a real key saved by PilotsDeck 0.9.7, BUILD_VERSION 11, in the user's MSFS-Fenix320-XL
   profile) with only the command type and address changed. No type-8 key saved by PilotsDeck 0.9.x exists
-  on this PC; the coordinator's ruling LR144-C4 (route C) accepts these sources in its place. The plugin log
-  showed the generated keys sent as HVAR and the user reported they worked (LR143-C4, LR144-C4).
+  on this PC; the P2-4 ruling (route C, 2026-11-12) accepts these sources in its place. The plugin log
+  showed the generated keys sent as HVAR and the user reported they worked (PFD/MFD sim test 2026-11-11).
 - **Address form (EX-G1000):** the user's installed profile `G1000` (ProfilesV3) holds six keys of the
   Generic package (TorontoWill v1.3, zip dated 2025-01-26, profile format 2.0), saved with a pre-0.8.9
   PilotsDeck (BUILD_VERSION 7, no Plugin block) and imported 2026-11-11 02:35, when the Stream Deck app
@@ -240,9 +240,9 @@ with a fixed image and a neutral title (`SK 1`, `MENU`, ...). What a press did s
 
 | Candidate | Example (PFD softkey 1) | Source | Used? |
 |---|---|---|---|
-| H-event (HVAR, 8) | `H:AS1000_PFD_SOFTKEYS_1` | SDK-AS1000 (names), SDK-RPN (H-events in MSFS 2024 panels), PD-PI and PD-SRC (command type 8), EX-G1000 (the address form, in keys saved with a pre-0.8.9 PilotsDeck), Jiblet (leads, PilotsDeck 0.8) | **Yes**: a named source for every name and for the command type, on a real 0.9.7 key template (LR144-C4). |
+| H-event (HVAR, 8) | `H:AS1000_PFD_SOFTKEYS_1` | SDK-AS1000 (names), SDK-RPN (H-events in MSFS 2024 panels), PD-PI and PD-SRC (command type 8), EX-G1000 (the address form, in keys saved with a pre-0.8.9 PilotsDeck), Jiblet (leads, PilotsDeck 0.8) | **Yes**: a named source for every name and for the command type, on a real 0.9.7 key template (the P2-4 ruling, route C). |
 | Input event (B-Var, 13) | `B:as1000_softkey_1_pfd` | IE 115 | No: the value that presses a bezel button is documented nowhere this project has (the README 2.1.1 B-Var command form `B:name:value` needs it; IE lists names only). Phase 1 found a B-Var sent with no value did nothing (phase2-main-page.md, "Fallbacks"). It is the fallback, after a hand test (below). |
-| K-event (KVAR, 16) | `K:G1000_PFD_SOFTKEY1` | MSFS 2024 SDK key events list (SDK-KE) | No: a Working Title developer wrote that the G1000 key events in the SDK are deprecated (WT-FORUM, a lead only), and P2-3 found the legacy view K-events ignored by MSFS 2024 (LR95-C2). |
+| K-event (KVAR, 16) | `K:G1000_PFD_SOFTKEY1` | MSFS 2024 SDK key events list (SDK-KE) | No: a Working Title developer wrote that the G1000 key events in the SDK are deprecated (WT-FORUM, a lead only), and P2-3 found the legacy view K-events ignored by MSFS 2024 (views sim test 2026-11-11). |
 
 In MSFS 2024 aircraft a cockpit control may drive an input event rather than the legacy event (the
 battery case in aircraft-mappings.md). An H-event bypasses the input event: it is what the cockpit button
@@ -364,7 +364,7 @@ conversion from the SDK's unit didn't happen: record it (see "Fallbacks").
 | IE n | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt), line n (identical to the plugin's live `InputEvents.txt`) |
 | EX-G1000 | The user's installed profile `G1000`: `%APPDATA%\Elgato\StreamDeck\ProfilesV3\4A4C2DB1-197F-46F2-A005-C378BBEF630A.sdProfile\Profiles\EC7CA592-CE1E-4EBD-BB2C-39FB1055BAA4\manifest.json`, actions `1,0` to `3,1`: six keys of the Generic package (TorontoWill v1.3, zip dated 2025-01-26, profile format 2.0, in `A:\FS2024 Stuff\PilotsDeck`), saved with a pre-0.8.9 PilotsDeck (BUILD_VERSION 7, no Plugin block) and imported 2026-11-11 02:35, when the Stream Deck app wrote the 0.9.7.0 Plugin block; command type 8 with `H:AS1000_MFD_*` addresses. They show the address form only and were never pressed on this PC (read only; the settings equal the package file's) |
 | Jiblet | Jiblet's "Cessna 172 G1000 SD Plus XL v1.1" package in `A:\FS2024 Stuff\PilotsDeck` (PilotsDeck 0.8 format, pre-2024): leads only, each confirmed above or dropped |
-| LR95-C2 | Sim test row in the project's chain ledger (2026-11-11): the legacy view K-events did nothing in MSFS 2024 |
+| Views sim test 2026-11-11, EXTERNAL hand test 2026-11-11 | The views page's sim test and its EXTERNAL key's hand test (2026-11-11, [phase2-trim-views.md](phase2-trim-views.md)): the legacy view K-events did nothing in MSFS 2024; the EXTERNAL key's A-Var write worked |
 
 ## What each key holds
 
@@ -397,7 +397,8 @@ tested; they are recorded in aircraft-mappings.md too.
 | V-speeds readout shows about 1.7 times the expected value | No fallback address: record the number and the key; a later unit decides (for example a scale factor on the key). | SDK-FMV, SDK-UNITS |
 | V-speeds readout shows nothing, 0, or -1 or another negative number (the SDK default when the aircraft's flight_model.cfg does not set it) | The SimVar isn't filled for this aircraft: record it; the key becomes Empty. | SDK-FMV |
 
-**One-key hand test for the input-event fallback** (only if the H-event keys fail; the LR101-C2 form): in
+**One-key hand test for the input-event fallback** (only if the H-event keys fail; the form of the EXTERNAL
+hand test 2026-11-11): in
 the imported profile, on the PFD page, select key **3,1 `SK 1`**; Commands tab: Command Type **MSFS: B-Var
 (InputEvent)**, **Run as Command** checked, Command Address `B:as1000_softkey_1_pfd:1`, press Tab to save.
 In the sim, with the PFD showing its softkey row, press the key once: the PFD's softkey 1 function should

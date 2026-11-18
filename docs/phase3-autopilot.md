@@ -157,7 +157,7 @@ different SimVar index than the standard K-event (the battery, [aircraft-mapping
 | VNV | IE 29 `as1000_autopilot_vertical_navigation_pfd` | **B-Var** | no K-event and no SimVar for VNV exist (SDK-APE, SDK-APV) |
 | HDG+/- | IE 80 `as1000_heading_pfd` (knob) | K-event | `HEADING_BUG_INC/DEC` need no value |
 | HDG BUG press | IE 82 `as1000_heading_sync_pfd` | K-event | `AP_HDG_CURRENT_HDG_SET` (A-5) |
-| CRS+/-, CRS1 press | IE 62 `as1000_course_pfd`, IE 64 `as1000_course_push_pfd` | H-event | the CRS knob's own events; P2-4's PFD H-events from the same SDK page work in this aircraft (LR144-C4) |
+| CRS+/-, CRS1 press | IE 62 `as1000_course_pfd`, IE 64 `as1000_course_push_pfd` | H-event | the CRS knob's own events; P2-4's PFD H-events from the same SDK page work in this aircraft (PFD/MFD sim test 2026-11-11) |
 | CRS long press | (as above) | K-event | no 10-degree H-event; `VOR1_OBI_FAST_*` (SDK-RADE) |
 | ALT+/- | IE 7, 9 `as1000_altitude_inner/outer_pfd` | K-event | the step is a K-event parameter, no B-Var value is known (A-4) |
 | VS+/- | IE 31, 35 `as1000_autopilot_verticalspeed_down/up_pfd` | K-event | `AP_VS_VAR_INC/DEC` need no value |
@@ -223,7 +223,7 @@ tested. Each is a data-file change (then regenerate); none needs a script.
 | ALT+/- short press | steps 1000 ft instead of 100 | give the short press the parameter: `K:AP_ALT_VAR_INC:100` / `K:AP_ALT_VAR_DEC:100` (as Jiblet passes 100) | SDK-APE; lead: JIBLET |
 | VS+/- | the target does not move | `B:as1000_autopilot_verticalspeed_up_pfd` / `..._down_pfd` (value unknown) | IE 35, 31 |
 
-## Open points (ASSUMPTIONS ruled in LR418-C9; each is checked by the hand test)
+## Open points (ASSUMPTIONS ruled for P3-1 on 2026-11-14; each is checked by the hand test)
 
 - **A-4** ALT long press `:1000`: step or set? See "Fallbacks". Holds only with its hand test. Leads for the
   step reading (not proof for the 2024 C172): the MSFS avionics framework's AltitudeSelectManager treats an
@@ -267,6 +267,6 @@ what the sim really has.
 | README | PilotsDeck README, https://github.com/Fragtality/PilotsDeck/blob/master/README.md: 2.1 (Second command on a long press, >= 500 ms), 2.1.1 (AVAR, KVAR with parameters and sequences, BVAR, LVAR), 2.2.2 (Format), 2.3 (Dynamic Button On/Off) |
 | IE | [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt) (233 input events of the 2024 C172 G1000) |
 | AM | [aircraft-mappings.md](aircraft-mappings.md): AP master verified 2026-11-11, MSFS 1.9.24.0 |
-| LR144-C4 | The user's report that P2-4's PFD/MFD H-events from SDK-AS1000 worked in the 2024 C172 ("Yes, they worked") |
+| PFD/MFD sim test 2026-11-11 | The user's report that P2-4's PFD/MFD H-events from SDK-AS1000 worked in the 2024 C172 ("Yes, they worked") |
 | JIBLET | Jiblet's C172 G1000 profile (PilotsDeck 0.8, pre-2024, in `A:\FS2024 Stuff\PilotsDeck`): AP page reads `XMLVAR_VNAVBUTTONVALUE`, ALT step parameters 100 and 1000. Lead only, nothing copied. |
 | FORUM | forums.flightsimulator.com reports that the MSFS 2024 binding "Set AP Current HDG" syncs the heading bug. Lead only. |
