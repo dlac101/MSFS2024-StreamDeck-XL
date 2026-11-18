@@ -59,6 +59,7 @@ docs/
   phase4-a32nx-pedestal.md  Phase 4 A32NX pedestal page (main > EFIS > PED): ECAM control panel, speed brake, gear, engines, key-by-key reference
   visionjet-g2-research.md  research for a profile of the Cirrus Vision SF50 that comes with MSFS 2024: candidate names with sources, draft layout; all Unverified (the profile built from it: visionjet-sf50.md)
   visionjet-sf50.md  VisionJet SF50 profile (MSFS 2024 default): main page and child pages, Profile Manager mapping, key-by-key reference
+  cj4-research.md  research for a profile of the Cessna Citation CJ4 that comes with MSFS 2024: candidate names with sources, draft layout; all Unverified
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon builds of the C172 G1000, A32NX and VisionJet profiles and the local icon package (Guenseli pack, personal use only, never committed)
