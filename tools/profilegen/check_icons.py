@@ -8,7 +8,10 @@ Usage, from the repo root (Python 3, standard library only):
 
 The icon pack (Guenseli) is personal and private use only: this script only reads it, and the icon profile
 and image copies it checks live in a git-ignored folder (default <repo>/.local/icons). Never commit them.
-check.py stays the check for the committed profile; this script never changes a file.
+check.py stays the check for the committed profile; this script never changes a file. --mapping-only leaves out
+the icon profile, not the pack: the mapping check reads the pack's ReadMe.txt and every mapped file (sha256 and
+PNG size), so it needs the pack folder too. A FAIL text that the console can't show is printed with backslash
+escapes.
 
 Checks:
   mapping  the JSON parses (no key twice) and every field but "_about" (free text) has its type (strings; "files"
@@ -444,6 +447,11 @@ def check_profile(plan, out_dir):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # a text the console can't show: escapes, not a traceback
+        try:
+            stream.reconfigure(errors="backslashreplace")
+        except (AttributeError, ValueError):
+            pass
     ap = argparse.ArgumentParser(description="Check the key-to-icon mapping and the LOCAL icon profile (docs/icons.md).",
                                  allow_abbrev=False)
     ap.add_argument("data", nargs="?", help="page data file (default: the mapping's data)")
@@ -451,7 +459,8 @@ def main():
                     help="key-to-icon mapping (default tools/profilegen/icons-c172-g1000.json)")
     ap.add_argument("--pack", help="the icon pack folder, read only (default: the mapping's pack_root)")
     ap.add_argument("--out", help="the icon build folder to check (default: the mapping's out)")
-    ap.add_argument("--mapping-only", action="store_true", help="check the mapping only, not the icon profile")
+    ap.add_argument("--mapping-only", action="store_true",
+                    help="check the mapping only, not the icon profile (the mapping check still reads the pack)")
     args = ap.parse_args()
     mapping = Path(args.mapping)
 

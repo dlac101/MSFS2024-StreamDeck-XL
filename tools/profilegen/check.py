@@ -62,8 +62,12 @@ Checks:
            a source that can't be read is a SKIP with its path (it needs the Admin account's installed
            profiles unchanged and A:\\FS2024 Stuff\\PilotsDeck)
 Exit code 0 when everything passes (a SKIP is not a failure), 1 on a FAIL (an unreadable data file, doc or
-profile, a data file without a key check.py reads, or a template or "states_from" that names no template, too),
-2 on a usage error. The repository-wide doc checks are in check_docs.py.
+profile or Phase 1 export, a data file without a key check.py reads, a "back_key_pos" that is not a string, a
+"pages" that is not a non-empty list, a page entry without a string "id" or a "keys" list, a key entry without
+a string "pos" or, unless "empty", a string "title", or a template or "states_from" that names no template, an
+empty or non-string "template" too), 2 on a usage error. A FAIL text that the console can't show is printed
+with backslash escapes.
+The repository-wide doc checks are in check_docs.py.
 """
 import io
 import json
@@ -386,7 +390,34 @@ def check_keys(label, acts, rows, keys_by_pos, page_uuid):
         check(not bad, f"{label}{pos} {title}: " + ", ".join(f"{f}={v!r}" for f, v in exp.items()) + (f"  MISMATCH {bad}" if bad else ""))
 
 
+def page_entry_errors(data):
+    """What check.py can't read in the data file's pages: "back_key_pos" a string, "pages" a non-empty list of
+    objects, each with a string "id" and a "keys" list of objects, each key with a string "pos" and, unless it is
+    "empty", a string "title"."""
+    out = [] if isinstance(data["back_key_pos"], str) else ["'back_key_pos' is not a string"]
+    pages = data["pages"]
+    if not isinstance(pages, list) or not pages:
+        return out + ["'pages' is not a non-empty list"]
+    for i, page in enumerate(pages):
+        if not isinstance(page, dict) or not isinstance(page.get("id"), str):
+            out.append(f"pages[{i}] has no string 'id'")
+        elif not isinstance(page.get("keys"), list):
+            out.append(f"page {page['id']} has no 'keys' list")
+        else:
+            for j, key in enumerate(page["keys"]):
+                if not isinstance(key, dict) or not isinstance(key.get("pos"), str):
+                    out.append(f"page {page['id']} keys[{j}] has no string 'pos'")
+                elif "empty" not in key and not isinstance(key.get("title"), str):
+                    out.append(f"page {page['id']} key {key['pos']} has no string 'title'")
+    return out
+
+
 def main():
+    for stream in (sys.stdout, sys.stderr):  # a text the console can't show: escapes, not a traceback
+        try:
+            stream.reconfigure(errors="backslashreplace")
+        except (AttributeError, ValueError):
+            pass
     args = sys.argv[1:]
     sources = "--sources" in args
     fenix = FENIX_DEFAULT if sources else None
@@ -407,6 +438,10 @@ def main():
     missing_keys = [k for k in DATA_KEYS if k not in data]
     if missing_keys:
         check(False, f"the data file {data_path} has no {missing_keys} (check.py reads {', '.join(DATA_KEYS)})")
+        return finish()
+    bad_pages = page_entry_errors(data)
+    if bad_pages:
+        check(False, f"the data file {data_path} has page entries check.py can't read: {bad_pages}")
         return finish()
 
     print("== zip: the profile opens, every JSON entry parses")
@@ -434,7 +469,11 @@ def main():
     check(profile["Name"] == data["profile_name"], f"profile name {profile['Name']!r}")
     main_id = profile["Pages"]["Pages"][0].upper()
     main = pages[main_id]
-    p1z, p1j = read_profile(ROOT / data["phase1_export"])
+    try:
+        p1z, p1j = read_profile(ROOT / data["phase1_export"])
+    except Exception as ex:  # noqa: BLE001  (as the zip step: a missing or broken export is a FAIL)
+        check(False, f"cannot read the Phase 1 export {data['phase1_export']}: {type(ex).__name__}: {ex}")
+        return finish()
     p1prof, _, p1pages = profile_parts(p1z.namelist(), p1j)
     p1main = actions(p1pages[p1j[p1prof]["Pages"]["Pages"][0].upper()])
 
@@ -588,11 +627,11 @@ def main():
     unknown_templates = []
     for page in data["pages"]:
         for key in page["keys"]:
-            for f in ("template", "states_from"):
-                if key.get(f):
+            for f in ("template", "states_from"):  # "template" as the steps below test it; "states_from" if not empty
+                if (f in key) if f == "template" else key.get(f):
                     try:
                         resolve(key[f])
-                    except KeyError as ex:
+                    except (KeyError, AttributeError, TypeError) as ex:  # no such template, or not a name
                         unknown_templates.append(f"{page['id']} {key.get('pos')} {f} {key[f]!r} ({type(ex).__name__}: {ex})")
     if unknown_templates:  # the steps below resolve them again
         check(False, f"templates the data file names that templates.json or the Phase 1 export does not hold: {unknown_templates}")

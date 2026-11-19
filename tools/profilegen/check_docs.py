@@ -11,29 +11,40 @@ Checks:
   checklist   every checklist section that a tracked Markdown file names in quotes is a "## " heading of
               tests/manual-checklist.md, word for word (a quote may wrap across lines): 'checklist section
               "<name>"', '[tests/manual-checklist.md](...), section "<name>"' (a comma may follow "section")
-              and the plural forms 'sections "<a>" and "<b>"' or 'sections "<a>", "<b>" and "<c>"'; after
-              the singular "section" only the first quote is a section name ('section "<name>", "<step>"'
-              names a step inside it); a quote after "checklist block", or after a "section" that follows
-              neither "checklist" nor the checklist link, is not read
+              and the plural forms 'sections "<a>" and "<b>"' or 'sections "<a>", "<b>" and "<c>"'; also
+              'section "<name>"' later in a paragraph that links the checklist ("[...](...manual-checklist.md)"),
+              and inside tests/manual-checklist.md every 'section "<name>"' and its run lists 'Run "<a>"' or
+              'Run "<a>", "<b>" and "<c>"'; after the singular "section" only the first quote is a section name
+              ('section "<name>", "<step>"' names a step inside it); a quote after "checklist block", or after
+              a "section" in a paragraph of another file that does not link the checklist, is not read
   readme      README.md's layout block (its ```text block) lists under "docs/" every tracked docs/*.md and
               no docs/*.md that git does not track (the files in docs/ itself, not in its subfolders)
   notes       the work folder's package.json "notes" name every committed profile (its file name without
               .streamDeckProfile) and every committed Lua script (its file name) under
-              pilotsdeck/MSFS2024-XL/_Package (build_package.py prints a NOTE for the same gap)
+              pilotsdeck/MSFS2024-XL/_Package, each as a whole name (not inside a longer name: "A32NX.lua" is
+              not named by "XL24-A32NX.lua"; build_package.py prints a NOTE for the same gap)
   inputevents every `B:<name>` in backticks in docs/aircraft-mappings.md under a "## " heading that starts with
               an aircraft of INPUT_EVENT_LISTS is a line of that aircraft's input event list in docs/reference/;
-              the B: names of the other sections (no list in docs/reference/, such as the A32NX) are counted,
-              not checked
+              a tracked list docs/reference/InputEvents-<X>.txt that INPUT_EVENT_LISTS does not name is the
+              list of every "## " heading that holds <X> as a word; a code span may wrap across lines (not
+              out of its block: a blank line, a list item, a table row or a heading ends one), a fenced code
+              block is not read; the B: names of the other sections (no list in docs/reference/, such as the
+              A32NX) are counted, not checked
   refs        no tracked file outside docs/chain/ cites an internal reference number: "LR" and digits as a
               word, with or without a "-C" or "-W" and digits after it; every file is read as bytes, the
-              profiles and images too
+              profiles and images too, a zip file (a profile) also entry by entry, uncompressed, and a file
+              that starts with a UTF-16 byte order mark also as UTF-16 text
 Exit code 0 when everything passes, 1 on a FAIL (a file that can't be read too), 2 on a usage or environment
-error (an argument, git not found or failing).
+error (an argument, git not found or failing). A FAIL text that the console can't show is printed with
+backslash escapes.
 """
+import io
 import json
 import re
 import subprocess
 import sys
+import zipfile
+import zlib
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -44,18 +55,29 @@ README = "README.md"
 WORK = "pilotsdeck/MSFS2024-XL/_Package"  # the Profile Manager work folder (docs/package.md)
 MAPPINGS_DOC = "docs/aircraft-mappings.md"
 # The aircraft whose input event list is in docs/reference/ (one name per line, "B:<name>"), by the start of their
-# "## " heading in docs/aircraft-mappings.md: the lists docs/roadmap.md A.5 names
+# "## " heading in docs/aircraft-mappings.md: the lists docs/roadmap.md A.5 names. A later list
+# docs/reference/InputEvents-<X>.txt (the same file name form) is tied by <X> in the headings (LIST_FILE)
 INPUT_EVENT_LISTS = {
     "Cessna 172 Skyhawk G1000": "docs/reference/InputEvents-C172-G1000.txt",
     "Cirrus Vision SF50": "docs/reference/InputEvents-SF50.txt",
 }
+LIST_FILE = re.compile(r"docs/reference/InputEvents-([^/]+)\.txt")
 OWN_FOLDER = "docs/chain/"  # the project's working notes, outside the published docs (docs/roadmap.md section D)
 # A checklist section quote: the trigger, then one quote (singular) or a list of quotes (plural), a comma allowed
 # after "section(s)"; \s+ lets a quote or the words before it wrap across lines
-SECTION_QUOTE = re.compile(r'(?:\bchecklist|manual-checklist\.md\)),?\s+(sections?),?\s+'
-                           r'("[^"]+"(?:\s*(?:,|,?\s+and)\s+"[^"]+")*)')
+QUOTES = r'("[^"]+"(?:\s*(?:,|,?\s+and)\s+"[^"]+")*)'
+SECTION_QUOTE = re.compile(r'(?:\bchecklist|manual-checklist\.md\)),?\s+(sections?),?\s+' + QUOTES)
+# "section" without "checklist" before it: read in a paragraph that links the checklist (after the link) and
+# inside the checklist itself; "Run" lists: inside the checklist only
+SECTION_WORD = re.compile(r'\b(sections?),?\s+' + QUOTES)
+RUN_LIST = re.compile(r'\b(Run)\s+' + QUOTES)
+CHECKLIST_LINK = re.compile(r"\]\([^)\s]*manual-checklist\.md\)")
 REF_NUMBER = re.compile(rb"\bLR[0-9]+(?:-[CW][0-9]+)?\b")
+REF_NUMBER_TEXT = re.compile(REF_NUMBER.pattern.decode("ascii"))
+UTF16_BOMS = (b"\xff\xfe", b"\xfe\xff")
+NEWLINE, NEWLINE_BYTE = "\n", b"\n"
 B_NAME = re.compile(r"(?<![A-Za-z0-9_:])B:[A-Za-z0-9_]+")
+CODE_SPAN = re.compile(r"`([^`]*)`")
 
 failures = []
 
@@ -102,30 +124,79 @@ def one_line(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+BLOCK_START = re.compile(r"\s*(?:[-*+] |[0-9]+[.)] |\||#)")
+FENCE = re.compile(r"\s*(`{3,}(?!.*`)|~{3,})")  # a ``` line with another backtick is inline code, no fence
+
+
+def paragraphs(text):
+    """[(offset, text)] of the Markdown blocks: a blank line ends one, and a list item, a table row or a heading
+    starts a new one (a code span or a quote that wraps stays inside its block); a fenced code block (``` or ~~~)
+    ends one and is in none (its lines are code, not code spans)."""
+    out, start, pos, fence = [], None, 0, None
+    for line in text.split("\n"):
+        f = FENCE.match(line)
+        if fence is not None or f:
+            if start is not None:
+                out.append((start, text[start:pos - 1]))
+                start = None
+            if fence is None:
+                fence = f.group(1)
+            elif f and f.group(1)[0] == fence[0] and len(f.group(1)) >= len(fence) and not line[f.end():].strip():
+                fence = None
+        elif not line.strip() or BLOCK_START.match(line):
+            if start is not None:
+                out.append((start, text[start:pos - 1]))
+            start = pos if line.strip() else None
+        elif start is None:
+            start = pos
+        pos += len(line) + 1
+    if start is not None:
+        out.append((start, text[start:pos - 1]))
+    return out
+
+
+def section_quotes(f, body):
+    """[(form, offset, quote list text)] of the checklist section quotes in one file, each quote list once."""
+    found = {}
+    for m in SECTION_QUOTE.finditer(body):
+        found[m.start(2)] = (m.group(1), m.start(), m.group(2))
+    if f == CHECKLIST:
+        for rx in (SECTION_WORD, RUN_LIST):
+            for m in rx.finditer(body):
+                found.setdefault(m.start(2), (m.group(1), m.start(), m.group(2)))
+    else:
+        for start, para in paragraphs(body):
+            link = CHECKLIST_LINK.search(para)
+            if link:
+                for m in SECTION_WORD.finditer(para, link.end()):
+                    found.setdefault(start + m.start(2), (m.group(1), start + m.start(), m.group(2)))
+    return [found[k] for k in sorted(found)]
+
+
 def check_checklist(files):
     md = [f for f in files if f.endswith(".md") and not f.startswith(OWN_FOLDER)]
     text = read_text(CHECKLIST)
     if text is None:
         return
     heads = {one_line(x[3:]) for x in text.splitlines() if x.startswith("## ")}
-    quotes, missing, forms = 0, [], {"section": 0, "sections": 0}
+    quotes, missing, forms = 0, [], {"section": 0, "sections": 0, "Run": 0}
     for f in md:
         body = read_text(f)
         if body is None:
             continue
-        for m in SECTION_QUOTE.finditer(body):
-            names = re.findall(r'"([^"]+)"', m.group(2))
-            if m.group(1) == "section":
+        for form, start, quoted in section_quotes(f, body):
+            names = re.findall(r'"([^"]+)"', quoted)
+            if form == "section":
                 names = names[:1]
-            forms[m.group(1)] += 1
-            line = body[:m.start()].count("\n") + 1
+            forms[form] += 1
+            line = body[:start].count("\n") + 1
             for name in names:
                 quotes += 1
                 if one_line(name) not in heads:
                     missing.append(f"{f}:{line} {one_line(name)!r}")
     check(not missing, f"{quotes} checklist section names in quotes ({forms['section']} 'section', "
-          f"{forms['sections']} 'sections' lists, in {len(md)} tracked .md files) are '## ' headings of "
-          f"{CHECKLIST} ({len(heads)} headings)" +
+          f"{forms['sections']} 'sections' lists, {forms['Run']} 'Run' lists, in {len(md)} tracked .md files) are "
+          f"'## ' headings of {CHECKLIST} ({len(heads)} headings)" +
           (f"  NO SUCH HEADING {missing}" if missing else ""))
 
 
@@ -153,6 +224,13 @@ def check_readme(files):
           (f"  TWICE {twice}" if twice else ""))
 
 
+def names_whole(label, text):
+    """True if text names label as a whole name: no letter, digit, "_", "-" or "." right before it, and no
+    letter, digit, "_" or "-" right after it, nor a "." with one of those after it (a full stop may follow)."""
+    return re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(label) + r"(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9_-])",
+                     text) is not None
+
+
 def check_notes(files):
     text = read_text(f"{WORK}/package.json")
     if text is None:
@@ -170,7 +248,7 @@ def check_notes(files):
             labels.append(f.split("/")[-1][: -len(".streamDeckProfile")])
         elif f.startswith(WORK + "/Scripts/") and f.endswith(".lua"):
             labels.append(f.split("/")[-1])
-    absent = [x for x in labels if x not in notes]
+    absent = [x for x in labels if not names_whole(x, notes)]
     check(not absent, f"{WORK}/package.json notes name the {len(labels)} committed profiles and Lua scripts" +
           (f"  NOT NAMED {absent}" if absent else ""))
 
@@ -179,35 +257,61 @@ def check_inputevents(files):
     text = read_text(MAPPINGS_DOC)
     if text is None:
         return
+    lines = text.split("\n")
+    headings = [(n, line[3:].strip()) for n, line in enumerate(lines, 1) if line.startswith("## ")]
+    # a list INPUT_EVENT_LISTS does not name: tied by its file name's <X> to the headings that hold it as a word
+    by_name = {}
+    for f in files:
+        m = LIST_FILE.fullmatch(f)
+        if m and f not in INPUT_EVENT_LISTS.values():
+            word = re.compile(r"(?<![A-Za-z0-9_-])" + re.escape(m.group(1)) + r"(?![A-Za-z0-9_-])")
+            by_name[m.group(1)] = (f, word)
+    tied = dict(INPUT_EVENT_LISTS)
+    for x, (f, word) in by_name.items():
+        if any(word.search(h) for _, h in headings):
+            tied[x] = f
     lists = {}
-    for aircraft, rel in INPUT_EVENT_LISTS.items():
+    for aircraft, rel in tied.items():
         body = read_text(rel)
         if body is not None:
             lists[aircraft] = {x.strip() for x in body.splitlines() if x.strip()}
-    untied = [f for f in files if re.fullmatch(r"docs/reference/InputEvents-[^/]+\.txt", f)
-              and f not in INPUT_EVENT_LISTS.values()]
+    untied = [f for x, (f, _) in by_name.items() if x not in tied]
     if untied:
-        print(f"  note {untied}: no {MAPPINGS_DOC} heading is tied to these lists (INPUT_EVENT_LISTS), "
-              "so they are not used")
-    heading, counts, missing = None, {}, []
-    for n, line in enumerate(text.splitlines(), 1):
-        if line.startswith("## "):
-            heading = line[3:].strip()
-        for tick in re.findall(r"`([^`]*)`", line):
-            for name in B_NAME.findall(tick):
-                aircraft = next((a for a in INPUT_EVENT_LISTS if heading and heading.startswith(a)), None)
+        print(f"  note {untied}: no {MAPPINGS_DOC} heading is tied to these lists (INPUT_EVENT_LISTS, or the "
+              "list's name in a heading), so they are not used")
+
+    def aircraft_of(heading):
+        if heading is None:
+            return None
+        for a in INPUT_EVENT_LISTS:
+            if heading.startswith(a):
+                return a
+        return next((x for x, (_, w) in by_name.items() if x in tied and w.search(heading)), None)
+
+    counts, missing = {}, []
+    hi = 0
+    for start, para in paragraphs(text):
+        first = text.count("\n", 0, start) + 1
+        for m in CODE_SPAN.finditer(para):
+            for b in B_NAME.finditer(m.group(1)):
+                n = first + para.count("\n", 0, m.start(1) + b.start())
+                while hi < len(headings) and headings[hi][0] <= n:
+                    hi += 1
+                heading = headings[hi - 1][1] if hi else None
+                aircraft = aircraft_of(heading)
+                name = b.group()
                 c = counts.setdefault(aircraft or heading or "(before the first heading)", [0, set()])
                 c[0] += 1
                 c[1].add(name)
                 if aircraft in lists and name not in lists[aircraft]:
                     missing.append(f"line {n}: {name} ({aircraft})")
-    for aircraft in INPUT_EVENT_LISTS:
+    for aircraft in tied:
         if aircraft in lists:
             n, names = counts.get(aircraft, [0, set()])
-            print(f"  {aircraft}: {n} B: names ({len(names)} distinct), list {INPUT_EVENT_LISTS[aircraft]} "
+            print(f"  {aircraft}: {n} B: names ({len(names)} distinct), list {tied[aircraft]} "
                   f"({len(lists[aircraft])} lines)")
     for where, (n, names) in counts.items():
-        if where not in INPUT_EVENT_LISTS:
+        if where not in tied:
             print(f"  {where}: {n} B: names ({len(names)} distinct), no input event list in docs/reference/: "
                   "not checked")
     check(not missing, f"every B: name in {MAPPINGS_DOC} under an aircraft with an input event list is in that "
@@ -215,25 +319,49 @@ def check_inputevents(files):
           (f"  NOT IN THE LIST {missing}" if missing else ""))
 
 
+def ref_hits(where, data):
+    """The reference numbers in one file's bytes, and in its UTF-16 text if it starts with a byte order mark."""
+    hits = []
+    for m in REF_NUMBER.finditer(data):
+        hits.append(f"{where}:{data.count(NEWLINE_BYTE, 0, m.start()) + 1} {m.group().decode('ascii')}")
+    if data[:2] in UTF16_BOMS:
+        text = data.decode("utf-16")
+        for m in REF_NUMBER_TEXT.finditer(text):
+            hits.append(f"{where}:{text.count(NEWLINE, 0, m.start()) + 1} {m.group()} (UTF-16)")
+    return hits
+
+
 def check_refs(files):
-    hits, n = [], 0
+    hits, n, entries, utf16 = [], 0, 0, 0
     for f in files:
         if f.startswith(OWN_FOLDER):
             continue
         try:
             data = (ROOT / f).read_bytes()
-        except OSError as ex:
+            hits += ref_hits(f, data)
+            utf16 += data[:2] in UTF16_BOMS
+            if data[:4] == b"PK\x03\x04":
+                with zipfile.ZipFile(io.BytesIO(data)) as z:
+                    for info in z.infolist():
+                        entry = z.read(info)
+                        entries += 1
+                        utf16 += entry[:2] in UTF16_BOMS
+                        hits += [h + " (zip entry)" for h in ref_hits(f"{f}:{info.filename}", entry)]
+        except (OSError, ValueError, RuntimeError, zipfile.BadZipFile, zipfile.LargeZipFile, zlib.error) as ex:
             check(False, f"cannot read {f}: {type(ex).__name__}: {ex}")
             continue
         n += 1
-        for m in REF_NUMBER.finditer(data):
-            line = data.count(b"\n", 0, m.start()) + 1
-            hits.append(f"{f}:{line} {m.group().decode('ascii')}")
-    check(not hits, f"{n} tracked files outside {OWN_FOLDER} cite no internal reference number" +
+    check(not hits, f"{n} tracked files outside {OWN_FOLDER} ({entries} zip entries read uncompressed, {utf16} UTF-16 "
+          "texts) cite no internal reference number" +
           (f"  FOUND {hits}" if hits else ""))
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # a text the console can't show: escapes, not a traceback
+        try:
+            stream.reconfigure(errors="backslashreplace")
+        except (AttributeError, ValueError):
+            pass
     if sys.argv[1:]:
         print("usage: check_docs.py (no arguments; run it from anywhere, it checks the repository it is in)")
         return 2

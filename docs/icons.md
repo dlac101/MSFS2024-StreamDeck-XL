@@ -228,7 +228,8 @@ names, sections 4 and 5):
 
 1. Change that key's row (or add the pack file to `files` with its sha256), and remove from `files` any
    file no row uses any more.
-2. Run `check_icons.py --mapping-only`.
+2. Run `check_icons.py --mapping-only` (the mapping without the build; it still reads the pack folder, for
+   the `ReadMe.txt` and each mapped file's sha256 and PNG size).
 3. Delete the `.local\icons` folder (the generator never deletes), then rebuild (section 1).
 4. Commit the mapping change, then pack and install the new icon package (sections 1 and 2; the package
    build refuses uncommitted changes under `tools/profilegen/`). Or, without the package, replace the

@@ -37,6 +37,9 @@ What it refuses (exit 1, nothing written), by rule:
   R10 --out-dir inside the work folder
 Exit 2: usage or environment error (unknown option, not this repo, git fails,
 the output folder cannot be read or written).
+It prints a NOTE (no refusal) for a packed profile or script that the
+package.json notes do not name as a whole name, and prints a path the console
+cannot show with backslash escapes.
 """
 
 import argparse
@@ -303,8 +306,16 @@ def build_zip(entries):
     return order, buf.getvalue()
 
 
+def names_whole(label, text):
+    """True if text names label as a whole name, not inside a longer one ("A32NX.lua" is not named by
+    "XL24-A32NX.lua"): no letter, digit, "_", "-" or "." right before it, and no letter, digit, "_" or "-"
+    right after it, nor a "." with one of those after it (the rule of tools/profilegen/check_docs.py)."""
+    return re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(label) + r"(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9_-])",
+                     text) is not None
+
+
 def notes_lines(entries):
-    """NOTE lines for packed profiles and scripts the package.json notes do not name."""
+    """NOTE lines for packed profiles and scripts the package.json notes do not name as a whole name."""
     notes = json.loads(entries["package.json"][1].decode("utf-8"))["notes"]
     out = []
     for rel in entries:
@@ -314,12 +325,17 @@ def notes_lines(entries):
             label = rel.split("/")[-1]
         else:
             continue
-        if label not in notes:
+        if not names_whole(label, notes):
             out.append(f"NOTE {rel}: '{label}' is not named in package.json notes")
     return out
 
 
 def main(argv=None):
+    for stream in (sys.stdout, sys.stderr):  # a path the console can't show: escapes, not a traceback
+        try:
+            stream.reconfigure(errors="backslashreplace")
+        except (AttributeError, ValueError):
+            pass
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out-dir", help=f"output folder (default <repo>/{RELEASES}/)")
