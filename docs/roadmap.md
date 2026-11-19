@@ -2,7 +2,7 @@
 
 Where the project stands, what the original plan still asks for, what other Stream Deck profiles for
 MSFS offer, and the planned work in units. Written 2026-11-14; sections A, B, C.3, D and E brought up to date
-with the P5-DOCS update and again with the P5-DOCS2 to P5-DOCS6 updates (section E.3) against the repo as
+with the P5-DOCS update and again with the P5-DOCS2 to P5-DOCS7 updates (section E.3) against the repo as
 committed then.
 
 Sections:
@@ -110,9 +110,10 @@ plugin build, the MobiFlight WASM module, backups), [troubleshooting.md](trouble
 transponder, radios, systems, engine and fuel), five Phase 4 page docs (the A32NX profile with its main and
 FCU pages, the EFIS page, the overhead pages, the radio and transponder pages, the pedestal page), one
 design doc
-([design-trim-gauge.md](design-trim-gauge.md), built as the trim gauge), one research doc
+([design-trim-gauge.md](design-trim-gauge.md), built as the trim gauge), two research docs
 ([visionjet-g2-research.md](visionjet-g2-research.md): names, sources and a draft layout for the Cirrus Vision
-SF50 that comes with MSFS 2024; every name Unverified), one profile doc for the VisionJet
+SF50 that comes with MSFS 2024; [cj4-research.md](cj4-research.md): the same for the Cessna Citation CJ4 that
+comes with MSFS 2024; every name Unverified), one profile doc for the VisionJet
 ([visionjet-sf50.md](visionjet-sf50.md)), [navigation.md](navigation.md), [icons.md](icons.md),
 [aircraft-mappings.md](aircraft-mappings.md) (every variable and event with its
 source and status), [reference/InputEvents-C172-G1000.txt](reference/InputEvents-C172-G1000.txt) (233 input
@@ -167,7 +168,7 @@ Line numbers are those of [original-plan.md](original-plan.md).
 | Phase 2: universal 32-key main page | 70-83 | Partly done | Main page and folders built (generated); acceptance (83) needs the Phase 2 checklist in the C172. Timer (3,7 in the concept) gave way to the sim rate folder; anti-ice stays reserved |
 | Phase 3: state-aware controls | 85-96 | Partly done | Done in the build: AP and mode keys, lights, COM active/standby, gear type and the systems page's switches read sim state; the autopilot page shows the selected heading, course, altitude, VS and FLC speed (91; not yet sim-tested). Missing: the handling of unavailable values, disconnects and stale data (94), and the mouse-in-cockpit acceptance test (96) for most keys |
 | Phase 4: reusable abstractions, second aircraft | 98-115 | Partly done | The contrasting aircraft (113) is the FlyByWire A32NX: its profile has eight generated pages (main, FCU, OVHD, EFIS, the overhead SYSTEMS page and the EFIS RADIO, XPDR and PED pages), not yet sim-tested (the A32NX is not installed yet). Shared definitions with aircraft overrides (100-111) exist only as the generator's templates and one data file per aircraft; graceful degradation (115) is not designed |
-| Phase 5: scripted workflows and polish | 117-125 | Partly done | Lua used for multi-step controls: sim rate 1x, the COM pad, the transponder pad and the A32NX script (FCU readouts, ND and navaid steps, master warning and caution, fuel MODE SEL, the RMP 1 windows, the transponder mode and TCAS selectors, the pedestal readouts and the ENG MODE selector). A versioned package with build and install steps exists (123; [package.md](package.md)), not yet installed with the Profile Manager, so the clean-install acceptance (125) is not run. Missing: icons and colours in the committed profile (121; the pack icons stay local), checklists and startup aids (122) |
+| Phase 5: scripted workflows and polish | 117-125 | Partly done | Lua used for multi-step controls: sim rate 1x, the COM pad, the transponder pad, the A32NX script (FCU readouts, ND and navaid steps, master warning and caution, fuel MODE SEL, the RMP 1 windows, the transponder mode and TCAS selectors, the pedestal readouts and the ENG MODE selector) and the VisionJet's hold to repeat script (`XL24-SF50.lua`). A versioned package with build and install steps exists (123; [package.md](package.md)), not yet installed with the Profile Manager, so the clean-install acceptance (125) is not run. Missing: icons and colours in the committed profile (121; the pack icons stay local), checklists and startup aids (122) |
 | Three page levels, aircraft detection | 50-56 | Partly done (docs only) | The C172 G1000 profile's aircraft mapping (automatic switching) is documented in [package.md](package.md), not yet tested; the A32NX profile has no search string yet; the VisionJet profile's search string `microsoft_sf50` is in [visionjet-sf50.md](visionjet-sf50.md), not yet tested; no safe fallback profile (54); no capability detection (56) |
 | Engineering guidelines | 155-165 | Mostly followed | "Fail visibly" (161) and "limit update traffic" (162) are not designed or tested yet |
 | Initial testing checklist | 167-178 | Partly done | Connect, live values, events and mouse-follow pass for the four Phase 1 keys only; disconnect, both controller setups, aircraft switching and clean-install import are open |
@@ -515,7 +516,7 @@ Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, 
 - Shared docs: CHANGELOG.md, tests/manual-checklist.md.
 - Variables: `(A:SIMULATION RATE, number)` (MSFS 2024 SDK environment variables; listed Unverified).
 
-### E.2 Lane A: FlyByWire A32NX (after P4-1)
+### E.2 Lane A: FlyByWire A32NX (after P4-1), VisionJet SF50 and Citation CJ4
 
 **P4-1 A32NX main page and FCU** (committed; not re-planned)
 
@@ -638,10 +639,11 @@ look-tested)
 
 **CJ-0 CITATION CJ4 RESEARCH** (committed; not re-planned)
 
-- Scope: research for a profile of the Cessna Citation CJ4 that comes with MSFS 2024: 141 candidate variable
-  and event names with their sources (every one Unverified), leads from other Stream Deck profiles, a draft
-  layout of 20 pages for a profile `MSFS2024 CJ4` with hold to repeat on its step keys, four sim steps for
-  the user and six open questions ([cj4-research.md](cj4-research.md)); nothing built or sim-tested.
+- Scope: research for a profile of the Cessna Citation CJ4 that comes with MSFS 2024: 141 candidate rows of
+  variable and event names with their sources (every one Unverified; 9 rows wait for the CJ4's input event
+  list), leads from other Stream Deck profiles, a draft layout of 20 pages for a profile `MSFS2024 CJ4` with
+  hold to repeat on its step keys, four sim steps for the user and six open questions
+  ([cj4-research.md](cj4-research.md)); nothing built or sim-tested.
 - Files: C `docs/cj4-research.md`.
 - Shared tool code: no.
 - Shared docs: CHANGELOG.md, README.md (its layout block).
@@ -852,6 +854,39 @@ look-tested)
   byte).
 - Shared docs: CHANGELOG.md.
 
+**P5-DOCS7 DOCS CLEAN-UP AFTER THE CJ4 RESEARCH AND THE FOURTH TOOL LIST** (committed; not re-planned)
+
+- Scope: in this roadmap, the doc list names both research docs (A.5), the plan's Phase 5 row names the
+  VisionJet's hold to repeat script (B), the lane A heading names the VisionJet SF50 and Citation CJ4 units
+  (E.2), the CJ-0 entry counts the research page's candidate rows and the 9 that wait for the CJ4's input
+  event list, the P5-DOCS7 and P5-TOOLS4 entries are added (E.3) and named in the lane R queue, and
+  P5-TOOLS4 in the list of units that change shared tool code (E.4); the P5-1 line of `CHANGELOG.md` shows
+  its `<id>`, which GitHub's renderer dropped as an HTML tag.
+- Files: M `docs/roadmap.md`.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md.
+
+**P5-TOOLS4 TOOL FIXES AND THE OPEN DOC CHECKS**
+
+- Scope: the two items still open in section D (a Sources tag check and a prose width check, each built or
+  left out with its reason) and the smaller gaps found in the review of P5-TOOLS3. In
+  `tools/profilegen/check_docs.py`: the whole-name notes check (the rule `tools/package/build_package.py`
+  shares) takes a profile name as named where the notes name a longer one that starts with it and a space
+  (no such pair today); a wrapped prose line that starts with "#" or with a number and "." or ")" ends a
+  paragraph in its reading, where Markdown lets only a "# " heading or a "1." or "1)" item do so; a later
+  input event list whose name is a word only of headings that already have their list counts as tied but is
+  never used, with no note; a section quote after a checklist link with an `#anchor` is not read; a fence
+  line indented by four or more spaces is read as a fence; a reference number in a stored zip entry is
+  reported twice. `tools/package/build_icon_package.py` still prints its paths without the backslash escapes
+  the other tools got in P5-TOOLS3, so a path the console can't show ends in a traceback.
+- Files: M `tools/profilegen/check_docs.py`, maybe M `tools/package/build_package.py` and
+  `tools/package/build_icon_package.py`, M `docs/roadmap.md`.
+- Size: S to M.
+- Depends on: P5-TOOLS3, P5-DOCS7.
+- Shared tool code: yes.
+- Shared docs: CHANGELOG.md.
+- Variables: none.
+
 **P5-4 OWN IMAGES**
 
 - Scope: a small set of project-made key images (on, off, fault, folder) that can be committed under MIT.
@@ -870,15 +905,16 @@ look-tested)
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
 | A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, V-3, CJ-0, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, P5-DOCS7, P5-TOOLS4, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
 - Lane A units change only their own aircraft's files (the A32NX or VisionJet data file, icon mapping, script
   and profile, or a research doc), so they can run beside lane C units, apart from the shared docs (one added
   line or section each) and shared tool code.
-- Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-TOOLS3, P5-4, P5-2
-  with a universal profile) do not run at the same time as each other. P3-4 and P5-1 both change `check.py`.
+- Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-TOOLS3, P5-TOOLS4,
+  P5-4, P5-2 with a universal profile) do not run at the same time as each other. P3-4 and P5-1 both change
+  `check.py`.
 - P5-PKG, P5-3 and P5-2 (docs only) touch no page data and can run beside any lane C or lane A unit.
 - P5-1 can run beside page units that do not change the same tool files.
 - P5-4 changes lane C and lane A data files and profiles, so it runs between their units, never beside one.
