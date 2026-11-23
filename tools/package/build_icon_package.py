@@ -35,6 +35,7 @@ What it refuses (exit 1, nothing written), by rule:
 The icon profiles may embed folder/back key images; every other R6 problem refuses them.
 Exit 2: usage or environment error (unknown option, not this repo, git fails, a folder cannot be read
 or written).
+A path the console cannot show is printed with backslash escapes, as build_package.py prints it.
 """
 
 import sys
@@ -256,6 +257,11 @@ def check_target(root, out_dir, target, builds):
 
 
 def main(argv=None):
+    for stream in (sys.stdout, sys.stderr):  # a path the console can't show: escapes, not a traceback
+        try:
+            stream.reconfigure(errors="backslashreplace")
+        except (AttributeError, ValueError):
+            pass
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out-dir", help=f"output folder (default <repo>/{DEFAULT_OUT}/)")

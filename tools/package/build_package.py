@@ -306,26 +306,34 @@ def build_zip(entries):
     return order, buf.getvalue()
 
 
-def names_whole(label, text):
+WHOLE_END = r"(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9_-])"
+
+
+def names_whole(label, text, labels=()):
     """True if text names label as a whole name, not inside a longer one ("A32NX.lua" is not named by
     "XL24-A32NX.lua"): no letter, digit, "_", "-" or "." right before it, and no letter, digit, "_" or "-"
-    right after it, nor a "." with one of those after it (the rule of tools/profilegen/check_docs.py)."""
-    return re.search(r"(?<![A-Za-z0-9_.-])" + re.escape(label) + r"(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9_-])",
-                     text) is not None
+    right after it, nor a "." with one of those after it; a place where a longer name of labels that starts
+    with label is named ("MSFS2024 A32NX Pro" for "MSFS2024 A32NX") does not count (the rule of
+    tools/profilegen/check_docs.py)."""
+    longer = [re.compile(re.escape(x) + WHOLE_END) for x in labels if len(x) > len(label) and x.startswith(label)]
+    for m in re.finditer(r"(?<![A-Za-z0-9_.-])" + re.escape(label) + WHOLE_END, text):
+        if not any(x.match(text, m.start()) for x in longer):
+            return True
+    return False
 
 
 def notes_lines(entries):
     """NOTE lines for packed profiles and scripts the package.json notes do not name as a whole name."""
     notes = json.loads(entries["package.json"][1].decode("utf-8"))["notes"]
-    out = []
+    labels = {}
     for rel in entries:
         if rel.endswith(".streamDeckProfile"):
-            label = rel.split("/")[-1][: -len(".streamDeckProfile")]
+            labels[rel] = rel.split("/")[-1][: -len(".streamDeckProfile")]
         elif rel.endswith(".lua"):
-            label = rel.split("/")[-1]
-        else:
-            continue
-        if not names_whole(label, notes):
+            labels[rel] = rel.split("/")[-1]
+    out = []
+    for rel, label in labels.items():
+        if not names_whole(label, notes, list(labels.values())):
             out.append(f"NOTE {rel}: '{label}' is not named in package.json notes")
     return out
 

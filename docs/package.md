@@ -100,7 +100,8 @@ icon-free and unchanged.
   script supports it.
 - A release: bump `versionpackage`, update `notes` and `aircraft` (the build prints a NOTE, and
   `check_docs.py` a FAIL, for each packed profile or script the notes don't name as a whole name:
-  `A32NX.lua` inside `XL24-A32NX.lua` does not count), commit, then build.
+  `A32NX.lua` inside `XL24-A32NX.lua` does not count, nor a profile name inside a longer committed one that
+  starts with it, such as `MSFS2024 A32NX` inside a `MSFS2024 A32NX Pro`), commit, then build.
   Rebuilding an existing version with new content is refused only while that version's `.ppp` is still in
   the output folder (`_Releases/` by default), so keep each released `.ppp` there.
 - Never rename a profile (the manifest `Name` and the file name stay the same between versions): the

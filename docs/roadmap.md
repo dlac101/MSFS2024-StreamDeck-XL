@@ -274,7 +274,7 @@ product call; "Project" = the project can decide.
 | 12 | More camera views by camera variable writes | A paid camera-only profile exists (C.2 item 3); two view keys exist, one passed a hand test | User (which views) |
 | 13 | Safe default profile for other aircraft | The plan's safe fallback (line 54) | User (whether to build) |
 | 14 | Committed own images (state colours, icons) | Readability without the personal-use pack | User |
-| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; fourth list done: P5-TOOLS3; two items open) |
+| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; fourth list done: P5-TOOLS3; fifth list done: P5-TOOLS4; two items open) |
 | 16 | `1X` key unlit at every rate but 1x | Today it shows no image at most rates (by design); cosmetic | User (after the look test) |
 | 17 | Folder title alignment for the remaining folders | Main page VIEWS, CHECKLIST and MORE are centred; the others are not | User (after the look test) |
 | 18 | Ground-service menu (GSX) | Needs a paid add-on; the plan wants no paid dependency for the baseline | User |
@@ -350,22 +350,46 @@ Fourth list (shared tool code, one lane at a time; all nine were done in P5-TOOL
 - `tools/profilegen/check_icons.py`: `--mapping-only` reads as if no icon pack were needed, but the mapping
   check reads the pack (its `ReadMe.txt` and every mapped file); the help text and `docs/icons.md` say so.
 
+Fifth list (shared tool code, one lane at a time; all seven were done in P5-TOOLS4), found in the review of
+P5-TOOLS3:
+
+- `tools/profilegen/check_docs.py` and `tools/package/build_package.py`: the whole-name notes check takes a
+  profile name as named where the notes name only a longer committed name that starts with it and a space
+  (`MSFS2024 A32NX` inside `MSFS2024 A32NX Pro`; no such pair today).
+- `tools/profilegen/check_docs.py`: a wrapped prose line that starts with "#" or with a number, "." or ")"
+  and a space ends a paragraph in its reading, where Markdown lets only a "# " heading, a "1." or "1)" item
+  or the next item of a list do so (one line today, in `docs/cj4-research.md`; no output changed).
+- `tools/profilegen/check_docs.py`: a later input event list whose name is a word only of headings that
+  already have their list counts as tied but is never used, with no note; and of two later lists whose
+  names are both words of one heading, the first in `git ls-files` order is used.
+- `tools/profilegen/check_docs.py`: a checklist section quote after a checklist link with an `#anchor` is
+  not read (no such link today).
+- `tools/profilegen/check_docs.py`: a fence line indented by four or more columns past its container (in
+  Markdown an indented code line) is read as a fence, so the lines after it go unread.
+- `tools/profilegen/check_docs.py`: a reference number in a stored (uncompressed) zip entry is reported
+  twice, once in the raw bytes and once in the entry.
+- `tools/package/build_icon_package.py`: it prints its paths without the backslash escapes the other tools
+  got in P5-TOOLS3, so a path the console can't show ends in a traceback; and section E's list of shared
+  tool code does not name it.
+
 Still open, for a later tools unit (shared tool code, one lane at a time):
 
 - `tools/profilegen/check_docs.py`: a Sources tag that a page doc's tables use is not checked against that
-  doc's "Sources" table; a rule needs one tag form in the docs first. Today 24 of the 287 parts, split at
+  doc's "Sources" table; a rule needs one tag form in the docs first. Today 24 of the 293 parts, split at
   ";", of the last-column Source cells in the 19 docs with a Sources table start with no tag of that table,
   even with a Tag cell that names more than one tag (seven rows, in `docs/phase2-g1000-vspeeds.md`,
   `docs/phase2-trim-views.md` and `docs/visionjet-sf50.md`, for example "SDK-RADV, SDK-RADE") read as its
   tags, case ignored ("views sim test 2026-11-11" for "Views sim test 2026-11-11") and an index form read as
-  its tag ("IE 179" for "IE n", "IE-SF50 130" for "IE-SF50 n"); 56 without these three readings. The 24 are
+  its tag ("IE 179" for "IE n", "IE-SF50 130" for "IE-SF50 n"); 59 without these three readings. The 24 are
   free text ("as every key", "this page"), a tool or another doc (`tools/scmon`, `troubleshooting.md`), a
   ruling, a lead or a tag without its number (three times "IE" for "IE n").
-- `tools/profilegen/check_docs.py`: no check holds the docs' prose to a width (116 columns, 110 in
-  `docs/visionjet-sf50.md` and `docs/phase3-autopilot.md`); today 14 of the 32 tracked Markdown files
-  outside `docs/chain/` hold a prose line (not a table row, code block, heading, link-only line or
-  `CHANGELOG.md` entry) over 116 columns, `README.md`, `docs/original-plan.md` and
-  `tests/manual-checklist.md` among them, so a check needs a width per file first.
+- `tools/profilegen/check_docs.py`: no check holds the docs' prose to a width, and no committed doc states
+  one. Today, with prose read as every line that is not a table row, code block line, heading, link-only
+  line or `CHANGELOG.md` entry, 18 of the 32 tracked Markdown files outside `docs/chain/` keep their prose
+  within 116 columns (10 of them within 110, `docs/visionjet-sf50.md` and `docs/phase3-autopilot.md` among
+  them), and 14 hold a prose line over 116 columns, from `docs/original-plan.md` (786), `README.md` (549)
+  and `docs/navigation.md` (514) to this roadmap (119, a bold unit title); a check needs a width per file
+  first.
 
 Not ranked yet, from C and the plan: pages by flight phase (the Fenix A320 example's Gate, Taxi, Flight and
 Cruise folders), best added once the A32NX panels exist; and the plan's timer (concept layout 3,7, now the
@@ -374,10 +398,11 @@ SIM RATE folder), which needs a free key and a way to count time (to be found by
 ## E. Units
 
 Each unit lists its scope, files (C = create, M = change), size, dependencies, whether it changes shared
-tool code (`tools/profilegen/generate.py`, `check.py`, `check_icons.py`, `check_docs.py`, `templates.json`
-and `tools/package/build_package.py`: one lane at a time), the shared docs it adds one line or section to,
-and its variables and events. Every new name stays "Unverified" in `docs/aircraft-mappings.md` and "not yet
-sim-tested" until a sim test passes.
+tool code (`tools/profilegen/generate.py`, `check.py`, `check_icons.py`, `check_docs.py`, `templates.json`,
+`tools/package/build_package.py` and `tools/package/build_icon_package.py`, which imports
+`build_package.py`, `check_icons.py` and `generate.py`: one lane at a time), the shared docs it adds one line
+or section to, and its variables and events. Every new name stays "Unverified" in
+`docs/aircraft-mappings.md` and "not yet sim-tested" until a sim test passes.
 
 Shared docs every page unit touches (one line or section each): `CHANGELOG.md`, `README.md`,
 `docs/aircraft-mappings.md`, `docs/navigation.md`, `tests/manual-checklist.md`.
@@ -887,26 +912,24 @@ look-tested)
 - Shared tool code: no.
 - Shared docs: CHANGELOG.md.
 
-**P5-TOOLS4 TOOL FIXES AND THE OPEN DOC CHECKS**
+**P5-TOOLS4 TOOL FIXES AND THE OPEN DOC CHECKS** (committed; not re-planned)
 
-- Scope: the two items still open in section D (a Sources tag check and a prose width check, each built or
-  left out with its reason) and the smaller gaps found in the review of P5-TOOLS3. In
-  `tools/profilegen/check_docs.py`: the whole-name notes check (the rule `tools/package/build_package.py`
-  shares) takes a profile name as named where the notes name a longer one that starts with it and a space
-  (no such pair today); a wrapped prose line that starts with "#" or with a number and "." or ")" ends a
-  paragraph in its reading, where Markdown lets only a "# " heading or a "1." or "1)" item do so; a later
-  input event list whose name is a word only of headings that already have their list counts as tied but is
-  never used, with no note; a section quote after a checklist link with an `#anchor` is not read; a fence
-  line indented by four or more spaces is read as a fence; a reference number in a stored zip entry is
-  reported twice. `tools/package/build_icon_package.py` still prints its paths without the backslash escapes
-  the other tools got in P5-TOOLS3, so a path the console can't show ends in a traceback.
-- Files: M `tools/profilegen/check_docs.py`, maybe M `tools/package/build_package.py` and
-  `tools/package/build_icon_package.py`, M `docs/roadmap.md`.
-- Size: S to M.
+- Scope: the fifth list in section D. `check_docs.py` and `build_package.py` take a profile or script name
+  as named in the `package.json` notes only where no longer committed name that starts with it is named;
+  `check_docs.py` lets only a table row, a "# " heading, a bullet item, a "1." or "1)" item or the next item
+  of a list end a paragraph, reads a fence only when it is indented at most three columns past its
+  container and a code span only between runs of the same number of backticks, ties a heading to one later
+  input event list (a heading that names two is a FAIL, a list that no heading gets is a note), reads a
+  section quote after a checklist link with an `#anchor`, and reports a reference number in a stored zip
+  entry once; `build_icon_package.py` prints a path the console can't show with backslash escapes and is
+  named among the shared tool code (section E). The Sources tag check and a prose width check stay open,
+  with today's counts.
+- Files (as committed): M `tools/profilegen/check_docs.py`, M `tools/package/build_package.py`, M
+  `tools/package/build_icon_package.py`, M `docs/package.md`, M `docs/roadmap.md`.
 - Depends on: P5-TOOLS3, P5-DOCS7.
-- Shared tool code: yes.
+- Shared tool code: yes (`generate.py`, `templates.json`, `check.py` and `check_icons.py` unchanged, every
+  profile the same byte for byte).
 - Shared docs: CHANGELOG.md.
-- Variables: none.
 
 **P5-4 OWN IMAGES**
 
