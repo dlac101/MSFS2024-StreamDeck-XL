@@ -1713,3 +1713,97 @@ section. Not yet tested in the app or the sim. Hold times run from key down.
 - [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-3 rows), the step per press
   of ALT and BARO, whether the PFD baro followed, the repeat feel (too slow, right, too fast), the MSFS
   version and SF50 preset, and every fallback or change.
+
+## VisionJet SF50 profile (V-UX)
+
+Reference: [docs/visionjet-sf50.md](../docs/visionjet-sf50.md), "The main page (V-UX)". V-UX keeps the profile
+`MSFS2024 VisionJet` at 14 pages and grows it to 195 keys: the VisionJet gets its own main page (the HDG, ALT
+and SPD columns with hold to repeat, the autothrottle column with the new A/T DISC key, the other mode keys,
+FLAPS, LDG, ATC and the folders in columns 7 and 8); AUTOPILOT, RADIOS, SYSTEMS and COM PAD open from main,
+CHECKLIST moves to MORE 1,5, and the keys that left main are on systems, radios and views. Run it after the
+V-3 section; the earlier sections' main and MORE positions are those before V-UX. Not yet tested in the app or
+the sim.
+
+**Before you start**
+- [ ] Import the new package (or the profile and `XL24-SF50.lua` into the plugin's Scripts folder); the
+  Profile Manager mapping stays (same profile name). Load the SF50 and wait about 30 s.
+
+**Main page walk by column** (each key against the cockpit, then the cockpit against the key)
+- [ ] HDG column: HDG (1,1) lights while the heading mode is on; HDG+ (2,1) and HDG- (4,1) move the heading
+  bug and HDG BUG (3,1) follows; a press on HDG BUG syncs the bug to the current heading. Turn the cockpit
+  heading knob with the mouse: HDG BUG follows.
+- [ ] ALT column: ALT (1,2) lights while altitude hold is on; ALT+ (2,2) and ALT- (4,2) move the selected
+  altitude and ALT SEL (3,2) follows; turn the cockpit altitude knob: ALT SEL follows.
+- [ ] FLC/SPD column: FLC (1,3) lights while flight level change is on; SPD (3,3) shows the autopilot's speed
+  reference in knots (SPD+ and SPD- below).
+- [ ] A/T column: A/T (1,4), FMS SPD (2,4), MAN SPD (3,4) and A/T DISC (4,4) (next two blocks).
+- [ ] NAV (1,5), APR (2,5), VNV (3,5) and VS (4,5): each switches its mode and lights while the mode is on;
+  switch each mode in the cockpit: the key follows.
+- [ ] AP (1,6) switches the autopilot and lights while it is on; FLAPS (2,6) shows the flap handle, a press
+  one step out, a long press one step in; LDG (3,6) switches the landing lights and follows the cockpit
+  switch; ATC (4,6) opens and closes the ATC window.
+
+**A/T arm and disconnect**
+- [ ] In flight with the autothrottle engaged: press A/T DISC (4,4). A/T and A/T DISC go dark, the autopilot
+  page's A/T MGD shows OFF and the PFD's autothrottle annunciation goes. Record it if nothing changes (then
+  try the fallbacks of visionjet-sf50.md, "Fallbacks", in order, and record which one worked).
+- [ ] Press A/T (1,4): the autothrottle arms again, and A/T and A/T DISC light. Record whether A/T arms the
+  SF50's autothrottle at all.
+
+**FMS SPD / MAN SPD on main**
+- [ ] Press MAN SPD (3,4), then FMS SPD (2,4): the active one is lit and the other dark, as on the autopilot
+  page (1,7 and 4,7); the PFD shows the matching speed reference. Press the cockpit buttons with the mouse:
+  the keys follow.
+
+**SPD hold**
+- [ ] With MAN SPD on: a short press on SPD+ (2,3) steps once; hold 1, 3 and 10 s; SPD- (4,3) the same. Record
+  whether the PFD speed bug and main SPD (3,3) move, and whether each hold stops at once on release.
+
+**HDG and ALT hold on main**
+- [ ] HDG+ / HDG- and ALT+ / ALT- on main: a short press steps once; holds of 1, 3 and 10 s as in the V-3
+  section, with the readouts HDG BUG (3,1) and ALT SEL (3,2); each stops at once on release and never runs on.
+
+**Folder and back-key walk**
+- [ ] From main open AUTOPILOT (2,7), RADIOS (2,8), SYSTEMS (4,7) and COM PAD (3,8); on each the back key
+  (1,1) returns to main. Neither press acts on the page it opens: YD (2,7), BARO+ (2,8), PITOT (4,7), the
+  digit 3 (3,8) and HDG (main 1,1) do nothing by themselves.
+- [ ] From main open MORE (4,8), then CHECKLIST (1,5): the page holds only its back key, which returns to
+  MORE. MORE 1,6, 1,8 and 2,2 are empty; V-SPEEDS, XPDR, ENGINE and ICE/ENV open their pages as before.
+- [ ] TRIM (1,7), VIEWS (1,8) and SIM RATE (3,7) open their pages as before.
+
+**Moved keys**
+- [ ] Systems row 3: BAT (3,2) and PARK (3,3) switch and follow the cockpit battery 1 switch and parking
+  brake; GEAR (3,4) and N1 (3,5) show the gear handle and the engine's N1.
+- [ ] Systems row 4: NAV LT, RECOG, STRB, LDG, TAXI and PITOT (4,2 to 4,7) switch their lights and pitot heat
+  and follow the cockpit switches; ICE (4,8): a press switches wing/stab ice protection on, a long press off.
+- [ ] Radios: COM1 (4,2) shows the active and standby frequency, a press swaps them; CDI (4,3) shows GPS or
+  VLOC, a press toggles it; BARO (1,8): a press sends the baro event, a long press sets 29.92 (record what the
+  G3000 PFD's baro does on each).
+- [ ] Views: MAP (1,7) opens and closes the map window.
+
+**COM PAD from main**
+- [ ] Open COM PAD (3,8) and enter a frequency: the standby frequency in COM1 (1,2) changes as on the C172.
+
+**The same code on two pages**
+- [ ] Hold main HDG+ (2,1) for 2 s and release; then open AUTOPILOT and hold HDG+ (2,2) for 2 s and release:
+  both repeat and stop normally. Do the same with ALT+ and SPD+.
+- [ ] On the ground: hold main HDG+ and press AUTOPILOT (2,7) with another finger, then release both. Record
+  whether the heading bug stops at once or runs on until its cap, and whether the autopilot page's ALT (2,1)
+  or YD (2,7), now under your fingers, switched; then autopilot HDG+ works normally again.
+- [ ] The same with main ALT+ (2,2); the autopilot page has HDG+ at 2,2. Then hold HDG+ on autopilot and on
+  main, and ALT+ on both: each must still repeat. Record any that now moves only one step per press.
+
+**Icon look test (optional local icon build, no sim)**
+- [ ] Build `MSFS2024 VisionJet Icons` with `tools/profilegen/icons-visionjet-sf50.json` (docs/icons.md),
+  import it: the 208 mapped or as-is keys show the mapped images; A/T DISC's title fits at the template size
+  (record it if not).
+
+**Other aircraft**
+- [ ] With the C172 loaded and `MSFS2024 VisionJet` picked by hand: A/T DISC does nothing on a press (an SF50
+  input event); its light shows the C172's autothrottle arm state.
+
+**Results to record**
+- [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-UX rows), the A/T DISC
+  outcome and which fallback was needed, whether A/T arms the SF50's autothrottle, the SPD outcome (did SPD+/-
+  move the PFD speed bug), whether a key up was lost across a page change or reached the other page's key,
+  the BARO press on the G3000, the MSFS version and SF50 preset, and every change.

@@ -96,18 +96,25 @@ not on it (the C172 has CHECKLIST at 3,8).
 ## MSFS2024 VisionJet pages
 
 The Cirrus Vision SF50 profile `MSFS2024 VisionJet` ([visionjet-sf50.md](visionjet-sf50.md), generated, not
-yet sim-tested) uses the C172 G1000 profile's main-page grid and folder positions where the function applies,
-and the same rules: one main page (no back key), the back key at 1,1 on every child page, at most two folder
-levels.
+yet sim-tested) has its own main grid since V-UX, built around the autopilot and the autothrottle
+([visionjet-sf50.md](visionjet-sf50.md), "The main page (V-UX)"); up to V-3 it used the C172 G1000 profile's
+grid. It keeps the C172's folder positions TRIM 1,7, VIEWS 1,8, SIM RATE 3,7 and MORE 4,8, and the same rules:
+one main page (no back key), the back key at 1,1 on every child page, at most two folder levels. COM PAD sits
+at main 3,8 and CHECKLIST at MORE 1,5: a deviation from "Folder keys keep their positions" (Rules), so that
+the COM pad is one press nearer while the checklist page (Phase 5) is still empty. Each folder key keeps its
+title alignment where it moved (VIEWS, MORE, SYSTEMS, CHECKLIST and ICE/ENV middle, the others bottom).
 
 | Main page key | Child page | Holds now |
 |---|---|---|
 | 1,7 `TRIM` | trim | the C172's current trim page (elevator trim keys and gauge, rudder trim keys and gauge) without its aileron trim keys (V-2) |
-| 1,8 `VIEWS` | views | the C172's views page as it is |
+| 1,8 `VIEWS` | views | the C172's views page, plus MAP at 1,7 (V-UX) |
+| 2,7 `AUTOPILOT` | autopilot | the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD; V-2 adds FMS SPD, YD and MAN SPD; V-3: the step keys hold to repeat (under MORE 1,6 until V-UX) |
+| 2,8 `RADIOS` | radios | the C172's page plus a BARO column (V-3); COM1, CDI and the BARO press and long press from main (V-UX; under MORE 1,8 until then) |
 | 3,7 `SIM RATE` | simrate | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
-| 3,8 `CHECKLIST` | checklist | back key only |
-| 4,8 `MORE` | more | back key and eight folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,5 `COM PAD` > compad, 1,7 `XPDR` > xpdr (the C172's pages as they are), 1,8 `RADIOS` > radios (the C172's page plus a BARO column; V-3), 1,6 `AUTOPILOT` > autopilot (the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD; V-2 adds FMS SPD, YD and MAN SPD; V-3: the step keys hold to repeat), 2,2 `SYSTEMS` > systems (V-2: BAT 2, GEN 1 and GEN 2 guarded switches; bus volts, load, engine knob, starter and fuel control readouts), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts), 2,4 `ICE/ENV` > iceenv (V-2: ice protection, wing light, oxygen and ECS switches; ice protection, bleed air and ECS readouts) |
+| 3,8 `COM PAD` | compad | the C172's COM1 pad as it is (`XL24-COMPAD.lua`; under MORE 1,5 until V-UX) |
+| 4,7 `SYSTEMS` | systems | V-2: BAT 2, GEN 1 and GEN 2 guarded switches; bus volts, load, engine knob, starter and fuel control readouts; V-UX: BAT, PARK, GEAR, N1 and the light, pitot and ICE switches from main (under MORE 2,2 until V-UX) |
+| 4,8 `MORE` | more | back key and five folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,7 `XPDR` > xpdr (the C172's pages as they are), 1,5 `CHECKLIST` > checklist (back key only; main 3,8 until V-UX), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts), 2,4 `ICE/ENV` > iceenv (V-2: ice protection, wing light, oxygen and ECS switches; ice protection, bleed air and ECS readouts) |
 
 MORE 1,2 and 1,3 (the C172's PFD and MFD pages) are empty: the SF50's PFD and MFD have no softkeys, and a GTC
 page is left for the VisionJet's V-4 (with the checklist wheel, the ECS and knob writes, IE-SF50 82,
-windshield MAX and battery amps); main 1,3 is empty (no fuel pump), main 4,2 is RECOG and 4,7 ICE (V-2).
+windshield MAX and battery amps). MORE 1,6, 1,8 and 2,2 are empty since V-UX.

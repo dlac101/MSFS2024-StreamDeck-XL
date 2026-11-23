@@ -1,5 +1,5 @@
 {
-  "_about": "Key-to-icon mapping for the LOCAL icon build of the MSFS 2024 default Cirrus Vision SF50 profile (docs/icons.md; personal use only, never committed: the icon profile and the images are written to the git-ignored .local/ folder). Names and sha256 only, in the form of icons-a32nx.json. Rows of keys copied from the C172 G1000 profile are icons-c172-g1000.json's rows for the same page, position and title; the new keys (main N1, the autopilot A/T, LVL, TOGA and A/T MGD keys, MORE ENGINE and the engine page) use pack files that the C172 and A32NX mappings already name. V-2 rows: main RECOG and ICE, the trim page's rudder trim keys (the C172's rows; the TRIM and TRIM DEG rows are gone), the autopilot FMS SPD, YD and MAN SPD keys, MORE SYSTEMS (the C172's row) and ICE/ENV (6-OVHD.png, as icons-a32nx.json), and the systems and iceenv pages; the new files Arrow_L.png, Arrow_R.png and 6-OVHD.png come with their sha256 from the C172 and A32NX mappings. Not yet look-tested. V-3 rows: the radios page's BARO column (BARO readout, BARO+ and BARO-, with pack files the mapping already names); the step keys that now hold to repeat keep their rows.",
+  "_about": "Key-to-icon mapping for the LOCAL icon build of the MSFS 2024 default Cirrus Vision SF50 profile (docs/icons.md; personal use only, never committed: the icon profile and the images are written to the git-ignored .local/ folder). Names and sha256 only, in the form of icons-a32nx.json. Rows of keys copied from the C172 G1000 profile are icons-c172-g1000.json's rows for the same page, position and title; the new keys (main N1, the autopilot A/T, LVL, TOGA and A/T MGD keys, MORE ENGINE and the engine page) use pack files that the C172 and A32NX mappings already name. V-2 rows: main RECOG and ICE, the trim page's rudder trim keys (the C172's rows; the TRIM and TRIM DEG rows are gone), the autopilot FMS SPD, YD and MAN SPD keys, MORE SYSTEMS (the C172's row) and ICE/ENV (6-OVHD.png, as icons-a32nx.json), and the systems and iceenv pages; the new files Arrow_L.png, Arrow_R.png and 6-OVHD.png come with their sha256 from the C172 and A32NX mappings. Not yet look-tested. V-3 rows: the radios page's BARO column (BARO readout, BARO+ and BARO-, with pack files the mapping already names); the step keys that now hold to repeat keep their rows. V-UX rows: the VisionJet's own main page (the moved main keys keep their pack file and reason at their new position; the new A/T DISC key at 4,4 uses the button pair G1000_Button_new_on.png / G1000_Button_new_off.png that the mapping already names; COM PAD at main 3,8 and CHECKLIST at more 1,5 keep their folder images), the AUTOPILOT, RADIOS and SYSTEMS folder rows on main, the keys that moved from main to systems (row 3 and row 4), radios (CDI; COM1 at radios 4,2 stays left as is) and views (MAP), and three fewer rows on more. No pack file added or dropped. Not yet look-tested.",
   "pack_root": "A:/FS2024 Stuff/PilotsDeck/Icon Pack Guenseli_1_7_iUdcY",
   "pack_readme_sha256": "015a544924866720dee95c1e8fa56f6eca9aa867599f73cf1f0ac86eb3f54e1b",
   "data": "tools/profilegen/visionjet-sf50.json",
@@ -187,44 +187,56 @@
     {
       "page": "main",
       "pos": "1,1",
-      "title": "BAT",
+      "title": "HDG",
       "pass": 2,
-      "on": "Switch_red_on.png",
-      "off": "Switch_red_off.png",
-      "reason": "the C172 master switch is a red rocker"
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
     },
     {
       "page": "main",
       "pos": "1,2",
-      "title": "N1",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout: dark display face, value readable"
+      "title": "ALT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "1,3",
+      "title": "FLC",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
     },
     {
       "page": "main",
       "pos": "1,4",
-      "title": "PARK",
+      "title": "A/T",
       "pass": 2,
-      "on": "ParkingBrake_on.png",
-      "off": "ParkingBrake_off.png",
-      "reason": "parking brake handle (taste, A-6)"
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when armed"
     },
     {
       "page": "main",
       "pos": "1,5",
-      "title": "GEAR",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout: dark display face, value readable"
+      "title": "NAV",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
     },
     {
       "page": "main",
       "pos": "1,6",
-      "title": "FLAPS",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout (one background only; no per-value image without UseImageMapping, out of scope)"
+      "title": "AP",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP button, green bar when engaged"
     },
     {
       "page": "main",
@@ -245,51 +257,39 @@
     {
       "page": "main",
       "pos": "2,1",
-      "title": "AP",
+      "title": "HDG+",
       "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP button, green bar when engaged"
+      "default": "G1000_GARMIN_HDG_inc.png",
+      "reason": "the pack's G1000 HDG knob image, increase"
     },
     {
       "page": "main",
       "pos": "2,2",
-      "title": "HDG",
+      "title": "ALT+",
       "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
     },
     {
       "page": "main",
       "pos": "2,3",
-      "title": "ALT",
+      "title": "SPD+",
       "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
     },
     {
       "page": "main",
       "pos": "2,4",
-      "title": "VS",
+      "title": "FMS SPD",
       "pass": 2,
       "on": "G1000_Button_new_on.png",
       "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
+      "reason": "G1000 AP-panel button, green bar when on"
     },
     {
       "page": "main",
       "pos": "2,5",
-      "title": "NAV",
-      "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
-    },
-    {
-      "page": "main",
-      "pos": "2,6",
       "title": "APR",
       "pass": 2,
       "on": "G1000_Button_new_on.png",
@@ -298,26 +298,40 @@
     },
     {
       "page": "main",
+      "pos": "2,6",
+      "title": "FLAPS",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout (one background only; no per-value image without UseImageMapping, out of scope)"
+    },
+    {
+      "page": "main",
       "pos": "2,7",
-      "title": "FLC",
-      "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
+      "title": "AUTOPILOT",
+      "pass": 1,
+      "image": "G1000Folder_AP.png",
+      "reason": "folder: the pack's G1000 AP folder, same set as PFD/MFD/COM PAD"
     },
     {
       "page": "main",
       "pos": "2,8",
-      "title": "FD",
-      "pass": 2,
-      "on": "G1000_Button_new_on.png",
-      "off": "G1000_Button_new_off.png",
-      "reason": "G1000 AP-panel button, green bar when engaged"
+      "title": "RADIOS",
+      "pass": 1,
+      "image": "G1000Folder_NAV.png",
+      "reason": "folder: the pack's G1000 NAV folder (NAV/COM radios) (ASSUMPTION A-ICONS)"
+    },
+    {
+      "page": "main",
+      "pos": "3,1",
+      "title": "HDG BUG",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
     },
     {
       "page": "main",
       "pos": "3,2",
-      "title": "XPDR",
+      "title": "ALT SEL",
       "pass": 1,
       "default": "G1000_Button2_breit.png",
       "reason": "readout: dark display face, value readable"
@@ -325,34 +339,37 @@
     {
       "page": "main",
       "pos": "3,3",
-      "title": "ATC",
-      "pass": 2,
-      "default": "ATCbutton.png",
-      "reason": "dark blank button; the pack's tower icon is light grey under the white title (taste, A-6)"
+      "title": "SPD",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
     },
     {
       "page": "main",
       "pos": "3,4",
-      "title": "MAP",
+      "title": "MAN SPD",
       "pass": 2,
-      "default": "PMS-Buttons_map.png",
-      "reason": "map icon (baked 'Map' label at the bottom; title MAP at the top) (taste, A-6)"
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when on"
     },
     {
       "page": "main",
       "pos": "3,5",
-      "title": "CDI",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout: dark display face, value readable"
+      "title": "VNV",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
     },
     {
       "page": "main",
       "pos": "3,6",
-      "title": "BARO",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout: dark display face, value readable"
+      "title": "LDG",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
     },
     {
       "page": "main",
@@ -365,73 +382,68 @@
     {
       "page": "main",
       "pos": "3,8",
-      "title": "CHECKLIST",
+      "title": "COM PAD",
       "pass": 1,
-      "image": "G1000Folder_OnGround.png",
-      "reason": "folder: brown G1000 folder (taste)"
+      "image": "G1000Folder_COM.png",
+      "reason": "folder: the pack's G1000 COM folder, same set as PFD/MFD/V-SPEEDS"
     },
     {
       "page": "main",
       "pos": "4,1",
-      "title": "NAV LT",
+      "title": "HDG-",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "default": "G1000_GARMIN_HDG_dec.png",
+      "reason": "the pack's G1000 HDG knob image, decrease"
     },
     {
       "page": "main",
       "pos": "4,2",
-      "title": "RECOG",
+      "title": "ALT-",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
     },
     {
       "page": "main",
       "pos": "4,3",
-      "title": "STRB",
+      "title": "SPD-",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
     },
     {
       "page": "main",
       "pos": "4,4",
-      "title": "LDG",
+      "title": "A/T DISC",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar while the autothrottle is armed (the key goes dark when the disconnect works)"
     },
     {
       "page": "main",
       "pos": "4,5",
-      "title": "TAXI",
+      "title": "VS",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
     },
     {
       "page": "main",
       "pos": "4,6",
-      "title": "PITOT",
+      "title": "ATC",
       "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch"
+      "default": "ATCbutton.png",
+      "reason": "dark blank button; the pack's tower icon is light grey under the white title (taste, A-6)"
     },
     {
       "page": "main",
       "pos": "4,7",
-      "title": "ICE",
-      "pass": 2,
-      "on": "Switch_white_on.png",
-      "off": "Switch_white_off.png",
-      "reason": "rocker switch (guarded: long press switches off)"
+      "title": "SYSTEMS",
+      "pass": 1,
+      "image": "G1000Folder_AC.png",
+      "reason": "folder: the pack's G1000 aircraft folder (aircraft systems) (ASSUMPTION A-ICONS)"
     },
     {
       "page": "main",
@@ -532,6 +544,14 @@
       "reason": "readout: dark display face, value readable"
     },
     {
+      "page": "views",
+      "pos": "1,7",
+      "title": "MAP",
+      "pass": 2,
+      "default": "PMS-Buttons_map.png",
+      "reason": "map icon (baked 'Map' label at the bottom; title MAP at the top) (taste, A-6)"
+    },
+    {
       "page": "checklist",
       "pos": "1,1",
       "title": null,
@@ -558,18 +578,10 @@
     {
       "page": "more",
       "pos": "1,5",
-      "title": "COM PAD",
+      "title": "CHECKLIST",
       "pass": 1,
-      "image": "G1000Folder_COM.png",
-      "reason": "folder: the pack's G1000 COM folder, same set as PFD/MFD/V-SPEEDS"
-    },
-    {
-      "page": "more",
-      "pos": "1,6",
-      "title": "AUTOPILOT",
-      "pass": 1,
-      "image": "G1000Folder_AP.png",
-      "reason": "folder: the pack's G1000 AP folder, same set as PFD/MFD/COM PAD"
+      "image": "G1000Folder_OnGround.png",
+      "reason": "folder: brown G1000 folder (taste)"
     },
     {
       "page": "more",
@@ -578,22 +590,6 @@
       "pass": 1,
       "image": "G1000Folder_COM.png",
       "reason": "folder: the pack's G1000 COM folder (radios set), as COM PAD (ASSUMPTION A-ICONS)"
-    },
-    {
-      "page": "more",
-      "pos": "1,8",
-      "title": "RADIOS",
-      "pass": 1,
-      "image": "G1000Folder_NAV.png",
-      "reason": "folder: the pack's G1000 NAV folder (NAV/COM radios) (ASSUMPTION A-ICONS)"
-    },
-    {
-      "page": "more",
-      "pos": "2,2",
-      "title": "SYSTEMS",
-      "pass": 1,
-      "image": "G1000Folder_AC.png",
-      "reason": "folder: the pack's G1000 aircraft folder (aircraft systems) (ASSUMPTION A-ICONS)"
     },
     {
       "page": "more",
@@ -1296,6 +1292,14 @@
     },
     {
       "page": "radios",
+      "pos": "1,8",
+      "title": "BARO",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
       "pos": "2,2",
       "title": "MHZ+",
       "pass": 2,
@@ -1341,6 +1345,14 @@
       "pass": 2,
       "default": "G1000_GARMIN_Knob_Small_R.png",
       "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,8",
+      "title": "BARO+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT+)"
     },
     {
       "page": "radios",
@@ -1392,6 +1404,22 @@
     },
     {
       "page": "radios",
+      "pos": "3,8",
+      "title": "BARO-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT-)"
+    },
+    {
+      "page": "radios",
+      "pos": "4,3",
+      "title": "CDI",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
       "pos": "4,6",
       "title": "MIC1",
       "pass": 2,
@@ -1407,30 +1435,6 @@
       "on": "G1000_Button_new_on.png",
       "off": "G1000_Button_new_off.png",
       "reason": "G1000 button, green bar when this mode or selection is on"
-    },
-    {
-      "page": "radios",
-      "pos": "1,8",
-      "title": "BARO",
-      "pass": 1,
-      "default": "G1000_Button2_breit.png",
-      "reason": "readout: dark display face, value readable"
-    },
-    {
-      "page": "radios",
-      "pos": "2,8",
-      "title": "BARO+",
-      "pass": 2,
-      "default": "G1000_GARMIN_Button.png",
-      "reason": "blank G1000 bezel key, title on it (as ALT+)"
-    },
-    {
-      "page": "radios",
-      "pos": "3,8",
-      "title": "BARO-",
-      "pass": 2,
-      "default": "G1000_GARMIN_Button.png",
-      "reason": "blank G1000 bezel key, title on it (as ALT-)"
     },
     {
       "page": "engine",
@@ -1586,6 +1590,103 @@
       "pass": 1,
       "default": "G1000_Button2_breit.png",
       "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "3,2",
+      "title": "BAT",
+      "pass": 2,
+      "on": "Switch_red_on.png",
+      "off": "Switch_red_off.png",
+      "reason": "the C172 master switch is a red rocker"
+    },
+    {
+      "page": "systems",
+      "pos": "3,3",
+      "title": "PARK",
+      "pass": 2,
+      "on": "ParkingBrake_on.png",
+      "off": "ParkingBrake_off.png",
+      "reason": "parking brake handle (taste, A-6)"
+    },
+    {
+      "page": "systems",
+      "pos": "3,4",
+      "title": "GEAR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "3,5",
+      "title": "N1",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "4,2",
+      "title": "NAV LT",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,3",
+      "title": "RECOG",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,4",
+      "title": "STRB",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,5",
+      "title": "LDG",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,6",
+      "title": "TAXI",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,7",
+      "title": "PITOT",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "systems",
+      "pos": "4,8",
+      "title": "ICE",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch (guarded: long press switches off)"
     },
     {
       "page": "iceenv",
@@ -1751,36 +1852,6 @@
   ],
   "left_as_is": [
     {
-      "page": "main",
-      "pos": "3,1",
-      "title": "COM1",
-      "reason": "COM Radio: the built-in arrow shows the swap between the two frequencies drawn over it; the pack's COM images carry baked-in text that would collide with them"
-    },
-    {
-      "page": "compad",
-      "pos": "1,2",
-      "title": "COM1",
-      "reason": "COM Radio, the same key as main 3,1: left as it is for the same reason"
-    },
-    {
-      "page": "radios",
-      "pos": "1,2",
-      "title": "NAV1",
-      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
-    },
-    {
-      "page": "radios",
-      "pos": "1,4",
-      "title": "NAV2",
-      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
-    },
-    {
-      "page": "radios",
-      "pos": "1,6",
-      "title": "COM2",
-      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
-    },
-    {
       "page": "trim",
       "pos": "3,4",
       "title": "TRIM",
@@ -1791,6 +1862,36 @@
       "pos": "3,7",
       "title": "RUD TRIM",
       "reason": "Display Gauge: PilotsDeck draws the bar, pointer, center line and number itself over the empty background (as trim 3,4)"
+    },
+    {
+      "page": "compad",
+      "pos": "1,2",
+      "title": "COM1",
+      "reason": "COM Radio, the same key as radios 4,2: left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,2",
+      "title": "NAV1",
+      "reason": "COM Radio, as radios 4,2: the built-in arrow shows the swap; left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,4",
+      "title": "NAV2",
+      "reason": "COM Radio, as radios 4,2: the built-in arrow shows the swap; left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,6",
+      "title": "COM2",
+      "reason": "COM Radio, as radios 4,2: the built-in arrow shows the swap; left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "4,2",
+      "title": "COM1",
+      "reason": "COM Radio: the built-in arrow shows the swap between the two frequencies drawn over it; the pack's COM images carry baked-in text that would collide with them"
     }
   ]
 }

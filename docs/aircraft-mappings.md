@@ -733,30 +733,30 @@ Aircraft string (PD-LOG, PilotsDeck20261116.log): the path of the preset's `airc
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
-| main 1,1 `BAT` | `B:sf50_electrical_battery_1_switch` | B-var value (0/1 expected) | `B:sf50_electrical_battery_1_switch`, On `1` / Off `0` | Empty (no battery key) | IE-SF50 80; README 2.1.1; V-1 A-5 | Unverified |
-| main 1,2 `N1` | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
-| main 1,4 `PARK` | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | - | AM; AM, SDK-GEARV | Unverified |
-| main 1,5 `GEAR` | `(A:GEAR HANDLE POSITION, Bool)` | Bool | none | - | SDK-GEARV | Unverified |
-| main 1,6 `FLAPS` | `(A:FLAPS HANDLE INDEX, number)` | number | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` | Mappings after the test (number per detent) | SDK-FCE, README 2.1; SDK-CTLV | Unverified |
-| main 2,1 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | AM | Unverified |
-| main 2,2 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,3 `ALT` | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,4 `VS` | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,5 `NAV` | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,6 `APR` | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,7 `FLC` | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
-| main 2,8 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APV | Unverified |
-| main 3,1 `COM1` | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
-| main 3,2 `XPDR` | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
-| main 3,3 `ATC` | none (a sim window has no state) | - | `K:SIMUI_WINDOW_HIDESHOW` | - | SDK-MISCE | Unverified |
-| main 3,4 `MAP` | none (a sim window has no state) | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
-| main 3,5 `CDI` | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
-| main 3,6 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | `K:BAROMETRIC` | STD in V-2 (HH-MS) | SDK-INSTE; SDK-SYSV | Unverified |
-| main 4,1 `NAV LT` | `B:sf50_lighting_nav_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_nav_lights_intercept`, On `1` / Off `0` | `K:TOGGLE_NAV_LIGHTS`, read `(A:LIGHT NAV, Bool)` | IE-SF50 130; README 2.1.1; V-1 A-5, A-15 | Unverified |
-| main 4,3 `STRB` | `B:lighting_strobe_1` | B-var value (0/1 expected) | `B:lighting_strobe_1`, On `1` / Off `0` | `K:STROBES_TOGGLE`, read `(A:LIGHT STROBE, Bool)` | IE-SF50 40; README 2.1.1; V-1 A-5 | Unverified |
-| main 4,4 `LDG` | `B:sf50_lighting_landing_lights` | B-var value (0/1 expected) | `B:sf50_lighting_landing_lights`, On `1` / Off `0` | `K:LANDING_LIGHTS_TOGGLE`, read `(A:LIGHT LANDING, Bool)` | IE-SF50 129; README 2.1.1; V-1 A-5 | Unverified |
-| main 4,5 `TAXI` | `(A:LIGHT TAXI, Bool)` | Bool | `K:TOGGLE_TAXI_LIGHTS` | Empty (the list has no taxi light) | SDK-ELECE; no taxi B-var in IE-SF50, V-1 A-5, A-15; SDK-SYSV | Unverified |
-| main 4,6 `PITOT` | `B:deice_pitot_1` | B-var value (0/1 expected) | `B:deice_pitot_1`, On `1` / Off `0` | `K:PITOT_HEAT_TOGGLE`, read `(A:PITOT HEAT, Bool)` | IE-SF50 31; README 2.1.1; V-1 A-5 | Unverified |
+| systems 3,2 `BAT` (main 1,1 until V-UX) | `B:sf50_electrical_battery_1_switch` | B-var value (0/1 expected) | `B:sf50_electrical_battery_1_switch`, On `1` / Off `0` | Empty (no battery key) | IE-SF50 80; README 2.1.1; V-1 A-5 | Unverified |
+| systems 3,5 `N1` (main 1,2 until V-UX) | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| systems 3,3 `PARK` (main 1,4 until V-UX) | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | - | AM; AM, SDK-GEARV | Unverified |
+| systems 3,4 `GEAR` (main 1,5 until V-UX) | `(A:GEAR HANDLE POSITION, Bool)` | Bool | none | - | SDK-GEARV | Unverified |
+| main 2,6 `FLAPS` (main 1,6 until V-UX) | `(A:FLAPS HANDLE INDEX, number)` | number | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` | Mappings after the test (number per detent) | SDK-FCE, README 2.1; SDK-CTLV | Unverified |
+| main 1,6 `AP` (main 2,1 until V-UX) | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | AM | Unverified |
+| main 1,1 `HDG` (main 2,2 until V-UX) | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,2 `ALT` (main 2,3 until V-UX) | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 4,5 `VS` (main 2,4 until V-UX) | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,5 `NAV` (main 2,5 until V-UX) | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,5 `APR` (main 2,6 until V-UX) | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,3 `FLC` (main 2,7 until V-UX) | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,8 `FD` (removed from main in V-UX; autopilot 1,3 is the same key) | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APV | Unverified |
+| radios 4,2 `COM1` (main 3,1 until V-UX) | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
+| main 3,2 `XPDR` (removed from main in V-UX; xpdr 1,2 shows the same code) | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
+| main 4,6 `ATC` (main 3,3 until V-UX) | none (a sim window has no state) | - | `K:SIMUI_WINDOW_HIDESHOW` | - | SDK-MISCE | Unverified |
+| views 1,7 `MAP` (main 3,4 until V-UX) | none (a sim window has no state) | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
+| radios 4,3 `CDI` (main 3,5 until V-UX) | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,8 `BARO` (main 3,6 until V-UX) | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | `K:BAROMETRIC` | STD in V-2 (HH-MS) | SDK-INSTE; SDK-SYSV | Unverified |
+| systems 4,2 `NAV LT` (main 4,1 until V-UX) | `B:sf50_lighting_nav_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_nav_lights_intercept`, On `1` / Off `0` | `K:TOGGLE_NAV_LIGHTS`, read `(A:LIGHT NAV, Bool)` | IE-SF50 130; README 2.1.1; V-1 A-5, A-15 | Unverified |
+| systems 4,4 `STRB` (main 4,3 until V-UX) | `B:lighting_strobe_1` | B-var value (0/1 expected) | `B:lighting_strobe_1`, On `1` / Off `0` | `K:STROBES_TOGGLE`, read `(A:LIGHT STROBE, Bool)` | IE-SF50 40; README 2.1.1; V-1 A-5 | Unverified |
+| main 3,6 and systems 4,5 `LDG` (main 4,4 until V-UX) | `B:sf50_lighting_landing_lights` | B-var value (0/1 expected) | `B:sf50_lighting_landing_lights`, On `1` / Off `0` | `K:LANDING_LIGHTS_TOGGLE`, read `(A:LIGHT LANDING, Bool)` | IE-SF50 129; README 2.1.1; V-1 A-5 | Unverified |
+| systems 4,6 `TAXI` (main 4,5 until V-UX) | `(A:LIGHT TAXI, Bool)` | Bool | `K:TOGGLE_TAXI_LIGHTS` | Empty (the list has no taxi light) | SDK-ELECE; no taxi B-var in IE-SF50, V-1 A-5, A-15; SDK-SYSV | Unverified |
+| systems 4,7 `PITOT` (main 4,6 until V-UX) | `B:deice_pitot_1` | B-var value (0/1 expected) | `B:deice_pitot_1`, On `1` / Off `0` | `K:PITOT_HEAT_TOGGLE`, read `(A:PITOT HEAT, Bool)` | IE-SF50 31; README 2.1.1; V-1 A-5 | Unverified |
 | trim 2,2 `TRIM UP` (the C172's key) | none (the readouts 3,2 and 3,3 show the result) | - | `K:ELEV_TRIM_UP` | - | SDK-FCE | Unverified |
 | trim 3,2 `TRIM` (the C172's key) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV, SDK-UNITS | Unverified |
 | trim 3,3 `TRIM DEG` (the C172's key) | `(A:ELEVATOR TRIM POSITION, degrees)` | degrees | none | - | SDK-CTLV, SDK-UNITS | Unverified |
@@ -885,11 +885,11 @@ capture (MSFS 2024, version not recorded; SCMON-SF50); the key's own press stays
 
 | Function | Read | Units | Write | Fallback | Source | Verified |
 |---|---|---|---|---|---|---|
-| main 1,4 `PARK` | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `B:sf50_handling_parking_brake`, On `1` / Off `0` | readout only (command none) | IE-SF50 117; README 2.1.1, 2.1.2; AM, SDK-GEARV; SCMON-SF50 | Unverified (key press); the cockpit handle moves the B-var 0/1 and `BRAKE PARKING POSITION` follows it: verified by scmon capture 2026-11-16 |
-| main 1,4 `PARK`, V-1's write | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | replaced by the B-var row above | AM; SCMON-SF50 | **Does not work** in the SF50 (hand test 2026-11-16, scmon capture; MSFS 2024, version not recorded): with the brake set, the SimVar went 1, 0, 1 within about 0.1 s and the B-var stayed 1 |
-| main 3,6 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | Main `K:BAROMETRIC`, Second (long press) `K:BAROMETRIC_STD_PRESSURE` | long press `B:autopilot_baro_1_sync` On `1` / Off `1` (IE-SF50 29); else no STD | SDK-INSTE; HH-MS; README 2.1; V-2 A-10; SDK-SYSV | Unverified |
-| main 4,2 `RECOG` | `B:sf50_lighting_recognition_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_recognition_lights_intercept`, On `1` / Off `0` | Empty | IE-SF50 132; README 2.1.1; weak, V-2 A-4 | Unverified (no change seen in two scmon runs, 2026-11-16) |
-| main 4,7 `ICE` (= iceenv 1,3) | `B:sf50_deice_wingstab` | B-var value (0/1 expected) | G1 `B:sf50_deice_wingstab` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); readout of `STRUCTURAL DEICE SWITCH` (A-2) | IE-SF50 78; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6, A-13 | Unverified (key press); 0 off / 1 on and `STRUCTURAL DEICE SWITCH` following it: verified by scmon capture 2026-11-16 |
+| systems 3,3 `PARK` (main 1,4 until V-UX) | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `B:sf50_handling_parking_brake`, On `1` / Off `0` | readout only (command none) | IE-SF50 117; README 2.1.1, 2.1.2; AM, SDK-GEARV; SCMON-SF50 | Unverified (key press); the cockpit handle moves the B-var 0/1 and `BRAKE PARKING POSITION` follows it: verified by scmon capture 2026-11-16 |
+| systems 3,3 `PARK` (main 1,4 until V-UX), V-1's write | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | replaced by the B-var row above | AM; SCMON-SF50 | **Does not work** in the SF50 (hand test 2026-11-16, scmon capture; MSFS 2024, version not recorded): with the brake set, the SimVar went 1, 0, 1 within about 0.1 s and the B-var stayed 1 |
+| radios 1,8 `BARO` (main 3,6 until V-UX) | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | Main `K:BAROMETRIC`, Second (long press) `K:BAROMETRIC_STD_PRESSURE` | long press `B:autopilot_baro_1_sync` On `1` / Off `1` (IE-SF50 29); else no STD | SDK-INSTE; HH-MS; README 2.1; V-2 A-10; SDK-SYSV | Unverified |
+| systems 4,3 `RECOG` (main 4,2 until V-UX) | `B:sf50_lighting_recognition_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_recognition_lights_intercept`, On `1` / Off `0` | Empty | IE-SF50 132; README 2.1.1; weak, V-2 A-4 | Unverified (no change seen in two scmon runs, 2026-11-16) |
+| systems 4,8 `ICE` (main 4,7 until V-UX) (= iceenv 1,3) | `B:sf50_deice_wingstab` | B-var value (0/1 expected) | G1 `B:sf50_deice_wingstab` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); readout of `STRUCTURAL DEICE SWITCH` (A-2) | IE-SF50 78; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6, A-13 | Unverified (key press); 0 off / 1 on and `STRUCTURAL DEICE SWITCH` following it: verified by scmon capture 2026-11-16 |
 | trim 2,2 `TRIM UP` (the C172's key) | none (the gauge 3,4 shows the result) | - | `K:ELEV_TRIM_UP` | - | SDK-FCE | Unverified |
 | trim 3,4 `TRIM` gauge (the C172's key) | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV, SDK-UNITS | Unverified |
 | trim 3,6 `RUD L` (the C172's key) | none (the gauge 3,7 shows the result) | - | `K:RUDDER_TRIM_LEFT` | `B:handling_ruddertrim_1` (IE-SF50 35) after the sim check | SDK-FCE; V-2 A-11 | Unverified |
@@ -972,3 +972,53 @@ V-2 rows leave for "V-3" are left for V-4.
 | trim 3,8 `RUD R` hold to repeat (code 28; trim, cap 160 (8 s)) | none | - | `lua:XL24-SF50:HOLD(28)` key down, `lua:XL24-SF50:RELEASE(28)` key up; the script sends `K:RUDDER_TRIM_RIGHT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
 | radios 1,8 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)`, Format `2.2` | inHg | none | - | SDK-SYSV (main 3,6's read) | Unverified |
 | systems 2,4 `FUEL CTL` | `B:sf50_fuel_control_knob`, Mappings `0=LEFT:1=AUTO:2=RIGHT` | B-var value (0, 1, 2) | none (guard) | the raw value (Format `1.0`, V-2) | IE-SF50 114; SF50-CHK; SF50-FLT; SCMON-SF50; V-3 A-8 (an inference) | Unverified |
+
+## Cirrus Vision SF50 (MSFS 2024 default, V-UX)
+
+For [visionjet-sf50.md](visionjet-sf50.md), V-UX: the VisionJet's own main page (14 pages, 195 keys). One row
+for each key that is new, moved or repeated on a page, at its new position; the rows above keep their status
+and dates, and the position text of a moved main key names its new place. A key's own press stays
+**Unverified** until the checklist section "VisionJet SF50 profile (V-UX)" passes. Tags: the page doc's
+"Sources".
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| main 1,1 `HDG` (moved from main 2,2) | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,2 `ALT` (moved from main 2,3) | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,3 `FLC` (moved from main 2,7) | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,4 `A/T` (repeated from autopilot 2,8) | `(A:AUTOPILOT THROTTLE ARM, Bool)` | Bool | `K:AUTO_THROTTLE_ARM` | `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1` (IE-SF50 50), read as now | SDK-APE; FORUM-24; V-1 A-15; SDK-APV; SF50-FLT; V-UX A-4 | Unverified |
+| main 1,5 `NAV` (moved from main 2,5) | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 1,6 `AP` (moved from main 2,1) | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | AM | Unverified |
+| main 2,1 `HDG+` (repeated from autopilot 2,2) | none | - | `lua:XL24-SF50:HOLD(1)` key down, `lua:XL24-SF50:RELEASE(1)` key up; the script sends `K:HEADING_BUG_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| main 2,2 `ALT+` (repeated from autopilot 2,4) | none | - | `lua:XL24-SF50:HOLD(5)` key down, `lua:XL24-SF50:RELEASE(5)` key up; the script sends `K:AP_ALT_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| main 2,3 `SPD+` (repeated from autopilot 2,6) | none | - | `lua:XL24-SF50:HOLD(9)` key down, `lua:XL24-SF50:RELEASE(9)` key up; the script sends `K:AP_SPD_VAR_INC` | the SF50's speed knob `B:sf50_autopilot_speed` (IE-SF50 60) after a capture | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE; SF50-FLT; V-UX A-6 | Unverified |
+| main 2,4 `FMS SPD` (repeated from autopilot 1,7) | `B:sf50_autopilot_fms_speed_mode` | B-var value (holds its state) | `B:sf50_autopilot_fms_speed_mode`, On `1` / Off `1` (every press writes 1) | Empty | IE-SF50 53; SF50-PKG; README 2.1.1; V-2 A-5 | Unverified |
+| main 2,5 `APR` (moved from main 2,6) | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,6 `FLAPS` (moved from main 1,6) | `(A:FLAPS HANDLE INDEX, number)` | number | Main `K:FLAPS_INCR`, Second (long press) `K:FLAPS_DECR` | Mappings after the test (number per detent) | SDK-FCE, README 2.1; SDK-CTLV | Unverified |
+| main 3,1 `HDG BUG` (repeated from autopilot 3,2) | `(A:AUTOPILOT HEADING LOCK DIR, Degrees)` | Degrees | `H:Garmin_AP_HDG_Sync` | `K:AP_HDG_CURRENT_HDG_SET` (as the C172) | WT-G3000H; weak, V-1 A-15; SDK-APV | Unverified |
+| main 3,2 `ALT SEL` (repeated from autopilot 3,4) | `(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)` | Feet | none | - | SDK-APV; A-5 | Unverified |
+| main 3,3 `SPD` (repeated from autopilot 3,6) | `(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)` | Knots | none | the SF50's speed knob `B:sf50_autopilot_speed` (IE-SF50 60) after a capture | SDK-APV; SF50-FLT; V-UX A-6 | Unverified |
+| main 3,4 `MAN SPD` (repeated from autopilot 4,7) | `B:sf50_autopilot_man_speed_mode` | B-var value (holds its state) | `B:sf50_autopilot_man_speed_mode`, On `1` / Off `1` (every press writes 1) | Empty | IE-SF50 58; SF50-PKG; README 2.1.1; V-2 A-5 | Unverified |
+| main 3,5 `VNV` (repeated from autopilot 1,8) | `L:XMLVAR_VNAVButtonValue` | L-Var value | `B:sf50_autopilot_vnav_mode`, On `1` / Off `0` | L-Var write `L:XMLVAR_VNAVButtonValue` On `1` / Off `0`; else readout only | IE-SF50 62; README 2.1.1; V-1 A-5; HH-MS; SDK-APT | Unverified |
+| main 3,6 `LDG` (moved from main 4,4) | `B:sf50_lighting_landing_lights` | B-var value (0/1 expected) | `B:sf50_lighting_landing_lights`, On `1` / Off `0` | `K:LANDING_LIGHTS_TOGGLE`, read `(A:LIGHT LANDING, Bool)` | IE-SF50 129; README 2.1.1; V-1 A-5 | Unverified |
+| main 4,1 `HDG-` (repeated from autopilot 4,2) | none | - | `lua:XL24-SF50:HOLD(2)` key down, `lua:XL24-SF50:RELEASE(2)` key up; the script sends `K:HEADING_BUG_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| main 4,2 `ALT-` (repeated from autopilot 4,4) | none | - | `lua:XL24-SF50:HOLD(6)` key down, `lua:XL24-SF50:RELEASE(6)` key up; the script sends `K:AP_ALT_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| main 4,3 `SPD-` (repeated from autopilot 4,6) | none | - | `lua:XL24-SF50:HOLD(10)` key down, `lua:XL24-SF50:RELEASE(10)` key up; the script sends `K:AP_SPD_VAR_DEC` | the SF50's speed knob `B:sf50_autopilot_speed` (IE-SF50 60) after a capture | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE; SF50-FLT; V-UX A-6 | Unverified |
+| main 4,4 `A/T DISC` (new) | `(A:AUTOPILOT THROTTLE ARM, Bool)` | Bool | `B:sf50_autopilot_autothrottle_disconnect`, On `1` / Off `1` (every press writes 1) | `K:AUTO_THROTTLE_DISCONNECT:0` (SDK-APE); else Empty (the A/T key toggles the autothrottle off) | IE-SF50 51; README 2.1.1; SDK-APV; V-UX A-5 | Unverified |
+| main 4,5 `VS` (moved from main 2,4) | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 4,6 `ATC` (moved from main 3,3) | none (a sim window has no state) | - | `K:SIMUI_WINDOW_HIDESHOW` | - | SDK-MISCE | Unverified |
+| systems 3,2 `BAT` (moved from main 1,1) | `B:sf50_electrical_battery_1_switch` | B-var value (0/1 expected) | `B:sf50_electrical_battery_1_switch`, On `1` / Off `0` | Empty (no battery key) | IE-SF50 80; README 2.1.1; V-1 A-5 | Unverified |
+| systems 3,3 `PARK` (moved from main 1,4) | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `B:sf50_handling_parking_brake`, On `1` / Off `0` | readout only (command none) | IE-SF50 117; README 2.1.1, 2.1.2; AM, SDK-GEARV; SCMON-SF50 | Unverified |
+| systems 3,4 `GEAR` (moved from main 1,5) | `(A:GEAR HANDLE POSITION, Bool)` | Bool | none | - | SDK-GEARV | Unverified |
+| systems 3,5 `N1` (moved from main 1,2) | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| systems 4,2 `NAV LT` (moved from main 4,1) | `B:sf50_lighting_nav_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_nav_lights_intercept`, On `1` / Off `0` | `K:TOGGLE_NAV_LIGHTS`, read `(A:LIGHT NAV, Bool)` | IE-SF50 130; README 2.1.1; V-1 A-5, A-15 | Unverified |
+| systems 4,3 `RECOG` (moved from main 4,2) | `B:sf50_lighting_recognition_lights_intercept` | B-var value (0/1 expected) | `B:sf50_lighting_recognition_lights_intercept`, On `1` / Off `0` | Empty | IE-SF50 132; README 2.1.1; weak, V-2 A-4 | Unverified |
+| systems 4,4 `STRB` (moved from main 4,3) | `B:lighting_strobe_1` | B-var value (0/1 expected) | `B:lighting_strobe_1`, On `1` / Off `0` | `K:STROBES_TOGGLE`, read `(A:LIGHT STROBE, Bool)` | IE-SF50 40; README 2.1.1; V-1 A-5 | Unverified |
+| systems 4,5 `LDG` (moved from main 4,4) | `B:sf50_lighting_landing_lights` | B-var value (0/1 expected) | `B:sf50_lighting_landing_lights`, On `1` / Off `0` | `K:LANDING_LIGHTS_TOGGLE`, read `(A:LIGHT LANDING, Bool)` | IE-SF50 129; README 2.1.1; V-1 A-5 | Unverified |
+| systems 4,6 `TAXI` (moved from main 4,5) | `(A:LIGHT TAXI, Bool)` | Bool | `K:TOGGLE_TAXI_LIGHTS` | Empty (the list has no taxi light) | SDK-ELECE; no taxi B-var in IE-SF50, V-1 A-5, A-15; SDK-SYSV | Unverified |
+| systems 4,7 `PITOT` (moved from main 4,6) | `B:deice_pitot_1` | B-var value (0/1 expected) | `B:deice_pitot_1`, On `1` / Off `0` | `K:PITOT_HEAT_TOGGLE`, read `(A:PITOT HEAT, Bool)` | IE-SF50 31; README 2.1.1; V-1 A-5 | Unverified |
+| systems 4,8 `ICE` (moved from main 4,7) | `B:sf50_deice_wingstab` | B-var value (0/1 expected) | G1 `B:sf50_deice_wingstab` | readout of the B-var, Mappings `0=OFF:1=ON` (A-6); readout of `STRUCTURAL DEICE SWITCH` (A-2) | IE-SF50 78; SF50-PKG; SF50-FLT; PD-LONG; V-2 A-6, A-13 | Unverified |
+| radios 1,8 `BARO` (takes the commands of main 3,6) | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | Main `K:BAROMETRIC`, Second (long press) `K:BAROMETRIC_STD_PRESSURE` | long press `B:autopilot_baro_1_sync` On `1` / Off `1` (IE-SF50 29); else no STD | SDK-INSTE; HH-MS; README 2.1; V-2 A-10; SDK-SYSV | Unverified |
+| radios 4,2 `COM1` (moved from main 3,1) | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
+| radios 4,3 `CDI` (moved from main 3,5) | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
+| views 1,7 `MAP` (moved from main 3,4) | none (a sim window has no state) | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
