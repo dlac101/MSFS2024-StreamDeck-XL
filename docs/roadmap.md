@@ -274,7 +274,7 @@ product call; "Project" = the project can decide.
 | 12 | More camera views by camera variable writes | A paid camera-only profile exists (C.2 item 3); two view keys exist, one passed a hand test | User (which views) |
 | 13 | Safe default profile for other aircraft | The plan's safe fallback (line 54) | User (whether to build) |
 | 14 | Committed own images (state colours, icons) | Readability without the personal-use pack | User |
-| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; fourth list done: P5-TOOLS3; fifth list done: P5-TOOLS4; two items open) |
+| 15 | Small tool and doc fixes (below) | Correctness of the checks and the install doc | Project (first list done: P5-1; second list done: P5-TOOLS; third list done: P5-TOOLS2; fourth list done: P5-TOOLS3; fifth list done: P5-TOOLS4; sixth list done: P5-TOOLS5; two items open) |
 | 16 | `1X` key unlit at every rate but 1x | Today it shows no image at most rates (by design); cosmetic | User (after the look test) |
 | 17 | Folder title alignment for the remaining folders | Main page VIEWS, CHECKLIST and MORE are centred; the others are not | User (after the look test) |
 | 18 | Ground-service menu (GSX) | Needs a paid add-on; the plan wants no paid dependency for the baseline | User |
@@ -371,6 +371,21 @@ P5-TOOLS3:
 - `tools/package/build_icon_package.py`: it prints its paths without the backslash escapes the other tools
   got in P5-TOOLS3, so a path the console can't show ends in a traceback; and section E's list of shared
   tool code does not name it.
+
+Sixth list (shared tool code, one lane at a time; all four were done in P5-TOOLS5), found in the review of
+P5-TOOLS4:
+
+- `tools/profilegen/check_docs.py`: a fence inside a list item does not end with its item in its reading, so
+  an unclosed fence in an item hides the rest of the file, and a fence line indented less than the item's
+  text closes that fence, where Markdown ends the item and opens a new fence (no fence in a list item
+  today).
+- `tools/profilegen/check_docs.py`: a fence on a list item's own line (a "-", a space and three backticks)
+  is not read as a fence, so its closing line opens one and hides the rest of the file (no such line today).
+- `tools/profilegen/check_docs.py`: a later input event list `docs/reference/InputEvents-<X>.txt` whose
+  `<X>` is an aircraft of `INPUT_EVENT_LISTS` takes the place of that aircraft's own list once another
+  heading holds its words (no such list today).
+- `tools/profilegen/check_docs.py`: a heading that names two later lists is also printed as a section with
+  no input event list, beside its FAIL.
 
 Still open, for a later tools unit (shared tool code, one lane at a time):
 
@@ -931,6 +946,20 @@ look-tested)
   profile the same byte for byte).
 - Shared docs: CHANGELOG.md.
 
+**P5-TOOLS5 FENCES IN LIST ITEMS, LATER LISTS AND OLD POSITIONS IN THE DOCS** (committed; not re-planned)
+
+- Scope: the sixth list in section D. `check_docs.py` ends a fence in a list item with its item, reads a
+  fence on a list item's own line, keeps an aircraft's own input event list when a later list bears the
+  aircraft's name, and reports a heading that names two later lists by its FAIL only. Docs: two cells of
+  `docs/aircraft-mappings.md` and four places of `docs/cj4-research.md` that named VisionJet main, MORE or
+  radios positions from before V-UX as today's, and the V-UX look test among the VisionJet look tests of
+  `docs/icons.md`. The Sources tag check and a prose width check stay open (no count changed).
+- Files (as committed): M `tools/profilegen/check_docs.py`, M `docs/cj4-research.md`, M `docs/icons.md`, M
+  `docs/roadmap.md`.
+- Depends on: V-UX, P5-TOOLS4.
+- Shared tool code: yes (only `check_docs.py`; every profile and the public package the same byte for byte).
+- Shared docs: docs/aircraft-mappings.md, CHANGELOG.md.
+
 **P5-4 OWN IMAGES**
 
 - Scope: a small set of project-made key images (on, off, fault, folder) that can be committed under MIT.
@@ -949,7 +978,7 @@ look-tested)
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
 | A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, V-3, CJ-0, V-UX, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, P5-DOCS7, P5-TOOLS4, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, P5-DOCS7, P5-TOOLS4, P5-TOOLS5, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
@@ -957,8 +986,8 @@ look-tested)
   and profile, or a research doc), so they can run beside lane C units, apart from the shared docs (one added
   line or section each) and shared tool code.
 - Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-TOOLS3, P5-TOOLS4,
-  P5-4, P5-2 with a universal profile) do not run at the same time as each other. P3-4 and P5-1 both change
-  `check.py`.
+  P5-TOOLS5, P5-4, P5-2 with a universal profile) do not run at the same time as each other. P3-4 and P5-1
+  both change `check.py`.
 - P5-PKG, P5-3 and P5-2 (docs only) touch no page data and can run beside any lane C or lane A unit.
 - P5-1 can run beside page units that do not change the same tool files.
 - P5-4 changes lane C and lane A data files and profiles, so it runs between their units, never beside one.

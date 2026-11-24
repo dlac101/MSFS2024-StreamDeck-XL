@@ -168,8 +168,9 @@ What differs from the C172 build:
 The VisionJet (Cirrus Vision SF50) profile has its own icon build, made the same way from its own mapping,
 `tools/profilegen/icons-visionjet-sf50.json`. Addresses, commands, titles and key positions are those of the
 committed `MSFS2024 VisionJet` profile; only the key images differ. Not yet installed or look-tested: see the
-step "Icon look test" in the checklist sections "VisionJet SF50 profile (V-1)", "VisionJet SF50 profile (V-2)"
-and "VisionJet SF50 profile (V-3)" in [tests/manual-checklist.md](../tests/manual-checklist.md).
+step "Icon look test" in the checklist sections "VisionJet SF50 profile (V-1)", "VisionJet SF50 profile (V-2)",
+"VisionJet SF50 profile (V-3)" and "VisionJet SF50 profile (V-UX)" in
+[tests/manual-checklist.md](../tests/manual-checklist.md).
 
 Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
 

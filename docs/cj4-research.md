@@ -404,10 +404,11 @@ The times and speeds of each profile are the SF50's ([visionjet-sf50.md](visionj
 ## Draft layout
 
 A draft only: nothing here is built. Rules as [navigation.md](navigation.md): one main page, child pages by
-folder key, the back key at 1,1 on every child page, at most two folder levels. The main page keeps the SF50
-and C172 G1000 grid: same function, same position; a function the jet lacks (or that no source gives yet)
-leaves its key empty. Every key pairs its press with the state it reads, a state key's On and Off images both
-follow its own read (never an image for a state), and every key uses only names from the tables above.
+folder key, the back key at 1,1 on every child page, at most two folder levels. The main page keeps the C172
+G1000 grid, which was the SF50's too before V-UX (its V-1 to V-3 main page): same function, same position; a
+function the jet lacks (or that no source gives yet) leaves its key empty. Every key pairs its press with the
+state it reads, a state key's On and Off images both follow its own read (never an image for a state), and
+every key uses only names from the tables above.
 
 Proposed profile name: `MSFS2024 CJ4` (a working value; open question 4). Pages: main; TRIM, VIEWS, SIM RATE,
 CHECKLIST and MORE below it; DCP, CCP, V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS, SYSTEMS, ENGINE, ICE/ENV,
@@ -417,10 +418,11 @@ input event, once that list exists; the K-event after "else" is the fallback.
 
 ### Main page
 
-The SF50 main page grid ([visionjet-sf50.md](visionjet-sf50.md), "Layouts"): same function, same position. Changes:
-1,3 stays empty (no fuel pump key; the pumps are readouts on SYSTEMS); 4,2 is the beacon (the SF50 has none; the
-CJ4's recognition lights are on LIGHTS); BARO gets the SF50's long press for standard pressure. No key on the main
-page repeats.
+The SF50 main page grid before V-UX (its V-1 to V-3 main page: the old positions that the SF50 rows of
+[aircraft-mappings.md](aircraft-mappings.md) give; its grid since V-UX is in
+[visionjet-sf50.md](visionjet-sf50.md), "Layouts"): same function, same position. Changes: 1,3 stays empty (no
+fuel pump key; the pumps are readouts on SYSTEMS); 4,2 is the beacon (the SF50 has none; the CJ4's recognition
+lights are on LIGHTS); BARO gets the SF50's long press for standard pressure. No key on the main page repeats.
 
 | Pos | Title | Press (candidate) | Reads (candidate) | Hold to repeat | Source | Status |
 |---|---|---|---|---|---|---|
@@ -620,8 +622,8 @@ it (S-4), the page keeps only its back key, as the C172's.
 
 ### MORE
 
-Opened by main 4,8. Row 1 as the SF50's, with DCP and CCP at 1,2 and 1,3 (the C172's PFD and MFD bezel positions);
-row 2 adds LIGHTS and the three FMS pages. All pages below MORE are second level.
+Opened by main 4,8. Row 1 as the SF50's before V-UX, with DCP and CCP at 1,2 and 1,3 (the C172's PFD and MFD
+bezel positions); row 2 adds LIGHTS and the three FMS pages. All pages below MORE are second level.
 
 | Pos | Title | Press (candidate) | Reads (candidate) | Hold to repeat | Source | Status |
 |---|---|---|---|---|---|---|
@@ -821,8 +823,8 @@ keys do not repeat.
 
 ### RADIOS
 
-Opened by more 1,8. The SF50's radios page ([visionjet-sf50.md](visionjet-sf50.md)): the C172's radios page with
-its BARO column; every step key holds to repeat.
+Opened by more 1,8. The SF50's radios page before V-UX ([visionjet-sf50.md](visionjet-sf50.md)): the C172's radios
+page with its BARO column; every step key holds to repeat.
 
 | Pos | Title | Press (candidate) | Reads (candidate) | Hold to repeat | Source | Status |
 |---|---|---|---|---|---|---|

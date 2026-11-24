@@ -29,12 +29,15 @@ Checks:
               an aircraft of INPUT_EVENT_LISTS is a line of that aircraft's input event list in docs/reference/;
               a tracked list docs/reference/InputEvents-<X>.txt that INPUT_EVENT_LISTS does not name is the
               list of every other "## " heading that holds <X> as a word (a heading that holds the names of
-              two such lists is a FAIL; a list that no heading gets is a note, not used); a code span may wrap
-              across lines (not out of its block: a blank line, a list item, a table row or a "# " heading
-              ends one; of the numbered items in a paragraph only a "1." or "1)" item, or one indented less
-              than the text of the list item the paragraph is in, as CommonMark reads them), a fenced code
-              block (its fence indented at most three columns past its container) is not read; the B: names of
-              the other sections (no list in docs/reference/, such as the A32NX) are counted, not checked
+              two such lists is a FAIL, its B: names not counted; a list that no heading gets is a note, not
+              used; an <X> that is an aircraft of INPUT_EVENT_LISTS too leaves that aircraft's list in place);
+              a code span may wrap across lines (not out of its block: a blank line, a list item, a table row
+              or a "# " heading ends one; of the numbered items in a paragraph only a "1." or "1)" item, or one
+              indented less than the text of the list item the paragraph is in, as CommonMark reads them), a
+              fenced code block (its fence indented at most three columns past its container, or on a list
+              item's own line; it ends at its closing fence or with its list item, at the first line that is not
+              blank and is indented less than the item's text) is not read; the B: names of the other sections
+              (no list in docs/reference/, such as the A32NX) are counted, not checked
   refs        no tracked file outside docs/chain/ cites an internal reference number: "LR" and digits as a
               word, with or without a "-C" or "-W" and digits after it; every file is read as bytes, the
               profiles and images too, a zip file (a profile) also entry by entry, uncompressed (a number in a
@@ -155,13 +158,17 @@ def block_start(line, col):
 def paragraphs(text):
     """[(offset, text)] of the Markdown blocks: a blank line ends one, and a list item, a table row or a heading
     starts a new one (block_start; a code span or a quote that wraps stays inside its block); a fenced code block
-    (``` or ~~~) ends one and is in none (its lines are code, not code spans)."""
+    (``` or ~~~, on a list item's own line too) ends one and is in none (its lines are code, not code spans); in a
+    list item it ends with the item too, at the first line that is not blank and is indented less than the item's
+    text (a ``` line there closes nothing, it opens a new fence, as CommonMark reads it)."""
     # cols: the content columns of the list items the lines are in, outermost first (a wrapped line may be
     # indented less); inner: those a new block at this line's indent stays in; single: the last line was a
-    # heading or a table row, which any list item ends
+    # heading (an item's text too, "- # a") or a table row, which any list item ends
     out, start, pos, fence, cols, single = [], None, 0, None, [], False
     for line in text.split("\n"):
         indent = len(line[:len(line) - len(line.lstrip())].expandtabs(4))
+        if fence is not None and cols and line.strip() and indent < cols[-1]:
+            fence = None  # the list item the fence is in ends, and the fence with it
         inner = cols if fence is not None else [c for c in cols if c <= indent]
         f = FENCE.match(line)
         if f and indent > (inner[-1] if inner else 0) + 3:
@@ -179,14 +186,23 @@ def paragraphs(text):
                 out.append((start, text[start:pos - 1]))
             start = None
         else:
-            m = LIST_ITEM.match(line)
+            m, rest = LIST_ITEM.match(line), 0
             if start is None or (single and m) or block_start(line, cols[-1] if cols else 0):
                 if start is not None:
                     out.append((start, text[start:pos - 1]))
-                start, cols = pos, inner + ([len(m.group(0).expandtabs(4))] if m else [])
+                start, cols = pos, inner
+                while m:  # the item's text: perhaps an item of its own ("- 1. a"), or a fence ("- ```")
+                    rest = m.end()
+                    cols = cols + [len(line[:rest].expandtabs(4))]
+                    if line[rest:rest + 1].isspace():  # five or more spaces after the marker: indented code
+                        break
+                    f = FENCE.match(line, rest)
+                    if f and indent <= (inner[-1] if inner else 0) + 3:  # deeper, the item is indented code
+                        fence, start = f.group(2), None
+                    m = LIST_ITEM.match(line, rest)
             elif single:  # no paragraph to go on from: a line indented less than its list item ends the item
                 cols = inner
-            single = line.lstrip().startswith("|") or HEADING.match(line) is not None
+            single = line.lstrip().startswith("|") or HEADING.match(line, rest) is not None
         pos += len(line) + 1
     if start is not None:
         out.append((start, text[start:pos - 1]))
@@ -306,31 +322,33 @@ def check_inputevents(files):
     lines = text.split("\n")
     headings = [(n, line[3:].strip()) for n, line in enumerate(lines, 1) if line.startswith("## ")]
     # a list INPUT_EVENT_LISTS does not name: tied by its file name's <X> to the headings that hold it as a word
-    by_name = {}
+    # (later and label are by the list's file: <X> may also be an aircraft of INPUT_EVENT_LISTS)
+    later, label = {}, {a: a for a in INPUT_EVENT_LISTS}
     for f in files:
         m = LIST_FILE.fullmatch(f)
         if m and f not in INPUT_EVENT_LISTS.values():
-            word = re.compile(r"(?<![A-Za-z0-9_-])" + re.escape(m.group(1)) + r"(?![A-Za-z0-9_-])")
-            by_name[m.group(1)] = (f, word)
-    # each heading's aircraft: the INPUT_EVENT_LISTS one it starts with, else the one later list it names; a
-    # heading that names two later lists is a FAIL (TWO LISTS), and a list no heading gets is not used (note)
-    tied, of_heading, twice = dict(INPUT_EVENT_LISTS), {}, []
+            later[f] = re.compile(r"(?<![A-Za-z0-9_-])" + re.escape(m.group(1)) + r"(?![A-Za-z0-9_-])")
+            label[f] = m.group(1)
+    # each heading's aircraft: the INPUT_EVENT_LISTS one it starts with, else the one later list it names (its
+    # file); a heading that names two later lists is a FAIL (TWO LISTS), its B: names not counted, and a list no
+    # heading gets is not used (note)
+    tied, of_heading, twice = dict(INPUT_EVENT_LISTS), {}, {}
     for n, h in headings:
         a = next((a for a in INPUT_EVENT_LISTS if h.startswith(a)), None)
         if a is None:
-            named = [x for x, (_, word) in by_name.items() if word.search(h)]
+            named = [f for f, word in later.items() if word.search(h)]
             if len(named) > 1:
-                twice.append(f"line {n}: {h} {[by_name[x][0] for x in named]}")
+                twice[n] = f"line {n}: {h} {named}"
             elif named:
                 a = named[0]
-                tied[a] = by_name[a][0]
+                tied[a] = a
         of_heading[n] = a
     lists = {}
     for aircraft, rel in tied.items():
         body = read_text(rel)
         if body is not None:
             lists[aircraft] = {x.strip() for x in body.splitlines() if x.strip()}
-    untied = [f for x, (f, _) in by_name.items() if x not in tied]
+    untied = [f for f in later if f not in tied]
     if untied:
         print(f"  note {untied}: no {MAPPINGS_DOC} heading is tied to these lists (INPUT_EVENT_LISTS, or the "
               "list's name in a heading that starts with no aircraft of INPUT_EVENT_LISTS), so they are not used")
@@ -344,18 +362,20 @@ def check_inputevents(files):
                 n = first + para.count("\n", 0, m.start(2) + b.start())
                 while hi < len(headings) and headings[hi][0] <= n:
                     hi += 1
-                heading = headings[hi - 1][1] if hi else None
-                aircraft = of_heading[headings[hi - 1][0]] if hi else None
+                at, heading = headings[hi - 1] if hi else (None, None)
+                if at in twice:  # reported by its FAIL
+                    continue
+                aircraft = of_heading[at] if hi else None
                 name = b.group()
                 c = counts.setdefault(aircraft or heading or "(before the first heading)", [0, set()])
                 c[0] += 1
                 c[1].add(name)
                 if aircraft in lists and name not in lists[aircraft]:
-                    missing.append(f"line {n}: {name} ({aircraft})")
+                    missing.append(f"line {n}: {name} ({label[aircraft]})")
     for aircraft in tied:
         if aircraft in lists:
             n, names = counts.get(aircraft, [0, set()])
-            print(f"  {aircraft}: {n} B: names ({len(names)} distinct), list {tied[aircraft]} "
+            print(f"  {label[aircraft]}: {n} B: names ({len(names)} distinct), list {tied[aircraft]} "
                   f"({len(lists[aircraft])} lines)")
     for where, (n, names) in counts.items():
         if where not in tied:
@@ -364,7 +384,7 @@ def check_inputevents(files):
     check(not missing and not twice, f"every B: name in {MAPPINGS_DOC} under an aircraft with an input event "
           "list is in that list" +
           (f"  NOT IN THE LIST {missing}" if missing else "") +
-          (f"  TWO LISTS {twice} (a heading may name one list only)" if twice else ""))
+          (f"  TWO LISTS {list(twice.values())} (a heading may name one list only)" if twice else ""))
 
 
 def ref_hits(where, data):
