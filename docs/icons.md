@@ -191,8 +191,9 @@ folder then holds `Guenseli-SF50\` as well. Before a rebuild after a mapping cha
 `.local\icons-visionjet-sf50` (the generator never deletes).
 
 Install, import, remove and rebuild as in sections 2 and 3, with the VisionJet names. Without the package:
-copy `.local\icons-visionjet-sf50\Images\Guenseli-SF50` into the plugin's `Images\` folder and restart the
-Stream Deck app, then import `.local\icons-visionjet-sf50\MSFS2024 VisionJet Icons.streamDeckProfile`. Keep
+copy `.local\icons-visionjet-sf50\Images\Guenseli-SF50` and the package's own `XL24-PadLit.png` (by hand, from
+`pilotsdeck/MSFS2024-XL/_Package/Images/`) into the plugin's `Images\` folder and restart the Stream Deck
+app, then import `.local\icons-visionjet-sf50\MSFS2024 VisionJet Icons.streamDeckProfile`. Keep
 only one of `MSFS2024 VisionJet` and `MSFS2024 VisionJet Icons` installed (the Profile Manager takes the
 second for a copy of the first, section 2). For automatic switching, map the icon profile with the
 VisionJet's search string `microsoft_sf50` ([visionjet-sf50.md](visionjet-sf50.md)).
@@ -223,7 +224,8 @@ then holds `Guenseli-CJ4\` as well. Before a rebuild after a mapping change, del
 generator never deletes).
 
 Install, import, remove and rebuild as in sections 2 and 3, with the CJ4 names. Without the package: copy
-`.local\icons-cj4\Images\Guenseli-CJ4` into the plugin's `Images\` folder and restart the Stream Deck app,
+`.local\icons-cj4\Images\Guenseli-CJ4` and the package's own `XL24-PadLit.png` (by hand, from
+`pilotsdeck/MSFS2024-XL/_Package/Images/`) into the plugin's `Images\` folder and restart the Stream Deck app,
 then import `.local\icons-cj4\MSFS2024 CJ4 Icons.streamDeckProfile`. Keep only one of `MSFS2024 CJ4` and
 `MSFS2024 CJ4 Icons` installed (the Profile Manager takes the second for a copy of the first, section 2).
 There is no search string for the CJ4 yet, so pick the icon profile on the Stream Deck by hand

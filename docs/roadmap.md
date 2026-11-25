@@ -2,7 +2,7 @@
 
 Where the project stands, what the original plan still asks for, what other Stream Deck profiles for
 MSFS offer, and the planned work in units. Written 2026-11-14; sections A, B, C.3, D and E brought up to date
-with the P5-DOCS update and again with the P5-DOCS2 to P5-DOCS7 updates (section E.3) against the repo as
+with the P5-DOCS update and again with the P5-DOCS2 to P5-DOCS8 updates (section E.3) against the repo as
 committed then.
 
 Sections:
@@ -82,7 +82,7 @@ no key has a dial (the XL has none).
 | Script | Used by | What it does |
 |---|---|---|
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SIMRATE.lua` | simrate `1X` | Steps the sim rate one event at a time until the read rate is 1x |
-| `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua` | compad keys | Collects typed digits, then sets COM1 standby (long ENT also swaps) |
+| `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua` | compad keys | Collects typed digits, then sets COM1 standby (long ENT also swaps); lights an accepted press for the pads that show it (VisionJet and CJ4): a digit or CLR when it changed the entry, ENT (short or long) only after the sim reads back the sent frequency, a refused press never (the C172 pad's keys read none of it) |
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-XPDRPAD.lua` | xpdr pad keys | Collects four typed digits (0-7), then sets the transponder code (`K:XPNDR_SET`) |
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-A32NX.lua` | A32NX FCU and baro readouts, ND MODE, ND RNG, the EFIS ADF/VOR keys, WARN, CAUT, the fuel MODE SEL key (ovhdsys 1,8), the radio page's ACTIVE and STBY windows, the xpdr page's MODE, TCAS and TRAFFIC keys, the ped page's SPD BRK, LDG GEAR, A/BRK, ENG MODE, RUD TRIM and BRK PSI keys | FCU and baro readout text (blank when the FCU is not healthy), ND mode and range steps, navaid selector steps, master warning and caution presses, the MODE SEL press (`FUELMODE`, by `SimCalculator`: needs the MobiFlight WASM module, [installation.md](installation.md#mobiflight-wasm-module-which-keys-need-it)), the RMP 1 window text (`RMPACT`, `RMPSTBY`), the transponder mode and TCAS selector steps (`XPDRMODE`, `TCASMODE`, `TCASTRAF`), the pedestal page's speed brake, gear, autobrake, rudder trim and brake pressure text (`SPDBRK`, `GEARIND`, `ABRK`, `RUDTRIM`, `BRKPSI`) and the ENG MODE selector step (`ENGMODE`, by `SimCalculator`: needs the MobiFlight WASM module) |
 | `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-SF50.lua` | VisionJet step keys: main and autopilot HDG, ALT and SPD, autopilot CRS and VS, radios MHZ, KHZ and BARO, trim TRIM UP, TRIM DN, RUD L and RUD R | Hold to repeat: sends a key's event at key down, then again while the key is held (`HOLD`, `RELEASE`; [visionjet-sf50.md](visionjet-sf50.md)) |
@@ -129,7 +129,8 @@ events), [reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt) (141 i
 - `pilotsdeck/MSFS2024-XL/_Package/` is a PilotsDeck Profile Manager work folder: `package.json`,
   `Profiles/` (four profiles: `MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`,
   `MSFS2024 CJ4`), `Scripts/` (six scripts: `XL24-SIMRATE.lua`, `XL24-COMPAD.lua`, `XL24-XPDRPAD.lua`,
-  `XL24-A32NX.lua`, `XL24-SF50.lua`, `XL24-CJ4.lua`; empty `global/` and `image/`), an empty `Images/`.
+  `XL24-A32NX.lua`, `XL24-SF50.lua`, `XL24-CJ4.lua`; empty `global/` and `image/`), `Images/` (one
+  image: `XL24-PadLit.png`).
 - `package.json` says version `0.2`, plugin `0.9.7`, aircraft "Cessna 172 Skyhawk G1000, FlyByWire A32NX and
   Cirrus Vision SF50 (MSFS 2024)", and its notes name the profiles and scripts in the work folder and the
   C172 G1000 and VisionJet mappings.
@@ -139,6 +140,8 @@ events), [reference/InputEvents-SF50.txt](reference/InputEvents-SF50.txt) (141 i
   yet.
 - The main route is the package ([package.md](package.md), "Install"; not yet tested with the Profile
   Manager): it installs the profiles and copies the Lua scripts into the plugin's Scripts folder. The
+  package also holds one image, `Images/XL24-PadLit.png`; the install test (checklist section "P5-PKG:
+  package install (C172 G1000)") shows whether it is copied into the plugin's Images folder. The
   fallback is to import a `.streamDeckProfile` file by double-click ([phase2-main-page.md](phase2-main-page.md),
   "Import the profile") and copy each script by hand (each page doc's install step).
 - The aircraft mappings (automatic profile switching) for `MSFS2024 C172 G1000` and `MSFS2024 VisionJet`
@@ -714,6 +717,29 @@ look-tested)
   `docs/aircraft-mappings.md` section "Cirrus Vision SF50 (MSFS 2024 default, V-UX)" (each with its source
   there; listed Unverified).
 
+**V-PAD VISION JET COM PAD FEEDBACK** (committed; not re-planned)
+
+- Scope: on the VisionJet's COM pad page the ten digit keys, CLR and ENT have their title in the middle of
+  the key and turn green for a short time when a press took effect: a digit or CLR when the script took it,
+  ENT only when the sim reads back the sent frequency (COM1 standby, or active on a long press), a refused
+  press never. The twelve keys are Dynamic Buttons with an image map, each on its own internal variable;
+  `XL24-COMPAD.lua` writes the variables, and the green is the new image `XL24-PadLit.png`, the project's
+  own. The C172 profile is unchanged and uses the same script. That the script's waits don't hold up a fast
+  next press is not proven (the first V-PAD steps of the checklist).
+- Files (as committed): M `tools/profilegen/visionjet-sf50.json`, M `docs/visionjet-sf50.md`, M
+  `docs/phase2-com1-pad.md`, M `docs/phase2-main-page.md`, M the VisionJet profile, M
+  `pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua`, C
+  `pilotsdeck/MSFS2024-XL/_Package/Images/XL24-PadLit.png`.
+- Depends on: V-UX.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, tests/manual-checklist.md (one section), docs/aircraft-mappings.md (two rows in
+  its section "Phase 2 COM1 pad" and the VisionJet's rows of the twelve keys), docs/navigation.md,
+  docs/icons.md.
+- Variables: the internal variables `X:XL24_COMPAD_LIT_0` to `X:XL24_COMPAD_LIT_9`, `X:XL24_COMPAD_LIT_CLR`
+  and `X:XL24_COMPAD_LIT_ENT`, and COM1's frequencies read back after ENT,
+  `(A:COM STANDBY FREQUENCY:1, MHz)` and `(A:COM ACTIVE FREQUENCY:1, MHz)` (the V-PAD rows of
+  `docs/aircraft-mappings.md`, each with its source there; listed Unverified).
+
 **CJ-1a CITATION CJ4 PROFILE, FIRST PART** (committed; not re-planned)
 
 - Scope: a new profile `MSFS2024 CJ4` for the Cessna Citation CJ4 that comes with MSFS 2024: 15 of the 20
@@ -984,6 +1010,21 @@ look-tested)
 - Shared tool code: yes (only `check_docs.py`; every profile and the public package the same byte for byte).
 - Shared docs: docs/aircraft-mappings.md, CHANGELOG.md.
 
+**P5-DOCS8 DOCS CLEAN-UP AFTER THE VISIONJET COM PAD AND THE CJ4 PROFILE** (committed; not re-planned)
+
+- Scope: in this roadmap, what `XL24-COMPAD.lua` lights (A.3), the package's image (A.6), the V-PAD and
+  P5-DOCS8 entries (E.2, E.3), V-PAD and CJ-1a in the lane A queue, P5-DOCS8 in the lane R queue and the CJ4
+  data file among the lane A files (E.4). The checklist's package section counts four profiles, six scripts
+  and one image, names `MSFS2024 CJ4` among the installed profiles, and its install steps name the six scripts
+  and the image; `docs/package.md` names the image and leaves open, until the install test, whether the
+  Profile Manager copies it; `docs/icons.md` says to copy it for the VisionJet and CJ4 icon builds without the
+  package; `docs/navigation.md` names the folder keys SYSTEMS and ICE/ENV and the CJ4's COM pad among the
+  centered titles; `docs/phase2-com1-pad.md` says that the CJ4's pad keys read the script's variables too.
+- Files: M `docs/roadmap.md`, M `docs/package.md`, M `docs/icons.md`, M `docs/phase2-com1-pad.md`.
+- Depends on: CJ-1a, P5-TOOLS5.
+- Shared tool code: no.
+- Shared docs: CHANGELOG.md, tests/manual-checklist.md, docs/navigation.md.
+
 **P5-4 OWN IMAGES**
 
 - Scope: a small set of project-made key images (on, off, fault, folder) that can be committed under MIT.
@@ -1001,14 +1042,15 @@ look-tested)
 | Lane | Queue |
 |---|---|
 | C | P3-1, P3-2, P3-2b, P3-3, P3-4, P3-5, P3-TRIM2, P3-FUELCAP, P3-6, P3-7, P3-8, P3-9 |
-| A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, V-3, CJ-0, V-UX, P4-5 (the MCDU keyboard last, F.2) |
-| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, P5-DOCS7, P5-TOOLS4, P5-TOOLS5, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
+| A | P4-1, P4-2, P4-3, P4-ICONS, P4-4, P4-6, V-1, V-2, V-3, CJ-0, V-UX, V-PAD, CJ-1a, P4-5 (the MCDU keyboard last, F.2) |
+| R | P5-PKG, P5-1, P5-3, P5-ICONPKG, P5-DOCS, P5-DOCS2, V-0, P5-NOPOC, P5-DOCS3, P5-DOCS4, P5-TOOLS, P5-DOCS5, P5-TOOLS2, P5-DOCS6, P5-TOOLS3, P5-DOCS7, P5-TOOLS4, P5-TOOLS5, P5-DOCS8, then P5-2 and P5-4 (each after the user's call, F.4 and F.5) |
 
 - Lane C units all change `tools/profilegen/c172-g1000.json` and the G1000 profile, so they run one after
   another.
-- Lane A units change only their own aircraft's files (the A32NX or VisionJet data file, icon mapping, script
-  and profile, or a research doc), so they can run beside lane C units, apart from the shared docs (one added
-  line or section each) and shared tool code.
+- Lane A units change only their own aircraft's files (the A32NX, VisionJet or CJ4 data file, icon mapping,
+  script and profile, or a research doc), so they can run beside lane C units, apart from the shared docs
+  (one added line or section each) and shared tool code. V-PAD also changed a script that the C172 uses,
+  `XL24-COMPAD.lua`, and two C172 page docs, and CJ-1a the `package.json` notes.
 - Units that change shared tool code (P3-4, P3-6, P3-9, P5-1, P5-TOOLS, P5-TOOLS2, P5-TOOLS3, P5-TOOLS4,
   P5-TOOLS5, P5-4, P5-2 with a universal profile) do not run at the same time as each other. P3-4 and P5-1
   both change `check.py`.

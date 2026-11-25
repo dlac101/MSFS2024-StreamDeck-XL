@@ -27,9 +27,10 @@ page ideas come from [original-plan.md](original-plan.md).
   Display Value) keep their template size, because they draw their values with the title font: COM1 stays 10.
   Where a title does not fit at 14, the key's `title_size` in the data file sets another size (10 to 15).
   Every key keeps its template's title alignment (folder and back keys at the bottom), except the main page
-  folder keys VIEWS, CHECKLIST and MORE (the user's own saved edit) and, on the VisionJet, the COM pad's digit,
-  CLR and ENT keys (V-PAD): their `title_align` in the data file is `"middle"` (it takes the Elgato manifest
-  State `TitleAlignment` values `"top"`, `"middle"`, `"bottom"`).
+  folder keys VIEWS, CHECKLIST and MORE (the user's own saved edit; on the VisionJet CHECKLIST is at MORE 1,5)
+  and, on the VisionJet and the CJ4, the folder keys SYSTEMS and ICE/ENV and the COM pad's digit, CLR and ENT
+  keys (V-PAD): their `title_align` in the data file is `"middle"` (it takes the Elgato manifest State
+  `TitleAlignment` values `"top"`, `"middle"`, `"bottom"`).
 
 ## Pages
 

@@ -1,7 +1,7 @@
 # The package: build, install, map, update
 
-The profiles and Lua scripts in `pilotsdeck/MSFS2024-XL/_Package/` ship as one PilotsDeck Profile Manager
-package, `MSFS2024-XL v<version>.ppp` (a zip archive the Profile Manager installs). Sources: the
+The profiles, Lua scripts and image in `pilotsdeck/MSFS2024-XL/_Package/` ship as one PilotsDeck Profile
+Manager package, `MSFS2024-XL v<version>.ppp` (a zip archive the Profile Manager installs). Sources: the
 [PilotsDeck README](https://github.com/Fragtality/PilotsDeck/blob/master/README.md), sections 1.5 (installing
 a package), 3.4 (profile switching) and 3.6 (packages). **Not yet installed or tested with the Profile
 Manager**: the checklist section "P5-PKG: package install (C172 G1000)" in
@@ -45,6 +45,11 @@ described in [installation.md](installation.md), don't re-run the installer or u
    old Profiles** checked.
 4. Click **Install**. The Profile Manager stops and starts the Stream Deck app as needed and copies the Lua
    scripts into the plugin's `Scripts` folder (replacing older copies), so you no longer copy them by hand.
+   The package also holds one image, `Images/XL24-PadLit.png` (the green of the VisionJet and CJ4 COM pads).
+   The install test (checklist section "P5-PKG: package install (C172 G1000)") shows whether it is copied
+   into the plugin's `Images` folder. Until then, look there before step 5: if it is missing, copy it by hand
+   from `pilotsdeck/MSFS2024-XL/_Package/Images/` in the repository (the `.ppp`, a zip archive, holds it too,
+   in `Images`), and restart the Stream Deck app after step 5.
 5. It shows one link per profile: click each one and pick your Stream Deck XL. It goes on when every profile
    is installed or ignored.
 
