@@ -1,0 +1,1896 @@
+{
+  "_about": "Key-to-icon mapping for the LOCAL icon build of the MSFS 2024 default Cessna Citation CJ4 profile (docs/icons.md; personal use only, never committed: the icon profile and the images are written to the git-ignored .local/ folder). Names and sha256 only, in the form of icons-visionjet-sf50.json. Rows of keys that the CJ4 shares by page, position and title with the VisionJet profile before its main page changed (V-UX) are that mapping's rows, then the C172 G1000 mapping's; the compad rows are the VisionJet mapping's as they are; the other rows follow one rule per key kind. Only pack files that the committed mappings already name. Not yet look-tested.",
+  "pack_root": "A:/FS2024 Stuff/PilotsDeck/Icon Pack Guenseli_1_7_iUdcY",
+  "pack_readme_sha256": "015a544924866720dee95c1e8fa56f6eca9aa867599f73cf1f0ac86eb3f54e1b",
+  "data": "tools/profilegen/cj4.json",
+  "profile_name": "MSFS2024 CJ4 Icons",
+  "out": ".local/icons-cj4",
+  "plugin_subfolder": "Guenseli-CJ4",
+  "files": {
+    "5-ECAM.png": {
+      "pack": "Folder Icons/5-ECAM.png",
+      "sha256": "e9927a268e2764dce60cbd42a210d0bb09805742ca0529b43a47d891c37c68e0",
+      "size": "144x144"
+    },
+    "6-OVHD.png": {
+      "pack": "Folder Icons/6-OVHD.png",
+      "sha256": "94a1a92ce2716f2e74dd627b4b45cae5e87a64523a834876ef09b646d5aed5a9",
+      "size": "144x144"
+    },
+    "ATCbutton.png": {
+      "pack": "Standard Avionics Suite/icons/Standard AP NAV COM XPDR/ATCbutton.png",
+      "sha256": "ee2c55b9f19cce774bfd3a33b5d3b82147b0e0641e07bb1905d4c21f9ff0b1f8",
+      "size": "144x144"
+    },
+    "Arrow_L.png": {
+      "pack": "Folder Icons/alt/Arrow_L.png",
+      "sha256": "75a28078ba8a3e2a41efabdd2f9b074adae224198dc8b5ae19a6295b3371f3ad",
+      "size": "303x303"
+    },
+    "Arrow_R.png": {
+      "pack": "Folder Icons/alt/Arrow_R.png",
+      "sha256": "081fa48b3f36f7ede6a9e39e4511dfb735df22f410de268bad8a5375b2134c45",
+      "size": "303x303"
+    },
+    "Arrow_dn.png": {
+      "pack": "Folder Icons/alt/Arrow_dn.png",
+      "sha256": "231b64a07063f302584026559ef46e7f00411aeac5d1d753217cda9c265f81d5",
+      "size": "303x303"
+    },
+    "Arrow_up.png": {
+      "pack": "Folder Icons/alt/Arrow_up.png",
+      "sha256": "861e359d0e10acc81334ebf6a2b2954690d6fc7725db846d009965343adbe023",
+      "size": "303x303"
+    },
+    "Folder_in.png": {
+      "pack": "Folder Icons/alt/Folder_in.png",
+      "sha256": "17a2591a860e2bdd44c4bebd07b991fbf2c8e39aed07b689643defe94efd3804",
+      "size": "303x303"
+    },
+    "Folder_out.png": {
+      "pack": "Folder Icons/alt/Folder_out.png",
+      "sha256": "657f5e54d13d6141f0f3fc1949ccb8a0cafa7bfbde1722dc89ef3d3427edb870",
+      "size": "303x303"
+    },
+    "G1000Folder_AC.png": {
+      "pack": "Folder Icons/alt/G1000Folder_AC.png",
+      "sha256": "bfecf24659f68fce62c67a22f92f235182ab07f69d85a96614b3d1e35a93ccd3",
+      "size": "303x303"
+    },
+    "G1000Folder_AP.png": {
+      "pack": "Folder Icons/alt/G1000Folder_AP.png",
+      "sha256": "ffaa75de09f1cb76172012e39f9dbce7abed2f9926b38b7801c05ec966031dca",
+      "size": "303x303"
+    },
+    "G1000Folder_COM.png": {
+      "pack": "Folder Icons/alt/G1000Folder_COM.png",
+      "sha256": "796d05e38d9b115d3eac2a077dc2cdbe93634be451157d2475c3fd6457234c69",
+      "size": "303x303"
+    },
+    "G1000Folder_NAV.png": {
+      "pack": "Folder Icons/alt/G1000Folder_NAV.png",
+      "sha256": "132539f7d8fd55f65c165d918d17ac9c1f57a253edc4a07ae0d81080d8b64798",
+      "size": "303x303"
+    },
+    "G1000Folder_OnGround.png": {
+      "pack": "Folder Icons/alt/G1000Folder_OnGround.png",
+      "sha256": "f4eed5a0d4266b62b5429d99084ffd394f92b524fd64dee9e8fedee5ac578f0f",
+      "size": "303x303"
+    },
+    "G1000_Button2_breit.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_Button2_breit.png",
+      "sha256": "fb89f53397320923b5e1ca1a9d1b6e383e50a73404f376db1589f91dc54f53b9",
+      "size": "144x144"
+    },
+    "G1000_Button_new_off.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_Button_new_off.png",
+      "sha256": "0ce1664e002bc85e7f06929f2426bc2dee15abc75d946acc8da2c06f929aec09",
+      "size": "144x144"
+    },
+    "G1000_Button_new_on.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_Button_new_on.png",
+      "sha256": "725771a41434e6c08636532a97334391f86aa02c50e7f19cd34bd1debe7e3155",
+      "size": "144x144"
+    },
+    "G1000_GARMIN_Button.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_Button.png",
+      "sha256": "1031942f1e17cea92d44b5367e0bb018cd21e36d3a46b75546cc26fabc7181f2",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_CRS_dec.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_CRS_dec.png",
+      "sha256": "1dc3d1964378591a72449974aee32c88103c41c43cc75bf0a52c9828dd511119",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_CRS_inc.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_CRS_inc.png",
+      "sha256": "6743479e1789264232117167f513436189a14c42c650ccdf903d2778edb1037d",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_HDG_dec.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_HDG_dec.png",
+      "sha256": "1c8ee0c849e388dfe0da440cfc740094abc10b42f5f3ada871912f392801dc19",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_HDG_inc.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_HDG_inc.png",
+      "sha256": "bfd7760e55f51abf07071de286c9c8795fbc23bc351f3fb04443068039ba1962",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_Knob_Large_L.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_Knob_Large_L.png",
+      "sha256": "c5b4d526c4b9dde9ef66df1437664b4d335ae25563d27f26d28e255443807c81",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_Knob_Large_R.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_Knob_Large_R.png",
+      "sha256": "e9a6755d3fc5b3ef3a2668d1dcf9b00a5dea022411264a4990f10bdea2377971",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_Knob_Small_L.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_Knob_Small_L.png",
+      "sha256": "9f24eabd9e191d9bcf2b44f6b7cf562100346bdcfde706eb3c7f9bd47b1fe11b",
+      "size": "303x303"
+    },
+    "G1000_GARMIN_Knob_Small_R.png": {
+      "pack": "Standard Avionics Suite/icons/G1000/G1000_GARMIN_Knob_Small_R.png",
+      "sha256": "8d30b522af3d2da63ea224d6c0157d85e6a1fd9adf5e8f3d5e2dfa1a90115565",
+      "size": "303x303"
+    },
+    "MSFS_Logo_Folder.png": {
+      "pack": "App icons/MSFS_Logo_Folder.png",
+      "sha256": "9cc7e71d7fb3f3f8a0b88e0f28de333ec0eb3c0c3065cfd3503611625c75049a",
+      "size": "303x303"
+    },
+    "PMS-Buttons_map.png": {
+      "pack": "PMS GTN/icons/buttons/PMS-Buttons_map.png",
+      "sha256": "c1215842ee1264b878b597d5025fae4687dceb9990cec0dc82ee6c3eb6b830f4",
+      "size": "144x144"
+    },
+    "ParkingBrake_off.png": {
+      "pack": "SWS PC12/icons/ParkingBrake_off.png",
+      "sha256": "591bbd1b936dc821d75b0597ae884cc677f628d9b0bc5e34d8616efb439aaaec",
+      "size": "144x144"
+    },
+    "ParkingBrake_on.png": {
+      "pack": "SWS PC12/icons/ParkingBrake_on.png",
+      "sha256": "6c8061a63603bba3062904c277e706c74c1d2038c39f77cdf1bc272f5ae7f6e9",
+      "size": "144x144"
+    },
+    "SD_Folder_Plane.png": {
+      "pack": "Folder Icons/alt/SD_Folder_Plane.png",
+      "sha256": "5b26b0d237b641f2a33e9eaf49d6e19970bb9106f09bad924974e21576f3901c",
+      "size": "144x144"
+    },
+    "Switch_red_off.png": {
+      "pack": "StandardProp/icons/Switch_red_off.png",
+      "sha256": "149c1caa5b4a7536dcc12dc24ef3783534501e6702637c7499657cfc7eeb2e76",
+      "size": "144x144"
+    },
+    "Switch_red_on.png": {
+      "pack": "StandardProp/icons/Switch_red_on.png",
+      "sha256": "9edf339830ec73799284c112556cb58d81ce971d7d8d76e4e91249372e750b1e",
+      "size": "144x144"
+    },
+    "Switch_white_off.png": {
+      "pack": "StandardProp/icons/Switch_white_off.png",
+      "sha256": "b281ffb0b13ed5c7b152156c686d9b4efcfbbf830aa8f98034ab9ddb7de8d4a8",
+      "size": "144x144"
+    },
+    "Switch_white_on.png": {
+      "pack": "StandardProp/icons/Switch_white_on.png",
+      "sha256": "3a048eef8fa2ccc0c3ed8c77d4f67e5159fbe951b25beb51aec5a2a2b4e2977a",
+      "size": "144x144"
+    }
+  },
+  "keys": [
+    {
+      "page": "main",
+      "pos": "1,1",
+      "title": "BAT",
+      "pass": 2,
+      "on": "Switch_red_on.png",
+      "off": "Switch_red_off.png",
+      "reason": "the C172 master switch is a red rocker"
+    },
+    {
+      "page": "main",
+      "pos": "1,2",
+      "title": "N1",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "main",
+      "pos": "1,4",
+      "title": "PARK",
+      "pass": 2,
+      "on": "ParkingBrake_on.png",
+      "off": "ParkingBrake_off.png",
+      "reason": "parking brake handle (taste, A-6)"
+    },
+    {
+      "page": "main",
+      "pos": "1,5",
+      "title": "GEAR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "main",
+      "pos": "1,6",
+      "title": "FLAPS",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout (one background only; no per-value image without UseImageMapping, out of scope)"
+    },
+    {
+      "page": "main",
+      "pos": "1,7",
+      "title": "TRIM",
+      "pass": 1,
+      "image": "G1000Folder_AC.png",
+      "reason": "folder: grey G1000 folder (taste)"
+    },
+    {
+      "page": "main",
+      "pos": "1,8",
+      "title": "VIEWS",
+      "pass": 1,
+      "image": "SD_Folder_Plane.png",
+      "reason": "folder: green folder with aircraft; bottom band dark for the title"
+    },
+    {
+      "page": "main",
+      "pos": "2,1",
+      "title": "AP",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,2",
+      "title": "HDG",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,3",
+      "title": "ALT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,4",
+      "title": "VS",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,5",
+      "title": "NAV",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,6",
+      "title": "APR",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,7",
+      "title": "FLC",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "2,8",
+      "title": "FD",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "main",
+      "pos": "3,2",
+      "title": "XPDR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "main",
+      "pos": "3,3",
+      "title": "ATC",
+      "pass": 2,
+      "default": "ATCbutton.png",
+      "reason": "dark blank button; the pack's tower icon is light grey under the white title (taste, A-6)"
+    },
+    {
+      "page": "main",
+      "pos": "3,4",
+      "title": "MAP",
+      "pass": 2,
+      "default": "PMS-Buttons_map.png",
+      "reason": "map icon (baked 'Map' label at the bottom; title MAP at the top) (taste, A-6)"
+    },
+    {
+      "page": "main",
+      "pos": "3,5",
+      "title": "CDI",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "main",
+      "pos": "3,6",
+      "title": "BARO",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "main",
+      "pos": "3,7",
+      "title": "SIM RATE",
+      "pass": 1,
+      "image": "MSFS_Logo_Folder.png",
+      "reason": "folder: sim-wide setting, Flight Simulator logo (taste)"
+    },
+    {
+      "page": "main",
+      "pos": "3,8",
+      "title": "CHECKLIST",
+      "pass": 1,
+      "image": "G1000Folder_OnGround.png",
+      "reason": "folder: brown G1000 folder (taste)"
+    },
+    {
+      "page": "main",
+      "pos": "4,1",
+      "title": "NAV LT",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,2",
+      "title": "BCN",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,3",
+      "title": "STRB",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,4",
+      "title": "LDG",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,5",
+      "title": "TAXI",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,6",
+      "title": "PITOT",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch"
+    },
+    {
+      "page": "main",
+      "pos": "4,7",
+      "title": "ICE",
+      "pass": 2,
+      "on": "Switch_white_on.png",
+      "off": "Switch_white_off.png",
+      "reason": "rocker switch (guarded: long press switches off)"
+    },
+    {
+      "page": "main",
+      "pos": "4,8",
+      "title": "MORE",
+      "pass": 1,
+      "image": "Folder_in.png",
+      "reason": "folder: green 'into folder' icon"
+    },
+    {
+      "page": "trim",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "trim",
+      "pos": "2,2",
+      "title": "TRIM UP",
+      "pass": 2,
+      "default": "Arrow_up.png",
+      "reason": "up arrow (303x303, A-5; taste)"
+    },
+    {
+      "page": "trim",
+      "pos": "2,6",
+      "title": "AIL L",
+      "pass": 2,
+      "default": "Arrow_L.png",
+      "reason": "left arrow (303x303, as the elevator trim arrows; taste)"
+    },
+    {
+      "page": "trim",
+      "pos": "2,8",
+      "title": "AIL R",
+      "pass": 2,
+      "default": "Arrow_R.png",
+      "reason": "right arrow (303x303, as the elevator trim arrows; taste)"
+    },
+    {
+      "page": "trim",
+      "pos": "3,6",
+      "title": "RUD L",
+      "pass": 2,
+      "default": "Arrow_L.png",
+      "reason": "left arrow (303x303, as the elevator trim arrows; taste)"
+    },
+    {
+      "page": "trim",
+      "pos": "3,8",
+      "title": "RUD R",
+      "pass": 2,
+      "default": "Arrow_R.png",
+      "reason": "right arrow (303x303, as the elevator trim arrows; taste)"
+    },
+    {
+      "page": "trim",
+      "pos": "4,2",
+      "title": "TRIM DN",
+      "pass": 2,
+      "default": "Arrow_dn.png",
+      "reason": "down arrow (303x303, A-5; taste)"
+    },
+    {
+      "page": "views",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "views",
+      "pos": "1,2",
+      "title": "COCKPIT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "lit bar = this view is active (taste, A-6)"
+    },
+    {
+      "page": "views",
+      "pos": "1,3",
+      "title": "EXTERNAL",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "lit bar = this view is active (taste, A-6)"
+    },
+    {
+      "page": "views",
+      "pos": "1,4",
+      "title": "CAMERA",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "views",
+      "pos": "1,5",
+      "title": "VIEW",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "views",
+      "pos": "1,6",
+      "title": "VIEW NO",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "checklist",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "more",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "more",
+      "pos": "1,4",
+      "title": "V-SPEEDS",
+      "pass": 1,
+      "image": "G1000Folder_NAV.png",
+      "reason": "folder: green G1000 folder (taste)"
+    },
+    {
+      "page": "more",
+      "pos": "1,5",
+      "title": "COM PAD",
+      "pass": 1,
+      "image": "G1000Folder_COM.png",
+      "reason": "folder: the pack's G1000 COM folder, same set as PFD/MFD/V-SPEEDS"
+    },
+    {
+      "page": "more",
+      "pos": "1,6",
+      "title": "AUTOPILOT",
+      "pass": 1,
+      "image": "G1000Folder_AP.png",
+      "reason": "folder: the pack's G1000 AP folder, same set as PFD/MFD/COM PAD"
+    },
+    {
+      "page": "more",
+      "pos": "1,7",
+      "title": "XPDR",
+      "pass": 1,
+      "image": "G1000Folder_COM.png",
+      "reason": "folder: the pack's G1000 COM folder (radios set), as COM PAD (ASSUMPTION A-ICONS)"
+    },
+    {
+      "page": "more",
+      "pos": "1,8",
+      "title": "RADIOS",
+      "pass": 1,
+      "image": "G1000Folder_NAV.png",
+      "reason": "folder: the pack's G1000 NAV folder (NAV/COM radios) (ASSUMPTION A-ICONS)"
+    },
+    {
+      "page": "more",
+      "pos": "2,2",
+      "title": "SYSTEMS",
+      "pass": 1,
+      "image": "G1000Folder_AC.png",
+      "reason": "folder: the pack's G1000 aircraft folder (aircraft systems) (ASSUMPTION A-ICONS)"
+    },
+    {
+      "page": "more",
+      "pos": "2,3",
+      "title": "ENGINE",
+      "pass": 1,
+      "image": "5-ECAM.png",
+      "reason": "folder: the pack's engine display folder (ECAM), for the engine page"
+    },
+    {
+      "page": "more",
+      "pos": "2,4",
+      "title": "ICE/ENV",
+      "pass": 1,
+      "image": "6-OVHD.png",
+      "reason": "folder: the pack's overhead panel folder, for the ice protection and environment page"
+    },
+    {
+      "page": "more",
+      "pos": "2,5",
+      "title": "LIGHTS",
+      "pass": 1,
+      "image": "6-OVHD.png",
+      "reason": "folder: the pack's overhead panel folder, for the lights page"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "1,2",
+      "title": "VS0",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "1,3",
+      "title": "VS1",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "1,4",
+      "title": "VR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "1,6",
+      "title": "CLIMB",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "2,2",
+      "title": "CRUISE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "2,4",
+      "title": "VNE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "vspeeds",
+      "pos": "2,5",
+      "title": "VFE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "simrate",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "simrate",
+      "pos": "1,2",
+      "title": "1X",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "lit bar = the selected rate (taste, A-6)"
+    },
+    {
+      "page": "simrate",
+      "pos": "1,3",
+      "title": "SLOWER",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "simrate",
+      "pos": "1,4",
+      "title": "RATE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "simrate",
+      "pos": "1,5",
+      "title": "FASTER",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "compad",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "compad",
+      "pos": "1,3",
+      "title": "ENTRY",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, typed digits readable"
+    },
+    {
+      "page": "compad",
+      "pos": "1,6",
+      "title": "7",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "1,7",
+      "title": "8",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "1,8",
+      "title": "9",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "2,2",
+      "title": "STBY ID",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "compad",
+      "pos": "2,6",
+      "title": "4",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "2,7",
+      "title": "5",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "2,8",
+      "title": "6",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "3,6",
+      "title": "1",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "3,7",
+      "title": "2",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "3,8",
+      "title": "3",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "4,6",
+      "title": "CLR",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, as the PFD's CLR"
+    },
+    {
+      "page": "compad",
+      "pos": "4,7",
+      "title": "0",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "number pad key: blank G1000 bezel key, digit as title"
+    },
+    {
+      "page": "compad",
+      "pos": "4,8",
+      "title": "ENT",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, as the PFD's ENT"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,2",
+      "title": "AP",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,3",
+      "title": "FD",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,4",
+      "title": "HDG",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,5",
+      "title": "NAV",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,6",
+      "title": "APR",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "1,7",
+      "title": "BC",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,1",
+      "title": "ALT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,2",
+      "title": "HDG+",
+      "pass": 2,
+      "default": "G1000_GARMIN_HDG_inc.png",
+      "reason": "the pack's G1000 HDG knob image, increase"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,3",
+      "title": "CRS+",
+      "pass": 2,
+      "default": "G1000_GARMIN_CRS_inc.png",
+      "reason": "the pack's G1000 CRS knob image, increase"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,4",
+      "title": "ALT+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,5",
+      "title": "VS+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,6",
+      "title": "SPD+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,7",
+      "title": "YD",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when on"
+    },
+    {
+      "page": "autopilot",
+      "pos": "2,8",
+      "title": "BANK",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,1",
+      "title": "VS",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,2",
+      "title": "HDG BUG",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,3",
+      "title": "CRS1",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,4",
+      "title": "ALT SEL",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,5",
+      "title": "VS TGT",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,6",
+      "title": "SPD TGT",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,7",
+      "title": "MACH TGT",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "autopilot",
+      "pos": "3,8",
+      "title": "IAS/MACH",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,1",
+      "title": "FLC",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 AP-panel button, green bar when engaged"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,2",
+      "title": "HDG-",
+      "pass": 2,
+      "default": "G1000_GARMIN_HDG_dec.png",
+      "reason": "the pack's G1000 HDG knob image, decrease"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,3",
+      "title": "CRS-",
+      "pass": 2,
+      "default": "G1000_GARMIN_CRS_dec.png",
+      "reason": "the pack's G1000 CRS knob image, decrease"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,4",
+      "title": "ALT-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,5",
+      "title": "VS-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "autopilot",
+      "pos": "4,6",
+      "title": "SPD-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "xpdr",
+      "pos": "1,2",
+      "title": "XPDR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "xpdr",
+      "pos": "1,3",
+      "title": "ENTRY",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "xpdr",
+      "pos": "1,4",
+      "title": "MODE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "xpdr",
+      "pos": "1,6",
+      "title": "7",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,2",
+      "title": "STBY",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,3",
+      "title": "ON",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,4",
+      "title": "ALT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,6",
+      "title": "4",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,7",
+      "title": "5",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "2,8",
+      "title": "6",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "3,2",
+      "title": "IDENT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "xpdr",
+      "pos": "3,3",
+      "title": "VFR",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "3,6",
+      "title": "1",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "3,7",
+      "title": "2",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "3,8",
+      "title": "3",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "4,6",
+      "title": "CLR",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "4,7",
+      "title": "0",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "xpdr",
+      "pos": "4,8",
+      "title": "ENT",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it"
+    },
+    {
+      "page": "radios",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon (ASSUMPTION A-3)"
+    },
+    {
+      "page": "radios",
+      "pos": "1,3",
+      "title": "NAV1 ID",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
+      "pos": "1,5",
+      "title": "NAV2 ID",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
+      "pos": "1,7",
+      "title": "COM2 ID",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
+      "pos": "1,8",
+      "title": "BARO",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "radios",
+      "pos": "2,2",
+      "title": "MHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_R.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,3",
+      "title": "KHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_R.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,4",
+      "title": "MHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_R.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,5",
+      "title": "KHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_R.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,6",
+      "title": "MHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_R.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,7",
+      "title": "KHZ+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_R.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "2,8",
+      "title": "BARO+",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT+)"
+    },
+    {
+      "page": "radios",
+      "pos": "3,2",
+      "title": "MHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_L.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,3",
+      "title": "KHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_L.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,4",
+      "title": "MHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_L.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,5",
+      "title": "KHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_L.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,6",
+      "title": "MHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Large_L.png",
+      "reason": "the pack's G1000 large (MHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,7",
+      "title": "KHZ-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Knob_Small_L.png",
+      "reason": "the pack's G1000 small (kHz) knob image"
+    },
+    {
+      "page": "radios",
+      "pos": "3,8",
+      "title": "BARO-",
+      "pass": 2,
+      "default": "G1000_GARMIN_Button.png",
+      "reason": "blank G1000 bezel key, title on it (as ALT-)"
+    },
+    {
+      "page": "radios",
+      "pos": "4,6",
+      "title": "MIC1",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "radios",
+      "pos": "4,7",
+      "title": "MIC2",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000 button, green bar when this mode or selection is on"
+    },
+    {
+      "page": "systems",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon"
+    },
+    {
+      "page": "systems",
+      "pos": "1,2",
+      "title": "BAT",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "systems",
+      "pos": "1,3",
+      "title": "GEN L",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "systems",
+      "pos": "1,4",
+      "title": "GEN R",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "systems",
+      "pos": "1,5",
+      "title": "AVIONICS",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "1,8",
+      "title": "EXT PWR",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "2,2",
+      "title": "BUS V",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "2,3",
+      "title": "BATT A",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "2,4",
+      "title": "HYD PSI",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "3,2",
+      "title": "XFER",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "3,3",
+      "title": "PUMP L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "systems",
+      "pos": "3,4",
+      "title": "PUMP R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon"
+    },
+    {
+      "page": "engine",
+      "pos": "1,2",
+      "title": "N1 L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,3",
+      "title": "N2 L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,4",
+      "title": "ITT L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,5",
+      "title": "FF L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,6",
+      "title": "OIL P L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "1,7",
+      "title": "OIL T L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,2",
+      "title": "N1 R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,3",
+      "title": "N2 R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,4",
+      "title": "ITT R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,5",
+      "title": "FF R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,6",
+      "title": "OIL P R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "2,7",
+      "title": "OIL T R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,2",
+      "title": "START L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,3",
+      "title": "RUN L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,4",
+      "title": "IGN L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,6",
+      "title": "FUEL L",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,7",
+      "title": "FUEL R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "3,8",
+      "title": "FUEL TOT",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "4,2",
+      "title": "START R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "4,3",
+      "title": "RUN R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "engine",
+      "pos": "4,4",
+      "title": "IGN R",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "iceenv",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon"
+    },
+    {
+      "page": "iceenv",
+      "pos": "1,2",
+      "title": "ENG AI L",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "iceenv",
+      "pos": "1,3",
+      "title": "ENG AI R",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "iceenv",
+      "pos": "1,4",
+      "title": "WING/STAB",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "iceenv",
+      "pos": "1,5",
+      "title": "WSHLD",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "iceenv",
+      "pos": "3,3",
+      "title": "CAB ALT",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "iceenv",
+      "pos": "3,4",
+      "title": "CAB RATE",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "iceenv",
+      "pos": "3,5",
+      "title": "DIFF",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "iceenv",
+      "pos": "3,6",
+      "title": "DUMP",
+      "pass": 1,
+      "default": "G1000_Button2_breit.png",
+      "reason": "readout: dark display face, value readable"
+    },
+    {
+      "page": "lights",
+      "pos": "1,1",
+      "title": null,
+      "pass": 1,
+      "image": "Folder_out.png",
+      "reason": "back key: green 'out of folder' icon"
+    },
+    {
+      "page": "lights",
+      "pos": "1,2",
+      "title": "RECOG",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "lights",
+      "pos": "1,3",
+      "title": "WING",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "lights",
+      "pos": "2,2",
+      "title": "BELTS",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "lights",
+      "pos": "2,3",
+      "title": "NO SMOKE",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "lights",
+      "pos": "3,2",
+      "title": "CABIN",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    },
+    {
+      "page": "lights",
+      "pos": "3,3",
+      "title": "PANEL",
+      "pass": 2,
+      "on": "G1000_Button_new_on.png",
+      "off": "G1000_Button_new_off.png",
+      "reason": "G1000-style button, green bar when the read state is on"
+    }
+  ],
+  "left_as_is": [
+    {
+      "page": "main",
+      "pos": "3,1",
+      "title": "COM1",
+      "reason": "COM Radio: the built-in arrow shows the swap between the two frequencies drawn over it; the pack's COM images carry baked-in text that would collide with them"
+    },
+    {
+      "page": "trim",
+      "pos": "2,7",
+      "title": "AIL TRIM",
+      "reason": "Display Gauge: PilotsDeck draws the bar, pointer, center line and number itself over the empty background (as trim 3,4)"
+    },
+    {
+      "page": "trim",
+      "pos": "3,4",
+      "title": "TRIM",
+      "reason": "Display Gauge: PilotsDeck draws the bar, pointer, center line and number itself over the empty background; no pack face is known to fit an upward bar (design-trim-gauge.md: FSR 500 Trim_back.png reads DOWN at the top, so it fits only a downward bar), so none is put behind it"
+    },
+    {
+      "page": "trim",
+      "pos": "3,7",
+      "title": "RUD TRIM",
+      "reason": "Display Gauge: PilotsDeck draws the bar, pointer, center line and number itself over the empty background (as trim 3,4)"
+    },
+    {
+      "page": "compad",
+      "pos": "1,2",
+      "title": "COM1",
+      "reason": "COM Radio, the same key as main 3,1: left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,2",
+      "title": "NAV1",
+      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,4",
+      "title": "NAV2",
+      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
+    },
+    {
+      "page": "radios",
+      "pos": "1,6",
+      "title": "COM2",
+      "reason": "COM Radio, as main 3,1: the built-in arrow shows the swap; left as it is for the same reason"
+    }
+  ]
+}

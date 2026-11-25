@@ -1,7 +1,7 @@
-# Local icon builds (C172 G1000, A32NX and VisionJet)
+# Local icon builds (C172 G1000, A32NX, VisionJet and CJ4)
 
-A second copy of the C172 G1000 profile, one of the A32NX profile (section 4) and one of the VisionJet
-profile (section 5), with key images from the
+A second copy of the C172 G1000 profile, one of the A32NX profile (section 4), one of the VisionJet profile
+(section 5) and one of the CJ4 profile (section 6), with key images from the
 Guenseli icon pack (`A:\FS2024 Stuff\PilotsDeck\Icon Pack Guenseli_1_7_iUdcY`), built on this PC for your
 own use. Addresses, commands, indicators, titles and key positions are the same as in the committed
 profiles; only the key images differ. The C172 G1000 and A32NX icon profiles were installed with the local
@@ -20,12 +20,12 @@ permission. So:
 - Never commit, upload or share anything in `.local/`, the icon profile, or a profile exported from the
   Stream Deck app after you imported it (it carries the pack's folder images inside).
 - The repo holds only text: the key-to-icon mappings `tools/profilegen/icons-c172-g1000.json`,
-  `tools/profilegen/icons-a32nx.json` and `tools/profilegen/icons-visionjet-sf50.json` name pack-relative
-  paths and their sha256, and the code that reads them.
+  `tools/profilegen/icons-a32nx.json`, `tools/profilegen/icons-visionjet-sf50.json` and
+  `tools/profilegen/icons-cj4.json` name pack-relative paths and their sha256, and the code that reads them.
 
-The committed profiles (`MSFS2024 C172 G1000.streamDeckProfile`, `MSFS2024 A32NX.streamDeckProfile` and
-`MSFS2024 VisionJet.streamDeckProfile` in `pilotsdeck/MSFS2024-XL/_Package/Profiles/`) stay as they are and
-have no pack images.
+The committed profiles (`MSFS2024 C172 G1000.streamDeckProfile`, `MSFS2024 A32NX.streamDeckProfile`,
+`MSFS2024 VisionJet.streamDeckProfile` and `MSFS2024 CJ4.streamDeckProfile` in
+`pilotsdeck/MSFS2024-XL/_Package/Profiles/`) stay as they are and have no pack images.
 
 ## 1. Build (in the repo folder, no sim needed)
 
@@ -51,7 +51,8 @@ python tools/package/build_icon_package.py
 ```
 
 It checks that every icon build (one per `tools/profilegen/icons-*.json` mapping: this one, the A32NX one
-(section 4) and the VisionJet one (section 5)) is complete and matches the committed files, then writes
+(section 4), the VisionJet one (section 5) and the CJ4 one (section 6)) is complete and matches the
+committed files, then writes
 `.local\package\MSFS2024-XL-Icons v<version>-<commit>.ppp`: the icon profiles, their images, the committed
 profiles that have no icon version, and the Lua scripts. It refuses, writing nothing, when an icon build is
 missing or out of date (delete the `.local\icons` folder and rebuild as above) and when the output folder is
@@ -138,7 +139,7 @@ It writes:
 
 Its own output folder and image subfolder keep it apart from the C172 build, so both can be built and
 installed; the plugin's `Images\` folder then holds `Guenseli-C172\` and `Guenseli-A32NX\`. The icon package
-(section 1) needs every icon build (C172, A32NX and VisionJet) and refuses while one is missing or out of
+(section 1) needs every icon build (C172, A32NX, VisionJet and CJ4) and refuses while one is missing or out of
 date: build them all before you pack.
 Before a rebuild after a mapping change, delete `.local\icons-a32nx` (the generator never deletes).
 
@@ -196,14 +197,46 @@ only one of `MSFS2024 VisionJet` and `MSFS2024 VisionJet Icons` installed (the P
 second for a copy of the first, section 2). For automatic switching, map the icon profile with the
 VisionJet's search string `microsoft_sf50` ([visionjet-sf50.md](visionjet-sf50.md)).
 
+## 6. CJ4 icon build
+
+The CJ4 (Cessna Citation CJ4) profile has its own icon build, made the same way from its own mapping,
+`tools/profilegen/icons-cj4.json`. Addresses, commands, titles and key positions are those of the committed
+`MSFS2024 CJ4` profile; only the key images differ. Not yet installed or look-tested: see the step "Icon
+look test" in the checklist section "Citation CJ4 profile (CJ-1)" in
+[tests/manual-checklist.md](../tests/manual-checklist.md).
+
+Build and check, in the repo folder (no sim needed; `--mapping` is needed, the default is the C172 mapping):
+
+```text
+python tools/profilegen/generate.py --icons tools/profilegen/icons-cj4.json
+python tools/profilegen/check_icons.py --mapping tools/profilegen/icons-cj4.json
+```
+
+It writes:
+
+- `.local\icons-cj4\MSFS2024 CJ4 Icons.streamDeckProfile`: the icon profile;
+- `.local\icons-cj4\Images\Guenseli-CJ4\`: 24 PNG files, byte copies of the pack files used by PilotsDeck
+  keys.
+
+Its own output folder and image subfolder keep it apart from the other builds; the plugin's `Images\` folder
+then holds `Guenseli-CJ4\` as well. Before a rebuild after a mapping change, delete `.local\icons-cj4` (the
+generator never deletes).
+
+Install, import, remove and rebuild as in sections 2 and 3, with the CJ4 names. Without the package: copy
+`.local\icons-cj4\Images\Guenseli-CJ4` into the plugin's `Images\` folder and restart the Stream Deck app,
+then import `.local\icons-cj4\MSFS2024 CJ4 Icons.streamDeckProfile`. Keep only one of `MSFS2024 CJ4` and
+`MSFS2024 CJ4 Icons` installed (the Profile Manager takes the second for a copy of the first, section 2).
+There is no search string for the CJ4 yet, so pick the icon profile on the Stream Deck by hand
+([cj4.md](cj4.md), "Profile Manager mapping").
+
 ## How the images reach the keys
 
 | Keys | Field the icon build sets | Where the image lives |
 |---|---|---|
-| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` (`Images\Guenseli-A32NX\` and `Images\Guenseli-SF50\` for the A32NX and VisionJet builds) |
+| PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` (`Images\Guenseli-A32NX\`, `Images\Guenseli-SF50\` and `Images\Guenseli-CJ4\` for the A32NX, VisionJet and CJ4 builds) |
 | PilotsDeck Display Value readouts | `DefaultImage` (background; the live value is drawn over it) | same |
 | PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, AIL L/R, RUD L/R, PFD/MFD bezel keys, SLOWER/FASTER) | `DefaultImage` | same |
-| The VisionJet COM pad's digit, CLR and ENT keys (Dynamic Buttons with an image map) | `DefaultImage`; the green press image stays the package's own `Images/XL24-PadLit.png` (not from the pack) | same; the icon package also installs `Images\XL24-PadLit.png`, by hand copy it into the plugin's `Images\` folder |
+| The VisionJet and CJ4 COM pads' digit, CLR and ENT keys (Dynamic Buttons with an image map) | `DefaultImage`; the green press image stays the package's own `Images/XL24-PadLit.png` (not from the pack) | same; the icon package also installs `Images\XL24-PadLit.png`, by hand copy it into the plugin's `Images\` folder |
 | Folder keys and the back keys | the state's `Image` | embedded in the profile (that page's `Images/` folder in the file) |
 | COM Radio keys (COM1 on the main page and the COM pad; NAV1, NAV2 and COM2 on the radios page) | none: left as it is | |
 | The trim gauge (Display Gauge, trim 3,4) | none: left as it is; PilotsDeck draws the bar, pointer, center line and number, and no pack face is known to fit an upward bar ([design-trim-gauge.md](design-trim-gauge.md)) | |
@@ -224,9 +257,9 @@ Sources (read at PilotsDeck commit 11bdf1f, the one the installed patched 0.9.7 
   example packages, and a folder key in the Stream Deck app's own profiles).
 
 Which pack file goes on which key, and why: `tools/profilegen/icons-c172-g1000.json`,
-`tools/profilegen/icons-a32nx.json` and `tools/profilegen/icons-visionjet-sf50.json` (one row per key, with a
-reason). To change an icon (C172 names below; the A32NX and VisionJet builds are the same with their own
-names, sections 4 and 5):
+`tools/profilegen/icons-a32nx.json`, `tools/profilegen/icons-visionjet-sf50.json` and
+`tools/profilegen/icons-cj4.json` (one row per key, with a reason). To change an icon (C172 names below; the
+A32NX, VisionJet and CJ4 builds are the same with their own names, sections 4 to 6):
 
 1. Change that key's row (or add the pack file to `files` with its sha256), and remove from `files` any
    file no row uses any more.

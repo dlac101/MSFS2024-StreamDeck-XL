@@ -118,3 +118,22 @@ title alignment where it moved (VIEWS, MORE, SYSTEMS, CHECKLIST and ICE/ENV midd
 MORE 1,2 and 1,3 (the C172's PFD and MFD pages) are empty: the SF50's PFD and MFD have no softkeys, and a GTC
 page is left for the VisionJet's V-4 (with the checklist wheel, the ECS and knob writes, IE-SF50 82,
 windshield MAX and battery amps). MORE 1,6, 1,8 and 2,2 are empty since V-UX.
+
+## MSFS2024 CJ4 pages
+
+The Citation CJ4 profile `MSFS2024 CJ4` ([cj4.md](cj4.md), generated, not yet sim-tested) keeps the C172
+G1000 profile's main grid and folder positions, and the same rules: one main page (no back key), the back
+key at 1,1 on every child page, at most two folder levels. 15 pages: main, the five pages its folder keys
+open, and nine under MORE.
+
+| Main page key | Child page | Holds now |
+|---|---|---|
+| 1,7 `TRIM` | trim | the C172's trim page: elevator, aileron and rudder trim keys (hold to repeat) and gauges |
+| 1,8 `VIEWS` | views | the C172's views page as it is |
+| 3,7 `SIM RATE` | simrate | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
+| 3,8 `CHECKLIST` | checklist | the back key only; 1,2 is kept empty for the cursor control panel's checklist key |
+| 4,8 `MORE` | more | back key and nine folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,5 `COM PAD` > compad (the VisionJet's COM pad page), 1,6 `AUTOPILOT` > autopilot, 1,7 `XPDR` > xpdr, 1,8 `RADIOS` > radios, 2,2 `SYSTEMS` > systems, 2,3 `ENGINE` > engine, 2,4 `ICE/ENV` > iceenv, 2,5 `LIGHTS` > lights |
+
+MORE 1,2, 1,3 and 2,6 to 2,8 are empty: they are kept for the display control, cursor control and three FMS
+pages of a later unit, which use the WT21 key names and wait for a test of those names in the default CJ4
+([cj4.md](cj4.md), "Not on these pages, and why").

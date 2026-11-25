@@ -1,0 +1,2398 @@
+{
+  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cessna Citation CJ4, in the form of visionjet-sf50.json (see c172-g1000.json's _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Positions, variables, events and formats are the tables of docs/cj4.md, built from docs/cj4-research.md's draft layout on its working values. There is no CJ4 input event list yet: standard K-events stand in for the input events, and a control whose only candidate is an input event is Empty. 15 pages: checklist 1,2 and MORE 1,2, 1,3 and 2,6 to 2,8 are Empty and kept for the keys and pages that use the WT21 key names, which have not been tested in the default CJ4. The pages views, simrate, vspeeds and xpdr are the C172 G1000 pages' keys as they are; compad is the VisionJet's COM pad page (press feedback by XL24-COMPAD.lua); radios (with hold to repeat by XL24-CJ4.lua) and the main page's AP, COM1, XPDR, ATC, MAP, CDI and BARO keys are the VisionJet's keys from before its main page changed (V-UX). Not yet sim-tested.",
+  "profile_name": "MSFS2024 CJ4",
+  "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 CJ4.streamDeckProfile",
+  "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
+  "spec": "docs/cj4.md",
+  "grid": {
+    "rows": 4,
+    "columns": 8
+  },
+  "back_key_pos": "1,1",
+  "phase1_keys": [],
+  "pages": [
+    {
+      "id": "main",
+      "keys": [
+        {
+          "pos": "1,1",
+          "title": "BAT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_MASTER_BATTERY:1",
+            "Address": "(A:ELECTRICAL MASTER BATTERY:1, Bool)"
+          }
+        },
+        {
+          "pos": "1,2",
+          "title": "N1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG N1:1, Percent)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "1,3",
+          "empty": "Fuel pump: the CJ4's pumps are readouts on SYSTEMS (docs/cj4-research.md, Main page)"
+        },
+        {
+          "pos": "1,4",
+          "title": "PARK",
+          "template": "p1:1,0",
+          "set": {}
+        },
+        {
+          "pos": "1,5",
+          "title": "GEAR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GEAR HANDLE POSITION, Bool)",
+            "Format": "",
+            "ValueMappings": "0=UP:1=DOWN"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS HANDLE INDEX, number)",
+            "Format": "1.0",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "TRIM",
+          "folder": "trim"
+        },
+        {
+          "pos": "1,8",
+          "title": "VIEWS",
+          "title_align": "middle",
+          "folder": "views"
+        },
+        {
+          "pos": "2,1",
+          "title": "AP",
+          "template": "p1:3,0",
+          "set": {}
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_HDG_HOLD",
+            "Address": "(A:AUTOPILOT HEADING LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ALT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_ALT_HOLD",
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "VS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_VS_HOLD",
+            "Address": "(A:AUTOPILOT VERTICAL HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "NAV",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_NAV1_HOLD",
+            "Address": "(A:AUTOPILOT NAV1 LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "APR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_APR_HOLD",
+            "Address": "(A:AUTOPILOT APPROACH HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "FLC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FLIGHT_LEVEL_CHANGE",
+            "Address": "(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_FLIGHT_DIRECTOR",
+            "Address": "(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "COM1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:1, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM_STBY_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "XPDR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER CODE:1, Bco16)",
+            "DecodeBCD": true,
+            "Format": "4.0"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "ATC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIMUI_WINDOW_HIDESHOW",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "MAP",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:FLIGHT_MAP",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "CDI",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GPS DRIVES NAV1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=VLOC:1=GPS",
+            "ActionType": 16,
+            "AddressAction": "K:TOGGLE_GPS_DRIVES_NAV1"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
+            "Format": "2.2",
+            "ActionType": 16,
+            "AddressAction": "K:BAROMETRIC",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:BAROMETRIC_STD_PRESSURE"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "SIM RATE",
+          "folder": "simrate"
+        },
+        {
+          "pos": "3,8",
+          "title": "CHECKLIST",
+          "title_align": "middle",
+          "folder": "checklist"
+        },
+        {
+          "pos": "4,1",
+          "title": "NAV LT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_NAV_LIGHTS",
+            "Address": "(A:LIGHT NAV, Bool)"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "BCN",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_BEACON_LIGHTS",
+            "Address": "(A:LIGHT BEACON, Bool)"
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "STRB",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:STROBES_TOGGLE",
+            "Address": "(A:LIGHT STROBE, Bool)"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "LDG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:LANDING_LIGHTS_TOGGLE",
+            "Address": "(A:LIGHT LANDING, Bool)"
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "TAXI",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_TAXI_LIGHTS",
+            "Address": "(A:LIGHT TAXI, Bool)"
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "PITOT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PITOT_HEAT_TOGGLE",
+            "Address": "(A:PITOT HEAT, Bool)"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "ICE",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_STRUCTURAL_DEICE",
+            "Address": "(A:STRUCTURAL DEICE SWITCH, Bool)"
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "MORE",
+          "title_align": "middle",
+          "folder": "more"
+        }
+      ]
+    },
+    {
+      "id": "trim",
+      "parent": "main",
+      "spec": "docs/cj4.md",
+      "note": "Trim as the C172's trim page with its aileron trim keys; hold to repeat on all six trim keys",
+      "keys": [
+        {
+          "pos": "2,2",
+          "title": "TRIM UP",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(25)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(25)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "AIL L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(27)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(27)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "AIL TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:AILERON TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "AIL R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(28)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(28)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:ELEVATOR TRIM PCT EX2, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "BarOrientation": -90,
+            "GaugeSize": "52; 12",
+            "Offset": "-6; 0",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "RUD L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(29)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(29)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "RUD TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:RUDDER TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "RUD R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(30)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(30)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "TRIM DN",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(26)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(26)",
+            "HoldSwitch": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "views",
+      "parent": "main",
+      "spec": "docs/cj4.md",
+      "note": "Views as the C172's (camera state writes and readouts)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "COCKPIT",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:CAMERA STATE, Enum)",
+            "SwitchOnState": "$=2",
+            "SwitchOffState": "",
+            "Address": "(A:CAMERA STATE, Enum)",
+            "OnState": "2",
+            "OffState": "3"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "EXTERNAL",
+          "title_size": 13,
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:CAMERA STATE, Enum)",
+            "SwitchOnState": "$2,=3<",
+            "SwitchOffState": "",
+            "Address": "(A:CAMERA STATE, Enum)",
+            "OnState": "3",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "CAMERA",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA STATE, Enum)",
+            "Format": "",
+            "ValueMappings": "2=COCKPIT:3=CHASE:4=FIXED:5=ENV:7=SHOWCASE:8=DRONE"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "VIEW",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA VIEW TYPE AND INDEX:0, Enum)",
+            "Format": "",
+            "ValueMappings": "0=OTHER:1=PILOT:2=INSTR:3=QUICK:4=QV EXT:5=VIEW"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "VIEW NO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA VIEW TYPE AND INDEX:1, number)",
+            "Format": "1.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "checklist",
+      "parent": "main",
+      "spec": "docs/cj4.md",
+      "note": "Checklist: the back key only; 1,2 is kept for the cursor control panel's checklist key",
+      "keys": [
+        {
+          "pos": "1,2",
+          "empty": "CKLST: kept for the cursor control panel's checklist key; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        }
+      ]
+    },
+    {
+      "id": "more",
+      "parent": "main",
+      "spec": "docs/cj4.md",
+      "note": "More: V-SPEEDS, COM PAD, AUTOPILOT, XPDR and RADIOS in row 1; SYSTEMS, ENGINE, ICE/ENV and LIGHTS in row 2; 1,2, 1,3 and 2,6 to 2,8 are kept for the DCP, CCP and FMS pages",
+      "keys": [
+        {
+          "pos": "1,2",
+          "empty": "DCP: kept for the display control panel page; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        },
+        {
+          "pos": "1,3",
+          "empty": "CCP: kept for the cursor control panel page; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        },
+        {
+          "pos": "1,4",
+          "title": "V-SPEEDS",
+          "folder": "vspeeds"
+        },
+        {
+          "pos": "1,5",
+          "title": "COM PAD",
+          "folder": "compad"
+        },
+        {
+          "pos": "1,6",
+          "title": "AUTOPILOT",
+          "folder": "autopilot"
+        },
+        {
+          "pos": "1,7",
+          "title": "XPDR",
+          "folder": "xpdr"
+        },
+        {
+          "pos": "1,8",
+          "title": "RADIOS",
+          "folder": "radios"
+        },
+        {
+          "pos": "2,2",
+          "title": "SYSTEMS",
+          "title_align": "middle",
+          "folder": "systems"
+        },
+        {
+          "pos": "2,3",
+          "title": "ENGINE",
+          "folder": "engine"
+        },
+        {
+          "pos": "2,4",
+          "title": "ICE/ENV",
+          "title_align": "middle",
+          "folder": "iceenv"
+        },
+        {
+          "pos": "2,5",
+          "title": "LIGHTS",
+          "folder": "lights"
+        },
+        {
+          "pos": "2,6",
+          "empty": "FMS: kept for the page of the FMC's function and line select keys; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        },
+        {
+          "pos": "2,7",
+          "empty": "FMS ABC: kept for the page of the FMC's letter keys; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        },
+        {
+          "pos": "2,8",
+          "empty": "FMS 123: kept for the page of the FMC's number keys; it waits for a test of the WT21 key names in the default CJ4 (docs/cj4-research.md)"
+        }
+      ]
+    },
+    {
+      "id": "vspeeds",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "V-speeds readouts as the C172's",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "VS0",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VS0, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "VS1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VS1, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "VR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED MIN ROTATION, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,5",
+          "empty": "Vx: no SimVar in the MSFS 2024 SDK"
+        },
+        {
+          "pos": "1,6",
+          "title": "CLIMB",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED CLIMB, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "CRUISE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:DESIGN SPEED VC, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,3",
+          "empty": "Vno: no SimVar in the MSFS 2024 SDK"
+        },
+        {
+          "pos": "2,4",
+          "title": "VNE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:REFERENCE SPEED MAX IAS, knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "VFE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS CURRENT SPEED LIMITATION, knots)",
+            "Format": "1.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "simrate",
+      "parent": "main",
+      "spec": "docs/cj4.md",
+      "note": "Sim rate as the C172's (XL24-SIMRATE.lua)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "1X",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SIMRATE:SET(1)",
+            "Address": "(A:SIMULATION RATE, number)",
+            "OnState": "1",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "SLOWER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_DECR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "RATE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:SIMULATION RATE, number)",
+            "Format": "1.2",
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:SIM_RATE_DECR"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "FASTER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_INCR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "compad",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "COM1 pad as the VisionJet's (XL24-COMPAD.lua), with centered titles and press feedback",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "COM1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:1, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM_STBY_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "ENTRY",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "X:XL24_COMPAD_ENTRY",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "7",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(7)",
+            "Address": "X:XL24_COMPAD_LIT_7",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "8",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(8)",
+            "Address": "X:XL24_COMPAD_LIT_8",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "9",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(9)",
+            "Address": "X:XL24_COMPAD_LIT_9",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "STBY ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM STANDBY FREQ IDENT:1, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "4",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(4)",
+            "Address": "X:XL24_COMPAD_LIT_4",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "5",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(5)",
+            "Address": "X:XL24_COMPAD_LIT_5",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "6",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(6)",
+            "Address": "X:XL24_COMPAD_LIT_6",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "1",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(1)",
+            "Address": "X:XL24_COMPAD_LIT_1",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "2",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(2)",
+            "Address": "X:XL24_COMPAD_LIT_2",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "3",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(3)",
+            "Address": "X:XL24_COMPAD_LIT_3",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "CLR",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:BACK",
+            "Address": "X:XL24_COMPAD_LIT_CLR",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-COMPAD:CLEAR"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "0",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:DIGIT(0)",
+            "Address": "X:XL24_COMPAD_LIT_0",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "ENT",
+          "title_align": "middle",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-COMPAD:ENTER",
+            "Address": "X:XL24_COMPAD_LIT_ENT",
+            "DefaultImage": "Images/Switch.png",
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png",
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-COMPAD:ENTER_SWAP"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autopilot",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Autopilot: SDK mode keys and readouts; hold to repeat on HDG, CRS, ALT, VS and SPD",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "AP",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_MASTER",
+            "Address": "(A:AUTOPILOT MASTER, Bool)"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "FD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_FLIGHT_DIRECTOR",
+            "Address": "(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "HDG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_HDG_HOLD",
+            "Address": "(A:AUTOPILOT HEADING LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "NAV",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_NAV1_HOLD",
+            "Address": "(A:AUTOPILOT NAV1 LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "APR",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_APR_HOLD",
+            "Address": "(A:AUTOPILOT APPROACH HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "BC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_BC_HOLD",
+            "Address": "(A:AUTOPILOT BACKCOURSE HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "1,8",
+          "empty": "VNAV: no 2024 VNAV event found (SDK-APE); its input event once S-1 lists it (docs/cj4-research.md)"
+        },
+        {
+          "pos": "2,1",
+          "title": "ALT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_ALT_HOLD",
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK, Bool)"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(1)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(1)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "CRS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(3)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(3)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ALT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(5)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(5)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "VS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(7)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(7)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "SPD+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(9)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(9)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "YD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:YAW_DAMPER_TOGGLE",
+            "Address": "(A:AUTOPILOT YAW DAMPER, Bool)"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "BANK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT MAX BANK ID, number)",
+            "Format": "1.0",
+            "ActionType": 16,
+            "AddressAction": "K:AP_MAX_BANK_INC",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:AP_MAX_BANK_DEC"
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "VS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_VS_HOLD",
+            "Address": "(A:AUTOPILOT VERTICAL HOLD, Bool)"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "HDG BUG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT HEADING LOCK DIR, Degrees)",
+            "Format": "3.0:%s°"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "CRS1",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV OBS:1, Degrees)",
+            "Format": "3.0:%s°"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "ALT SEL",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "VS TGT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "SPD TGT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "MACH TGT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT MACH HOLD VAR, number)",
+            "Format": "1.2"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "IAS/MACH",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:AP_MANAGED_SPEED_IN_MACH_TOGGLE",
+            "Address": "(A:AUTOPILOT MANAGED SPEED IN MACH, Bool)"
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "FLC",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:FLIGHT_LEVEL_CHANGE",
+            "Address": "(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "HDG-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(2)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(2)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "CRS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(4)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(4)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "ALT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(6)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(6)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "VS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(8)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(8)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "SPD-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(10)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(10)",
+            "HoldSwitch": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "xpdr",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Transponder as the C172's (XL24-XPDRPAD.lua)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "XPDR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER CODE:1, Bco16)",
+            "Format": "4.0",
+            "DecodeBCD": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "ENTRY",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "X:XL24_XPDRPAD_ENTRY",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=STBY:2=TEST:3=ON:4=ALT:5=GND"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "7",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(7)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "empty": "8: transponder codes use the digits 0 to 7 only (docs/phase3-transponder.md)"
+        },
+        {
+          "pos": "1,8",
+          "empty": "9: transponder codes use the digits 0 to 7 only (docs/phase3-transponder.md)"
+        },
+        {
+          "pos": "2,2",
+          "title": "STBY",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=1",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "1",
+            "OffState": "4"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ON",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=3",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "3",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ALT",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:TRANSPONDER STATE:1, Enum)",
+            "SwitchOnState": "$=4",
+            "SwitchOffState": "",
+            "Address": "(A:TRANSPONDER STATE:1, Enum)",
+            "OnState": "4",
+            "OffState": "1"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "4",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(4)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "5",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(5)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "6",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(6)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "IDENT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:XPNDR_IDENT_ON",
+            "Address": "(A:TRANSPONDER IDENT:1, Bool)"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "VFR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:XPNDR_SET:4608",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(1)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "2",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(2)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "3",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(3)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "CLR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:BACK",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "HasLongPress": true,
+            "ActionTypeLong": 14,
+            "AddressActionLong": "lua:XL24-XPDRPAD:CLEAR"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "0",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:DIGIT(0)",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "ENT",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-XPDRPAD:ENTER",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "radios",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Radios as the VisionJet's before its main page change (V-UX): NAV1, NAV2, COM2, BARO column; hold to repeat (XL24-CJ4.lua)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "NAV1",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:NAV ACTIVE FREQUENCY:1, MHz)",
+            "AddressRadioStandby": "(A:NAV STANDBY FREQUENCY:1, MHz)",
+            "Format": "2",
+            "ActionType": 16,
+            "AddressAction": "K:NAV1_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "NAV1 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV IDENT:1, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "NAV2",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:NAV ACTIVE FREQUENCY:2, MHz)",
+            "AddressRadioStandby": "(A:NAV STANDBY FREQUENCY:2, MHz)",
+            "Format": "2",
+            "ActionType": 16,
+            "AddressAction": "K:NAV2_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "NAV2 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:NAV IDENT:2, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "COM2",
+          "template": "com_radio",
+          "set": {
+            "AddressRadioActiv": "(A:COM ACTIVE FREQUENCY:2, MHz)",
+            "AddressRadioStandby": "(A:COM STANDBY FREQUENCY:2, MHz)",
+            "Format": "3",
+            "ActionType": 16,
+            "AddressAction": "K:COM2_RADIO_SWAP"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "COM2 ID",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:COM ACTIVE FREQ IDENT:2, String)",
+            "Format": ""
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
+            "Format": "2.2"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(13)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(13)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(14)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(14)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(15)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(15)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(16)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(16)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "MHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(17)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(17)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "KHZ+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(18)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(18)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "BARO+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(11)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(11)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(19)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(19)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(20)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(20)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(21)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(21)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(22)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(22)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "MHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(23)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(23)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "KHZ-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(24)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(24)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "BARO-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-CJ4:HOLD(12)",
+            "AddressActionOff": "lua:XL24-CJ4:RELEASE(12)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "MIC1",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PILOT_TRANSMITTER_SET:0",
+            "Address": "(A:COM TRANSMIT:1, Bool)"
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "MIC2",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PILOT_TRANSMITTER_SET:1",
+            "Address": "(A:COM TRANSMIT:2, Bool)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "systems",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Systems: battery and generators (K-event fallbacks), electrical and hydraulic readouts, fuel readouts",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "BAT",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_MASTER_BATTERY:1",
+            "Address": "(A:ELECTRICAL MASTER BATTERY:1, Bool)"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "GEN L",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_ALTERNATOR1",
+            "Address": "(A:GENERAL ENG MASTER ALTERNATOR:1, Bool)"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "GEN R",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_ALTERNATOR2",
+            "Address": "(A:GENERAL ENG MASTER ALTERNATOR:2, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "AVIONICS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AVIONICS MASTER SWITCH:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "1,6",
+          "empty": "STBY: the standby display switch (CKL 15) has no name until S-1"
+        },
+        {
+          "pos": "1,7",
+          "empty": "EMER LT: the emergency lights switch (CKL 11) has no name until S-1"
+        },
+        {
+          "pos": "1,8",
+          "title": "EXT PWR",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:EXTERNAL POWER ON:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "BUS V",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL MAIN BUS VOLTAGE:1, Volts)",
+            "Format": "2.1"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "BATT A",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:ELECTRICAL BATTERY LOAD:1, Amperes)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "HYD PSI",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:HYDRAULIC PRESSURE:1, psi)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "XFER",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL CROSS FEED, Enum)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "PUMP L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG FUEL PUMP ON:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "PUMP R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG FUEL PUMP ON:2, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        }
+      ]
+    },
+    {
+      "id": "engine",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Engines: left in row 1, right in row 2; starter, running and ignition readouts; fuel quantities",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "N1 L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG N1:1, Percent)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "N2 L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG N2:1, Percent)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "ITT L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG ITT:1, Celsius)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "FF L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG FUEL FLOW PPH:1, Pounds per hour)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "OIL P L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG OIL PRESSURE:1, psi)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "OIL T L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG OIL TEMPERATURE:1, fahrenheit)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "N1 R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG N1:2, Percent)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "N2 R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG N2:2, Percent)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "ITT R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG ITT:2, Celsius)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "FF R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG FUEL FLOW PPH:2, Pounds per hour)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "OIL P R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG OIL PRESSURE:2, psi)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "OIL T R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG OIL TEMPERATURE:2, fahrenheit)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "START L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG STARTER:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "RUN L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG COMBUSTION:1, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=RUN"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "IGN L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG IGNITION SWITCH EX1:1, Enum)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "FUEL L",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL TANK LEFT MAIN QUANTITY, Gallons)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "FUEL R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL TANK RIGHT MAIN QUANTITY, Gallons)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "FUEL TOT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FUEL TOTAL QUANTITY, Gallons)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "START R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG STARTER:2, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "RUN R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:GENERAL ENG COMBUSTION:2, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=RUN"
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "IGN R",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:TURB ENG IGNITION SWITCH EX1:2, Enum)",
+            "Format": "1.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "iceenv",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Ice protection (K-event fallbacks) and pressurization readouts",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "ENG AI L",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:ANTI_ICE_TOGGLE_ENG1",
+            "Address": "(A:ENG ANTI ICE:1, Bool)"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "ENG AI R",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:ANTI_ICE_TOGGLE_ENG2",
+            "Address": "(A:ENG ANTI ICE:2, Bool)"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "WING/STAB",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_STRUCTURAL_DEICE",
+            "Address": "(A:STRUCTURAL DEICE SWITCH, Bool)"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "WSHLD",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:WINDSHIELD_DEICE_TOGGLE",
+            "Address": "(A:WINDSHIELD DEICE SWITCH, Bool)"
+          }
+        },
+        {
+          "pos": "1,6",
+          "empty": "P/S L: the left pitot/static heat button (CKL 239) has no name until S-1 (the SDK's pitot heat has no side)"
+        },
+        {
+          "pos": "1,7",
+          "empty": "P/S R: the right pitot/static heat button (CKL 239) has no name until S-1"
+        },
+        {
+          "pos": "3,2",
+          "empty": "CLIMATE: the climate control selector (CKL 55) has no name until S-1"
+        },
+        {
+          "pos": "3,3",
+          "title": "CAB ALT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:PRESSURIZATION CABIN ALTITUDE, Feet)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "CAB RATE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:PRESSURIZATION CABIN ALTITUDE RATE, Feet/minute)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "DIFF",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:PRESSURIZATION PRESSURE DIFFERENTIAL, psi)",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "DUMP",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:PRESSURIZATION DUMP SWITCH, Bool)",
+            "Format": "",
+            "ValueMappings": "0=OFF:1=ON"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lights",
+      "parent": "more",
+      "spec": "docs/cj4.md",
+      "note": "Lights: exterior lights not on main, cabin signs, interior lights (K-event fallbacks)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "RECOG",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_RECOGNITION_LIGHTS",
+            "Address": "(A:LIGHT RECOGNITION, Bool)"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "WING",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_WING_LIGHTS",
+            "Address": "(A:LIGHT WING, Bool)"
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "BELTS",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE",
+            "Address": "(A:CABIN SEATBELTS ALERT SWITCH, Bool)"
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "NO SMOKE",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE",
+            "Address": "(A:CABIN NO SMOKING ALERT SWITCH, Bool)"
+          }
+        },
+        {
+          "pos": "2,4",
+          "empty": "PASS SAFE: the pass lights safety button (CKL 105) has no name until S-1"
+        },
+        {
+          "pos": "3,2",
+          "title": "CABIN",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:TOGGLE_CABIN_LIGHTS",
+            "Address": "(A:LIGHT CABIN, Bool)"
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "PANEL",
+          "template": "p1:3,0",
+          "set": {
+            "AddressAction": "K:PANEL_LIGHTS_TOGGLE",
+            "Address": "(A:LIGHT PANEL, Bool)"
+          }
+        }
+      ]
+    }
+  ]
+}

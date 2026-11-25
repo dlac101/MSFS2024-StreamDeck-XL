@@ -1866,3 +1866,160 @@ These steps decide whether a wait in the script (the end of a light, the reads a
 - [ ] Record each step's result with the date, the MSFS version, the SF50 preset and which build (plain or icon);
   the "Verified" cells of aircraft-mappings.md's V-PAD rows; whether the green is clear and long enough, whether
   14 is the right text size, and every change.
+
+## Citation CJ4 profile (CJ-1)
+
+Reference: [docs/cj4.md](../docs/cj4.md). The profile `MSFS2024 CJ4` for the MSFS 2024 default Cessna
+Citation CJ4 (15 pages, 195 keys), built without the CJ4's input event list. Not yet tested in the app or
+the sim. **GEAR and the engine page are readouts: never expect an action from them.** Record: date, MSFS
+2024 version, PilotsDeck version, and every fallback or changed value you used. Hold times run from key
+down.
+
+**Capture first (sim step S-1 of docs/cj4-research.md)**
+- [ ] If it is not done yet: start the Stream Deck app with PilotsDeck, load a CJ4 flight, wait about 30 s
+  after it loads, then quit. Keep PilotsDeck's `InputEvents.txt` and the log line with the CJ4's aircraft
+  string (for docs/reference/ and the Profile Manager mapping).
+
+**Before you start**
+- [ ] Install the new package with the Profile Manager, or import `MSFS2024 CJ4.streamDeckProfile` by hand
+  (as the C172 profile, docs/phase2-main-page.md "Import the profile") and copy `XL24-CJ4.lua`.
+  `XL24-COMPAD.lua` and `Images\XL24-PadLit.png` must be in the plugin folder before the profile is imported
+  (the package installs both), and so must `XL24-SIMRATE.lua` and `XL24-XPDRPAD.lua`.
+- [ ] Pick `MSFS2024 CJ4` on the Stream Deck by hand (it has no search string yet). If the capture gave the
+  aircraft string, map the profile in the Profile Manager (docs/cj4.md, "Profile Manager mapping") and check
+  that the deck switches to it when the CJ4 loads.
+
+**Main page, cold and dark, then powered**
+- [ ] BAT, PARK, NAV LT, BCN, STRB, LDG, TAXI, PITOT and ICE: press each both ways, the cockpit switch moves
+  and the key follows; then work the cockpit switch with the mouse, the key follows. Record each key that
+  does nothing or does not follow (its input event is the fix).
+- [ ] GEAR shows `DOWN` on the ground (no press). FLAPS: press, one detent out; long press, one detent in;
+  record the number per detent. N1 matches the left engine's display.
+- [ ] COM1 swaps, XPDR shows the code, ATC and MAP open and close their windows, CDI toggles `GPS` / `VLOC`.
+- [ ] BARO: it matches the cockpit altimeter; a press (`K:BAROMETRIC`) and a long press (standard pressure):
+  record what each does.
+- [ ] 1,3 is empty.
+
+**Folders**
+- [ ] Open every folder key of main (TRIM, VIEWS, SIM RATE, CHECKLIST, MORE) and of MORE (V-SPEEDS, COM PAD,
+  AUTOPILOT, XPDR, RADIOS, SYSTEMS, ENGINE, ICE/ENV, LIGHTS): the named page opens and its back key (1,1)
+  returns to the page that opened it.
+- [ ] MORE 1,2, 1,3, 2,6 to 2,8 and checklist 1,2 show nothing and do nothing.
+
+**Autopilot page (MORE > AUTOPILOT), in flight**
+- [ ] AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, YD and IAS/MACH: each press, the PFD annunciator and the key
+  agree; engage each mode in the cockpit too: the key follows. Record each key the CJ4 ignores.
+- [ ] BANK: press and long press change the bank limit; record the number per position.
+- [ ] HDG+ / HDG-: a short press moves the heading bug one step (HDG BUG 3,2 follows). Hold 1 s, 3 s and 10
+  s: it moves faster the longer it is held, stops by itself at 360 steps, and on release **stops at once and
+  never runs on**. Turn the cockpit heading knob with the mouse: HDG BUG follows.
+- [ ] The same short press and 1, 3 and 10 s holds on CRS+/CRS- (CRS1 3,3; stops by 360 steps), ALT+/ALT-
+  (ALT SEL 3,4; record the step per press; stops by 400 steps), VS+/VS- (VS TGT 3,5; stops by 40 steps) and
+  SPD+/SPD- (SPD TGT 3,6; stops by 200 steps). MACH TGT (3,7) follows the Mach target.
+
+**Radios page (MORE > RADIOS)**
+- [ ] NAV1, NAV2 and COM2 swap and show the idents; MIC1 and MIC2 pick the transmitting radio.
+- [ ] MHZ+/-, KHZ+/- on NAV1, NAV2 and COM2: a short press steps once; holds of 1, 3 and 10 s; each stops on
+  release (watch the standby frequency); a 10 s hold stops by itself, MHZ at 30 steps and KHZ at 200.
+- [ ] BARO+ / BARO-: a short press steps once (BARO 1,8 and main BARO follow; record whether the PFD's baro
+  moves), the same holds; turn the cockpit baro knob with the mouse: BARO 1,8 follows.
+
+**Trim page**
+- [ ] TRIM UP, TRIM DN, AIL L, AIL R, RUD L and RUD R: a short press steps once; hold 1 s and 3 s: the
+  gauges move steadily and stop on release; a 10 s hold stops by itself at about 8 s.
+
+**Never runs on**
+- [ ] Press and release a step key very fast ten times: no extra steps after the last release; then hold
+  that key 3 s: it still repeats (record it if it does not). Hold two step keys at once: each stops on its
+  own release.
+- [ ] On the ground: hold HDG+ on the autopilot page and press the back key (1,1) with another finger, then
+  release both. Record whether the heading bug stops at once or runs on until its cap, and whether SYSTEMS
+  (MORE 2,2, now under your finger) opened; go back and check that HDG+ works normally again.
+- [ ] On the ground: hold TRIM UP on the trim page and press the back key, then release both. Record whether
+  the trim stops and whether main HDG (2,2, now under your finger) switched; then TRIM UP works normally
+  again.
+
+**Views, sim rate, V-speeds and transponder pages**
+- [ ] The C172 checklist's items of those pages, in the CJ4; record any key the CJ4 ignores, especially XPDR
+  STBY, ON and ALT, and whether the V-speeds are the CJ4's.
+
+**COM pad (MORE 1,5): fast presses (do these first)**
+
+The COM pad page of `MSFS2024 CJ4` is the VisionJet's, with the same script (docs/cj4.md, "COM pad: centered
+text and press feedback"). The fast presses and every step after the Look steps need the CJ4 loaded and COM1
+on; the Look steps need no sim. The fast presses decide whether a wait in the script (the end of a light,
+the reads after ENT) holds up the next press (not proven). The same script on the VisionJet is not yet
+sim-tested, so a failed fast press is the script's and goes to both aircraft. Clear the entry (CLR held)
+before each step and after the last one.
+
+- [ ] Clear and type 1 1 8 5 2 5 as fast as you can, then clear and type 1 2 2 8 0 0: no digit is lost or
+  late, and no key stays green.
+- [ ] Press the same digit twice quickly (1, 1): record whether two separate flashes show or one longer one.
+- [ ] Type a frequency and press ENT, then at once type the next entry: no digit is lost while ENT waits.
+
+**COM pad: look (no sim needed)**
+- [ ] Open COM PAD: 7 8 9, 4 5 6, 1 2 3, CLR 0 ENT show their text in the middle of the key; COM1 (1,2),
+  ENTRY (1,3) and STBY ID (2,2) are there (their values need the sim). No key is green.
+- [ ] The same with the local icon build (`MSFS2024 CJ4 Icons`): the text is in the middle of the bezel key.
+- [ ] With no sim connected, press 1: no key turns green and the entry does not change.
+
+**COM pad: digits**
+- [ ] Press 1, 1, 8, 5, 2, 5 slowly: each key turns green for a moment on release, and ENTRY shows
+  `118.525`. The text stays readable in the middle while green. In the icon build too.
+- [ ] Press 9 now (a 7th digit): not green, ENTRY unchanged.
+- [ ] Clear, then press 2, 0, 9 as the first digit: none turns green, ENTRY stays `___.___`. Press 1, then
+  4: 4 is not green. Press 1 again, then 7 (`11_` typed): 7 is not green. Clear, 1, 3, 7: 7 is not green.
+  Only the taken digits turned green.
+
+**COM pad: CLR**
+- [ ] With digits typed: CLR short removes one digit and turns green; CLR held 1 s clears all and turns
+  green on release. With nothing typed: CLR short and long stay dark.
+
+**COM pad: ENT**
+- [ ] With another frequency in COM1 standby, type 118525, ENT: COM1 (1,2) standby shows 118.525 and then
+  ENT turns green for about a second; `lua.log` has no "did not read back" line. Record the delay you see,
+  or that the CJ4's COM1 does not take the event.
+- [ ] Type 118525 again with 118.525 still in standby, ENT: ENT turns green (the sim has the frequency
+  already).
+- [ ] Type 11, ENT (refused): not green, ENTRY stays; the same with nothing typed. Right after a green ENT,
+  press ENT with nothing typed: the green ends.
+- [ ] Type 121500, hold ENT 1 s: COM1 active shows 121.500 and ENT turns green. Standby holds the old active
+  frequency.
+- [ ] With the avionics or COM1 off, type a frequency that standby does not hold, ENT: if the standby does
+  not change, ENT stays dark and `lua.log` says "did not read back". Record what the sim did.
+
+**COM pad: leaving the page**
+- [ ] Press 1 and at once the back key; open COM PAD again: no key is green. Do it again after more than a
+  minute.
+
+**Systems, engine, ICE/ENV and lights pages**
+- [ ] Systems: BAT, GEN L and GEN R both ways against the cockpit; AVIONICS, EXT PWR, BUS V, BATT A, HYD
+  PSI, PUMP L and PUMP R against the cockpit (record units and the HYD PSI scale); XFER: record the number
+  per selector position.
+- [ ] Engine: every readout against the engine display, left and right (record units); START, RUN and IGN
+  through a start; record the IGN number per position.
+- [ ] ICE/ENV: ENG AI L, ENG AI R, WING/STAB and WSHLD both ways against the cockpit; CAB ALT, CAB RATE,
+  DIFF and DUMP against the cockpit.
+- [ ] Lights: RECOG, WING, BELTS, NO SMOKE, CABIN and PANEL both ways against the cockpit; record which
+  lights the CJ4 does not have and which keys do nothing.
+
+**Readouts only**
+- [ ] GEAR and the engine page's keys do nothing on a press. No gear, engine start or TOGA key exists on any
+  page.
+
+**Icon look test (optional local icon build, no sim)**
+- [ ] Build `MSFS2024 CJ4 Icons` with `tools/profilegen/icons-cj4.json` (docs/icons.md), import it: the 209
+  mapped or as-is keys show the mapped images, titles readable (record any title that does not fit at the
+  template size, for example WING/STAB, NO SMOKE, IAS/MACH and MACH TGT).
+
+**Other aircraft**
+- [ ] Load another aircraft and pick `MSFS2024 CJ4` by hand: the readouts show that aircraft's own values.
+  **Do not press the keys that send events there** (they act on that aircraft). Then switch back.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Results to record**
+- [ ] Record each step's result in the "Verified" cells of aircraft-mappings.md's CJ4 rows (date, MSFS
+  version), the keys that do nothing, the repeat feel (too slow, right, too fast), the numbers and units
+  asked for above, the aircraft string, which build (plain or icon), and every fallback or change.

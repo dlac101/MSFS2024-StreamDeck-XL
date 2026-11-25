@@ -2,7 +2,8 @@
 
 ## Status
 
-Research only. Nothing here is built or sim-tested. Every name is Unverified.
+Research only; nothing here is sim-tested. Every name is Unverified. The profile's first part, 15 of the
+draft layout's 20 pages, is built: [cj4.md](cj4.md) (CJ-1, not yet sim-tested).
 When a profile is built, its names go into [aircraft-mappings.md](aircraft-mappings.md), Unverified until a
 sim test passes.
 
@@ -403,7 +404,8 @@ The times and speeds of each profile are the SF50's ([visionjet-sf50.md](visionj
 
 ## Draft layout
 
-A draft only: nothing here is built. Rules as [navigation.md](navigation.md): one main page, child pages by
+A draft only (what is built from it: [cj4.md](cj4.md)).
+Rules as [navigation.md](navigation.md): one main page, child pages by
 folder key, the back key at 1,1 on every child page, at most two folder levels. The main page keeps the C172
 G1000 grid, which was the SF50's too before V-UX (its V-1 to V-3 main page): same function, same position; a
 function the jet lacks (or that no source gives yet) leaves its key empty. Every key pairs its press with the

@@ -1024,3 +1024,204 @@ and dates, and the position text of a moved main key names its new place. A key'
 | radios 4,2 `COM1` (moved from main 3,1) | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
 | radios 4,3 `CDI` (moved from main 3,5) | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
 | views 1,7 `MAP` (moved from main 3,4) | none (a sim window has no state) | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
+
+## Cessna Citation CJ4 (MSFS 2024 default, CJ-1)
+
+For [cj4.md](cj4.md): the profile `MSFS2024 CJ4` for the Cessna Citation CJ4 that comes with MSFS 2024 (no
+add-on or mod). Every key of the profile except its folder and back keys has a row (positions are page and
+row,column), the keys copied from the C172 G1000 and VisionJet pages too: their names are verified on the
+C172 only where its rows above say so, never on the CJ4. There is no input event list of the CJ4 yet (sim
+step S-1 of [cj4-research.md](cj4-research.md)), so no row names an input event: the standard events stand
+in, and the Fallback cell says where the list may give a better name. Generated, not yet sim-tested: every
+row is **Unverified** until the checklist section "Citation CJ4 profile (CJ-1)" passes (then the date and
+MSFS version). A key that fails gets "does not work" in its row, and the row stays. Tags: the page doc's
+"Sources".
+
+The COM pad's `X:XL24_COMPAD_LIT_...` variables are the shared script's (first listed in the C172 section),
+read here as on the VisionJet.
+
+No aircraft string yet (S-1), so no Profile Manager search string.
+
+| Function | Read | Units | Write | Fallback | Source | Verified |
+|---|---|---|---|---|---|---|
+| main 1,1 `BAT` | `(A:ELECTRICAL MASTER BATTERY:1, Bool)` | Bool | `K:TOGGLE_MASTER_BATTERY:1` | the battery input event once S-1 lists it | SDK-ELECE; CKL 7; SDK-ELECV | Unverified |
+| main 1,2 `N1` | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| main 1,4 `PARK` | `(A:BRAKE PARKING POSITION, Bool)` | Bool | `K:PARKING_BRAKES` | the parking brake input event once S-1 lists it | AM; failed in the SF50; AM, SDK-GEARV | Unverified |
+| main 1,5 `GEAR` | `(A:GEAR HANDLE POSITION, Bool)` | Bool | none | - | SDK-GEARV | Unverified |
+| main 1,6 `FLAPS` | `(A:FLAPS HANDLE INDEX, number)` | number | `K:FLAPS_INCR`, `K:FLAPS_DECR` | - | SDK-CTLV; SDK-FCE, README 2.1 | Unverified |
+| main 2,1 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,2 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,3 `ALT` | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,4 `VS` | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,5 `NAV` | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,6 `APR` | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,7 `FLC` | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
+| main 2,8 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APV | Unverified |
+| main 3,1 `COM1` | `(A:COM ACTIVE FREQUENCY:1, MHz)`, `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV, SDK-UNITS | Unverified |
+| main 3,2 `XPDR` | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
+| main 3,3 `ATC` | none | - | `K:SIMUI_WINDOW_HIDESHOW` | - | SDK-MISCE | Unverified |
+| main 3,4 `MAP` | none | - | `K:FLIGHT_MAP` | - | SDK-MISCE | Unverified |
+| main 3,5 `CDI` | `(A:GPS DRIVES NAV1, Bool)` | Bool | `K:TOGGLE_GPS_DRIVES_NAV1` | - | SDK-RADE; SDK-RADV | Unverified |
+| main 3,6 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | `K:BAROMETRIC`, `K:BAROMETRIC_STD_PRESSURE` | - | SDK-INSTE; SDK-INSTE; HH-MS; README 2.1; as visionjet-sf50.md; SDK-SYSV | Unverified |
+| main 4,1 `NAV LT` | `(A:LIGHT NAV, Bool)` | Bool | `K:TOGGLE_NAV_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| main 4,2 `BCN` | `(A:LIGHT BEACON, Bool)` | Bool | `K:TOGGLE_BEACON_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| main 4,3 `STRB` | `(A:LIGHT STROBE, Bool)` | Bool | `K:STROBES_TOGGLE` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| main 4,4 `LDG` | `(A:LIGHT LANDING, Bool)` | Bool | `K:LANDING_LIGHTS_TOGGLE` | the switch's input event once S-1 lists it | SDK-ELECE; CKL 301; SDK-SYSV | Unverified |
+| main 4,5 `TAXI` | `(A:LIGHT TAXI, Bool)` | Bool | `K:TOGGLE_TAXI_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| main 4,6 `PITOT` | `(A:PITOT HEAT, Bool)` | Bool | `K:PITOT_HEAT_TOGGLE` | the switch's input event once S-1 lists it | SDK-AMISCE; CKL 239; SDK-SYSV | Unverified |
+| main 4,7 `ICE` | `(A:STRUCTURAL DEICE SWITCH, Bool)` | Bool | `K:TOGGLE_STRUCTURAL_DEICE` | the switch's input event once S-1 lists it | SDK-AMISCE; CKL 191; SDK-SYSV | Unverified |
+| trim 2,2 `TRIM UP` hold to repeat (code 25; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(25)` key down, `lua:XL24-CJ4:RELEASE(25)` key up; the script sends `K:ELEV_TRIM_UP` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 2,6 `AIL L` hold to repeat (code 27; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(27)` key down, `lua:XL24-CJ4:RELEASE(27)` key up; the script sends `K:AILERON_TRIM_LEFT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 2,7 `AIL TRIM` | `(A:AILERON TRIM PCT, percent)` | percent | none | - | SDK-CTLV | Unverified |
+| trim 2,8 `AIL R` hold to repeat (code 28; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(28)` key down, `lua:XL24-CJ4:RELEASE(28)` key up; the script sends `K:AILERON_TRIM_RIGHT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 3,4 `TRIM` | `(A:ELEVATOR TRIM PCT EX2, percent)` | percent | none | - | SDK-CTLV | Unverified |
+| trim 3,7 `RUD TRIM` | `(A:RUDDER TRIM PCT, percent)` | percent | none | - | SDK-CTLV | Unverified |
+| trim 3,6 `RUD L` hold to repeat (code 29; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(29)` key down, `lua:XL24-CJ4:RELEASE(29)` key up; the script sends `K:RUDDER_TRIM_LEFT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 3,8 `RUD R` hold to repeat (code 30; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(30)` key down, `lua:XL24-CJ4:RELEASE(30)` key up; the script sends `K:RUDDER_TRIM_RIGHT` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| trim 4,2 `TRIM DN` hold to repeat (code 26; trim, cap 160) | none | - | `lua:XL24-CJ4:HOLD(26)` key down, `lua:XL24-CJ4:RELEASE(26)` key up; the script sends `K:ELEV_TRIM_DN` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-FCE | Unverified |
+| views 1,2 `COCKPIT` | `(A:CAMERA STATE, Enum)` | Enum | `(A:CAMERA STATE, Enum)` | - | SDK-CAMV, README 2.1.1, 2.1.2; SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,3 `EXTERNAL` | `(A:CAMERA STATE, Enum)` | Enum | `(A:CAMERA STATE, Enum)` | - | SDK-CAMV, README 2.1.1, 2.1.2; SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,4 `CAMERA` | `(A:CAMERA STATE, Enum)` | Enum | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,5 `VIEW` | `(A:CAMERA VIEW TYPE AND INDEX:0, Enum)` | Enum | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| views 1,6 `VIEW NO` | `(A:CAMERA VIEW TYPE AND INDEX:1, number)` | number | none | - | SDK-CAMV, SDK-UNITS | Unverified |
+| vspeeds 1,2 `VS0` | `(A:DESIGN SPEED VS0, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,3 `VS1` | `(A:DESIGN SPEED VS1, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,4 `VR` | `(A:DESIGN SPEED MIN ROTATION, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 1,6 `CLIMB` | `(A:DESIGN SPEED CLIMB, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,2 `CRUISE` | `(A:DESIGN SPEED VC, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,4 `VNE` | `(A:REFERENCE SPEED MAX IAS, knots)` | knots | none | - | SDK-FMV, SDK-UNITS | Unverified |
+| vspeeds 2,5 `VFE` | `(A:FLAPS CURRENT SPEED LIMITATION, knots)` | knots | none | - | SDK-CTLV, SDK-UNITS | Unverified |
+| simrate 1,2 `1X` | `(A:SIMULATION RATE, number)` | number | `lua:XL24-SIMRATE:SET(1)` | - | README 2.1.1 LUAFUNC, 3.5.1; SDK-MISCE; P2-6 route ruling; SDK-ENVV, PD-SRC | Unverified |
+| simrate 1,3 `SLOWER` | none | - | `K:SIM_RATE_DECR` | - | SDK-MISCE | Unverified |
+| simrate 1,4 `RATE` | `(A:SIMULATION RATE, number)` | number | `K:SIM_RATE_INCR`, `K:SIM_RATE_DECR` | - | SDK-MISCE, README 2.1; SDK-ENVV, PD-SRC | Unverified |
+| simrate 1,5 `FASTER` | none | - | `K:SIM_RATE_INCR` | - | SDK-MISCE | Unverified |
+| compad 1,2 `COM1` | `(A:COM ACTIVE FREQUENCY:1, MHz)`, `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| compad 1,3 `ENTRY` | `X:XL24_COMPAD_ENTRY` | - | none | - | README 2.1.1 INTERNAL; written by the script | Unverified |
+| compad 1,6 `7` | `X:XL24_COMPAD_LIT_7` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 1,7 `8` | `X:XL24_COMPAD_LIT_8` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(8)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 1,8 `9` | `X:XL24_COMPAD_LIT_9` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(9)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 2,2 `STBY ID` | `(A:COM STANDBY FREQ IDENT:1, String)` | String | none | - | SDK-RADV; PD-SRC string A-Var | Unverified |
+| compad 2,6 `4` | `X:XL24_COMPAD_LIT_4` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 2,7 `5` | `X:XL24_COMPAD_LIT_5` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 2,8 `6` | `X:XL24_COMPAD_LIT_6` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,6 `1` | `X:XL24_COMPAD_LIT_1` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,7 `2` | `X:XL24_COMPAD_LIT_2` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,8 `3` | `X:XL24_COMPAD_LIT_3` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 4,6 `CLR` | `X:XL24_COMPAD_LIT_CLR` | PilotsDeck internal variable, `1` lit, `0` not | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` | - | README 2.1.1 LUAFUNC, INTERNAL, 2.1; written by the script | Unverified |
+| compad 4,7 `0` | `X:XL24_COMPAD_LIT_0` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 4,8 `ENT` | `X:XL24_COMPAD_LIT_ENT` | PilotsDeck internal variable, `1` lit, `0` not | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` | - | README 2.1.1 LUAFUNC, INTERNAL, 2.1; written by the script | Unverified |
+| autopilot 1,2 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,3 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,4 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,5 `NAV` | `(A:AUTOPILOT NAV1 LOCK, Bool)` | Bool | `K:AP_NAV1_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,6 `APR` | `(A:AUTOPILOT APPROACH HOLD, Bool)` | Bool | `K:AP_APR_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 1,7 `BC` | `(A:AUTOPILOT BACKCOURSE HOLD, Bool)` | Bool | `K:AP_BC_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 2,1 `ALT` | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` | Bool | `K:AP_ALT_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 2,2 `HDG+` hold to repeat (code 1; fast, cap 360) | none | - | `lua:XL24-CJ4:HOLD(1)` key down, `lua:XL24-CJ4:RELEASE(1)` key up; the script sends `K:HEADING_BUG_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,3 `CRS+` hold to repeat (code 3; fast, cap 360) | none | - | `lua:XL24-CJ4:HOLD(3)` key down, `lua:XL24-CJ4:RELEASE(3)` key up; the script sends `K:VOR1_OBI_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| autopilot 2,4 `ALT+` hold to repeat (code 5; alt, cap 400) | none | - | `lua:XL24-CJ4:HOLD(5)` key down, `lua:XL24-CJ4:RELEASE(5)` key up; the script sends `K:AP_ALT_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,5 `VS+` hold to repeat (code 7; slow, cap 40) | none | - | `lua:XL24-CJ4:HOLD(7)` key down, `lua:XL24-CJ4:RELEASE(7)` key up; the script sends `K:AP_VS_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,6 `SPD+` hold to repeat (code 9; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(9)` key down, `lua:XL24-CJ4:RELEASE(9)` key up; the script sends `K:AP_SPD_VAR_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 2,7 `YD` | `(A:AUTOPILOT YAW DAMPER, Bool)` | Bool | `K:YAW_DAMPER_TOGGLE` | - | SDK-APE; CKL 285; SDK-APV | Unverified |
+| autopilot 2,8 `BANK` | `(A:AUTOPILOT MAX BANK ID, number)` | number | `K:AP_MAX_BANK_INC`, `K:AP_MAX_BANK_DEC` | - | SDK-APV; SDK-APE, README 2.1 | Unverified |
+| autopilot 3,1 `VS` | `(A:AUTOPILOT VERTICAL HOLD, Bool)` | Bool | `K:AP_VS_HOLD` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 3,2 `HDG BUG` | `(A:AUTOPILOT HEADING LOCK DIR, Degrees)` | Degrees | none | - | SDK-APV | Unverified |
+| autopilot 3,3 `CRS1` | `(A:NAV OBS:1, Degrees)` | Degrees | none | - | SDK-RADV | Unverified |
+| autopilot 3,4 `ALT SEL` | `(A:AUTOPILOT ALTITUDE LOCK VAR, Feet)` | Feet | none | - | SDK-APV | Unverified |
+| autopilot 3,5 `VS TGT` | `(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)` | Feet/minute | none | - | SDK-APV | Unverified |
+| autopilot 3,6 `SPD TGT` | `(A:AUTOPILOT AIRSPEED HOLD VAR, Knots)` | Knots | none | - | SDK-APV | Unverified |
+| autopilot 3,7 `MACH TGT` | `(A:AUTOPILOT MACH HOLD VAR, number)` | number | none | - | SDK-APV | Unverified |
+| autopilot 3,8 `IAS/MACH` | `(A:AUTOPILOT MANAGED SPEED IN MACH, Bool)` | Bool | `K:AP_MANAGED_SPEED_IN_MACH_TOGGLE` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 4,1 `FLC` | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` | Bool | `K:FLIGHT_LEVEL_CHANGE` | - | SDK-APE; SDK-APV | Unverified |
+| autopilot 4,2 `HDG-` hold to repeat (code 2; fast, cap 360) | none | - | `lua:XL24-CJ4:HOLD(2)` key down, `lua:XL24-CJ4:RELEASE(2)` key up; the script sends `K:HEADING_BUG_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,3 `CRS-` hold to repeat (code 4; fast, cap 360) | none | - | `lua:XL24-CJ4:HOLD(4)` key down, `lua:XL24-CJ4:RELEASE(4)` key up; the script sends `K:VOR1_OBI_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| autopilot 4,4 `ALT-` hold to repeat (code 6; alt, cap 400) | none | - | `lua:XL24-CJ4:HOLD(6)` key down, `lua:XL24-CJ4:RELEASE(6)` key up; the script sends `K:AP_ALT_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,5 `VS-` hold to repeat (code 8; slow, cap 40) | none | - | `lua:XL24-CJ4:HOLD(8)` key down, `lua:XL24-CJ4:RELEASE(8)` key up; the script sends `K:AP_VS_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| autopilot 4,6 `SPD-` hold to repeat (code 10; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(10)` key down, `lua:XL24-CJ4:RELEASE(10)` key up; the script sends `K:AP_SPD_VAR_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-APE | Unverified |
+| xpdr 1,2 `XPDR` | `(A:TRANSPONDER CODE:1, Bco16)` | Bco16 | none | - | SDK-RADV | Unverified |
+| xpdr 1,3 `ENTRY` | `X:XL24_XPDRPAD_ENTRY` | - | none | - | README 2.1.1 INTERNAL; written by the script | Unverified |
+| xpdr 1,4 `MODE` | `(A:TRANSPONDER STATE:1, Enum)` | Enum | none | - | SDK-RADV | Unverified |
+| xpdr 1,6 `7` | none | - | `lua:XL24-XPDRPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,2 `STBY` | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,3 `ON` | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,4 `ALT` | `(A:TRANSPONDER STATE:1, Enum)` | Enum | `(A:TRANSPONDER STATE:1, Enum)` | - | SDK-RADV, README 2.1.1, 2.1.2; SDK-RADV | Unverified |
+| xpdr 2,6 `4` | none | - | `lua:XL24-XPDRPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,7 `5` | none | - | `lua:XL24-XPDRPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 2,8 `6` | none | - | `lua:XL24-XPDRPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,2 `IDENT` | `(A:TRANSPONDER IDENT:1, Bool)` | Bool | `K:XPNDR_IDENT_ON` | - | SDK-RADE; SDK-RADV | Unverified |
+| xpdr 3,3 `VFR` | none | - | `K:XPNDR_SET:4608` | - | SDK-RADE | Unverified |
+| xpdr 3,6 `1` | none | - | `lua:XL24-XPDRPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,7 `2` | none | - | `lua:XL24-XPDRPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 3,8 `3` | none | - | `lua:XL24-XPDRPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 4,6 `CLR` | none | - | `lua:XL24-XPDRPAD:BACK`, `lua:XL24-XPDRPAD:CLEAR` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
+| xpdr 4,7 `0` | none | - | `lua:XL24-XPDRPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC | Unverified |
+| xpdr 4,8 `ENT` | none | - | `lua:XL24-XPDRPAD:ENTER` | - | README 2.1.1 LUAFUNC | Unverified |
+| radios 1,2 `NAV1` | `(A:NAV ACTIVE FREQUENCY:1, MHz)`, `(A:NAV STANDBY FREQUENCY:1, MHz)` | MHz | `K:NAV1_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,3 `NAV1 ID` | `(A:NAV IDENT:1, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 1,4 `NAV2` | `(A:NAV ACTIVE FREQUENCY:2, MHz)`, `(A:NAV STANDBY FREQUENCY:2, MHz)` | MHz | `K:NAV2_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,5 `NAV2 ID` | `(A:NAV IDENT:2, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 1,6 `COM2` | `(A:COM ACTIVE FREQUENCY:2, MHz)`, `(A:COM STANDBY FREQUENCY:2, MHz)` | MHz | `K:COM2_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 1,7 `COM2 ID` | `(A:COM ACTIVE FREQ IDENT:2, String)` | String | none | - | SDK-RADV | Unverified |
+| radios 1,8 `BARO` | `(A:KOHLSMAN SETTING HG:1, inHg)` | inHg | none | - | SDK-SYSV | Unverified |
+| radios 2,2 `MHZ+` hold to repeat (code 13; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(13)` key down, `lua:XL24-CJ4:RELEASE(13)` key up; the script sends `K:NAV1_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,3 `KHZ+` hold to repeat (code 14; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(14)` key down, `lua:XL24-CJ4:RELEASE(14)` key up; the script sends `K:NAV1_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,4 `MHZ+` hold to repeat (code 15; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(15)` key down, `lua:XL24-CJ4:RELEASE(15)` key up; the script sends `K:NAV2_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,5 `KHZ+` hold to repeat (code 16; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(16)` key down, `lua:XL24-CJ4:RELEASE(16)` key up; the script sends `K:NAV2_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,6 `MHZ+` hold to repeat (code 17; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(17)` key down, `lua:XL24-CJ4:RELEASE(17)` key up; the script sends `K:COM2_RADIO_WHOLE_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,7 `KHZ+` hold to repeat (code 18; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(18)` key down, `lua:XL24-CJ4:RELEASE(18)` key up; the script sends `K:COM2_RADIO_FRACT_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 2,8 `BARO+` hold to repeat (code 11; baro, cap 200) | none | - | `lua:XL24-CJ4:HOLD(11)` key down, `lua:XL24-CJ4:RELEASE(11)` key up; the script sends `K:KOHLSMAN_INC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-INSTE; weak, as visionjet-sf50.md | Unverified |
+| radios 3,2 `MHZ-` hold to repeat (code 19; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(19)` key down, `lua:XL24-CJ4:RELEASE(19)` key up; the script sends `K:NAV1_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,3 `KHZ-` hold to repeat (code 20; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(20)` key down, `lua:XL24-CJ4:RELEASE(20)` key up; the script sends `K:NAV1_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,4 `MHZ-` hold to repeat (code 21; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(21)` key down, `lua:XL24-CJ4:RELEASE(21)` key up; the script sends `K:NAV2_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,5 `KHZ-` hold to repeat (code 22; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(22)` key down, `lua:XL24-CJ4:RELEASE(22)` key up; the script sends `K:NAV2_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,6 `MHZ-` hold to repeat (code 23; slow, cap 30) | none | - | `lua:XL24-CJ4:HOLD(23)` key down, `lua:XL24-CJ4:RELEASE(23)` key up; the script sends `K:COM2_RADIO_WHOLE_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,7 `KHZ-` hold to repeat (code 24; fast, cap 200) | none | - | `lua:XL24-CJ4:HOLD(24)` key down, `lua:XL24-CJ4:RELEASE(24)` key up; the script sends `K:COM2_RADIO_FRACT_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-RADE | Unverified |
+| radios 3,8 `BARO-` hold to repeat (code 12; baro, cap 200) | none | - | `lua:XL24-CJ4:HOLD(12)` key down, `lua:XL24-CJ4:RELEASE(12)` key up; the script sends `K:KOHLSMAN_DEC` | - | README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD; SDK-INSTE; weak, as visionjet-sf50.md | Unverified |
+| radios 4,6 `MIC1` | `(A:COM TRANSMIT:1, Bool)` | Bool | `K:PILOT_TRANSMITTER_SET:0` | - | SDK-RADE; SDK-RADV | Unverified |
+| radios 4,7 `MIC2` | `(A:COM TRANSMIT:2, Bool)` | Bool | `K:PILOT_TRANSMITTER_SET:1` | - | SDK-RADE; SDK-RADV | Unverified |
+| systems 1,2 `BAT` | `(A:ELECTRICAL MASTER BATTERY:1, Bool)` | Bool | `K:TOGGLE_MASTER_BATTERY:1` | the battery input event once S-1 lists it | SDK-ELECE; CKL 7; SDK-ELECV | Unverified |
+| systems 1,3 `GEN L` | `(A:GENERAL ENG MASTER ALTERNATOR:1, Bool)` | Bool | `K:TOGGLE_ALTERNATOR1` | the generator input event once S-1 lists it | SDK-ELECE; SDK-ENGV | Unverified |
+| systems 1,4 `GEN R` | `(A:GENERAL ENG MASTER ALTERNATOR:2, Bool)` | Bool | `K:TOGGLE_ALTERNATOR2` | the generator input event once S-1 lists it | SDK-ELECE; SDK-ENGV | Unverified |
+| systems 1,5 `AVIONICS` | `(A:AVIONICS MASTER SWITCH:1, Bool)` | Bool | none | - | SDK-SYSV; CKL 19 | Unverified |
+| systems 1,8 `EXT PWR` | `(A:EXTERNAL POWER ON:1, Bool)` | Bool | none | - | SDK-ELECV; CKL 86 | Unverified |
+| systems 2,2 `BUS V` | `(A:ELECTRICAL MAIN BUS VOLTAGE:1, Volts)` | Volts | none | - | SDK-ELECV | Unverified |
+| systems 2,3 `BATT A` | `(A:ELECTRICAL BATTERY LOAD:1, Amperes)` | Amperes | none | - | SDK-ELECV; CKL 231 | Unverified |
+| systems 2,4 `HYD PSI` | `(A:HYDRAULIC PRESSURE:1, psi)` | psi | none | - | SDK-SYSV; CKL 125 | Unverified |
+| systems 3,2 `XFER` | `(A:FUEL CROSS FEED, Enum)` | Enum | none | - | SDK-FUELV; CKL 366 | Unverified |
+| systems 3,3 `PUMP L` | `(A:GENERAL ENG FUEL PUMP ON:1, Bool)` | Bool | none | - | SDK-ENGV | Unverified |
+| systems 3,4 `PUMP R` | `(A:GENERAL ENG FUEL PUMP ON:2, Bool)` | Bool | none | - | SDK-ENGV | Unverified |
+| engine 1,2 `N1 L` | `(A:TURB ENG N1:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 1,3 `N2 L` | `(A:TURB ENG N2:1, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 1,4 `ITT L` | `(A:TURB ENG ITT:1, Celsius)` | Celsius | none | - | SDK-ENGV; CKL 74 | Unverified |
+| engine 1,5 `FF L` | `(A:TURB ENG FUEL FLOW PPH:1, Pounds per hour)` | Pounds per hour | none | - | SDK-ENGV | Unverified |
+| engine 1,6 `OIL P L` | `(A:GENERAL ENG OIL PRESSURE:1, psi)` | psi | none | - | SDK-ENGV | Unverified |
+| engine 1,7 `OIL T L` | `(A:GENERAL ENG OIL TEMPERATURE:1, fahrenheit)` | fahrenheit | none | - | SDK-ENGV | Unverified |
+| engine 2,2 `N1 R` | `(A:TURB ENG N1:2, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 2,3 `N2 R` | `(A:TURB ENG N2:2, Percent)` | Percent | none | - | SDK-ENGV | Unverified |
+| engine 2,4 `ITT R` | `(A:TURB ENG ITT:2, Celsius)` | Celsius | none | - | SDK-ENGV; CKL 74 | Unverified |
+| engine 2,5 `FF R` | `(A:TURB ENG FUEL FLOW PPH:2, Pounds per hour)` | Pounds per hour | none | - | SDK-ENGV | Unverified |
+| engine 2,6 `OIL P R` | `(A:GENERAL ENG OIL PRESSURE:2, psi)` | psi | none | - | SDK-ENGV | Unverified |
+| engine 2,7 `OIL T R` | `(A:GENERAL ENG OIL TEMPERATURE:2, fahrenheit)` | fahrenheit | none | - | SDK-ENGV | Unverified |
+| engine 3,2 `START L` | `(A:GENERAL ENG STARTER:1, Bool)` | Bool | none | - | SDK-ENGV; CKL 66 | Unverified |
+| engine 3,3 `RUN L` | `(A:GENERAL ENG COMBUSTION:1, Bool)` | Bool | none | - | SDK-ENGV; CKL 70 | Unverified |
+| engine 3,4 `IGN L` | `(A:TURB ENG IGNITION SWITCH EX1:1, Enum)` | Enum | none | - | SDK-ENGV | Unverified |
+| engine 4,2 `START R` | `(A:GENERAL ENG STARTER:2, Bool)` | Bool | none | - | SDK-ENGV; CKL 66 | Unverified |
+| engine 4,3 `RUN R` | `(A:GENERAL ENG COMBUSTION:2, Bool)` | Bool | none | - | SDK-ENGV; CKL 70 | Unverified |
+| engine 4,4 `IGN R` | `(A:TURB ENG IGNITION SWITCH EX1:2, Enum)` | Enum | none | - | SDK-ENGV | Unverified |
+| engine 3,6 `FUEL L` | `(A:FUEL TANK LEFT MAIN QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+| engine 3,7 `FUEL R` | `(A:FUEL TANK RIGHT MAIN QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+| engine 3,8 `FUEL TOT` | `(A:FUEL TOTAL QUANTITY, Gallons)` | Gallons | none | - | SDK-FUELV | Unverified |
+| iceenv 1,2 `ENG AI L` | `(A:ENG ANTI ICE:1, Bool)` | Bool | `K:ANTI_ICE_TOGGLE_ENG1` | the switch's input event once S-1 lists it | SDK-ENGE; CKL 129; SDK-ENGV | Unverified |
+| iceenv 1,3 `ENG AI R` | `(A:ENG ANTI ICE:2, Bool)` | Bool | `K:ANTI_ICE_TOGGLE_ENG2` | the switch's input event once S-1 lists it | SDK-ENGE; CKL 129; SDK-ENGV | Unverified |
+| iceenv 1,4 `WING/STAB` | `(A:STRUCTURAL DEICE SWITCH, Bool)` | Bool | `K:TOGGLE_STRUCTURAL_DEICE` | the switch's input event once S-1 lists it | SDK-AMISCE; CKL 191; SDK-SYSV | Unverified |
+| iceenv 1,5 `WSHLD` | `(A:WINDSHIELD DEICE SWITCH, Bool)` | Bool | `K:WINDSHIELD_DEICE_TOGGLE` | the switch's input event once S-1 lists it | SDK-AMISCE; SDK-SYSV | Unverified |
+| iceenv 3,3 `CAB ALT` | `(A:PRESSURIZATION CABIN ALTITUDE, Feet)` | Feet | none | - | SDK-SYSV; CKL 149 | Unverified |
+| iceenv 3,4 `CAB RATE` | `(A:PRESSURIZATION CABIN ALTITUDE RATE, Feet/minute)` | Feet/minute | none | - | SDK-SYSV | Unverified |
+| iceenv 3,5 `DIFF` | `(A:PRESSURIZATION PRESSURE DIFFERENTIAL, psi)` | psi | none | - | SDK-SYSV | Unverified |
+| iceenv 3,6 `DUMP` | `(A:PRESSURIZATION DUMP SWITCH, Bool)` | Bool | none | - | SDK-SYSV | Unverified |
+| lights 1,2 `RECOG` | `(A:LIGHT RECOGNITION, Bool)` | Bool | `K:TOGGLE_RECOGNITION_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| lights 1,3 `WING` | `(A:LIGHT WING, Bool)` | Bool | `K:TOGGLE_WING_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| lights 2,2 `BELTS` | `(A:CABIN SEATBELTS ALERT SWITCH, Bool)` | Bool | `K:CABIN_SEATBELTS_ALERT_SWITCH_TOGGLE` | the switch's input event once S-1 lists it | SDK-AMISCE; SDK-SYSV | Unverified |
+| lights 2,3 `NO SMOKE` | `(A:CABIN NO SMOKING ALERT SWITCH, Bool)` | Bool | `K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE` | the switch's input event once S-1 lists it | SDK-AMISCE; SDK-SYSV | Unverified |
+| lights 3,2 `CABIN` | `(A:LIGHT CABIN, Bool)` | Bool | `K:TOGGLE_CABIN_LIGHTS` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |
+| lights 3,3 `PANEL` | `(A:LIGHT PANEL, Bool)` | Bool | `K:PANEL_LIGHTS_TOGGLE` | the switch's input event once S-1 lists it | SDK-ELECE; SDK-SYSV | Unverified |

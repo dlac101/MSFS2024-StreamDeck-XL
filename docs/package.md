@@ -41,8 +41,8 @@ described in [installation.md](installation.md), don't re-run the installer or u
    `%APPDATA%\Elgato\StreamDeck\Plugins\com.extension.pilotsdeck.sdPlugin\`.
 2. Drop `MSFS2024-XL v<version>.ppp` on the arrow, or browse to it.
 3. Read the notes and the version it shows. If it reports profiles of the same name that are already
-   installed (`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`), keep **Remove old Profiles**
-   checked.
+   installed (`MSFS2024 C172 G1000`, `MSFS2024 A32NX`, `MSFS2024 VisionJet`, `MSFS2024 CJ4`), keep **Remove
+   old Profiles** checked.
 4. Click **Install**. The Profile Manager stops and starts the Stream Deck app as needed and copies the Lua
    scripts into the plugin's `Scripts` folder (replacing older copies), so you no longer copy them by hand.
 5. It shows one link per profile: click each one and pick your Stream Deck XL. It goes on when every profile
@@ -66,6 +66,9 @@ profile on the Stream Deck by hand until then.
 
 The `MSFS2024 VisionJet` profile maps the same way with the search string `microsoft_sf50`
 ([visionjet-sf50.md](visionjet-sf50.md)); not yet tested.
+
+The `MSFS2024 CJ4` profile has no search string yet: its aircraft string is recorded at the first CJ4 flight
+([cj4.md](cj4.md)), so pick that profile on the Stream Deck by hand until then.
 
 ## Update to a newer package
 
