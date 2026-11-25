@@ -18,10 +18,10 @@ Set up 2026-11-11 by the setup session (coordinator 0), ledger rows LR1-C0 to LR
 
 | Name | Value | Meaning |
 | --- | --- | --- |
-| COORD_PRELAUNCH_AT | 200k | First user-typed turn after this: write and start the successor |
-| COORD_CLOSEOUT_BY | 300k | The coordinator closes out by this size |
-| WORKER_SUCCESSOR_AT | 200k to 230k | The worker asks the coordinator for its successor plan |
-| WORKER_CLOSEOUT_BY | 300k | The worker closes out by this size |
+| COORD_PRELAUNCH_AT | 400k | First turn the app allows after this: write and start the successor (LR1508-C39) |
+| COORD_CLOSEOUT_BY | 500k | The coordinator closes out by this size (LR1508-C39) |
+| WORKER_SUCCESSOR_AT | 400k | The worker asks the coordinator for its successor plan (LR1508-C39) |
+| WORKER_CLOSEOUT_BY | 500k | The worker closes out by this size (LR1508-C39) |
 
 ## Agent limits (harness count)
 
@@ -68,3 +68,5 @@ One line per order: the row id and the user's exact words.
 - LR2-C0: "Phase 2 spec now" (answering "What should the chain work on first?")
 - LR3-C0: "Commit go includes push" (answering "Should a commit go also push to origin/main?")
 - LR17-C1: "Also, no need to ask to start new coord or worker sessions, just do it.  same limits as skill (no more than 3 workers, no more than 2 coords...with the intent the old coord will be archived when appropriate, same with old workers." (unprompted). So: a coordinator starts the successor coordinator and the next worker without asking, at the points in "Context caps"; at most 3 worker sessions and 2 coordinator sessions live at once; a closed-out session is archived without asking once its marker exists and no turn or agent of it runs. Each start and archive is a row.
+- LR1420-C35, LR1493-C38, LR1506-C39: "you can just keep spawning coords and workers without asking me"; "stop asking permission to launch new sessions.  You have blanket permission to launch sessions (coords and workers), using our rubric"; "and stop asking for permission.  you have permission to launch workers and coord sessions whenever needed". So: call the start first on any turn; a proposal card only after the app refused that call.
+- LR1508-C39: "change our rules to launch new coordinator after 400k tokens", "same for workers" (unprompted). See "Context caps"; the 500k closeout values keep the old 100k margin.
