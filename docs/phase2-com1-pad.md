@@ -148,7 +148,13 @@ with the decimal point fixed after the third digit: `___.___`, `1__.___`, `11_._
 [`pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua`](../pilotsdeck/MSFS2024-XL/_Package/Scripts/XL24-COMPAD.lua),
 a standard script (README 3.5.1). The `XL24-` prefix keeps it apart from other packages' scripts in the
 plugin's shared Scripts folder. It uses only `SimVar`, `SimRead`, `SimWrite`, `SimCommand`, `Sleep` and
-`Log` (README 3.5.1). Functions: `DIGIT(n)`, `BACK`, `CLEAR`, `ENTER`, `ENTER_SWAP`. PilotsDeck runs a
+`Log` (README 3.5.1). Since V-PAD (not yet sim-tested) it also writes `X:XL24_COMPAD_LIT_0` to `_9`,
+`_CLR` and `_ENT` (`1` for a short time when a press took effect) and, after ENT, reads COM1 standby or active
+until the sim shows the sent frequency or 1.5 s have passed. Only the VisionJet's pad keys read these variables
+([visionjet-sf50.md](visionjet-sf50.md), "COM pad: centered text and press feedback"); this page's keys are
+unchanged, with the same commands and events. That the script's new waits don't hold up a fast next press is not
+proven (same section). Functions:
+`DIGIT(n)`, `BACK`, `CLEAR`, `ENTER`, `ENTER_SWAP`. PilotsDeck runs a
 command `lua:XL24-COMPAD:DIGIT(7)` as the Lua code `DIGIT(7)`, and `lua:XL24-COMPAD:BACK` as `BACK()`
 (PD-SRC `ScriptManager.cs` `RunFunction`), so the digit arrives as a number. It runs only while the sim is
 connected (same place: `SimController.IsReadyProcess`).

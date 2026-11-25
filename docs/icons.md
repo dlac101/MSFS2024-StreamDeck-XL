@@ -203,6 +203,7 @@ VisionJet's search string `microsoft_sf50` ([visionjet-sf50.md](visionjet-sf50.m
 | PilotsDeck Dynamic Buttons (BAT, lights, AP keys, PARK, COCKPIT/EXTERNAL, 1X) | `OnImage`, `OffImage` | plugin `Images\Guenseli-C172\` (`Images\Guenseli-A32NX\` and `Images\Guenseli-SF50\` for the A32NX and VisionJet builds) |
 | PilotsDeck Display Value readouts | `DefaultImage` (background; the live value is drawn over it) | same |
 | PilotsDeck Simple Buttons (ATC, MAP, TRIM UP/DN, AIL L/R, RUD L/R, PFD/MFD bezel keys, SLOWER/FASTER) | `DefaultImage` | same |
+| The VisionJet COM pad's digit, CLR and ENT keys (Dynamic Buttons with an image map) | `DefaultImage`; the green press image stays the package's own `Images/XL24-PadLit.png` (not from the pack) | same; the icon package also installs `Images\XL24-PadLit.png`, by hand copy it into the plugin's `Images\` folder |
 | Folder keys and the back keys | the state's `Image` | embedded in the profile (that page's `Images/` folder in the file) |
 | COM Radio keys (COM1 on the main page and the COM pad; NAV1, NAV2 and COM2 on the radios page) | none: left as it is | |
 | The trim gauge (Display Gauge, trim 3,4) | none: left as it is; PilotsDeck draws the bar, pointer, center line and number, and no pack face is known to fit an upward bar ([design-trim-gauge.md](design-trim-gauge.md)) | |

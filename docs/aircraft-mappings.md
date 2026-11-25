@@ -265,6 +265,8 @@ listed under the trim page.
 | COM1 channel spacing (read by the script for the 25 kHz shorthand) | `(A:COM SPACING MODE:1, Enum)` | Enum: 0 = 25 kHz, 1 = 8.33 kHz | (read only here) | none (without it, no shorthand) | SDK-RADV | Unverified |
 | COM1 standby station ident (compad 2,2 `STBY ID`, optional) | `(A:COM STANDBY FREQ IDENT:1, String)` | String | (read only) | none (drop the key) | SDK-RADV | Unverified |
 | Typed entry (compad 1,3 `ENTRY`) | `X:XL24_COMPAD_ENTRY` (PilotsDeck internal variable, written by the script) | String, e.g. `118.5__` | the script's `DIGIT(n)`, `BACK`, `CLEAR`, `ENTER`, `ENTER_SWAP` (`lua:XL24-COMPAD:...`, command type 14) | the script function as the key's Address instead of the `X:` variable | README 2.1.1 (INTERNAL, LUAFUNC); REF-GSX | Unverified |
+| Press feedback of the pad keys (V-PAD; the VisionJet's compad keys read them, the C172's don't) | `X:XL24_COMPAD_LIT_0` to `X:XL24_COMPAD_LIT_9`, `X:XL24_COMPAD_LIT_CLR`, `X:XL24_COMPAD_LIT_ENT` (PilotsDeck internal variables, written by the script) | String, `1` lit, `0` not | the script's `DIGIT(n)`, `BACK`, `CLEAR`, `ENTER`, `ENTER_SWAP`; a digit or CLR light says only that the script changed the entry (no sim value exists for it) | none (the keys stay unlit) | README 2.1.1 (INTERNAL), 2.2.2 (Image Mapping), 3.5.1 | Unverified |
+| COM1 readback after ENT (V-PAD; read by the script before it lights ENT) | `(A:COM STANDBY FREQUENCY:1, MHz)` for ENTER, `(A:COM ACTIVE FREQUENCY:1, MHz)` for ENTER_SWAP | MHz, compared within 1 kHz of the sent value, for at most 1.5 s | (read only here) | none (ENT stays unlit; COM1 at 1,2 shows what the sim has) | SDK-RADV; README 3.5.1 | Unverified |
 
 Sources: SDK-RADE and SDK-RADV as above (read again 2026-11-12 for `COM_STBY_RADIO_SET_HZ`,
 `COM SPACING MODE`, `COM STANDBY FREQ IDENT`); README = PilotsDeck README; REF-GSX = the GSX Pro reference
@@ -780,19 +782,19 @@ Aircraft string (PD-LOG, PilotsDeck20261116.log): the path of the preset's `airc
 | simrate 1,5 `FASTER` (the C172's key) | none | - | `K:SIM_RATE_INCR` | - | SDK-MISCE | Unverified |
 | compad 1,2 `COM1` (the C172's key) | Active `(A:COM ACTIVE FREQUENCY:1, MHz)`, Standby `(A:COM STANDBY FREQUENCY:1, MHz)` | MHz | `K:COM_STBY_RADIO_SWAP` | - | SDK-RADE; SDK-RADV | Unverified |
 | compad 1,3 `ENTRY` (the C172's key) | `X:XL24_COMPAD_ENTRY` | PilotsDeck internal variable | none | - | README 2.1.1 INTERNAL; written by the script | Unverified |
-| compad 1,6 `7` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 1,7 `8` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(8)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 1,8 `9` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(9)` | - | README 2.1.1 LUAFUNC | Unverified |
+| compad 1,6 `7` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_7` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(7)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 1,7 `8` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_8` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(8)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 1,8 `9` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_9` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(9)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
 | compad 2,2 `STBY ID` (the C172's key) | `(A:COM STANDBY FREQ IDENT:1, String)` | String | none | - | SDK-RADV; PD-SRC string A-Var | Unverified |
-| compad 2,6 `4` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 2,7 `5` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 2,8 `6` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 3,6 `1` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 3,7 `2` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 3,8 `3` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 4,6 `CLR` (the C172's key) | none | - | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
-| compad 4,7 `0` (the C172's key) | none | - | `lua:XL24-COMPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC | Unverified |
-| compad 4,8 `ENT` (the C172's key) | none (COM1 at 1,2 shows the result) | - | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` | - | README 2.1.1 LUAFUNC, 2.1 | Unverified |
+| compad 2,6 `4` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_4` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(4)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 2,7 `5` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_5` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(5)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 2,8 `6` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_6` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(6)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,6 `1` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_1` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(1)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,7 `2` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_2` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(2)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 3,8 `3` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_3` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(3)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 4,6 `CLR` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_CLR` | PilotsDeck internal variable, `1` lit, `0` not | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` | - | README 2.1.1 LUAFUNC, INTERNAL, 2.1; written by the script | Unverified |
+| compad 4,7 `0` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_0` | PilotsDeck internal variable, `1` lit, `0` not | `lua:XL24-COMPAD:DIGIT(0)` | - | README 2.1.1 LUAFUNC, INTERNAL; written by the script | Unverified |
+| compad 4,8 `ENT` (the C172's command; lit by the script, V-PAD) | `X:XL24_COMPAD_LIT_ENT` | PilotsDeck internal variable, `1` lit, `0` not | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` | - | README 2.1.1 LUAFUNC, INTERNAL, 2.1; written by the script | Unverified |
 | autopilot 1,2 `AP` | `(A:AUTOPILOT MASTER, Bool)` | Bool | `K:AP_MASTER` | - | SDK-APE; AM; SDK-APV | Unverified |
 | autopilot 1,3 `FD` | `(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool)` | Bool | `K:TOGGLE_FLIGHT_DIRECTOR` | - | SDK-APE; SDK-APT; SDK-APV | Unverified |
 | autopilot 1,4 `HDG` | `(A:AUTOPILOT HEADING LOCK, Bool)` | Bool | `K:AP_HDG_HOLD` | - | SDK-APE; SDK-APV | Unverified |

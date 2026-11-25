@@ -1,5 +1,5 @@
 {
-  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars (V-1); V-2 adds RECOG and ICE, FMS SPD and MAN SPD on autopilot and the systems and iceenv pages' switches from the same list, and PARK's command (the parking brake input event; the standard K-event failed in the SF50). The pages views, simrate, vspeeds, compad and xpdr are the C172 G1000 pages' keys as they are (views adds MAP in V-UX); radios is the C172's radios page with hold to repeat and a BARO column (V-3); trim is the C172's trim page without its aileron trim keys (V-2). Since V-UX the main page is the VisionJet's own grid, no longer the C172 G1000 profile's: the autopilot modes HDG, ALT, FLC, A/T, NAV and AP in row 1; the HDG, ALT and SPD columns with their step keys in rows 2 and 4 (hold to repeat) and their readouts in row 3; the autothrottle column A/T, FMS SPD, MAN SPD and A/T DISC (a new key: the input event B:sf50_autopilot_autothrottle_disconnect, every press writes 1, read the autothrottle arm state AUTOPILOT THROTTLE ARM); NAV, APR, VNV and VS; AP, FLAPS, LDG and ATC; the folders in columns 7 and 8. The main keys it no longer holds moved to systems (BAT, PARK, GEAR and N1 in row 3; the NAV LT, RECOG, STRB, LDG, TAXI, PITOT and ICE switches in row 4), radios (COM1, CDI and the BARO commands) and views (MAP); FD and the XPDR readout left main (autopilot 1,3 and xpdr 1,2 are the same keys). First-level pages, opened from main: trim, views, autopilot, radios, simrate, compad, systems and more; second-level pages, opened from more: vspeeds, checklist, xpdr, engine and iceenv (checklist holds only its back key). The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios, engine, systems and iceenv. 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested. V-3 adds hold to repeat on the step keys of autopilot, radios and trim (a Simple Button with Hold Switch on: key down runs lua:XL24-SF50:HOLD(code), key up lua:XL24-SF50:RELEASE(code); the script Scripts/XL24-SF50.lua sends the events, docs/visionjet-sf50.md 'Hold to repeat'), a BARO column on radios (1,8 readout, 2,8 BARO+, 3,8 BARO-) and the FUEL CTL readout's LEFT/AUTO/RIGHT mappings. Since V-UX the hold codes 1, 2, 5, 6, 9 and 10 sit on two keys each, on main and on autopilot (the script keeps one state per code; only one page shows at a time).",
+  "_about": "Pages and keys of the generated profile for the MSFS 2024 default Cirrus Vision SF50 (VisionJet), in the form of c172-g1000.json (see its _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Built with the SF50 input event list (docs/reference/InputEvents-SF50.txt, track A): BAT, NAV LT, STRB, LDG, PITOT and the autopilot VNV command are the list's B-vars (V-1); V-2 adds RECOG and ICE, FMS SPD and MAN SPD on autopilot and the systems and iceenv pages' switches from the same list, and PARK's command (the parking brake input event; the standard K-event failed in the SF50). The pages views, simrate, vspeeds, compad and xpdr are the C172 G1000 pages' keys as they are (views adds MAP in V-UX; since V-PAD the compad digit, CLR and ENT keys are Dynamic Buttons with a centered title and an image map that reads the press feedback variables X:XL24_COMPAD_LIT_... of XL24-COMPAD.lua, docs/visionjet-sf50.md 'COM pad: centered text and press feedback'); radios is the C172's radios page with hold to repeat and a BARO column (V-3); trim is the C172's trim page without its aileron trim keys (V-2). Since V-UX the main page is the VisionJet's own grid, no longer the C172 G1000 profile's: the autopilot modes HDG, ALT, FLC, A/T, NAV and AP in row 1; the HDG, ALT and SPD columns with their step keys in rows 2 and 4 (hold to repeat) and their readouts in row 3; the autothrottle column A/T, FMS SPD, MAN SPD and A/T DISC (a new key: the input event B:sf50_autopilot_autothrottle_disconnect, every press writes 1, read the autothrottle arm state AUTOPILOT THROTTLE ARM); NAV, APR, VNV and VS; AP, FLAPS, LDG and ATC; the folders in columns 7 and 8. The main keys it no longer holds moved to systems (BAT, PARK, GEAR and N1 in row 3; the NAV LT, RECOG, STRB, LDG, TAXI, PITOT and ICE switches in row 4), radios (COM1, CDI and the BARO commands) and views (MAP); FD and the XPDR readout left main (autopilot 1,3 and xpdr 1,2 are the same keys). First-level pages, opened from main: trim, views, autopilot, radios, simrate, compad, systems and more; second-level pages, opened from more: vspeeds, checklist, xpdr, engine and iceenv (checklist holds only its back key). The key tables in docs/visionjet-sf50.md are the reference; check.py compares them: '## Key table' (main) and '## Key table: <page id>' for trim, views, more, vspeeds, simrate, compad, autopilot, xpdr, radios, engine, systems and iceenv. 'phase1_keys' is empty: check.py's phase1 check compares the C172's Phase 1 keys. Not yet sim-tested. V-3 adds hold to repeat on the step keys of autopilot, radios and trim (a Simple Button with Hold Switch on: key down runs lua:XL24-SF50:HOLD(code), key up lua:XL24-SF50:RELEASE(code); the script Scripts/XL24-SF50.lua sends the events, docs/visionjet-sf50.md 'Hold to repeat'), a BARO column on radios (1,8 readout, 2,8 BARO+, 3,8 BARO-) and the FUEL CTL readout's LEFT/AUTO/RIGHT mappings. Since V-UX the hold codes 1, 2, 5, 6, 9 and 10 sit on two keys each, on main and on autopilot (the script keeps one state per code; only one page shows at a time).",
   "profile_name": "MSFS2024 VisionJet",
   "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 VisionJet.streamDeckProfile",
   "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
@@ -748,7 +748,7 @@
       "id": "compad",
       "parent": "main",
       "spec": "docs/visionjet-sf50.md",
-      "note": "COM1 pad as the C172's (XL24-COMPAD.lua) (V-1)",
+      "note": "COM1 pad as the C172's (XL24-COMPAD.lua) (V-1), with centered titles and press feedback (V-PAD)",
       "keys": [
         {
           "pos": "1,2",
@@ -774,46 +774,43 @@
         {
           "pos": "1,6",
           "title": "7",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(7)",
+            "Address": "X:XL24_COMPAD_LIT_7",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "1,7",
           "title": "8",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(8)",
+            "Address": "X:XL24_COMPAD_LIT_8",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "1,8",
           "title": "9",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(9)",
+            "Address": "X:XL24_COMPAD_LIT_9",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
@@ -828,106 +825,99 @@
         {
           "pos": "2,6",
           "title": "4",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(4)",
+            "Address": "X:XL24_COMPAD_LIT_4",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "2,7",
           "title": "5",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(5)",
+            "Address": "X:XL24_COMPAD_LIT_5",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "2,8",
           "title": "6",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(6)",
+            "Address": "X:XL24_COMPAD_LIT_6",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "3,6",
           "title": "1",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(1)",
+            "Address": "X:XL24_COMPAD_LIT_1",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "3,7",
           "title": "2",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(2)",
+            "Address": "X:XL24_COMPAD_LIT_2",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "3,8",
           "title": "3",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(3)",
+            "Address": "X:XL24_COMPAD_LIT_3",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "4,6",
           "title": "CLR",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:BACK",
+            "Address": "X:XL24_COMPAD_LIT_CLR",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false,
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png",
             "HasLongPress": true,
             "ActionTypeLong": 14,
             "AddressActionLong": "lua:XL24-COMPAD:CLEAR"
@@ -936,31 +926,29 @@
         {
           "pos": "4,7",
           "title": "0",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:DIGIT(0)",
+            "Address": "X:XL24_COMPAD_LIT_0",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png"
           }
         },
         {
           "pos": "4,8",
           "title": "ENT",
-          "template": "simple_button",
-          "states_from": "p1:3,0",
-          "shell": {
-            "LinkedTitle": true
-          },
+          "title_align": "middle",
+          "template": "p1:3,0",
           "set": {
             "ActionType": 14,
             "AddressAction": "lua:XL24-COMPAD:ENTER",
+            "Address": "X:XL24_COMPAD_LIT_ENT",
             "DefaultImage": "Images/Switch.png",
-            "DrawBox": false,
+            "UseImageMapping": true,
+            "ImageMap": "0=Images/None.png:1=Images/XL24-PadLit.png",
             "HasLongPress": true,
             "ActionTypeLong": 14,
             "AddressActionLong": "lua:XL24-COMPAD:ENTER_SWAP"

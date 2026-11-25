@@ -1807,3 +1807,62 @@ the sim.
   outcome and which fallback was needed, whether A/T arms the SF50's autothrottle, the SPD outcome (did SPD+/-
   move the PFD speed bug), whether a key up was lost across a page change or reached the other page's key,
   the BARO press on the G3000, the MSFS version and SF50 preset, and every change.
+
+## VisionJet SF50 profile (V-PAD)
+
+The COM pad page (main 3,8) of `MSFS2024 VisionJet`: centered key titles and a green key when a press took effect
+(docs/visionjet-sf50.md, "COM pad: centered text and press feedback"). Not yet tested. Needs the new
+`XL24-COMPAD.lua` and `Images\XL24-PadLit.png` in the plugin folder (the package installs both). The fast presses
+and every step after the Look steps need the SF50 loaded and COM1 on; the Look steps need no sim.
+
+**Fast presses (do these first)**
+
+These steps decide whether a wait in the script (the end of a light, the reads after ENT) holds up the next press
+(not proven); if a press is late or lost, the fallback is the script without these waits or a global script
+(docs/visionjet-sf50.md, "Fallbacks"). Clear the entry (CLR held) before each step and after the last one.
+- [ ] Clear and type 1 1 8 5 2 5 as fast as you can, then clear and type 1 2 2 8 0 0: no digit is lost or late,
+  and no key stays green.
+- [ ] Press the same digit twice quickly (1, 1): record whether two separate flashes show or one longer one.
+- [ ] Type a frequency and press ENT, then at once type the next entry: no digit is lost while ENT waits.
+
+**Look (no sim needed)**
+- [ ] Open COM PAD: 7 8 9, 4 5 6, 1 2 3, CLR 0 ENT show their text in the middle of the key; COM1, ENTRY and STBY
+  ID look as before. No key is green.
+- [ ] The same with the local icon build (`MSFS2024 VisionJet Icons`): the text is in the middle of the bezel key.
+- [ ] With no sim connected, press 1: no key turns green and the entry does not change.
+
+**Digits**
+- [ ] Press 1, 1, 8, 5, 2, 5 slowly: each key turns green for a moment on release, and ENTRY shows `118.525`. The
+  text stays readable in the middle while green. In the icon build too.
+- [ ] Press 9 now (a 7th digit): not green, ENTRY unchanged.
+- [ ] Clear, then press 2, 0, 9 as the first digit: none turns green, ENTRY stays `___.___`. Press 1, then 4: 4 is
+  not green. Press 1 again, then 7 (`11_` typed): 7 is not green. Clear, 1, 3, 7: 7 is not green. Only the taken
+  digits turned green.
+
+**CLR**
+- [ ] With digits typed: CLR short removes one digit and turns green; CLR held 1 s clears all and turns green on
+  release. With nothing typed: CLR short and long stay dark.
+
+**ENT**
+- [ ] With another frequency in COM1 standby, type 118525, ENT: COM1 (1,2) standby shows 118.525 and then ENT turns
+  green for about a second; `lua.log` has no "did not read back" line. Record the delay you see.
+- [ ] Type 118525 again with 118.525 still in standby, ENT: ENT turns green (the sim has the frequency already).
+- [ ] Type 11, ENT (refused): not green, ENTRY stays; the same with nothing typed. Right after a green ENT, press
+  ENT with nothing typed: the green ends.
+- [ ] Type 121500, hold ENT 1 s: COM1 active shows 121.500 and ENT turns green. Standby holds the old active
+  frequency.
+- [ ] With the avionics or COM1 off, type a frequency that standby does not hold, ENT: if the standby does not
+  change, ENT stays dark and `lua.log` says "did not read back". Record what the sim did.
+
+**Leaving the page**
+- [ ] Press 1 and at once the back key; open COM PAD again: no key is green. Do it again after more than a minute.
+
+**C172 (the script is shared)**
+- [ ] With the C172 and `MSFS2024 C172 G1000`: MORE > COM PAD works as before (digits, also typed fast and at once
+  after ENT, refused digits, CLR short and long, ENT, long ENT; section "Phase 2: COM1 pad (C172 G1000)"), its
+  keys look as before and none turns green.
+
+**Results to record**
+- [ ] Record each step's result with the date, the MSFS version, the SF50 preset and which build (plain or icon);
+  the "Verified" cells of aircraft-mappings.md's V-PAD rows; whether the green is clear and long enough, whether
+  14 is the right text size, and every change.

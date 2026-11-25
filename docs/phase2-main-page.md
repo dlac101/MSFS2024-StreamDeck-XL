@@ -140,7 +140,7 @@ The profile is the file
 On import the Stream Deck app gives the profile, its pages and its keys new IDs and relinks the folder
 keys (the installed MSFS-Fenix320-XL profile has other IDs than its export file). What a key does doesn't
 change. The folder keys should show the Stream Deck app's own folder look (not yet seen: they carry no image
-of their own, and the checklist records how they look); the project has no images of its own yet.
+of their own, and the checklist records how they look); this profile uses no image of the project's own.
 
 ### Regenerating the profile
 

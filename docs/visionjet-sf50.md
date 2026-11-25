@@ -28,7 +28,8 @@ light (V-2 put RECOG at main 4,2, systems 4,3 since V-UX) and no taxi light (TAX
 Research and the candidate names: [visionjet-g2-research.md](visionjet-g2-research.md). The data file is
 `tools/profilegen/visionjet-sf50.json`; the key tables below are the reference, and
 `python tools/profilegen/check.py tools/profilegen/visionjet-sf50.json` compares the profile with them key by
-key. The sim rate, COM pad and transponder pages call the C172's scripts as they are. V-3 adds this
+key. The sim rate, COM pad and transponder pages call the C172's scripts; since V-PAD the COM pad's script also
+lights the keys ("COM pad: centered text and press feedback"). V-3 adds this
 profile's own script `XL24-SF50.lua` (in the package's `Scripts` folder): it runs hold to repeat ("Hold to
 repeat").
 
@@ -154,7 +155,7 @@ opened from MORE 1,5, and its back key returns to more.
 | main 2,7 `AUTOPILOT` | autopilot | 1 | the C172's autopilot page with the SF50's changes (G3000, autothrottle); unchanged in V-UX |
 | main 2,8 `RADIOS` | radios | 1 | the C172's radios page with hold to repeat on its step keys, plus a BARO column (V-3); COM1 and CDI from main (V-UX) |
 | main 3,7 `SIM RATE` | simrate | 1 | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
-| main 3,8 `COM PAD` | compad | 1 | the C172's COM1 pad as it is (`XL24-COMPAD.lua`) |
+| main 3,8 `COM PAD` | compad | 1 | the C172's COM1 pad (`XL24-COMPAD.lua`) with centered titles and press feedback (V-PAD) |
 | main 4,7 `SYSTEMS` | systems | 1 | battery 2 and generator switches, electrical, engine knob, starter and fuel control readouts (V-2); the switches and readouts from main rows 1 and 4 (V-UX) |
 | main 4,8 `MORE` | more | 1 | five folder keys |
 | more 1,4 `V-SPEEDS` | vspeeds | 2 | the C172's V-speeds page as it is |
@@ -502,7 +503,8 @@ The C172's sim rate page ([phase2-sim-rate.md](phase2-sim-rate.md)); rows as tha
 
 ## Key table: compad
 
-The C172's COM1 pad ([phase2-com1-pad.md](phase2-com1-pad.md)); rows as that doc's "Key table: compad".
+The C172's COM1 pad ([phase2-com1-pad.md](phase2-com1-pad.md)), with the same positions, titles and commands as that
+doc's "Key table: compad". V-PAD: the digit, CLR and ENT keys are T8L (centered title, press feedback, below).
 Opened from main 3,8 since V-UX, so its back key returns to the main page.
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
@@ -512,33 +514,66 @@ Opened from main 3,8 since V-UX, so its back key returns to the main page.
 | 1,3 | `ENTRY` | Display Value | T3 | none | `X:XL24_COMPAD_ENTRY` [README 2.1.1 INTERNAL; written by the script] | the typed digits as text, e.g. `118.5__`; Format empty |
 | 1,4 |  | Empty |  |  |  |  |
 | 1,5 |  | Empty |  |  |  |  |
-| 1,6 | `7` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(7)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 1,7 | `8` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(8)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 1,8 | `9` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(9)` [README 2.1.1 LUAFUNC] | none | fixed image |
+| 1,6 | `7` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(7)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_7` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 1,7 | `8` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(8)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_8` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 1,8 | `9` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(9)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_9` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
 | 2,1 |  | Empty |  |  |  |  |
 | 2,2 | `STBY ID` | Display Value | T3 | none | `(A:COM STANDBY FREQ IDENT:1, String)` [SDK-RADV; PD-SRC string A-Var] | the station ident as text; Format empty |
 | 2,3 |  | Empty |  |  |  |  |
 | 2,4 |  | Empty |  |  |  |  |
 | 2,5 |  | Empty |  |  |  |  |
-| 2,6 | `4` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(4)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 2,7 | `5` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(5)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 2,8 | `6` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(6)` [README 2.1.1 LUAFUNC] | none | fixed image |
+| 2,6 | `4` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(4)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_4` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 2,7 | `5` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(5)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_5` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 2,8 | `6` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(6)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_6` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
 | 3,1 |  | Empty |  |  |  |  |
 | 3,2 |  | Empty |  |  |  |  |
 | 3,3 |  | Empty |  |  |  |  |
 | 3,4 |  | Empty |  |  |  |  |
 | 3,5 |  | Empty |  |  |  |  |
-| 3,6 | `1` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(1)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 3,7 | `2` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(2)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 3,8 | `3` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(3)` [README 2.1.1 LUAFUNC] | none | fixed image |
+| 3,6 | `1` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(1)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_1` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 3,7 | `2` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(2)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_2` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 3,8 | `3` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(3)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_3` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
 | 4,1 |  | Empty |  |  |  |  |
 | 4,2 |  | Empty |  |  |  |  |
 | 4,3 |  | Empty |  |  |  |  |
 | 4,4 |  | Empty |  |  |  |  |
 | 4,5 |  | Empty |  |  |  |  |
-| 4,6 | `CLR` | Simple Button | T8 | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` [README 2.1.1 LUAFUNC, 2.1] | none | fixed image |
-| 4,7 | `0` | Simple Button | T8 | `lua:XL24-COMPAD:DIGIT(0)` [README 2.1.1 LUAFUNC] | none | fixed image |
-| 4,8 | `ENT` | Simple Button | T8 | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` [README 2.1.1 LUAFUNC, 2.1] | none (COM1 at 1,2 shows the result) | fixed image |
+| 4,6 | `CLR` | Dynamic Button | T8L | Main `lua:XL24-COMPAD:BACK`, Second (long press) `lua:XL24-COMPAD:CLEAR` [README 2.1.1 LUAFUNC, 2.1] | `X:XL24_COMPAD_LIT_CLR` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after a press that removed a digit |
+| 4,7 | `0` | Dynamic Button | T8L | `lua:XL24-COMPAD:DIGIT(0)` [README 2.1.1 LUAFUNC] | `X:XL24_COMPAD_LIT_0` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 0.25 s after the script took the digit |
+| 4,8 | `ENT` | Dynamic Button | T8L | Main `lua:XL24-COMPAD:ENTER`, Second (long press) `lua:XL24-COMPAD:ENTER_SWAP` [README 2.1.1 LUAFUNC, 2.1] | `X:XL24_COMPAD_LIT_ENT` [README 2.1.1 INTERNAL; written by the script] | title in the middle; image map: none at `0`, green (`Images/XL24-PadLit.png`) at `1`, for 1 s after the sim read back the sent frequency (COM1 standby; on a long press COM1 active) |
+
+### COM pad: centered text and press feedback
+
+Since V-PAD (not yet sim-tested) the ten digit keys, CLR and ENT have their title in the middle of the key, and
+a key turns green for a short time when its press took effect. The COM1, ENTRY and STBY ID readouts keep their
+look: they draw their values themselves, and a centered title would lie over the value.
+
+| Press | The key turns green | What the green means |
+|---|---|---|
+| A digit the pad takes | at once, for 0.25 s | the script added the digit to the entry (no sim value exists for it) |
+| A digit the pad refuses (the first digit not 1, and so on) | no | |
+| CLR, short or long, with digits typed | at once, for 0.25 s | the script removed the last digit, or all |
+| CLR with no digit typed | no | |
+| ENT, short | when COM1 standby reads the sent frequency (within 1 kHz, at most 1.5 s later), for 1 s | the sim has the frequency in COM1 standby |
+| ENT, long | when COM1 active reads the sent frequency (the same limits), for 1 s | the sim has the frequency in COM1 active |
+| ENT with no valid frequency typed, or the sim does not read it back | no | the entry stays, or the log says COM1 did not read it back |
+
+A command runs when the key is released, so the green comes on release (PD-PAD). If COM1 standby (on a long press
+COM1 active) already held the typed frequency, ENT turns green at once: the sim has it, whether or not this press
+changed anything. One color serves short and long ENT; COM1 (1,2) shows which frequency moved. With no sim
+connected PilotsDeck does not run the script and nothing turns green. A newer ENT press ends the wait and the
+green of an older one.
+
+How it is made: each of the twelve keys is a Dynamic Button whose value is its own internal variable
+(`X:XL24_COMPAD_LIT_0` to `_9`, `_CLR`, `_ENT`), with Image Mapping on: `0` the empty `Images/None.png` (the
+key's background shows), `1` the package's own `Images/XL24-PadLit.png`. The script writes the variable; the
+title is drawn by the Stream Deck app over either image. The image comes with the package; without it the key
+shows PilotsDeck's wait image instead of green.
+
+The end of a light is a wait (`Sleep`) inside the called Lua function, and so are the reads after ENT (up to
+1.5 s). By PilotsDeck's source each Lua call runs on its own task (PD-PAD), so these waits should not hold up the
+next press, here or on the C172's pad. This is not proven: the first V-PAD steps of the checklist test it, and
+"Fallbacks" has what changes if a fast press is late or lost.
 
 ## Key table: autopilot
 
@@ -853,6 +888,7 @@ four ECS knobs (no write: V-2 A-7).
   (their docs above); they use standard events, SimVars and the C172's Lua scripts, nothing C172-specific.
   V-3: the radios step keys repeat while held, and the BARO column shows the altimeter setting (1,8) and
   steps it (BARO+ 2,8, BARO- 3,8, by the standard baro events). V-UX: radios row 4 and views MAP as above.
+  V-PAD: the COM pad's centered titles and press feedback, as above.
 
 ## Which route each key uses
 
@@ -1020,15 +1056,17 @@ real saved key with only the listed fields changed (the generator does this).
 | T3 Display Value | the Phase 1 RPM key (`p1:2,0`): Value Address, Format, Mappings; command none or a press command | main 2,6, 3,1 to 3,3; systems 3,4, 3,5; radios 4,3 (main 1,2, 1,5, 1,6, 3,2, 3,5, 3,6 until V-UX); autopilot 3,2, 3,3, 3,8, 4,8; engine; V-2: systems 1,6, 1,8, 2,3; iceenv row 2; V-3: radios 1,8 (since V-UX with main BARO's press and long press) |
 | T4 COM Radio | `com_radio` (templates.json) | radios 4,2 (main 3,1 until V-UX) and the copied pages' radio keys |
 | T5 Simple Button | `simple_button` with the AP key's states | main 4,6, views 1,7 (main 3,3, 3,4 until V-UX; until V-3 also the autopilot, radios and trim step keys, now H1) |
+| T8L lit pad key (V-PAD) | Dynamic Button, the Phase 1 AP key (`p1:3,0`): command type Lua Function (14), Value Address `X:XL24_COMPAD_LIT_<key>`, Background `Images/Switch.png`, Image Mapping on (`UseImageMapping`, `ImageMap` `0=Images/None.png:1=Images/XL24-PadLit.png`; README 2.2.2), title alignment middle; CLR and ENT with long press as T8 of [phase2-com1-pad.md](phase2-com1-pad.md) | compad: the digits, CLR and ENT |
 | H1 hold to repeat (V-3) | as T5, with the command type Lua Function (14), Command `lua:XL24-SF50:HOLD(n)`, alternate command (`AddressActionOff`) `lua:XL24-SF50:RELEASE(n)`, Hold Switch on and no long press (README 2.1.1, 2.1.2; the saved `simple_button` template holds `HoldSwitch` and `AddressActionOff`) | autopilot 2,2 to 2,6, 4,2 to 4,6; radios 2,2 to 2,8, 3,2 to 3,8; trim 2,2, 4,2, 3,6, 3,8; V-UX: main 2,1 to 2,3, 4,1 to 4,3 (the codes of autopilot's HDG, ALT and SPD keys) |
 | T1-set (V-2) | as T1, with On `1` / Off `1`: every press writes 1 (the C172 fuel selector form, [phase3-systems.md](phase3-systems.md)) | autopilot 1,7, 4,7; V-UX: main 2,4, 3,4, 4,4 (4,4 `A/T DISC` with the autothrottle arm SimVar as its Value Address) |
 | G1 guard (V-2) | as T1-set, plus a long press: Long Press on, Second Command type B-Var (13), the same `B:` address, Long On `0` / Off `0` (`SwitchOnStateLong` / `SwitchOffStateLong`, PD-LONG), so a long press writes 0 | systems 4,8 (main 4,7 until V-UX); systems 1,2 to 1,4; iceenv 1,2 to 1,4, 3,2 |
 | T3 with a B-var read (V-2) | as T3, with "Run as Command" unchecked (saved `DoNotRequestBvar: false`, the A32NX NAV LOGO form) so the B-var is read as a value | systems 2,2, 2,4; iceenv 3,3, 3,4, row 4 |
 | T9 Display Gauge | `display_gauge` (templates.json) | trim 3,4 (elevator, vertical), 3,7 (rudder, horizontal, center line) |
 
-The copied pages keep every kind and field of their C172 keys (their docs, "What each key holds"), including
-the views page's A-Var writes to `CAMERA STATE` and the transponder's to `TRANSPONDER STATE:1` (V-1 A-14),
-the trim gauge and the Lua Function keys. Title sizes follow [navigation.md](navigation.md), "Rules".
+The copied pages keep every kind and field of their C172 keys (their docs, "What each key holds"; since V-PAD
+not the COM pad's digit, CLR and ENT keys, which are T8L), including the views page's A-Var writes to
+`CAMERA STATE` and the transponder's to `TRANSPONDER STATE:1` (V-1 A-14), the trim gauge and the Lua Function
+keys. Title sizes follow [navigation.md](navigation.md), "Rules".
 
 ## Profile Manager mapping
 
@@ -1152,6 +1190,9 @@ aircraft-mappings.md says "does not work".
 | A/T DISC, main 4,4 (V-UX A-5) | The press does nothing (A/T and A/T DISC stay lit, the A/T stays armed) | 1: the command `K:AUTO_THROTTLE_DISCONNECT:0` (a K-event with a parameter, README 2.1.1; 0 targets all engines), the read as now; 2: main 4,4 Empty with a note (the A/T key toggles the autothrottle off), the mappings row "does not work" | SDK-APE; IE-SF50 51 |
 | A/T, main 1,4 and autopilot 2,8 (V-UX A-4) | `K:AUTO_THROTTLE_ARM` does not arm the SF50's autothrottle | Both keys T1-set on `B:sf50_autopilot_autothrottle_arm` (IE-SF50 50), On `1` / Off `1`, the read as now (a data-only change); else readout only | IE-SF50 50; SF50-FLT |
 | SPD+, SPD-, SPD (V-UX A-6) | `K:AP_SPD_VAR_INC` / `_DEC` do not move the SF50's speed target, or SPD does not show it | A capture of the cockpit speed knob `B:sf50_autopilot_speed` (IE-SF50 60) first; then codes 9 and 10 send the knob's event and SPD reads its variable (a script, data and docs repair; the script sends only events today) | IE-SF50 60; SF50-FLT |
+| COM pad press feedback, fast presses (V-PAD) | A fast next press is late or lost: a wait in the script (the end of a light, or the reads after ENT) holds it up | The script without these waits (a lit key stays lit until the next accepted press; ENT then turns green only if the sim has the frequency at once), or a global script (`Scripts/global/`, `RunInterval`) that reads COM1 and puts the keys out (not built). T8 keys alone do not help: the script would still wait | PD-PAD; PD-HOLD |
+| COM pad press feedback (V-PAD) | A key stays green, or a key shows the wait image | The keys go back to T8 Simple Buttons (no light), title still centered; the script's LIT writes do no harm without keys that read them. For the wait image: copy `Images/XL24-PadLit.png` into the plugin's Images folder | PD-PAD |
+| COM pad ENT light (V-PAD) | ENT never turns green though COM1 shows the frequency | The script's `TOLERANCE` and `READBACK_MS` values after a look at `lua.log` ("did not read back") | PD-PAD |
 
 Also hand-test items with no fallback yet (V-1 A-15): LVL and A/T (SDK only), fuel in gallons, ITT in
 Celsius, IGN under the FADEC, the C172's V-speed SimVars on a jet, and the COM pad on the G3000.
@@ -1159,8 +1200,8 @@ Celsius, IGN under the FADEC, the C172's V-speed SimVars on a jet, and the COM p
 ## How to test
 
 Run [tests/manual-checklist.md](../tests/manual-checklist.md), sections "VisionJet SF50 profile (V-1)",
-"VisionJet SF50 profile (V-2)", "VisionJet SF50 profile (V-3)" and "VisionJet SF50 profile (V-UX)" (the
-earlier sections name the main and MORE positions before V-UX). As on
+"VisionJet SF50 profile (V-2)", "VisionJet SF50 profile (V-3)", "VisionJet SF50 profile (V-UX)" and
+"VisionJet SF50 profile (V-PAD)" (the sections V-1 to V-3 name the main and MORE positions before V-UX). As on
 the other profiles, check both directions: press a key and watch the cockpit, then **work the control in the
 cockpit with the mouse and check that the key follows without a key being pressed.** Never press GEAR or TOGA
 expecting an action (they are readouts). Record which battery BAT moves, the value each B-var reads, the flap
@@ -1174,16 +1215,17 @@ of ALT and BARO+/-, whether the G3000 PFD's baro follows BARO+/-, and the word F
 V-UX: walk the main page column by column against the cockpit; with the autothrottle armed in flight, press
 A/T DISC and record whether the autothrottle disconnects (and which fallback was needed); with MAN SPD on,
 record whether SPD+/- move the PFD's speed reference and main SPD; hold a main step key, release it, then use
-the same key on the autopilot page; walk every folder and back key.
+the same key on the autopilot page; walk every folder and back key. V-PAD: run its fast press steps first and
+record whether a press is late or lost, the delay before ENT turns green and whether the green is clear.
 
 ## When it passes
 
 1. Any change found in the test goes into `tools/profilegen/visionjet-sf50.json` and this doc; then the
    profile is regenerated (not exported from the app) and imported again.
 2. Fill in the "Verified" column of the rows in aircraft-mappings.md ("Cirrus Vision SF50 (MSFS 2024 default,
-   V-1)", "(MSFS 2024 default, V-2)", "(MSFS 2024 default, V-3)" and "(MSFS 2024 default, V-UX)") with the
-   date, sim version and SF50 preset, for each function that passed; mark a row "does not work" where a key
-   failed.
+   V-1)", "(MSFS 2024 default, V-2)", "(MSFS 2024 default, V-3)" and "(MSFS 2024 default, V-UX)"; V-PAD: also
+   the two V-PAD rows under "Phase 2 COM1 pad") with the date, sim version and SF50 preset, for each function
+   that passed; mark a row "does not work" where a key failed.
 
 ## Sources
 
@@ -1217,6 +1259,7 @@ the same key on the autopilot page; walk every folder and back key.
 | SDK-FLT | https://docs.flightsimulator.com/msfs2024/retail/content-configuration/flt-files/flt-file-properties/ (`[LocalVars_EX1.N]` "can be used to define and initialise scoped local variables", with the "L:1" identifier), read 2026-11-16 |
 | SF50-FLT | The SF50's flight files in `content\minimal.fsarchive` of SF50-PKG (read by search only, 2026-11-16): `[LocalVars_EX1.0]` positions and meanings (`SF50_Engine_Run_Knob_Position`, `SF50_Fuel_Control_Switch_Position`, `SF50_Engine_IP_Switch_Position`, `SF50_WingStab_IP_Switch_Position`, `SF50_Oxygen_Master_Switch_Position`, `SF50_Bleed_Air_Switch_State`, `SF50_Ecs_Temp_Knob_Forward_Position`), `[AutoPilot.0]` `YawDamper`, `[Switches.0]` `WingLights`. V-UX, searched again 2026-11-19: each flight file's `[AutoPilot.0]` (the first near byte 257907) holds `AirspeedHold=False`, `AirspeedValue=145` and `AutoThrottleArm=False`, so the SF50's flights keep the standard autothrottle arm and airspeed hold state (a lead, not a test); no file gives the value of IE-SF50 50, 51 or 60 or the SimVar they drive |
 | PD-HOLD | PilotsDeck README at commit 11bdf1f (https://raw.githubusercontent.com/Fragtality/PilotsDeck/11bdf1f/README.md), read 2026-11-17 (V-3): 2.1 (a Second Command when pressed 500 ms or longer, sent once), 2.1.2 (Hold Switch: the normal command on key down, the alternate command on key up; with Hold Switch no long press command), 3.5 (standard scripts in `Scripts`, their state kept while loaded), 3.5.1 (`SimCommand`, `Sleep`, `Log`), 3.5.2 (global scripts, `RunInterval`), 4.1 (`TickDelay` only between encoder ticks); and its source at 11bdf1f7daf4828f822c18919952fe5b66153e58: `Plugin/Actions/Simple/ActionBaseSimple.cs` 534 to 536, 549, 563 to 566 (a holdable command at key down, its key-up form at key up, nothing repeats), `Plugin/Simulator/SimCommand.cs` 77 to 82, 94 to 97 (a Lua Function is holdable), `Plugin/Simulator/ConnectorNone.cs` 45 to 48 (each Lua call on its own task), `Plugin/Resources/Scripts/ManagedScript.cs` 359 (`SimCommand` queues the event), 406 (`Sleep` is `Thread.Sleep`); V-UX, read 2026-11-23 at the same commit: `Plugin/Actions/ActionManager.cs` `OnKeyUp` (a key up goes to the key whose context the app names; a key no longer registered is not found), `Plugin/Actions/Simple/ActionBaseSimple.cs` `OnKeyUp` (runs the key-up command without a check that the key down came first) |
+| PD-PAD | PilotsDeck README and source at commit 11bdf1f7daf4828f822c18919952fe5b66153e58 (https://github.com/Fragtality/PilotsDeck), read 2026-11-24 (V-PAD): README 2.1.1 (INTERNAL), 2.2.2 (Image Mapping), 2.3 (Dynamic Button); `Plugin/Actions/Simple/ActionSwitchDisplay.cs` `Refresh` (the background, then with Image Mapping the mapped image for the value), `Plugin/Actions/Simple/ActionSwitch.cs` `Refresh` (a Simple Button draws its background only), `Plugin/Actions/Simple/ActionBaseSimple.cs` (`DrawTitle` draws only on encoders, so the Stream Deck app draws a key's title; `OnKeyUp` sends the command), `Plugin/Actions/Simple/ValueState.cs` `GetValueMapped` (an exact entry is compared as text; no match returns the value itself, so each value needs its entry), `Plugin/Resources/Images/ImageMapping.cs`, `Plugin/Resources/Images/ManagedImage.cs` (a missing file shows the wait image), `Plugin/Resources/VariableManager.cs` and `Plugin/Resources/Variables/VariableString.cs` (an `X:` variable is a string that starts as `0`), `Plugin/Simulator/ConnectorNone.cs` (an `X:` write needs no sim and does nothing for a variable no key or script registered; each Lua call on its own task), `Plugin/Resources/ScriptManager.cs` `RunFunction` (no script call without a ready sim), `Plugin/AppConfiguration.cs` (`IntervalDeckRefresh` 50 ms, `IntervalUnusedRessources` 60 s); `Images/None.png` is the Background of the saved `avar_dynamic_button` template (`tools/profilegen/templates.json`); https://docs.elgato.com/streamdeck/sdk/references/manifest (`TitleAlignment` top, middle, bottom) |
 | ELG-SDK | Elgato Stream Deck SDK, plugin WebSocket events, https://docs.elgato.com/streamdeck/sdk/references/websocket/plugin/ (keyDown, keyUp; dial events for the Stream Deck +; no key-held event), read 2026-11-17 (V-3) |
 | SF50-CHK | The SF50's own checklist in SF50-PKG, `content\html_ui\airplanes\microsoft_sf50\checklist\checklist.xml` (read by search only, 2026-11-17, V-3): line 1448 (fuel control switch "CHECK LEFT/AUTO/RIGHT"), line 4163 (windshield IPS MAX switch, press and hold); no variable names |
 | PD-LOG2 | The plugin logs `PilotsDeck20261116.log` and `PilotsDeck20261117.log` (read only, searched, 2026-11-17, V-3): the V-1 keys sent in the SF50 on 2026-11-16 (HDG+ 6 and HDG- 16 times about 0.2 s apart, 20:29:10 to 20:29:21; ALT+ 24 times and its long press once, 22:53:13 to 22:53:21; CRS+ and its long press once); `lua:xl24-simrate:SET(1)` then `K:SIM_RATE_DECR` twice about 0.1 s apart (20261117.log lines 120 to 123). Leads only, never a test pass |

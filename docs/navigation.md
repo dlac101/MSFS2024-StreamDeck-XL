@@ -27,9 +27,9 @@ page ideas come from [original-plan.md](original-plan.md).
   Display Value) keep their template size, because they draw their values with the title font: COM1 stays 10.
   Where a title does not fit at 14, the key's `title_size` in the data file sets another size (10 to 15).
   Every key keeps its template's title alignment (folder and back keys at the bottom), except the main page
-  folder keys VIEWS, CHECKLIST and MORE: their `title_align` in the data file is `"middle"` (the user's own
-  saved edit; `title_align` takes the Elgato manifest State `TitleAlignment` values `"top"`, `"middle"`,
-  `"bottom"`).
+  folder keys VIEWS, CHECKLIST and MORE (the user's own saved edit) and, on the VisionJet, the COM pad's digit,
+  CLR and ENT keys (V-PAD): their `title_align` in the data file is `"middle"` (it takes the Elgato manifest
+  State `TitleAlignment` values `"top"`, `"middle"`, `"bottom"`).
 
 ## Pages
 
@@ -111,7 +111,7 @@ title alignment where it moved (VIEWS, MORE, SYSTEMS, CHECKLIST and ICE/ENV midd
 | 2,7 `AUTOPILOT` | autopilot | the C172's page with the G3000 course keys, HDG sync, VNV by the SF50's input event, LVL, A/T, TOGA and A/T MGD; V-2 adds FMS SPD, YD and MAN SPD; V-3: the step keys hold to repeat (under MORE 1,6 until V-UX) |
 | 2,8 `RADIOS` | radios | the C172's page plus a BARO column (V-3); COM1, CDI and the BARO press and long press from main (V-UX; under MORE 1,8 until then) |
 | 3,7 `SIM RATE` | simrate | the C172's sim rate page as it is (`XL24-SIMRATE.lua`) |
-| 3,8 `COM PAD` | compad | the C172's COM1 pad as it is (`XL24-COMPAD.lua`; under MORE 1,5 until V-UX) |
+| 3,8 `COM PAD` | compad | the C172's COM1 pad with centered titles and press feedback (`XL24-COMPAD.lua`; under MORE 1,5 until V-UX) |
 | 4,7 `SYSTEMS` | systems | V-2: BAT 2, GEN 1 and GEN 2 guarded switches; bus volts, load, engine knob, starter and fuel control readouts; V-UX: BAT, PARK, GEAR, N1 and the light, pitot and ICE switches from main (under MORE 2,2 until V-UX) |
 | 4,8 `MORE` | more | back key and five folder keys (second level): 1,4 `V-SPEEDS` > vspeeds, 1,7 `XPDR` > xpdr (the C172's pages as they are), 1,5 `CHECKLIST` > checklist (back key only; main 3,8 until V-UX), 2,3 `ENGINE` > engine (N1, N2, ITT, fuel flow, engine run, ignition and fuel readouts), 2,4 `ICE/ENV` > iceenv (V-2: ice protection, wing light, oxygen and ECS switches; ice protection, bleed air and ECS readouts) |
 
