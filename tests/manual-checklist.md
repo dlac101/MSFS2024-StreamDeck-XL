@@ -1561,7 +1561,9 @@ changed value you used.
 **Autopilot page (MORE > AUTOPILOT), in flight**
 - [ ] AP, FD, HDG, NAV, APR, ALT, VS, FLC, LVL and VNV: each press, the PFD mode annunciator and the key
   agree; engage each mode in the cockpit too: the key follows.
-- [ ] A/T: arms the autothrottle, the key is lit; A/T MGD shows `ON` while the autothrottle drives.
+- [ ] A/T (since V-AT the SF50's autothrottle arm input event; its steps are in the V-UX section, block "A/T
+  arm and disconnect"): record whether the autothrottle arms and the key lights; A/T MGD shows `ON` while the
+  autothrottle drives.
 - [ ] HDG+/-, ALT+/-, VS+/-, SPD+/- step and the readouts follow. HDG BUG press syncs the heading bug.
 - [ ] CRS+ and CRS- step the course and CRS1 follows; record what a CRS1 press does, and any of the three
   that does nothing (the long press of CRS+ and CRS- steps by 10 with the standard event).
@@ -1584,7 +1586,7 @@ changed value you used.
 - [ ] Load the C172 G1000 and select `MSFS2024 VisionJet` by hand: the readouts show the C172's own values,
   BAT, NAV LT, STRB and LDG show nothing, PITOT shows the C172's pitot heat (the C172 has the same
   `deice_pitot_1` input event). **Do not press the light keys (NAV LT, STRB, LDG, TAXI), PITOT, PARK, FLAPS,
-  the AP keys, A/T or LVL there** (they act on the C172). Then switch back to the C172 profile.
+  the AP keys or LVL there** (they act on the C172). Then switch back to the C172 profile.
 
 **Controller independence**
 - [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
@@ -1729,11 +1731,14 @@ and SPD columns with hold to repeat, the autothrottle column with the new A/T DI
 FLAPS, LDG, ATC and the folders in columns 7 and 8); AUTOPILOT, RADIOS, SYSTEMS and COM PAD open from main,
 CHECKLIST moves to MORE 1,5, and the keys that left main are on systems, radios and views. Run it after the
 V-3 section; the earlier sections' main and MORE positions are those before V-UX. Not yet tested in the app or
-the sim.
+the sim. V-AT: A/T was reported as not working (the user's report, 2026-11-25), so both A/T keys (main 1,4 and
+autopilot 2,8) write the SF50's input event `B:sf50_autopilot_autothrottle_arm` instead of the standard event;
+whether that arms the autothrottle is not known.
 
 **Before you start**
 - [ ] Import the new package (or the profile and `XL24-SF50.lua` into the plugin's Scripts folder); the
-  Profile Manager mapping stays (same profile name). Load the SF50 and wait about 30 s.
+  Profile Manager mapping stays (same profile name). Load the SF50 and wait about 30 s. V-AT: a profile (plain
+  or icon build) imported before V-AT still sends the standard event on A/T, so import the new one first.
 
 **Main page walk by column** (each key against the cockpit, then the cockpit against the key)
 - [ ] HDG column: HDG (1,1) lights while the heading mode is on; HDG+ (2,1) and HDG- (4,1) move the heading
@@ -1750,12 +1755,35 @@ the sim.
   one step out, a long press one step in; LDG (3,6) switches the landing lights and follows the cockpit
   switch; ATC (4,6) opens and closes the ATC window.
 
-**A/T arm and disconnect**
+**A/T arm and disconnect** (A/T first; the answers belong to visionjet-sf50.md, "Open points of the A/T keys
+(V-AT)". Where a step needs the autothrottle armed or off and the keys have not done it, set it in the cockpit
+and record that.)
+- [ ] Before any press: record the flight state (ground or flight, FMS SPD or MAN SPD lit), what the cockpit
+  A/T key and the PFD's autothrottle annunciation show, and whether A/T (main 1,4 and autopilot 2,8) and A/T
+  DISC (4,4) are lit or dark.
+- [ ] On the ground, autothrottle off: press A/T on main (1,4) once; then, with the autothrottle off again if
+  it armed, A/T on the autopilot page (2,8) once. Record for each key whether the PFD shows the autothrottle
+  armed and whether the light follows.
+- [ ] In flight, autothrottle off, once with FMS SPD lit and once with MAN SPD lit: the same with A/T on main
+  (1,4). Record in which of them the autothrottle arms, and whether A/T and A/T DISC light with the PFD's
+  annunciation.
+- [ ] In flight, autothrottle off again: the same with A/T on the autopilot page (2,8).
+- [ ] With the autothrottle armed: press A/T (1,4) a second time. Record whether it disarms, stays armed or
+  shows something else, and whether the lights agree with the PFD; then the same with autopilot 2,8.
 - [ ] In flight with the autothrottle engaged: press A/T DISC (4,4). A/T and A/T DISC go dark, the autopilot
   page's A/T MGD shows OFF and the PFD's autothrottle annunciation goes. Record it if nothing changes (then
   try the fallbacks of visionjet-sf50.md, "Fallbacks", in order, and record which one worked).
-- [ ] Press A/T (1,4): the autothrottle arms again, and A/T and A/T DISC light. Record whether A/T arms the
-  SF50's autothrottle at all.
+- [ ] After A/T DISC, press A/T (1,4) again: record whether the autothrottle arms again (the input event may
+  already hold the value 1) and whether A/T and A/T DISC light.
+- [ ] Work the cockpit A/T key with the mouse, on the ground and in flight, with FMS SPD and with MAN SPD lit:
+  record whether it arms and whether a second press disarms, whether it stays in or springs back, and whether
+  the lights of A/T and A/T DISC follow without a key press. Then disconnect in the cockpit and press A/T
+  (1,4): record whether it arms.
+- [ ] If a press on A/T does nothing: record which key (main 1,4 or autopilot 2,8), ground or flight, FMS SPD
+  or MAN SPD, whether the press or only the light failed, and whether the cockpit A/T key arms the
+  autothrottle in the same state. Then (optional) a capture of the cockpit A/T key with the read-only monitor
+  `tools/scmon` (its README): the input event as the second argument, and `AUTOPILOT THROTTLE ARM` added first
+  to the `Vars` list of `Program.cs`, which does not hold it. Record the values both take.
 
 **FMS SPD / MAN SPD on main**
 - [ ] Press MAN SPD (3,4), then FMS SPD (2,4): the active one is lit and the other dark, as on the autopilot
@@ -1807,13 +1835,16 @@ the sim.
 
 **Other aircraft**
 - [ ] With the C172 loaded and `MSFS2024 VisionJet` picked by hand: A/T DISC does nothing on a press (an SF50
-  input event); its light shows the C172's autothrottle arm state.
+  input event); its light shows the C172's autothrottle arm state. Since V-AT the same for A/T (main 1,4 and
+  autopilot 2,8).
 
 **Results to record**
-- [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-UX rows), the A/T DISC
-  outcome and which fallback was needed, whether A/T arms the SF50's autothrottle, the SPD outcome (did SPD+/-
-  move the PFD speed bug), whether a key up was lost across a page change or reached the other page's key,
-  the BARO press on the G3000, the MSFS version and SF50 preset, and every change.
+- [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-UX rows and of its V-1 row
+  autopilot 2,8 `A/T`), the A/T DISC outcome and which fallback was needed, whether A/T arms the SF50's
+  autothrottle (per key, on the ground and in flight), what a second press does, whether the lights follow the
+  cockpit, the SPD outcome (did SPD+/- move the PFD speed bug), whether a key up was lost across a page change
+  or reached the other page's key, the BARO press on the G3000, the MSFS version and SF50 preset, and every
+  change.
 
 ## VisionJet SF50 profile (V-PAD)
 
