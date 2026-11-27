@@ -570,7 +570,8 @@ How it is made: each of the twelve keys is a Dynamic Button whose value is its o
 the package's own `Images/XL24-PadLit.png`. The shared script `XL24-COMPAD.lua` writes the variables; this
 profile does not change the script, and the variables are the same as on the VisionJet (the C172's keys do
 not read them). Without the script the keys do nothing; without the image they show PilotsDeck's wait image
-instead of green. The package installs both.
+instead of green. The package installs the script and holds the image (the install test shows whether the
+image is copied; until then copy it by hand, [package.md](package.md)).
 
 Not proven: that the script's waits (the end of a light, the reads after ENT) don't hold up a fast next
 press (the row "COM pad press feedback, fast presses (V-PAD)" in the VisionJet doc's "Fallbacks"; the

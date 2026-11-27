@@ -6,7 +6,11 @@ Research only. Nothing here is built or sim-tested. Every name is Unverified.
 When a profile is built, its names go into [aircraft-mappings.md](aircraft-mappings.md), Unverified until a
 sim test passes.
 
-The first profile built from this page: [visionjet-sf50.md](visionjet-sf50.md) (V-1, not yet sim-tested).
+The first profile built from this page: [visionjet-sf50.md](visionjet-sf50.md) (V-1; not yet sim-tested except
+the A/T keys, hand-tested 2026-11-26). This page's tables and draft layout stay as researched for V-1: the
+built keys, their addresses and test states are in [visionjet-sf50.md](visionjet-sf50.md) and
+[aircraft-mappings.md](aircraft-mappings.md) (the A/T and PARK keys, for example, now write the SF50's own
+input events).
 
 This page collects what the public sources say about the Cirrus Vision Jet (SF50) that comes with MSFS 2024,
 the default aircraft and the one target of this page: its name and edition, the variable and event names the

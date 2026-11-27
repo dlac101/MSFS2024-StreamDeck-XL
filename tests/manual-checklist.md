@@ -1871,8 +1871,10 @@ and record that.)
 
 The COM pad page (main 3,8) of `MSFS2024 VisionJet`: centered key titles and a green key when a press took effect
 (docs/visionjet-sf50.md, "COM pad: centered text and press feedback"). Not yet tested. Needs the new
-`XL24-COMPAD.lua` and `Images\XL24-PadLit.png` in the plugin folder (the package installs both). The fast presses
-and every step after the Look steps need the SF50 loaded and COM1 on; the Look steps need no sim.
+`XL24-COMPAD.lua` and `Images\XL24-PadLit.png` in the plugin folder (the package installs the script and
+holds the image; the install test shows whether the image is copied; until then copy it by hand as
+docs/package.md says). The fast presses and every step after the Look steps need the SF50 loaded and COM1
+on; the Look steps need no sim.
 
 **Fast presses (do these first)**
 
@@ -1943,7 +1945,9 @@ down.
 - [ ] Install the new package with the Profile Manager, or import `MSFS2024 CJ4.streamDeckProfile` by hand
   (as the C172 profile, docs/phase2-main-page.md "Import the profile") and copy `XL24-CJ4.lua`.
   `XL24-COMPAD.lua` and `Images\XL24-PadLit.png` must be in the plugin folder before the profile is imported
-  (the package installs both), and so must `XL24-SIMRATE.lua` and `XL24-XPDRPAD.lua`.
+  (the package installs the script and holds the image; the install test shows whether the image is
+  copied; until then copy it by hand as docs/package.md says), and so must `XL24-SIMRATE.lua` and
+  `XL24-XPDRPAD.lua`.
 - [ ] Pick `MSFS2024 CJ4` on the Stream Deck by hand (it has no search string yet). If the capture gave the
   aircraft string, map the profile in the Profile Manager (docs/cj4.md, "Profile Manager mapping") and check
   that the deck switches to it when the CJ4 loads.

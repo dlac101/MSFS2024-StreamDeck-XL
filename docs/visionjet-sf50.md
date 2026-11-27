@@ -573,8 +573,9 @@ green of an older one.
 How it is made: each of the twelve keys is a Dynamic Button whose value is its own internal variable
 (`X:XL24_COMPAD_LIT_0` to `_9`, `_CLR`, `_ENT`), with Image Mapping on: `0` the empty `Images/None.png` (the
 key's background shows), `1` the package's own `Images/XL24-PadLit.png`. The script writes the variable; the
-title is drawn by the Stream Deck app over either image. The image comes with the package; without it the key
-shows PilotsDeck's wait image instead of green.
+title is drawn by the Stream Deck app over either image. The package holds the image (the install test shows
+whether it is copied; until then copy it by hand, [package.md](package.md)); without it the key shows
+PilotsDeck's wait image instead of green.
 
 The end of a light is a wait (`Sleep`) inside the called Lua function, and so are the reads after ENT (up to
 1.5 s). By PilotsDeck's source each Lua call runs on its own task (PD-PAD), so these waits should not hold up the
