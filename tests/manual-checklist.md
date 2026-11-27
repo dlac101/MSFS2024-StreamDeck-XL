@@ -1731,12 +1731,15 @@ and SPD columns with hold to repeat, the autothrottle column with the new A/T DI
 FLAPS, LDG, ATC and the folders in columns 7 and 8); AUTOPILOT, RADIOS, SYSTEMS and COM PAD open from main,
 CHECKLIST moves to MORE 1,5, and the keys that left main are on systems, radios and views. Run it after the
 V-3 section; the earlier sections' main and MORE positions are those before V-UX. Not yet tested in the app or
-the sim. V-AT: A/T was reported as not working (the user's report, 2026-11-25), so both A/T keys (main 1,4 and
-autopilot 2,8) write the SF50's input event `B:sf50_autopilot_autothrottle_arm` instead of the standard event;
-whether that arms the autothrottle is not known. V-AT2: on the ground on 2026-11-26 a press armed the
-autothrottle and a second press disarmed it, but the keys' light never came on: it read the SimVar
-`AUTOPILOT THROTTLE ARM`, which stayed 0. Since V-AT2 both A/T keys read the input event itself (lit at 1,
-dark at 0); whether the light follows, and the flight case, are not known yet.
+the sim, except A/T (V-AT3 below). V-AT: A/T was reported as not working (the user's report, 2026-11-25), so
+both A/T keys (main 1,4 and autopilot 2,8) write the SF50's input event `B:sf50_autopilot_autothrottle_arm`
+instead of the standard event; whether that arms the autothrottle is not known. V-AT2: on the ground on
+2026-11-26 a press armed the autothrottle and a second press disarmed it, but the keys' light never came on:
+it read the SimVar `AUTOPILOT THROTTLE ARM`, which stayed 0. Since V-AT2 both A/T keys read the input event
+itself (lit at 1, dark at 0). V-AT3: hand-tested 2026-11-26 after the import of the V-AT2 profile: the A/T
+keys arm and disarm the autothrottle and their light follows, on the ground and in flight (which key and which
+speed mode are not stated); the A/T steps below that this does not answer (which key, the speed modes, the
+cockpit button with the mouse, A/T DISC) are still open.
 
 **Before you start**
 - [ ] Import the new package (or the profile and `XL24-SF50.lua` into the plugin's Scripts folder); the
