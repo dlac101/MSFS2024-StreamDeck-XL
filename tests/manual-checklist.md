@@ -1562,8 +1562,8 @@ changed value you used.
 - [ ] AP, FD, HDG, NAV, APR, ALT, VS, FLC, LVL and VNV: each press, the PFD mode annunciator and the key
   agree; engage each mode in the cockpit too: the key follows.
 - [ ] A/T (since V-AT the SF50's autothrottle arm input event; its steps are in the V-UX section, block "A/T
-  arm and disconnect"): record whether the autothrottle arms and the key lights; A/T MGD shows `ON` while the
-  autothrottle drives.
+  arm and disconnect"): record whether the autothrottle arms and the key lights (since V-AT2 the key's light
+  reads that input event); A/T MGD shows `ON` while the autothrottle drives.
 - [ ] HDG+/-, ALT+/-, VS+/-, SPD+/- step and the readouts follow. HDG BUG press syncs the heading bug.
 - [ ] CRS+ and CRS- step the course and CRS1 follows; record what a CRS1 press does, and any of the three
   that does nothing (the long press of CRS+ and CRS- steps by 10 with the standard event).
@@ -1733,12 +1733,16 @@ CHECKLIST moves to MORE 1,5, and the keys that left main are on systems, radios 
 V-3 section; the earlier sections' main and MORE positions are those before V-UX. Not yet tested in the app or
 the sim. V-AT: A/T was reported as not working (the user's report, 2026-11-25), so both A/T keys (main 1,4 and
 autopilot 2,8) write the SF50's input event `B:sf50_autopilot_autothrottle_arm` instead of the standard event;
-whether that arms the autothrottle is not known.
+whether that arms the autothrottle is not known. V-AT2: on the ground on 2026-11-26 a press armed the
+autothrottle and a second press disarmed it, but the keys' light never came on: it read the SimVar
+`AUTOPILOT THROTTLE ARM`, which stayed 0. Since V-AT2 both A/T keys read the input event itself (lit at 1,
+dark at 0); whether the light follows, and the flight case, are not known yet.
 
 **Before you start**
 - [ ] Import the new package (or the profile and `XL24-SF50.lua` into the plugin's Scripts folder); the
   Profile Manager mapping stays (same profile name). Load the SF50 and wait about 30 s. V-AT: a profile (plain
   or icon build) imported before V-AT still sends the standard event on A/T, so import the new one first.
+  V-AT2: one imported before V-AT2 still lights A/T from the SimVar; import the new one first.
 
 **Main page walk by column** (each key against the cockpit, then the cockpit against the key)
 - [ ] HDG column: HDG (1,1) lights while the heading mode is on; HDG+ (2,1) and HDG- (4,1) move the heading
@@ -1761,6 +1765,17 @@ and record that.)
 - [ ] Before any press: record the flight state (ground or flight, FMS SPD or MAN SPD lit), what the cockpit
   A/T key and the PFD's autothrottle annunciation show, and whether A/T (main 1,4 and autopilot 2,8) and A/T
   DISC (4,4) are lit or dark.
+- [ ] V-AT2, on the ground, autothrottle off: press A/T on main (1,4). Expected: the key lights with the
+  cockpit's A/T light; press it again: the key goes dark with it. Record whether it does.
+- [ ] V-AT2, on the ground: the same with A/T on the autopilot page (2,8); then check that main 1,4 shows the
+  same state when you return to main.
+- [ ] V-AT2, on the ground: arm and disarm with the cockpit A/T button and the mouse only: record whether both
+  A/T keys' lights follow without a key press.
+- [ ] V-AT2, on the ground: arm with A/T (1,4), then press A/T DISC (4,4): record whether A/T's light goes
+  dark with the cockpit light, and whether A/T DISC's light (the SimVar) ever came on.
+- [ ] V-AT2: if an A/T key's light does not follow, record which key (main 1,4 or autopilot 2,8), ground or
+  flight, FMS SPD or MAN SPD, what the cockpit's A/T light and the PFD's autothrottle annunciation show, and
+  whether it was the key's press or the mouse.
 - [ ] On the ground, autothrottle off: press A/T on main (1,4) once; then, with the autothrottle off again if
   it armed, A/T on the autopilot page (2,8) once. Record for each key whether the PFD shows the autothrottle
   armed and whether the light follows.
@@ -1768,6 +1783,8 @@ and record that.)
   (1,4). Record in which of them the autothrottle arms, and whether A/T and A/T DISC light with the PFD's
   annunciation.
 - [ ] In flight, autothrottle off again: the same with A/T on the autopilot page (2,8).
+- [ ] V-AT2, in flight, once with FMS SPD lit and once with MAN SPD lit: the four V-AT2 steps on the ground
+  above again.
 - [ ] With the autothrottle armed: press A/T (1,4) a second time. Record whether it disarms, stays armed or
   shows something else, and whether the lights agree with the PFD; then the same with autopilot 2,8.
 - [ ] In flight with the autothrottle engaged: press A/T DISC (4,4). A/T and A/T DISC go dark, the autopilot
@@ -1835,16 +1852,17 @@ and record that.)
 
 **Other aircraft**
 - [ ] With the C172 loaded and `MSFS2024 VisionJet` picked by hand: A/T DISC does nothing on a press (an SF50
-  input event); its light shows the C172's autothrottle arm state. Since V-AT the same for A/T (main 1,4 and
-  autopilot 2,8).
+  input event); its light shows the C172's autothrottle arm state. Since V-AT a press on A/T (main 1,4 and
+  autopilot 2,8) does nothing too. V-AT2: A/T's light reads the SF50 input event, not the C172's autothrottle
+  arm state; record what it shows in the C172.
 
 **Results to record**
 - [ ] Record each step's result (the "Verified" cells of aircraft-mappings.md's V-UX rows and of its V-1 row
   autopilot 2,8 `A/T`), the A/T DISC outcome and which fallback was needed, whether A/T arms the SF50's
   autothrottle (per key, on the ground and in flight), what a second press does, whether the lights follow the
-  cockpit, the SPD outcome (did SPD+/- move the PFD speed bug), whether a key up was lost across a page change
-  or reached the other page's key, the BARO press on the G3000, the MSFS version and SF50 preset, and every
-  change.
+  cockpit (V-AT2: each A/T key's light on the input event, on the ground and in flight), the SPD outcome
+  (did SPD+/- move the PFD speed bug), whether a key up was lost across a page change or reached the other
+  page's key, the BARO press on the G3000, the MSFS version and SF50 preset, and every change.
 
 ## VisionJet SF50 profile (V-PAD)
 

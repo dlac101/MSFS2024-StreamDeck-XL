@@ -1,8 +1,9 @@
 # VisionJet SF50 profile (MSFS 2024 default Cirrus Vision SF50)
 
-**Status: generated (V-1 to V-3, V-UX, V-PAD, V-AT), not yet sim-tested; 14 pages, 195 keys.** The profile
-`MSFS2024 VisionJet` is built by the generator, but no key on it has a passed sim test yet. A/T was reported
-as not working in the SF50 on 2026-11-25; V-AT changed its command ("Open points of the A/T keys (V-AT)").
+**Status: generated (V-1 to V-3, V-UX, V-PAD, V-AT, V-AT2), not yet sim-tested; 14 pages, 195 keys.** The
+profile `MSFS2024 VisionJet` is built by the generator, but no key on it has a passed sim test yet. A/T was
+reported as not working in the SF50 on 2026-11-25; V-AT changed its command, and V-AT2 its light's read after
+a retest on the ground on 2026-11-26 ("Open points of the A/T keys (V-AT)").
 Every name below is recorded as "Unverified" in [aircraft-mappings.md](aircraft-mappings.md) ("Cirrus Vision
 SF50 (MSFS 2024 default, V-1)", "(MSFS 2024 default, V-2)", "(MSFS 2024 default, V-3)" and "(MSFS 2024
 default, V-UX)") until the checks in [tests/manual-checklist.md](../tests/manual-checklist.md), sections
@@ -264,14 +265,15 @@ Columns as in [phase2-main-page.md](phase2-main-page.md), "Key table". Tags in b
 Rows copied from a C172 doc keep its text and tags; an `A-n` in such a row is that doc's own ASSUMPTION, and
 this profile's are written `V-1 A-n`. Since V-UX the main page is the VisionJet's own grid: the rows of moved
 and repeated keys are their earlier rows (main or autopilot) at the new position, and 4,4 `A/T DISC` is new.
-V-AT gives 1,4 `A/T` (and autopilot 2,8) a new command, in the form of 4,4's.
+V-AT gives 1,4 `A/T` (and autopilot 2,8) a new command, in the form of 4,4's; V-AT2 gives both a new read, the
+same input event, in the form of FMS SPD's (autopilot 1,7).
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
 | 1,1 | `HDG` | Dynamic Button | T2 | `K:AP_HDG_HOLD` [SDK-APE] | `(A:AUTOPILOT HEADING LOCK, Bool)` [SDK-APV] | On/Off image |
 | 1,2 | `ALT` | Dynamic Button | T2 | `K:AP_ALT_HOLD` [SDK-APE] | `(A:AUTOPILOT ALTITUDE LOCK, Bool)` [SDK-APV] | On/Off image |
 | 1,3 | `FLC` | Dynamic Button | T2 | `K:FLIGHT_LEVEL_CHANGE` [SDK-APE] | `(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)` [SDK-APV] | On/Off image |
-| 1,4 | `A/T` | Dynamic Button | T1-set | `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1` [IE-SF50 50; README 2.1.1; V-AT] | `(A:AUTOPILOT THROTTLE ARM, Bool)` [SDK-APV] | On/Off image, Special State |
+| 1,4 | `A/T` | Dynamic Button | T1-set | `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1` [IE-SF50 50; README 2.1.1; V-AT] | `B:sf50_autopilot_autothrottle_arm` [IE-SF50 50; SCMON-AT; V-AT2] | On/Off image, Special State |
 | 1,5 | `NAV` | Dynamic Button | T2 | `K:AP_NAV1_HOLD` [SDK-APE] | `(A:AUTOPILOT NAV1 LOCK, Bool)` [SDK-APV] | On/Off image |
 | 1,6 | `AP` | Dynamic Button | T2 (template) | `K:AP_MASTER` [AM] | `(A:AUTOPILOT MASTER, Bool)` [AM] | On/Off image |
 | 1,7 | `TRIM` | Folder | (Stream Deck) | Opens the child page **trim** | none | Folder; the page's keys: "Key table: trim" below |
@@ -583,7 +585,7 @@ The C172's autopilot page ([phase3-autopilot.md](phase3-autopilot.md)) with the 
 2,3, 2,7, 2,8, 3,2, 3,3, 3,7, 3,8, 4,3 and 4,8; the other rows as that doc's "Key table: autopilot". V-3: the
 step keys 2,2 to 2,6 and 4,2 to 4,6 hold to repeat (H1, "Hold to repeat"); CRS and ALT lost their long press.
 V-UX: the page is unchanged and opened from main 2,7; its back key returns to the main page. V-AT: A/T (2,8)
-writes the SF50's input event, as main 1,4.
+writes the SF50's input event, as main 1,4; V-AT2: it reads that input event too, as main 1,4.
 
 | Pos | Title | Action | Template | Command [source] | Read [source] | Display |
 |---|---|---|---|---|---|---|
@@ -602,7 +604,7 @@ writes the SF50's input event, as main 1,4.
 | 2,5 | `VS+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(7)` key down, `lua:XL24-SF50:RELEASE(7)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_VS_VAR_INC` [SDK-APE] | none | fixed image |
 | 2,6 | `SPD+` | Simple Button | H1 | `lua:XL24-SF50:HOLD(9)` key down, `lua:XL24-SF50:RELEASE(9)` key up (Hold Switch) [README 2.1.1 LUAFUNC, 2.1.2; PD-HOLD]; the script sends `K:AP_SPD_VAR_INC` [SDK-APE] | none | fixed image |
 | 2,7 | `YD` | Dynamic Button | T2 | `K:YAW_DAMPER_TOGGLE` [SDK-APE; weak, V-2 A-9] | `(A:AUTOPILOT YAW DAMPER, Bool)` [SDK-APV] | On/Off image |
-| 2,8 | `A/T` | Dynamic Button | T1-set | `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1` [IE-SF50 50; README 2.1.1; V-AT] | `(A:AUTOPILOT THROTTLE ARM, Bool)` [SDK-APV] | On/Off image, Special State |
+| 2,8 | `A/T` | Dynamic Button | T1-set | `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1` [IE-SF50 50; README 2.1.1; V-AT] | `B:sf50_autopilot_autothrottle_arm` [IE-SF50 50; SCMON-AT; V-AT2] | On/Off image, Special State |
 | 3,1 | `VS` | Dynamic Button | T2 | `K:AP_VS_HOLD` [SDK-APE] | `(A:AUTOPILOT VERTICAL HOLD, Bool)` [SDK-APV] | On/Off image |
 | 3,2 | `HDG BUG` | Display Value | T3 | `H:Garmin_AP_HDG_Sync` [WT-G3000H; weak, V-1 A-15] | `(A:AUTOPILOT HEADING LOCK DIR, Degrees)` [SDK-APV] | Format `3.0:%s°` |
 | 3,3 | `CRS1` | Display Value | T3 | `H:AS3000_PFD_1_CRS_PUSH` [WT-G3000H; SF50-PKG; weak, V-1 A-15] | `(A:NAV OBS:1, Degrees)` [SDK-RADV] | Format `3.0:%s°` |
@@ -835,15 +837,19 @@ four ECS knobs (no write: V-2 A-7).
   selected altitude in feet and SPD the autopilot's airspeed reference in knots; ALT SEL and SPD do nothing on
   a press.
 - **Main, column 4 (V-UX):** A/T (V-AT) presses the SF50's autothrottle arm input event
-  `B:sf50_autopilot_autothrottle_arm` (IE-SF50 50): every press writes 1, and the key is lit while
-  `(A:AUTOPILOT THROTTLE ARM, Bool)` is on. Until V-AT it sent the standard event `K:AUTO_THROTTLE_ARM`: the
-  key was reported as not working (2026-11-25; PD-LOG4: the event was sent). What a second press does, and
-  whether the read follows the SF50's autothrottle, is open ("Open points of the A/T keys (V-AT)"). FMS SPD
+  `B:sf50_autopilot_autothrottle_arm` (IE-SF50 50): every press writes 1, and since V-AT2 the key is lit while
+  that input event reads 1 and dark at 0, as FMS SPD. On the ground a press armed the autothrottle and a
+  second press disarmed it: the input event toggled at each press, though every press writes 1 (SCMON-AT,
+  PD-LOG5).
+  Until V-AT it sent the standard event `K:AUTO_THROTTLE_ARM`: the key was reported as not working
+  (2026-11-25; PD-LOG4: the event was sent). Until V-AT2 its light read `(A:AUTOPILOT THROTTLE ARM, Bool)`,
+  which the SF50 did not set on the ground, so the light never came on (SCMON-AT). Whether this holds in
+  flight is open ("Open points of the A/T keys (V-AT)"). FMS SPD
   and MAN SPD press the SF50's FMS and manual speed mode buttons (every press writes 1), each lit from its own
   B-var, as on the autopilot page. **A/T DISC** (new) presses the SF50's autothrottle disconnect input event
   `B:sf50_autopilot_autothrottle_disconnect` (IE-SF50 51): every press writes 1, as FMS SPD and MAN SPD. Its
-  light follows the autothrottle arm state `(A:AUTOPILOT THROTTLE ARM, Bool)`, the same read as A/T: lit while
-  that SimVar is on, dark while it is off. Which value the input event wants, and which
+  light follows the autothrottle arm state `(A:AUTOPILOT THROTTLE ARM, Bool)`, the read A/T had until V-AT2:
+  lit while that SimVar is on, dark while it is off. Which value the input event wants, and which
   SimVar follows it, no SF50 file says (SF50-PKG, SF50-FLT); it is a hand-test item with two fallbacks
   ("Fallbacks").
 - **Main, columns 5 and 6 (V-UX):** NAV, APR and VS switch their autopilot modes by the standard events, lit
@@ -868,7 +874,7 @@ four ECS knobs (no write: V-2 A-7).
 - **Views page, MAP (V-UX, from main 3,4):** opens and closes the sim's map window.
 - **Autopilot page:** the C172's mode keys, steps and readouts, plus the SF50's: VNV (the SF50's VNAV input
   event, lit from the VNAV button L-Var), A/T (the SF50's autothrottle arm input event since V-AT, lit from
-  the autothrottle arm SimVar, as main 1,4), LVL (the wing leveler mode), TOGA (`TO/GA` while the go-around
+  that input event since V-AT2, as main 1,4), LVL (the wing leveler mode), TOGA (`TO/GA` while the go-around
   mode is on) and A/T MGD (`ON` while the autothrottle drives). CRS+,
   CRS- and CRS1 send the G3000 PFD 1 course knob's H-events; HDG BUG syncs the heading bug with the G3000's
   own H-event. V-2: FMS SPD and MAN SPD press the SF50's
@@ -929,7 +935,8 @@ for those keys (V-1 A-5 covers only the switch keys and VNV); V-2 keeps them, ex
 `K:PARKING_BRAKES` from the deck released it and the SF50 set it again within about 0.1 s (SCMON-SF50), so
 PARK writes IE-SF50 117 and keeps the brake SimVar as its read, as VNV keeps its L-Var. V-AT: the two A/T
 keys write IE-SF50 50 (with the standard event the key was reported as not working, V-AT) and keep the
-autothrottle arm SimVar as their read.
+autothrottle arm SimVar as their read. V-AT2: they read IE-SF50 50 too, since that SimVar stayed 0 on the
+ground while the input event toggled (SCMON-AT).
 
 V-2's keys (and V-UX's A/T DISC and V-AT's A/T, last two rows) use the list's SF50 input events where it has
 the control, the standard events where it has none:
@@ -957,7 +964,7 @@ the control, the standard events where it has none:
 | radios 1,8 `BARO` long press (main 3,6 until V-UX) | none used (29 `B:autopilot_baro_1_sync` is the fallback) | `K:BAROMETRIC_STD_PRESSURE` (V-2 A-10) |
 | trim 3,6 `RUD L`, 3,8 `RUD R` | none used (35 `B:handling_ruddertrim_1` is the fallback) | T5 K-events as the C172 (V-2 A-11) |
 | main 4,4 `A/T DISC` (V-UX) | 51 `B:sf50_autopilot_autothrottle_disconnect` | T1-set (every press writes 1) with the autothrottle arm SimVar `(A:AUTOPILOT THROTTLE ARM, Bool)` as its read (V-UX A-5) |
-| main 1,4 and autopilot 2,8 `A/T` (V-AT) | 50 `B:sf50_autopilot_autothrottle_arm` | T1-set (every press writes 1) with the autothrottle arm SimVar `(A:AUTOPILOT THROTTLE ARM, Bool)` as its read, as A/T DISC; `K:AUTO_THROTTLE_ARM` until V-AT |
+| main 1,4 and autopilot 2,8 `A/T` (V-AT, V-AT2) | 50 `B:sf50_autopilot_autothrottle_arm` | T1-set (every press writes 1) with the input event as its read since V-AT2, as FMS SPD; the autothrottle arm SimVar `(A:AUTOPILOT THROTTLE ARM, Bool)` as its read until V-AT2, as A/T DISC; `K:AUTO_THROTTLE_ARM` until V-AT |
 
 V-3's step keys (H1) send the same events as before, now from the script `XL24-SF50.lua`: key down runs
 `lua:XL24-SF50:HOLD(n)`, key up `lua:XL24-SF50:RELEASE(n)`, and the script's key table gives the event for
@@ -1047,8 +1054,9 @@ sends a five-step burst ("Fallbacks").
   switch one of them off; only a long press (half a second or more) writes 0.
 - Plain toggles (benign): WSHLD HI, WING LT, RECOG, DEFOG, AFT CTL, TEMP BKUP.
 - BAT is a plain toggle, as its cockpit switch: press it in flight only on purpose (V-1's BAT stays a toggle,
-  V-2 A-8). A/T writes 1 at every press since V-AT; whether a press on an armed autothrottle disarms it is
-  open ("Open points of the A/T keys (V-AT)"), so press it in flight only on purpose too.
+  V-2 A-8). A/T writes 1 at every press since V-AT; on the ground a press on an armed autothrottle disarmed
+  it (SCMON-AT), in flight that is open ("Open points of the A/T keys (V-AT)"), so press it in flight only on
+  purpose too.
 - Since V-UX, A/T (main 1,4) and A/T DISC (main 4,4) are plain presses on the main
   page, without a guard: a guard would slow the action that is wanted fast. Two keys lie between A/T and
   A/T DISC, so the two are not hit by mistake.
@@ -1071,7 +1079,7 @@ real saved key with only the listed fields changed (the generator does this).
 | T5 Simple Button | `simple_button` with the AP key's states | main 4,6, views 1,7 (main 3,3, 3,4 until V-UX; until V-3 also the autopilot, radios and trim step keys, now H1) |
 | T8L lit pad key (V-PAD) | Dynamic Button, the Phase 1 AP key (`p1:3,0`): command type Lua Function (14), Value Address `X:XL24_COMPAD_LIT_<key>`, Background `Images/Switch.png`, Image Mapping on (`UseImageMapping`, `ImageMap` `0=Images/None.png:1=Images/XL24-PadLit.png`; README 2.2.2), title alignment middle; CLR and ENT with long press as T8 of [phase2-com1-pad.md](phase2-com1-pad.md) | compad: the digits, CLR and ENT |
 | H1 hold to repeat (V-3) | as T5, with the command type Lua Function (14), Command `lua:XL24-SF50:HOLD(n)`, alternate command (`AddressActionOff`) `lua:XL24-SF50:RELEASE(n)`, Hold Switch on and no long press (README 2.1.1, 2.1.2; the saved `simple_button` template holds `HoldSwitch` and `AddressActionOff`) | autopilot 2,2 to 2,6, 4,2 to 4,6; radios 2,2 to 2,8, 3,2 to 3,8; trim 2,2, 4,2, 3,6, 3,8; V-UX: main 2,1 to 2,3, 4,1 to 4,3 (the codes of autopilot's HDG, ALT and SPD keys) |
-| T1-set (V-2) | as T1, with On `1` / Off `1`: every press writes 1 (the C172 fuel selector form, [phase3-systems.md](phase3-systems.md)) | autopilot 1,7, 4,7; V-UX: main 2,4, 3,4, 4,4 (4,4 `A/T DISC` with the autothrottle arm SimVar as its Value Address); V-AT: main 1,4 and autopilot 2,8 (`A/T`, the same Value Address, title size 14 as before) |
+| T1-set (V-2) | as T1, with On `1` / Off `1`: every press writes 1 (the C172 fuel selector form, [phase3-systems.md](phase3-systems.md)) | autopilot 1,7, 4,7; V-UX: main 2,4, 3,4, 4,4 (4,4 `A/T DISC` with the autothrottle arm SimVar as its Value Address); V-AT: main 1,4 and autopilot 2,8 (`A/T`, the same Value Address, title size 14 as before); V-AT2: their Value Address is their own input event, as autopilot 1,7 |
 | G1 guard (V-2) | as T1-set, plus a long press: Long Press on, Second Command type B-Var (13), the same `B:` address, Long On `0` / Off `0` (`SwitchOnStateLong` / `SwitchOffStateLong`, PD-LONG), so a long press writes 0 | systems 4,8 (main 4,7 until V-UX); systems 1,2 to 1,4; iceenv 1,2 to 1,4, 3,2 |
 | T3 with a B-var read (V-2) | as T3, with "Run as Command" unchecked (saved `DoNotRequestBvar: false`, the A32NX NAV LOGO form) so the B-var is read as a value | systems 2,2, 2,4; iceenv 3,3, 3,4, row 4 |
 | T9 Display Gauge | `display_gauge` (templates.json) | trim 3,4 (elevator, vertical), 3,7 (rudder, horizontal, center line) |
@@ -1131,9 +1139,11 @@ long press since V-3).
   their V-2 forms did once per press; CRS needs the G3000 and does nothing elsewhere. The script does not
   check the aircraft (V-3 A-12). Radios 1,8 BARO shows that aircraft's altimeter setting.
 - V-UX: A/T DISC (main 4,4) writes an SF50 input event (`sf50_autopilot_autothrottle_disconnect`): in another
-  aircraft a press does nothing, and its light shows that aircraft's autothrottle arm state, as A/T does.
-  V-AT: A/T (main 1,4 and autopilot 2,8) writes an SF50 input event too (`sf50_autopilot_autothrottle_arm`):
-  in another aircraft a press does nothing. The main page's other keys are the keys above at new positions and
+  aircraft a press does nothing, and its light shows that aircraft's autothrottle arm state, as A/T's did
+  until V-AT2. V-AT: A/T (main 1,4 and autopilot 2,8) writes an SF50 input event too
+  (`sf50_autopilot_autothrottle_arm`): in another aircraft a press does nothing. V-AT2: A/T reads that SF50
+  input event too, so in another aircraft it reads and writes an input event that aircraft may not have; what
+  its light shows there is not known. The main page's other keys are the keys above at new positions and
   behave as described there (the main step keys
   as the autopilot page's, BARO's press and long press now on radios 1,8).
 - If the SF50 ignores a standard event, the key's read stays where it was and the key stays dark: the hand
@@ -1203,8 +1213,8 @@ aircraft-mappings.md says "does not work".
 | BARO+, BARO- (V-3 A-7) | `K:KOHLSMAN_INC` / `_DEC` do nothing on the G3000 | `H:AS3000_PFD_1_BARO_INC` / `_DEC` in the script's key table (not rechecked); else the column is Empty | WT-G3000H |
 | FLAPS (V-1 A-15) | The number per detent is unclear | Mappings after the test | |
 | Views, XPDR (V-1 A-14) | The A-Var writes do nothing on the SF50 | Those five keys become their readouts (command none) | |
-| A/T DISC, main 4,4 (V-UX A-5) | The press does nothing (A/T and A/T DISC stay lit, the A/T stays armed) | 1: the command `K:AUTO_THROTTLE_DISCONNECT:0` (a K-event with a parameter, README 2.1.1; 0 targets all engines), the read as now; 2: main 4,4 Empty, the mappings row "does not work" (whether the A/T key switches the autothrottle off is open, V-AT) | SDK-APE; IE-SF50 51 |
-| A/T, main 1,4 and autopilot 2,8 (V-UX A-4, replaced by V-AT) | The press does not arm the SF50's autothrottle, or the light does not follow it | With the K-event `K:AUTO_THROTTLE_ARM` the key was reported as not working on 2026-11-25 (the event was sent, PD-LOG4), and the first fallback (both keys T1-set on `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1`) is built since V-AT. Left: readout only (command none); or, after a capture of the cockpit A/T key with the read-only monitor `tools/scmon`, another value or read, if the capture shows one (it shows only the one B-var and the SimVars it is told to watch) | PD-LOG4; SDK-APE; IE-SF50 50; SF50-FLT |
+| A/T DISC, main 4,4 (V-UX A-5) | The press does nothing (A/T and A/T DISC stay lit, the A/T stays armed) | 1: the command `K:AUTO_THROTTLE_DISCONNECT:0` (a K-event with a parameter, README 2.1.1; 0 targets all engines), the read as now; 2: main 4,4 Empty, the mappings row "does not work" (on the ground a second A/T press switched the autothrottle off, SCMON-AT; in flight that is open, V-AT2) | SDK-APE; IE-SF50 51 |
+| A/T, main 1,4 and autopilot 2,8 (V-UX A-4, replaced by V-AT; read changed in V-AT2) | The press does not arm the SF50's autothrottle, or the light does not follow it | With the K-event `K:AUTO_THROTTLE_ARM` the key was reported as not working on 2026-11-25 (the event was sent, PD-LOG4), and the first fallback (both keys T1-set on `B:sf50_autopilot_autothrottle_arm`, On `1` / Off `1`) is built since V-AT. With the SimVar read the light never came on, on the ground (SCMON-AT), so since V-AT2 both keys read the input event. Left: if the input event does not follow the autothrottle in flight, back to the SimVar read `(A:AUTOPILOT THROTTLE ARM, Bool)` if that one follows in flight (if neither follows, the light stays an open point and the command stays, since it works on the ground); if a press does not arm the autothrottle in flight, readout only (command none) | PD-LOG4; SDK-APE; IE-SF50 50; SF50-FLT; SCMON-AT |
 | SPD+, SPD-, SPD (V-UX A-6) | `K:AP_SPD_VAR_INC` / `_DEC` do not move the SF50's speed target, or SPD does not show it | A capture of the cockpit speed knob `B:sf50_autopilot_speed` (IE-SF50 60) first; then codes 9 and 10 send the knob's event and SPD reads its variable (a script, data and docs repair; the script sends only events today) | IE-SF50 60; SF50-FLT |
 | COM pad press feedback, fast presses (V-PAD) | A fast next press is late or lost: a wait in the script (the end of a light, or the reads after ENT) holds it up | The script without these waits (a lit key stays lit until the next accepted press; ENT then turns green only if the sim has the frequency at once), or a global script (`Scripts/global/`, `RunInterval`) that reads COM1 and puts the keys out (not built). T8 keys alone do not help: the script would still wait | PD-PAD; PD-HOLD |
 | COM pad press feedback (V-PAD) | A key stays green, or a key shows the wait image | The keys go back to T8 Simple Buttons (no light), title still centered; the script's LIT writes do no harm without keys that read them. For the wait image: copy `Images/XL24-PadLit.png` into the plugin's Images folder | PD-PAD |
@@ -1215,18 +1225,24 @@ Celsius, IGN under the FADEC, the C172's V-speed SimVars on a jet, and the COM p
 
 ### Open points of the A/T keys (V-AT)
 
-None of these is known; no source read answers one (V-UX A-4's first fallback is built as it was written).
+None of these was known at V-AT; no source read answers one (V-UX A-4's first fallback is built as it was
+written). V-AT2: the retest on the ground on 2026-11-26 (SCMON-AT, PD-LOG5) answered some of them, on the
+ground only (marked "Answered on the ground"); the flight case of each stays open.
 The steps are in the checklist section "VisionJet SF50 profile (V-UX)", block "A/T arm and disconnect".
 
 | Open point | Hand test that answers it |
 |---|---|
 | What failed in the report of 2026-11-25: which of the two keys, the press or the light, and in which flight state | Only the user can say (both keys send another command now). For the new command: press A/T on main 1,4 and on autopilot 2,8, each on the ground and in flight, and compare the PFD's autothrottle annunciation with the key's light |
-| Whether the cockpit A/T key is a momentary one | Press the cockpit key with the mouse: does it stay in or spring back; a capture shows whether its B-var holds a value |
-| Whether it arms only with the autothrottle's conditions met, and which they are | Press A/T, and the cockpit key in the same state, on the ground and in flight, with FMS SPD and with MAN SPD on; record each state in which it arms and in which it does not |
-| What the value of `B:sf50_autopilot_autothrottle_arm` means | A capture with the read-only monitor `tools/scmon` while the cockpit A/T key is worked: the values the B-var (its second argument) and `AUTOPILOT THROTTLE ARM` (to be added to its `Vars` list first) take |
-| Whether a second press writes 1 to an input event that already holds 1, without an effect | Arm with A/T, disconnect with A/T DISC, then press A/T again; the same after a disconnect in the cockpit |
-| Whether a press on an armed autothrottle disarms it | Press A/T again while the autothrottle is armed |
-| Whether `(A:AUTOPILOT THROTTLE ARM, Bool)` follows the SF50's autothrottle | Arm and disconnect it in the cockpit with the mouse: do A/T and A/T DISC light and go dark with the PFD's annunciation |
+| Whether the cockpit A/T key is a momentary one | Press the cockpit key with the mouse: does it stay in or spring back. V-AT2: the B-var holds 0 or 1 between presses (SCMON-AT, on the ground) |
+| Whether it arms only with the autothrottle's conditions met, and which they are | Press A/T, and the cockpit key in the same state, on the ground and in flight, with FMS SPD and with MAN SPD on; record each state in which it arms and in which it does not. V-AT2: it armed on the ground, with the parking brake set and after it was released (SCMON-AT) |
+| What the value of `B:sf50_autopilot_autothrottle_arm` means | **Answered on the ground (V-AT2):** it changed between 0 and 1 at each press, 19 times, and the cockpit's A/T light came on at each arm (SCMON-AT), so 1 is armed and 0 is off; since V-AT2 the A/T keys read it. In flight: the steps below |
+| Whether a second press writes 1 to an input event that already holds 1, without an effect | **Answered on the ground (V-AT2):** every press writes 1 (PD-LOG5) and the input event toggles, so a second press disarms (SCMON-AT). Open: arm with A/T, disconnect with A/T DISC, then press A/T again; the same after a disconnect in the cockpit |
+| Whether a press on an armed autothrottle disarms it | **Answered on the ground (V-AT2):** yes (SCMON-AT). In flight: press A/T again while the autothrottle is armed |
+| Whether `(A:AUTOPILOT THROTTLE ARM, Bool)` follows the SF50's autothrottle | **Answered on the ground (V-AT2):** no; it stayed 0 while the input event toggled, so the key's light never came on, and since V-AT2 the A/T keys read the input event (SCMON-AT). Open: whether the SF50 ever sets it, in flight with FMS SPD or with MAN SPD (A/T DISC still reads it): arm and disconnect in flight and watch A/T DISC's light |
+| Whether the input event and the SimVar act the same in flight | In flight, arm with A/T and disarm with a second press, once with FMS SPD and once with MAN SPD: do A/T's light (the input event) and A/T DISC's light (the SimVar) follow the PFD's annunciation |
+| Whether the input event follows a press of the cockpit A/T button with the mouse | Press only the cockpit button with the mouse: does A/T's light follow. A lead, not a test: the plugin log has key commands only for the last 8 of the 19 changes (PD-LOG5), so the first 11 may have come from the cockpit button, as may the three later changes of the whole run (SCMON-AT); the capture does not say which press was which |
+| Whether A/T DISC sets the input event back to 0 | Arm with A/T, press A/T DISC: does A/T's light go dark with the PFD's annunciation |
+| What set the autopilot on (`AUTOPILOT MASTER` 0 to 1) at 22:53:13.6 of the retest, about 1.7 s after an arm, and whether its going off at 23:01:19.1 set the input event to 0, 0.4 s later (SCMON-AT, the whole run) | On the ground, autopilot off: arm with A/T only and watch AP (main 1,6); then press AP alone; then, with the autopilot on and the autothrottle armed, switch the autopilot off and watch A/T |
 
 ## How to test
 
@@ -1249,7 +1265,9 @@ record whether SPD+/- move the PFD's speed reference and main SPD; hold a main s
 the same key on the autopilot page; walk every folder and back key. V-PAD: run its fast press steps first and
 record whether a press is late or lost, the delay before ENT turns green and whether the green is clear.
 V-AT: before A/T DISC, press A/T on main and on the autopilot page, on the ground and in flight, and record
-the answers to "Open points of the A/T keys (V-AT)".
+the answers to "Open points of the A/T keys (V-AT)". V-AT2: on the ground first, check that each A/T key is
+lit after the first press and dark after the second; then the cockpit button with the mouse, A/T DISC and the
+same in flight, and record where the light does not follow.
 
 ## When it passes
 
@@ -1298,10 +1316,13 @@ the answers to "Open points of the A/T keys (V-AT)".
 | PD-LOG2 | The plugin logs `PilotsDeck20261116.log` and `PilotsDeck20261117.log` (read only, searched, 2026-11-17, V-3): the V-1 keys sent in the SF50 on 2026-11-16 (HDG+ 6 and HDG- 16 times about 0.2 s apart, 20:29:10 to 20:29:21; ALT+ 24 times and its long press once, 22:53:13 to 22:53:21; CRS+ and its long press once); `lua:xl24-simrate:SET(1)` then `K:SIM_RATE_DECR` twice about 0.1 s apart (20261117.log lines 120 to 123). Leads only, never a test pass |
 | PD-LOG3 | The plugin log `PilotsDeck20261118.log` (read only, searched, 2026-11-19, V-UX): `K:AUTO_THROTTLE_ARM` sent twice (lines 24611 and 24900), `K:AP_SPD_VAR_INC` 12 and `K:AP_SPD_VAR_DEC` 43 times, one key press each about 0.2 s apart (from line 25258). The log has no value line for `AUTOPILOT THROTTLE ARM` or `AUTOPILOT AIRSPEED HOLD VAR`, so whether the A/T armed or the speed moved is not logged. Leads only, never a test pass |
 | PD-LOG4 | The plugin log `PilotsDeck20261125.log` (read only, searched, 2026-11-25, V-AT): with the SF50 loaded, `K:AUTO_THROTTLE_ARM` sent 6 times (lines 13125, 13130, 13138, 14175, 14185 and 14190; 01:35:00 to 01:57:34). The log has no value line for `AUTOPILOT THROTTLE ARM`, so whether the A/T armed or the key lit is not logged. Leads only, never a test pass |
+| PD-LOG5 | The plugin log `PilotsDeck20261126.log` (read only, searched, 2026-11-26, V-AT2): with the SF50 loaded, `B:sf50_autopilot_autothrottle_arm` with the value 1 sent 14 times in the first test (lines 9127 to 9309; 13:04:37 to 13:11:08; which A/T key is not logged) and 8 times in the retest (lines 19197 to 19245; 22:55:27.6 to 22:55:40.9), and no other key command from 22:50 until a sim rate key at 23:05:55 (so none at the input event's three later changes, SCMON-AT); 2 more A/T commands at 23:13:20 and 23:13:21 (lines 19675 and 19681), after the capture ended. The log has no value line for the input event or `AUTOPILOT THROTTLE ARM`. Leads only, never a test pass |
 | V-UX A-n | The ASSUMPTIONS of V-UX, ruled 2026-11-19: A-1 the main page's trade-offs (LDG on main and TAXI to systems, SIM RATE stays at 3,7, GEAR and N1 to systems, FD off main, the autopilot page unchanged, TOGA stays a cockpit control), A-2 CHECKLIST at MORE 1,5, A-4 A/T keeps `K:AUTO_THROTTLE_ARM`, A-5 A/T DISC as T1-set on IE-SF50 51 with the arm SimVar read, A-6 SPD+/- keep `K:AP_SPD_VAR_INC` / `_DEC`, A-7 no script code change, A-8 a failed V-3 hand test is a later repair, A-9 no tool change, A-10 folder title alignment travels with each key, A-11 the mappings rows, A-12 the earlier checklist sections stay, A-15 the GTC page notes say V-4, A-16 A/T DISC's title size, A-17 weak sources as hand-test items |
 | V-AT | The A/T keys' new command (2026-11-25), after the user's report of that date (A/T reported as not working in the SF50, PD-LOG4; the SF50 has an autothrottle, FORUM-24): V-UX A-4 is replaced by its first fallback, both A/T keys in A/T DISC's form (V-UX A-5) on IE-SF50 50; the read, A/T DISC and every other key unchanged; the answers are open ("Open points of the A/T keys (V-AT)") |
+| V-AT2 | The A/T keys' new read (2026-11-26), after the retest on the ground (SCMON-AT, PD-LOG5): with the read `(A:AUTOPILOT THROTTLE ARM, Bool)` the key's light never came on, because that SimVar stayed 0 while the input event toggled, so both A/T keys read `B:sf50_autopilot_autothrottle_arm` in the form of FMS SPD (autopilot 1,7, V-2 A-5); the command, A/T DISC and every other key unchanged; the flight case is open ("Open points of the A/T keys (V-AT)") |
 | V-3 A-n | The ASSUMPTIONS of V-3, ruled 2026-11-17: A-1 the V-3 / V-4 split, A-2 Hold Switch and a script loop (the step cap and the 20 s limit always end it), A-3 the long press burst fallback, A-4 speed profiles, A-5 the CRS and ALT long presses go (the user's answer), A-6 repeat only on benign steps, A-7 BARO+/- by `KOHLSMAN_INC` / `_DEC`, A-8 FUEL CTL Mappings, A-9 no tool change, A-10 events only, A-11 README, A-12 no aircraft check, A-13 sim answers later as a repair, A-14 weak sources |
 | SCMON-SF50 | A `tools/scmon` capture with the SF50 loaded (2026-11-16, MSFS 2024, version not recorded): a local copy of the tool that also read the SF50's B-vars through PilotsDeck's local API (read only) while the user worked the cockpit controls with the mouse. The values each B-var took are in [aircraft-mappings.md](aircraft-mappings.md), "Cirrus Vision SF50 (MSFS 2024 default, V-2)". With the brake set, `K:PARKING_BRAKES` from the deck moved `BRAKE PARKING POSITION` from 1 to 0 and back to 1 within about 0.1 s while `B:sf50_handling_parking_brake` stayed 1; the cockpit handle moved the B-var between 0 and 1 and the SimVar followed it |
+| SCMON-AT | A capture of a local copy of the read-only monitor `tools/scmon` with two SimVars added (`AUTOPILOT THROTTLE ARM` and `AUTOPILOT MANAGED THROTTLE ACTIVE`) and `B:sf50_autopilot_autothrottle_arm` read through the plugin (read only), 2026-11-26, the SF50 on the ground (parking brake set, released at 22:54:28.0), MSFS 2024, version not recorded: the input event changed between 0 and 1 19 times (22:53:04.8 to 22:55:41.2, monitor clock) and both SimVars stayed 0 the whole time; by the retest's report the cockpit's A/T light came on each time and the A/T key's light (then on the SimVar) never; `AUTOPILOT MASTER` went from 0 to 1 at 22:53:13.6 (cause not known). The 8 retest key commands of PD-LOG5 fall just before the last 8 changes (22:55:28.1 to 22:55:41.2; each 0.1 to 0.5 s after its command; both clocks are the PC's, and the committed monitor polls the input event every 0.5 s). The whole 600 s run (to 23:02:46.8) adds: from 22:56:28.5 the heading moves (the capture has no altitude, so whether the SF50 was still on the ground is not known); `AUTOPILOT MASTER` went back to 0 at 23:01:19.1; the input event changed three more times (to 0 at 23:01:19.5, to 1 at 23:01:48.3, to 0 at 23:01:55.9), with no key command in the plugin log at those times (PD-LOG5); both SimVars stayed 0 to the end |
 
 V-2 rechecked at their pages on 2026-11-16: SDK-APE (`YAW_DAMPER_TOGGLE` "Toggles yaw
 damper on/off"), SDK-APV (`AUTOPILOT YAW DAMPER` "Yaw damper active"), SDK-SYSV (`STRUCTURAL DEICE SWITCH`,
