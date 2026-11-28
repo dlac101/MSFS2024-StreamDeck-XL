@@ -138,3 +138,24 @@ open, and nine under MORE.
 MORE 1,2, 1,3 and 2,6 to 2,8 are empty: they are kept for the display control, cursor control and three FMS
 pages of a later unit, which use the WT21 key names and wait for a test of those names in the default CJ4
 ([cj4.md](cj4.md), "Not on these pages, and why").
+
+## MSFS2024 737 MAX 8 pages
+
+The Boeing 737 MAX 8 profile `MSFS2024 737 MAX 8` ([b737-max8.md](b737-max8.md), generated, not yet
+sim-tested) has its own main grid round the mode control panel, and keeps the C172's folder positions TRIM
+1,7, VIEWS 1,8 and SIM RATE 3,7 and the same rules: one main page (no back key), the back key at 1,1 on every
+child page, at most two folder levels (it uses one). 7 pages: main and the six pages its folder keys open.
+VIEWS has its title in the middle, as on the other profiles; the other folder keys keep the template's
+alignment.
+
+| Main page key | Child page | Holds now |
+|---|---|---|
+| 1,7 `TRIM` | trim | the CJ4's trim page: elevator, aileron and rudder trim keys (hold to repeat by `XL24-B737.lua`) and gauges |
+| 1,8 `VIEWS` | views | the CJ4's views page as it is |
+| 2,7 `MCP` | mcp | the rest of the mode control panel (F/D L and R, CMD B, CWS A and B, the disengage bar readout, A/T DISC, C/O, SPD INTV, TOGA, BANK, the CRS and V/S columns) and the Captain's EFIS (MODE, RANGE, CTR, TFC, TERR, WXR, STD, the BARO and MINS columns, MINS RST) |
+| 3,7 `SIM RATE` | simrate | the CJ4's sim rate page as it is (`XL24-SIMRATE.lua`) |
+| 3,8 `PED` | ped | FLAPS and GEAR (main's keys again), SPD BRK, A/BRK, PARK, the guarded START 1 / 2 and CUTOFF 1 / 2, IGN |
+| 4,7 `LIGHTS` | lights | POS, BCN, LOGO, WING, WHL WELL, LAND L and R, RWY L and R, TAXI; SEAT BELT and NO SMOKE readouts |
+
+Main 2,8 and 4,8 are empty: they are kept for the OVHD and MORE folder keys of a later set
+([b737-max8.md](b737-max8.md), "Not on these pages, and why").

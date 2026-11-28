@@ -1,0 +1,1505 @@
+{
+  "_about": "Pages and keys of the generated profile for the Boeing 737 MAX 8 that comes with MSFS 2024, in the form of cj4.json and visionjet-sf50.json (see c172-g1000.json's _about: positions row,column; each key copies a real saved template and changes only the fields under 'set', 'shell' and the title). Positions, variables, events and formats are the tables of docs/b737-max8.md, built from the 737's input event list (docs/reference/InputEvents-737MAX8.txt) and three captures of what its cockpit controls drive. 7 pages: main has its own grid round the mode control panel, with the folder keys TRIM, VIEWS and SIM RATE where the other profiles have them; MCP, LIGHTS and PED are its other pages; trim, views and simrate are the CJ4's pages as they are (trim with this profile's hold codes of XL24-B737.lua). Main 2,8 and 4,8 are Empty and kept for OVHD and MORE. Not yet sim-tested.",
+  "profile_name": "MSFS2024 737 MAX 8",
+  "output": "pilotsdeck/MSFS2024-XL/_Package/Profiles/MSFS2024 737 MAX 8.streamDeckProfile",
+  "phase1_export": "tools/profilegen/MSFS2024 C172 POC.streamDeckProfile",
+  "spec": "docs/b737-max8.md",
+  "grid": {
+    "rows": 4,
+    "columns": 8
+  },
+  "back_key_pos": "1,1",
+  "phase1_keys": [],
+  "pages": [
+    {
+      "id": "main",
+      "keys": [
+        {
+          "pos": "1,1",
+          "title": "A/T",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fcc_autothrottle",
+            "AddressAction": "B:fcc_autothrottle",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,2",
+          "title": "N1",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_n1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "SPEED",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:AP_SPD_ACTIVE",
+            "AddressAction": "B:fcc_speed",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "VNAV",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:AP_VNAV_ARMED",
+            "AddressAction": "B:fcc_vnav",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "LVL CHG",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:AP_FLCH_ACTIVE",
+            "AddressAction": "B:fcc_lvl_chg",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "CMD A",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "(A:AUTOPILOT MASTER, Bool)",
+            "AddressAction": "B:fcc_cmd_1",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "TRIM",
+          "folder": "trim"
+        },
+        {
+          "pos": "1,8",
+          "title": "VIEWS",
+          "title_align": "middle",
+          "folder": "views"
+        },
+        {
+          "pos": "2,1",
+          "title": "SPD+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(1)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(1)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "HDG+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(3)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(3)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "ALT+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(5)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(5)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "HDG SEL",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:AP_HEADING_SELECT_ACTIVE",
+            "AddressAction": "B:fcc_hdg_sel",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "LNAV",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_lnav",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS HANDLE INDEX, number)",
+            "Format": "1.0",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "MCP",
+          "folder": "mcp"
+        },
+        {
+          "pos": "2,8",
+          "empty": "OVHD folder key of set 2 (docs/b737-max8.md, Not on these pages)"
+        },
+        {
+          "pos": "3,1",
+          "title": "SPD",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_speed_sel",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "HDG",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_heading_sel",
+            "Format": "3.0:%s°",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "ALT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_altitude_sel",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "VOR LOC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_vor_loc",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "APP",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:AP_APR_ARMED",
+            "AddressAction": "B:fcc_app",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "GEAR",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:landing_gears",
+            "AddressAction": "B:landing_gears",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "SIM RATE",
+          "folder": "simrate"
+        },
+        {
+          "pos": "3,8",
+          "title": "PED",
+          "folder": "ped"
+        },
+        {
+          "pos": "4,1",
+          "title": "SPD-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(2)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(2)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "HDG-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(4)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(4)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "ALT-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(6)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(6)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "ALT HLD",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "(A:AUTOPILOT ALTITUDE LOCK, Bool)",
+            "AddressAction": "B:fcc_alt_hld",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "V/S",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "L:VS_ACTIVE",
+            "AddressAction": "B:fcc_vs",
+            "UseLvarReset": true,
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "A/P DISC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:yoke_ap_off_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "LIGHTS",
+          "folder": "lights"
+        },
+        {
+          "pos": "4,8",
+          "empty": "MORE folder key of set 2 (docs/b737-max8.md, Not on these pages)"
+        }
+      ]
+    },
+    {
+      "id": "trim",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "Trim as the CJ4's trim page; hold to repeat on all six trim keys (XL24-B737.lua codes 15 to 20)",
+      "keys": [
+        {
+          "pos": "2,2",
+          "title": "TRIM UP",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(15)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(15)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "AIL L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(17)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(17)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "AIL TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:AILERON TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "AIL R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(18)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(18)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:ELEVATOR TRIM PCT EX2, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "BarOrientation": -90,
+            "GaugeSize": "52; 12",
+            "Offset": "-6; 0",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "RUD L",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(19)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(19)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "RUD TRIM",
+          "template": "display_gauge",
+          "set": {
+            "Address": "(A:RUDDER TRIM PCT, percent)",
+            "MinimumValue": "-100",
+            "MaximumValue": "100",
+            "CenterLine": true,
+            "IndicatorColor": "#ffcc00",
+            "Format": "1.1"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "RUD R",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(20)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(20)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "TRIM DN",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(16)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(16)",
+            "HoldSwitch": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "views",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "Views as the CJ4's (camera state writes and readouts)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "COCKPIT",
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:CAMERA STATE, Enum)",
+            "SwitchOnState": "$=2",
+            "SwitchOffState": "",
+            "Address": "(A:CAMERA STATE, Enum)",
+            "OnState": "2",
+            "OffState": "3"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "EXTERNAL",
+          "title_size": 13,
+          "template": "avar_dynamic_button",
+          "set": {
+            "ActionType": 12,
+            "AddressAction": "(A:CAMERA STATE, Enum)",
+            "SwitchOnState": "$2,=3<",
+            "SwitchOffState": "",
+            "Address": "(A:CAMERA STATE, Enum)",
+            "OnState": "3",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "CAMERA",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA STATE, Enum)",
+            "Format": "",
+            "ValueMappings": "2=COCKPIT:3=CHASE:4=FIXED:5=ENV:7=SHOWCASE:8=DRONE"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "VIEW",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA VIEW TYPE AND INDEX:0, Enum)",
+            "Format": "",
+            "ValueMappings": "0=OTHER:1=PILOT:2=INSTR:3=QUICK:4=QV EXT:5=VIEW"
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "VIEW NO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:CAMERA VIEW TYPE AND INDEX:1, number)",
+            "Format": "1.0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mcp",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "MCP: the rest of the mode control panel (F/D, CMD B, CWS, the disengage bar readout, A/T DISC, C/O, SPD INTV, TOGA, BANK, the CRS and V/S columns) and the Captain's EFIS (MODE, RANGE, CTR, TFC, TERR, WXR, STD, the BARO and MINS columns, MINS RST); hold to repeat on CRS, V/S and BARO",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "F/D L",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fcc_fd_1",
+            "AddressAction": "B:fcc_fd_1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "CMD B",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_cmd_2",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "CWS A",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_cws_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "CWS B",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_cws_2",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "DISENGAGE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_disengage",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "A/T DISC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:engine_at_disengage_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "F/D R",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:fcc_fd_2",
+            "AddressAction": "B:fcc_fd_2",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,1",
+          "title": "CRS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(7)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(7)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "C/O",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_changeover",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "SPD INTV",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:fcc_speed_intervention",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "TOGA",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:engine_toga_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "V/S+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(9)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(9)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "BANK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_bank_angle_sel",
+            "Format": "1.0",
+            "ActionType": 13,
+            "AddressAction": "B:fcc_bank_angle_sel",
+            "SwitchOnState": "$0,1,2,3,4,0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,7",
+          "title": "BARO+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(11)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(11)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "2,8",
+          "title": "MINS+",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_mins_1",
+            "SwitchOnState": "$1",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,1",
+          "title": "CRS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fcc_course_1",
+            "Format": "3.0:%s°",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "MODE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:efis_mode_1",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "RANGE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:efis_range_1",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,4",
+          "title": "CTR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_ctr_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,5",
+          "title": "V/S",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:AUTOPILOT VERTICAL HOLD VAR, Feet/minute)",
+            "Format": "1.0"
+          }
+        },
+        {
+          "pos": "3,6",
+          "title": "STD",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_baro_std_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,7",
+          "title": "BARO",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:KOHLSMAN SETTING HG:1, inHg)",
+            "Format": "2.2"
+          }
+        },
+        {
+          "pos": "3,8",
+          "title": "MINS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:efis_mins_1",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,1",
+          "title": "CRS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(8)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(8)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,2",
+          "title": "TFC",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_tfc_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,3",
+          "title": "TERR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_terr_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,4",
+          "title": "WXR",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_wxr_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,5",
+          "title": "V/S-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(10)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(10)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,6",
+          "title": "MINS RST",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_rst_1",
+            "SwitchOnState": "1",
+            "SwitchOffState": "0",
+            "UseLvarReset": true,
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "4,7",
+          "title": "BARO-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-B737:HOLD(12)",
+            "AddressActionOff": "lua:XL24-B737:RELEASE(12)",
+            "HoldSwitch": true
+          }
+        },
+        {
+          "pos": "4,8",
+          "title": "MINS-",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false,
+            "ActionType": 13,
+            "AddressAction": "B:efis_mins_1",
+            "SwitchOnState": "$-1",
+            "DoNotRequestBvar": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "simrate",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "Sim rate as the CJ4's (XL24-SIMRATE.lua)",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "1X",
+          "template": "p1:3,0",
+          "set": {
+            "ActionType": 14,
+            "AddressAction": "lua:XL24-SIMRATE:SET(1)",
+            "Address": "(A:SIMULATION RATE, number)",
+            "OnState": "1",
+            "OffState": "2"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "SLOWER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_DECR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "RATE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:SIMULATION RATE, number)",
+            "Format": "1.2",
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:SIM_RATE_DECR"
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "FASTER",
+          "template": "simple_button",
+          "states_from": "p1:3,0",
+          "shell": {
+            "LinkedTitle": true
+          },
+          "set": {
+            "ActionType": 16,
+            "AddressAction": "K:SIM_RATE_INCR",
+            "DefaultImage": "Images/Switch.png",
+            "DrawBox": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "ped",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "Pedestal and the flight-phase levers: FLAPS and GEAR (main's keys), SPD BRK readout, A/BRK, PARK, the guarded START and CUTOFF keys, IGN",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "FLAPS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "(A:FLAPS HANDLE INDEX, number)",
+            "Format": "1.0",
+            "ActionType": 16,
+            "AddressAction": "K:FLAPS_INCR",
+            "HasLongPress": true,
+            "ActionTypeLong": 16,
+            "AddressActionLong": "K:FLAPS_DECR"
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "SPD BRK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:handling_speed_brakes",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "A/BRK",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:fwd_pdstl_autobrake",
+            "Format": "",
+            "ValueMappings": "0=RTO:1=OFF:2=1:3=2:4=3:5=MAX",
+            "ActionType": 13,
+            "AddressAction": "B:fwd_pdstl_autobrake",
+            "SwitchOnState": "$0,1,2,3,4,5<",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "PARK",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:landing_parking_brake",
+            "AddressAction": "B:landing_parking_brake",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "GEAR",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:landing_gears",
+            "AddressAction": "B:landing_gears",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "START 1",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:engine_ignition_1",
+            "ActionType": 3,
+            "AddressAction": "",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:engine_ignition_1",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "START 2",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:engine_ignition_2",
+            "ActionType": 3,
+            "AddressAction": "",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:engine_ignition_2",
+            "SwitchOnStateLong": "0",
+            "SwitchOffStateLong": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "IGN",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:engine_ignition_select",
+            "Format": "1.0",
+            "ActionType": 13,
+            "AddressAction": "B:engine_ignition_select",
+            "SwitchOnState": "$0,1,2<",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "3,2",
+          "title": "CUTOFF 1",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:engine_starter_1",
+            "ActionType": 3,
+            "AddressAction": "",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:engine_starter_1",
+            "SwitchOnStateLong": "1",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "3,3",
+          "title": "CUTOFF 2",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:engine_starter_2",
+            "ActionType": 3,
+            "AddressAction": "",
+            "HasLongPress": true,
+            "ActionTypeLong": 13,
+            "AddressActionLong": "B:engine_starter_2",
+            "SwitchOnStateLong": "1",
+            "SwitchOffStateLong": "0",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lights",
+      "parent": "main",
+      "spec": "docs/b737-max8.md",
+      "note": "Lights: exterior lights and the two cabin sign readouts",
+      "keys": [
+        {
+          "pos": "1,2",
+          "title": "POS",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:lighting_position_light",
+            "Format": "",
+            "ValueMappings": "0=STEADY:1=OFF:2=STRB",
+            "ActionType": 13,
+            "AddressAction": "B:lighting_position_light",
+            "SwitchOnState": "$0,1,2<",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,3",
+          "title": "BCN",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_anti_collision_light",
+            "AddressAction": "B:lighting_anti_collision_light",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,4",
+          "title": "LOGO",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_logo_light",
+            "AddressAction": "B:lighting_logo_light",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,5",
+          "title": "WING",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_wing_light",
+            "AddressAction": "B:lighting_wing_light",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,6",
+          "title": "WHL WELL",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_taxi_light_wheel_well",
+            "AddressAction": "B:lighting_taxi_light_wheel_well",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "1,7",
+          "title": "SEAT BELT",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:passenger_fasten_belts",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "1,8",
+          "title": "NO SMOKE",
+          "template": "p1:2,0",
+          "set": {
+            "Address": "B:passenger_no_smoking",
+            "Format": "1.0",
+            "DoNotRequestBvar": false
+          }
+        },
+        {
+          "pos": "2,2",
+          "title": "LAND L",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_landing_light_fixed_l",
+            "AddressAction": "B:lighting_landing_light_fixed_l",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,3",
+          "title": "LAND R",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_landing_light_fixed_r",
+            "AddressAction": "B:lighting_landing_light_fixed_r",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,4",
+          "title": "RWY L",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_runway_turnoff_light_l",
+            "AddressAction": "B:lighting_runway_turnoff_light_l",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,5",
+          "title": "RWY R",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_runway_turnoff_light_r",
+            "AddressAction": "B:lighting_runway_turnoff_light_r",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        },
+        {
+          "pos": "2,6",
+          "title": "TAXI",
+          "template": "p1:0,0",
+          "set": {
+            "Address": "B:lighting_taxi_light_gear",
+            "AddressAction": "B:lighting_taxi_light_gear",
+            "SwitchOnState": "0",
+            "SwitchOffState": "1",
+            "OnState": "0",
+            "OffState": "1",
+            "HasIndication": true,
+            "IndicationValueAny": true
+          }
+        }
+      ]
+    }
+  ]
+}

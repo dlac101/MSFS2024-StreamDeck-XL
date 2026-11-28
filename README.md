@@ -33,6 +33,7 @@ Optional local icon build of the A32NX profile (Guenseli pack, personal use only
 **VisionJet SF50 profile (MSFS 2024 default Cirrus Vision SF50; main page, TRIM, VIEWS, AUTOPILOT, RADIOS, SIM RATE, COM PAD, SYSTEMS and MORE with V-SPEEDS, CHECKLIST, XPDR, ENGINE and ICE/ENV), generated, not yet sim-tested except the two A/T keys (hand-tested 2026-11-26, on the ground and in flight)** (built with the SF50's input event list; its own main page with the autopilot, autothrottle and speed keys; hold to repeat on the step keys, script `XL24-SF50.lua`; map it to the aircraft in the Profile Manager with `microsoft_sf50`): [docs/visionjet-sf50.md](docs/visionjet-sf50.md).
 Optional local icon build of the VisionJet profile (Guenseli pack, personal use only, never committed; untested): [docs/icons.md](docs/icons.md), section 5.
 **Citation CJ4 profile (MSFS 2024 default Cessna Citation CJ4; main page, TRIM, VIEWS, SIM RATE, CHECKLIST and MORE with V-SPEEDS, COM PAD, AUTOPILOT, XPDR, RADIOS, SYSTEMS, ENGINE, ICE/ENV and LIGHTS), generated, not yet sim-tested** (built without the CJ4's input event list; the display control, cursor control and FMS pages are left for a later unit; hold to repeat by XL24-CJ4.lua and the COM pad's press feedback by XL24-COMPAD.lua with Images/XL24-PadLit.png, which the package holds; the install test shows whether it is copied; until then copy it by hand as [docs/package.md](docs/package.md) says): [docs/cj4.md](docs/cj4.md).
+**Boeing 737 MAX 8 profile (MSFS 2024 default Boeing 737 MAX 8; main page round the mode control panel, TRIM, VIEWS, MCP, SIM RATE, PED and LIGHTS), generated, not yet sim-tested** (built from the 737's input event list and three captures of its cockpit controls; hold to repeat by XL24-B737.lua, which writes the MCP knobs' input events; START and CUTOFF act on a long press only): [docs/b737-max8.md](docs/b737-max8.md).
 
 ## Layout
 
@@ -62,6 +63,7 @@ docs/
   visionjet-sf50.md  VisionJet SF50 profile (MSFS 2024 default): main page and child pages, Profile Manager mapping, key-by-key reference
   cj4-research.md  research for a profile of the Cessna Citation CJ4 that comes with MSFS 2024: candidate names with sources, draft layout; all Unverified
   cj4.md  Citation CJ4 profile (MSFS 2024 default): main page and child pages, Profile Manager mapping, key-by-key reference
+  b737-max8.md  Boeing 737 MAX 8 profile (MSFS 2024 default): main page and child pages, Profile Manager mapping, key-by-key reference
   navigation.md         how pages connect (folders, back key) and the planned pages
   roadmap.md            what is built, what the plan and community profiles offer, gap list and planned units
   icons.md              optional local icon builds of the C172 G1000, A32NX, VisionJet and CJ4 profiles and the local icon package (Guenseli pack, personal use only, never committed)

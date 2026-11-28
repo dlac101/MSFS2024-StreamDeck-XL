@@ -2086,3 +2086,123 @@ before each step and after the last one.
 - [ ] Record each step's result in the "Verified" cells of aircraft-mappings.md's CJ4 rows (date, MSFS
   version), the keys that do nothing, the repeat feel (too slow, right, too fast), the numbers and units
   asked for above, the aircraft string, which build (plain or icon), and every fallback or change.
+
+## Boeing 737 MAX 8 profile (AIR-1)
+
+Reference: [docs/b737-max8.md](../docs/b737-max8.md). The profile `MSFS2024 737 MAX 8` for the MSFS 2024
+default Boeing 737 MAX 8 (7 pages, 107 keys), built from the 737's input event list and three captures. Not
+yet tested in the app or the sim. **START and CUTOFF act on a long press only; GEAR moves the gear lever at a
+press.** Record: date, MSFS 2024 version, PilotsDeck version, and every fallback or changed value you used.
+Hold times run from key down. Check both directions everywhere: press the key and watch the cockpit, then
+work the cockpit control with the mouse and check that the key follows.
+
+**Before you start**
+- [ ] Install the new package with the Profile Manager, or import `MSFS2024 737 MAX 8.streamDeckProfile` by
+  hand (as the C172 profile, docs/phase2-main-page.md "Import the profile") and copy `XL24-B737.lua`.
+  `XL24-SIMRATE.lua` must be in the plugin's Scripts folder too.
+- [ ] Map the profile in the Profile Manager with the search string `asobo_b737max` (docs/b737-max8.md,
+  "Profile Manager mapping") and check that the deck switches to it when the 737 loads; else pick it by hand.
+
+**Folders**
+- [ ] Open every folder key of main (TRIM, VIEWS, MCP, SIM RATE, PED, LIGHTS): the named page opens and
+  its back key (1,1) returns to main.
+
+**Main page, on the ground**
+- [ ] A/T: both ways; the cockpit's A/T arm switch moves and the key is lit when it is armed.
+- [ ] GEAR is lit with the gear down (the down value is shown by the start value only: check it). Do not
+  press GEAR on the ground.
+- [ ] FLAPS: press, one detent out; long press, one detent in; the number follows the cockpit lever. If the
+  K-events do not move the lever, record it (fallback `B:handling_flaps`, docs/b737-max8.md "Fallbacks").
+- [ ] SPD, HDG and ALT show the MCP windows; turn each cockpit knob with the mouse: the readout follows.
+- [ ] 2,8 and 4,8 show nothing and do nothing.
+
+**Main page, step keys (codes 1 to 6, the B-var write route)**
+- [ ] SPD+ / SPD-: a short press moves the MCP speed one knot from the value SPD showed (SPD follows; if it
+  jumps to 100 kt instead, stop and record it: the script did not read the knob; if it does not move at all,
+  record whether the plugin log has the line "XL24-B737: no value for B:fcc_speed_sel, nothing written").
+  Hold 1 s, 3 s and 10 s: it moves faster the longer it is held, stops by itself at 200 steps, stays within
+  100 to 399, and on release **stops at once and never runs on**.
+- [ ] HDG+ / HDG-: the same, one degree per step, wrapping 359 to 0; stops by 360 steps.
+- [ ] ALT+ / ALT-: the same, 100 ft per step, within 0 to 50000; stops by 400 steps.
+- [ ] If a step key does nothing, record it: the fallbacks are single-step keys, then the CJ4's K-events
+  (docs/b737-max8.md, "Fallbacks").
+
+**Main page, in flight (MCP mode keys)**
+- [ ] CMD A: a press engages the autopilot and the key lights; it stays lit with CMD B engaged instead (lit
+  for either autopilot). A/P DISC disconnects it (no light: CMD A goes dark). If A/P DISC does nothing,
+  record it (the lead `K:AP_MASTER` needs a 737 test).
+- [ ] SPEED, VNAV, LVL CHG, HDG SEL, APP and V/S: each press works the MCP button and the key's light follows
+  the mode; engage and end each mode in the cockpit too. Check the **off** of HDG SEL and APP (only their on
+  was captured).
+- [ ] LVL CHG: compare the key's light with the FMA when the altitude is captured (in capture 3 the L-var and
+  the SimVar `AUTOPILOT FLIGHT LEVEL CHANGE` disagreed for 4.5 s); record which one follows the mode.
+- [ ] ALT HLD: lit when the altitude is held, also when the autopilot captures it with no press.
+- [ ] GEAR: after takeoff a press raises the gear and the key goes dark; before landing a press lowers it and
+  the key lights; move the cockpit lever too: the key follows.
+- [ ] N1, LNAV and VOR LOC (no light): each press does what the cockpit button does.
+
+**MCP page (main > MCP)**
+- [ ] F/D L and F/D R: both ways against the cockpit switches, lit at ON.
+- [ ] CMD B, CWS A, CWS B, A/T DISC, C/O, SPD INTV and TOGA (no light): each press does what the cockpit
+  button does (A/T DISC: the A/T key goes dark; C/O: record what main SPD shows in Mach).
+- [ ] CRS+ / CRS- (codes 7, 8), V/S+ / V/S- (codes 9, 10): the same short press and 1, 3 and 10 s holds as the
+  main step keys; CRS and V/S follow; V/S steps 100 fpm from the target V/S shows, also after the V/S mode
+  ended once; stops by 360 (CRS) and 40 (V/S) steps.
+- [ ] BARO+ / BARO- (codes 11, 12, `K:KOHLSMAN_INC` / `_DEC`): a short press and the holds; record whether the
+  737's baro moves and BARO follows it. If not, record it (fallback: single steps on `B:efis_baro_1`).
+- [ ] MINS+ / MINS-: one step per press, no repeat; record the step and whether MINS follows the cockpit.
+- [ ] CTR, TFC, TERR, WXR, STD and MINS RST (no light): each press does what the cockpit button does.
+- [ ] DISENGAGE, MODE and RANGE (readouts only): move the cockpit control with the mouse, the number changes;
+  record the number per position (the disengage bar up and down).
+- [ ] BANK: each press steps the bank ring; record the cockpit's bank limit per number (0 to 4) and what a
+  press at 4 does (the On value `$0,1,2,3,4,0` is meant to go from 4 back to 0).
+
+**Lights page (main > LIGHTS)**
+- [ ] POS: steps STEADY, OFF, STRB and the cockpit switch follows; BCN, WING, WHL WELL, LAND L and TAXI: both
+  ways, the key lit when the light is on.
+- [ ] LOGO, LAND R, RWY L and RWY R (working value On `0` / Off `1`, never captured): both ways; the key's
+  light matches the cockpit switch. Record each that is the wrong way round.
+- [ ] SEAT BELT and NO SMOKE (readouts only): record the number per cockpit position.
+
+**Ped page (main > PED)**
+- [ ] FLAPS and GEAR as on main. PARK: both ways, lit when set.
+- [ ] SPD BRK (readout): record the number at the ARMED and the flight detent; IGN: each press steps the
+  selector, record the label per number (0 to 2).
+- [ ] A/BRK (labels inferred from capture 3): step through every position; record the cockpit label per
+  number and whether `0=RTO:1=OFF:2=1:3=2:4=3:5=MAX` is right.
+- [ ] START 1 and START 2 (guarded): a short press does nothing; a long press moves the start switch to GRD
+  and the key lights, a second long press back to the key's Off value 1. Record the cockpit label at 1 and at
+  2 (the value with the engines running). Engine 2 included.
+- [ ] CUTOFF 1 and CUTOFF 2 (guarded; the lever's link to its engine inferred from capture 3): a short press
+  does nothing; a long press moves the start lever to IDLE (lit) or CUTOFF; check that each lever stops and
+  starts **its own** engine, engine 2 included.
+
+**Never runs on**
+- [ ] Press and release SPD+ very fast ten times: SPD goes up by ten (record it if it goes up by less) and
+  no step comes after the last release; then hold SPD+ 3 s: it still repeats. Hold two step keys at once:
+  each stops on its own release.
+- [ ] On the ground: hold CRS+ on the mcp page and press the back key (1,1) with another finger, then release
+  both. Record whether the course stops at once or runs on until its cap, and whether main A/T (1,1) or SPD+
+  (2,1), now under your fingers, acted; hold SPD+ 3 s and record it if it steps only once; go back and check
+  that CRS+ works normally again.
+- [ ] On the ground: hold TRIM UP on the trim page and press the back key, then release both. Record whether
+  the trim stops and whether main HDG+ (2,2, now under your finger) stepped; hold HDG+ 3 s and record it if it
+  steps only once; then check that TRIM UP works normally again.
+
+**Trim, views and sim rate pages**
+- [ ] Trim: TRIM UP / DN, AIL L / R, RUD L / R (codes 15 to 20): a short press steps once, holds of 1, 3 and
+  10 s; the gauges follow. Record each trim the 737 ignores (fallbacks: the trim input events,
+  docs/b737-max8.md "Fallbacks").
+- [ ] Views and sim rate: as on the CJ4 (its checklist section's steps).
+
+**Other aircraft**
+- [ ] Load another aircraft and pick `MSFS2024 737 MAX 8` by hand: **do not press the keys there** (the B-var
+  writes and events act on that aircraft). Then switch back.
+
+**Controller independence**
+- [ ] The keys work the same with the Xbox Elite controller and with the T.16000M + TWCS connected.
+
+**Results to record**
+- [ ] Record each step's result in the "Verified" cells of aircraft-mappings.md's 737 rows (date, MSFS
+  version), the keys that do nothing, the repeat feel (too slow, right, too fast), the numbers, labels and
+  steps asked for above, and every fallback or change.
